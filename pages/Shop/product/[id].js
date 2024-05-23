@@ -5,6 +5,8 @@ import { getCookie } from "cookies-next";
 import RecentView from "@/components/home/sticky/RecentView";
 import Constants from "@/ults/Constant";
 import { CiStar } from "react-icons/ci";
+import DisclaimerModal from "@/pages/DisclaimerModal";
+
 import {
   FaShoppingBasket,
   FaDownload,
@@ -105,11 +107,19 @@ const Product = ({ product }) => {
     localStorage.setItem("recentview", JSON.stringify(recentitems));
   }, [product?.id]);
 
+  const [showDisclaimerModal, setShowDisclaimerModal] = useState(false);
+  const handleAcceptDisclaimer = () => {
+    setShowDisclaimerModal(false);
+    // Proceed with add to cart logic
+    addToCartHandler();
+  };
   // Shopping cart
   const addToCartHandler = () => {
     // This utility function ensures that the input price is treated as a string,
     // removes any non-digit characters (except for the decimal point),
     // and then converts it back to a number.
+    setShowDisclaimerModal(true); // Show the disclaimer modal when "Add to Cart" is clicked
+
     const cleanPrice = (priceInput) => {
       // Ensure priceInput is treated as a string if it's not null or undefined
       const priceString = priceInput !== null && priceInput !== undefined ? String(priceInput) : '0';
@@ -299,6 +309,12 @@ const Product = ({ product }) => {
                 >
                   Add to Cart
                 </button>
+                <DisclaimerModal
+                  isOpen={showDisclaimerModal}
+                  onClose={() => setShowDisclaimerModal(false)}
+                  onAccept={() => setShowDisclaimerModal(false)}
+                />
+
               </div>
               <div>
                 <button

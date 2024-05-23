@@ -8,16 +8,59 @@ import Link from 'next/link';
 
 const Checkout = () => {
     const { cart, addItemToCart, deleteItemFromCart } = useContext(CartContext);
+    const [showGiftCardModal, setShowGiftCardModal] = useState(false); // State to control the visibility of the gift card modal
+    const [giftCardCode, setGiftCardCode] = useState(''); // State to store the entered gift card or coupon code
     const cartItems = cart?.cartItems;
+    const [discountedTotal, setDiscountedTotal] = useState(null);
 
+    const handleApplyGiftCard = () => {
+        // Check if the entered gift card code is "hometex"
+        if (giftCardCode.toLowerCase() === 'hometex') {
+            // Reduce the total amount by 10%
+            const newDiscountedTotal = totalSum * 0.9;
+            // Update the discounted total in the state
+            setDiscountedTotal(newDiscountedTotal);
+        }
+        // Reset the gift card code input field and hide the modal
+        setGiftCardCode('');
+        setShowGiftCardModal(false);
+    };
+    
     const increaseQty = (cartItem) => {
         const newQty = parseInt(cartItem?.quantity) + 1;
+
         let price = cartItem?.price;
         let total_price = newQty * price;
         const item = { ...cartItem, quantity: newQty, total_price: total_price };
         if (newQty > Number(cartItem.stock)) return;
 
         addItemToCart(item);
+    };
+    const toggleGiftCardModal = () => {
+        setShowGiftCardModal(!showGiftCardModal);
+    };
+    const renderGiftCardModal = () => {
+        if (!showGiftCardModal) return null;
+
+        return (
+            <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg">
+                    <h2 className="text-xl font-semibold mb-4">Gift Card / Coupon</h2>
+                    {/* Input field for entering the gift card code */}
+                    <input
+                        type="text"
+                        value={giftCardCode}
+                        onChange={(e) => setGiftCardCode(e.target.value)}
+                        placeholder="Enter gift card or coupon code"
+                        className="border border-gray-300 rounded-md px-4 py-2 mb-4 w-full"
+                    />
+                    {/* Apply button */}
+                    <button onClick={handleApplyGiftCard} className="mt-4 bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md text-white">Apply</button>
+                    {/* Cancel button */}
+                    <button onClick={toggleGiftCardModal} className="mt-4 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-md ml-2">Cancel</button>
+                </div>
+            </div>
+        );
     };
 
     const decreaseQty = (cartItem) => {
@@ -219,10 +262,14 @@ const Checkout = () => {
                                         <p className='text-gray-800 font-medium'>Delivery</p>
                                         <p className='text-green-600 font-semibold'>Free</p>
                                     </div>
+                                    <button onClick={toggleGiftCardModal} className="mt-4 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md">Apply Gift Card / Coupon</button>
+                                    {renderGiftCardModal()}
+
                                     <div className='flex justify-between items-center p-3 border-t border-gray-200 mt-2'>
-                                        <p className='text-lg text-gray-800 font-bold'>Total</p>
-                                        <p className='text-lg text-green-700 font-bold'>TK {totalSum}</p>
-                                    </div>
+                                    <p className='text-lg text-gray-800 font-bold'>Total</p>
+                                    <p className='text-lg text-green-700 font-bold'>TK {discountedTotal? discountedTotal : totalSum}</p>
+                                </div>
+
                                 </div>
 
                             </div>
