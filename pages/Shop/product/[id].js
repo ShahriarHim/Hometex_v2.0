@@ -17,6 +17,8 @@ import { FaXTwitter, FaSquareInstagram } from "react-icons/fa6";
 import { MdFavorite } from "react-icons/md";
 import RelatedProduct from "@/components/common/RelatedProduct";
 import Link from "next/link";
+import { useRouter } from 'next/router'; // Import useRouter
+import { Router, useRouter as useRouterClient } from 'next/router'; // Import Router and useRouterClient
 
 export async function getServerSideProps(context) {
   let id = context.query.id;
@@ -32,7 +34,10 @@ export async function getServerSideProps(context) {
   };
 }
 
+
 const Product = ({ product }) => {
+  const router = useRouter(); // Get the router instance
+
   const [selectedImage, setSelectedImage] = useState(
     product.primary_photo?.photo
   );
@@ -515,6 +520,23 @@ const Product = ({ product }) => {
                 Store Locations
               </Link>
             </div>
+            <div className="col-span-12 flex justify-between">
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}
+              // disabled={parseInt(router.query.id) === 64} // Disable the "Previous" button for the first product
+            >
+              Previous
+            </button>
+
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}
+              // disabled={parseInt(router.query.id) === 65} // Disable the "Next" button for the last product
+            >
+              Next
+            </button>
+          </div>
 
 
             <div className="flex justify-center items-center my-5 gap-3">
