@@ -15,6 +15,7 @@ import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { Sticky } from "@/components/home/Sticky";
 import Constants from "@/ults/Constant";
 import ReactStars from "react-rating-stars-component";
+import PurchaseHistory from "./PurchaseHistory";
 
 const brands = ["Hometex Bangladesh M.", "Desiattire"];
 
@@ -431,6 +432,7 @@ const King = () => {
 
       <div className="max-w-screen-xl mx-auto px-3 mb-10 py-3">
         <Sticky />
+        <PurchaseHistory/>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <div className="border-b-2">
@@ -557,7 +559,7 @@ const King = () => {
             </div>
             <div className="border-b-2 py-3">
               <div className="flex justify-between items-center mt-2">
-                <h2 className="font-bold text-xl">Spexial Offer</h2>
+                <h2 className="font-bold text-xl">Special Offer</h2>
                 <button onClick={toggleSpecialOfferFilter}>
                   {isColorsOpen ? (
                     <AiOutlineUp size={18} />
@@ -643,6 +645,7 @@ const King = () => {
           </div>
         </div>
       </div>
+
     </>
   );
 };

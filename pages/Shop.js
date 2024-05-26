@@ -366,7 +366,7 @@ const Shop = () => {
           </div>
           <div className="border-b-2 py-3">
             <div className="flex justify-between items-center mt-2">
-              <h2 className="font-bold text-xl">Spexial Offer</h2>
+              <h2 className="font-bold text-xl">Special Offer</h2>
               <button onClick={toggleSpecialOfferFilter}>
                 {isColorsOpen ? (
                   <AiOutlineUp size={18} />

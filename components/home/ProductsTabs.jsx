@@ -202,7 +202,7 @@ const ProductsTabs = ({ products }) => {
                             className="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
                             onClick={() => handleRequestStack(product)}
                           >
-                            Request Stack
+                            Request Stock
                           </button>
                         </div>
                       </div>
@@ -262,7 +262,7 @@ const ProductsTabs = ({ products }) => {
                             className="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
                             onClick={() => handleRequestStack(product)}
                           >
-                            Request Stack
+                            Request Stock
                           </button>
                         </div>
                       </div>
@@ -322,7 +322,7 @@ const ProductsTabs = ({ products }) => {
                             className="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
                             onClick={() => handleRequestStack(product)}
                           >
-                            Request Stack
+                            Request Stock
                           </button>
                         </div>
                       </div>
@@ -382,7 +382,7 @@ const ProductsTabs = ({ products }) => {
                             className="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
                             onClick={() => handleRequestStack(product)}
                           >
-                            Request Stack
+                            Request Stock
                           </button>
                         </div>
                       </div>
