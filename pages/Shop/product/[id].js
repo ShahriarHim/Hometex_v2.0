@@ -552,6 +552,17 @@ const Product = ({ product }) => {
             </div>
           </div>
         </div>
+        <div className="alert-me-button fixed bottom-0 left-0 m-4">
+        <button class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md flex justify-center items-center hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 0 18 14.595V10a6 6 0 0 0-6-6h-4l-1-1H8v11zM14 14a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
+  </svg>
+  Get a notification when price drops below ৳ {product.price}
+</button>
+
+
+
+      </div>
       </div>
     </>
   );
