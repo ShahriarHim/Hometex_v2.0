@@ -1,4 +1,3 @@
-// components/PurchaseHistory.js
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import CartContext from '@/context/CartContext';
 import Link from 'next/link';
@@ -9,6 +8,11 @@ import { FaShoppingCart } from 'react-icons/fa';
 const PurchaseHistory = () => {
     const { cart, deleteItemFromCart } = useContext(CartContext);
     const cartItems = cart?.cartItems;
+
+    // Only render the component if there are items in the cart
+    if (!cartItems || cartItems.length === 0) {
+        return null;
+    }
 
     const [isStickyOpen, setIsStickyOpen] = useState(false);
     const ref = useRef(null);

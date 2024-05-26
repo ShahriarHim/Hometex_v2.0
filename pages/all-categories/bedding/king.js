@@ -4,6 +4,7 @@ import Slider from "components/allCategory/Slider";
 import { MdFavorite } from "react-icons/md";
 import { CiStar } from "react-icons/ci";
 import { RiShoppingBasketFill, RiExchangeFill } from "react-icons/ri";
+ 
 import {
   FaStar,
   FaShoppingCart,
@@ -16,6 +17,7 @@ import { Sticky } from "@/components/home/Sticky";
 import Constants from "@/ults/Constant";
 import ReactStars from "react-rating-stars-component";
 import PurchaseHistory from "./PurchaseHistory";
+import ProductModal from "@/components/common/ProductModal";
 
 const brands = ["Hometex Bangladesh M.", "Desiattire"];
 
@@ -82,13 +84,21 @@ const King = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleItemClick = (item) => {
     if (item.id === 8) {
       setIsPopupVisible(true);
     }
   };
-
+  const openModal = (product) => {
+    console.log(product)
+    setSelectedProduct(product);
+  };
+  const closeModal = () => {
+    setSelectedProduct(null);
+  };
   const closePopup = () => {
     setIsPopupVisible(false);
   };
@@ -627,7 +637,7 @@ const King = () => {
       </div>
     </div>
     <div className="p-4 border-t border-gray-200">
-      <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300">
+      <button onClick={() => openModal(product)} className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300">
         Add to Cart
       </button>
     </div>
@@ -645,7 +655,14 @@ const King = () => {
           </div>
         </div>
       </div>
-
+      {isModalOpen && (
+        <RequestStackModal
+          product={requestProduct}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleRestockRequestSubmit}
+        />
+      )}
+      <ProductModal product={selectedProduct} onClose={closeModal} />
     </>
   );
 };
