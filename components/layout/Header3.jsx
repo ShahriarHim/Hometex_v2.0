@@ -10,6 +10,7 @@ import { FcGoogle } from "react-icons/fc";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { BsFillPersonVcardFill } from "react-icons/bs";
 import {
+  FaLocationArrow,
   FaShippingFast,
   FaPhoneSquareAlt,
   FaMoneyCheckAlt,
@@ -41,8 +42,12 @@ import Swal from "sweetalert2";
 import DynamicText, { textOptions } from "./DynamicText";
 
 const Header3 = () => {
+  const [location, setLocation] = useState(null);
   const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
   const [isSearchPopupVisible, setIsSearchPopupVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+
   const handleCheckout = () => {
     if (!auth_token) {
       setShowCheckoutPopup(true);
@@ -351,6 +356,44 @@ const Header3 = () => {
   const handleTextChange = (newVisitUsText) => {
     setVisitUsText(newVisitUsText);
   };
+
+  const handleGetLocation = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                fetchLocation(position.coords.latitude, position.coords.longitude);
+            },
+            (error) => {
+                setErrorMessage("Unable to retrieve location");
+            }
+        );
+    } else {
+        setErrorMessage("Geolocation is not supported by this browser");
+    }
+};
+
+const fetchLocation = (latitude, longitude) => {
+    // Use a geocoding service to convert coordinates to a human-readable address
+    // Replace 'YOUR_API_KEY' with your actual API key
+    const apiKey = 'YOUR_API_KEY';
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.results && data.results.length > 0) {
+                setLocation(data.results[0].formatted_address);
+            } else {
+                setErrorMessage("Location not found");
+            }
+        })
+        .catch(error => {
+            setErrorMessage("Error fetching location");
+        });
+};
+
+useEffect(() => {
+    handleGetLocation();
+}, []); // Fetch location on component mount
+
   return (
     <>
       <div className="pt-2 hidden md:block">
@@ -496,7 +539,22 @@ const Header3 = () => {
               </Link>
             </div>
             <div>
-              <div className="flex flex-row gap-8">
+              <div className="flex flex-row gap-4">
+                <div
+                  className="px-2 flex flex-col items-center text-center cursor-pointer"
+                  onClick={handleGetLocation}
+                >
+                  <FaLocationArrow
+                    className="h-6 w-6 text-blue-600"
+                    aria-hidden="true"
+                  />
+
+                  <span className="text-sm mt-2 font-semibold text-red-500">
+                    {location ||errorMessage|| "Loading.."}
+                    {/* {errorMessage && <span className="text-red-500">{errorMessage}</span>} */}
+                  </span>
+
+                </div>
                 <div>
                   <div className="px-2 flex flex-col items-center text-center">
                     <button onClick={() => setIsSearchPopupVisible(true)}>
@@ -509,6 +567,7 @@ const Header3 = () => {
                       </span>
                     </button>
                   </div>
+
                   {isSearchPopupVisible && (
                     <SearchBarPopup
                       onClose={() => setIsSearchPopupVisible(false)}
