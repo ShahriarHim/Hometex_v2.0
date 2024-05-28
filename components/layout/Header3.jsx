@@ -170,7 +170,11 @@ const Header3 = () => {
     },
     // Add more product objects here
   ];
+  const [isZipPopupVisible, setIsZipPopupVisible] = useState(false);
 
+  const handleZipCodeClick = () => {
+    setIsZipPopupVisible(true);
+  };
   const saleEndTime = "2024-04-30T23:59:59";
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -511,15 +515,12 @@ const Header3 = () => {
                     />
                   )}
                 </div>
-                {/* <div className="px-2 flex flex-col items-center text-center">
-                  <FaSearch
-                    className="h-6 w-6 text-blue-600"
-                    aria-hidden="true"
-                  />
-                  <span className="text-sm mt-2 font-semibold text-gray-800">
-                    Search
-                  </span>
-                </div> */}
+                <div className="px-2 flex flex-col items-center text-center">
+  <button onClick={handleZipCodeClick}>
+    <FaMapMarkerAlt className="h-6 w-6 text-blue-600" aria-hidden="true" />
+    <span className="text-sm mt-2 font-semibold text-gray-800">Your Zip</span>
+  </button>
+</div>
 
                 <div className="relative" ref={dropdownRef}>
                   <button
