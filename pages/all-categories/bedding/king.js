@@ -645,13 +645,17 @@ const King = () => {
 ))}
             </div>
             <div className="flex flex-col justify-center py-10">
-              <button onClick={readMoreHandler}>
-                <span className="px-3 py-2 bg-black text-white">
-                  Load 12 More products
-                </span>
-              </button>
-              <div className="py-2 my-3 border-t border-b">{paginationBar}</div>
-            </div>
+  {filteredProducts.length > currentPage * itemsPerPage ? (
+    <button onClick={readMoreHandler}>
+      <span className="px-3 py-2 bg-black text-white">
+        Load 12 More Products
+      </span>
+    </button>
+  ) : (
+    <span className="px-3 py-2 bg-gray-400 text-white">End of Products</span>
+  )}
+  <div className="py-2 my-3 border-t border-b">{paginationBar}</div>
+</div>
           </div>
         </div>
       </div>
