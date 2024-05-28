@@ -20,6 +20,7 @@ import RelatedProduct from "@/components/common/RelatedProduct";
 import Link from "next/link";
 import { useRouter } from 'next/router'; // Import useRouter
 import { Router, useRouter as useRouterClient } from 'next/router'; // Import Router and useRouterClient
+import CustomerSatisfactionBar from "@/components/CustomerSatisfactionBar";
 
 export async function getServerSideProps(context) {
   let id = context.query.id;
@@ -689,7 +690,7 @@ const Product = ({ product }) => {
     <button className="bg-pink-500 text-white px-3 py-1 rounded">ADD BOTH TO CART</button>
   </div>
 </div>
-
+<CustomerSatisfactionBar/>
     </>
   );
 };
