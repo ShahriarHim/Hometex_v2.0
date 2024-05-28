@@ -52,7 +52,7 @@ const Checkout = () => {
           city: "",
           postcode: "",
         });
-        router.push('/payment_method');
+        router.push('/checkout');
       }, (error) => {
         console.log(error.text);
         alert("Failed to submit the form. Please try again.");
