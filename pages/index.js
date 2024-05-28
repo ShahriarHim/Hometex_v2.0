@@ -17,9 +17,11 @@ import DesignNine from "@/components/newDesigns/DesignNine";
 import DesignTwelve from "@/components/newDesigns/DesignTwilve";
 import Prefooter2 from "@/components/layout/Prefooter2";
 import ProductsTabs from "@/components/home/ProductsTabs";
+import ChatPopup from "@/components/ChatPopup"; // Import ChatPopup
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isChatVisible, setIsChatVisible] = useState(false); // State for chat visibility
   const [products, setProducts] = useState([]);
 
   const handleScroll = useCallback(() => {
@@ -32,6 +34,10 @@ const Home = () => {
 
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleChatToggle = () => {
+    setIsChatVisible(prevState => !prevState); // Toggle chat visibility
   };
 
   useEffect(() => {
@@ -74,8 +80,9 @@ const Home = () => {
       
           <button
             className="fixed bottom-16 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
+            onClick={handleChatToggle} // Show chat on click
           >
-            <FaWhatsapp size={18} onClick={() => { /* Add your WhatsApp functionality here */ }} />
+            <FaWhatsapp size={18} />
           </button>
         </>
       )}
@@ -91,6 +98,8 @@ const Home = () => {
    
         </>
       )}
+  
+      {isChatVisible && <ChatPopup onClose={handleChatToggle} />} {/* Render chat popup */}
   
       <DesignSix/>
       <DesignOne/>
