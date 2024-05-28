@@ -49,15 +49,13 @@ const PurchaseHistory = () => {
 
 
     useEffect(() => {
-      if (cartItems) {
-        const finalAmount = cartItems.reduce((total, cartItem) => {
-          let str = cartItem.price;
-          str = str.replace(/[,৳]/g, "");
-          const amount = parseInt(str) * cartItem.quantity;
-          return total + amount;
-        }, 0);
-        setTotalPrice(finalAmount);
-      }
+      const finalAmount = cartItems.reduce((total, cartItem) => {
+        let str = cartItem.price;
+        str = str.replace(/[,৳]/g, "");
+        const amount = parseInt(str) * cartItem.quantity;
+        return total + amount;
+      }, 0);
+      setTotalPrice(finalAmount);
     }, [cart?.cartItems]);
 
     const lastItem = cartItems?.[cartItems.length - 1];
