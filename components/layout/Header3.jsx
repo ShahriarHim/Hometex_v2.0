@@ -427,7 +427,7 @@ useEffect(() => {
                 />{" "}
                 Corporate Inquiries {/* Added mr-2 for margin right */}
               </Link>
-              <Link href="/order-tracking">
+              <Link href="/orderDash">
                 <div className="flex items-center hover:text-blue-500">
                   <HiOutlineTicket
                     className="mr-2 text-pink-500"
