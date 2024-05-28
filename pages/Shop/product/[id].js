@@ -37,7 +37,11 @@ export async function getServerSideProps(context) {
 
 const Product = ({ product }) => {
   const router = useRouter(); // Get the router instance
+  const [showBusinessOnly, setShowBusinessOnly] = useState(true);
 
+  const toggleBusinessOnly = () => {
+    setShowBusinessOnly(!showBusinessOnly);
+  };
   const [selectedImage, setSelectedImage] = useState(
     product.primary_photo?.photo
   );
@@ -198,17 +202,21 @@ const Product = ({ product }) => {
                 />
               )}
             </div>
+            
             <div>
+
+              
               {/* Main image without magnify effect */}
               <img
                 alt="Primary Product Image"
                 src={`${image_URL}/${selectedImage || product.primary_photo?.photo
                   }`}
-                style={{ width: "100%" }} // This ensures the image is responsive and fits the container
+                style={{ width: "80%" }} // This ensures the image is responsive and fits the container
               />
             </div>
+            
           </div>
-
+ 
           <div className="col-span-4 mx-2">
             <h1 className="text-2xl pb-2">{product.name}</h1>
             <p className="text-sm pb-2">
@@ -258,6 +266,24 @@ const Product = ({ product }) => {
 
             <div className="my-2">
               <p className="font-semibold mb-2">Available Options</p>
+              <div className="flex items-center">
+      {/* <div className="bg-purple-600 text-white px-2 py-1 rounded-md mr-2"> */}
+        <p className=" text-purple-600 font-semibold">Pro Price:     </p>
+      {/* </div> */}
+      <div
+        className={`cursor-pointer border border-purple-600 px-1 py-1 rounded-md relative ${
+          showBusinessOnly ? 'bg-white text-purple-600' : 'bg-purple-500 text-white'
+        }`}
+        onClick={toggleBusinessOnly}
+      >
+        <span className="font-semibold">
+          {showBusinessOnly ? 'Business Only' : '$2000.99'}
+        </span>
+        {showBusinessOnly && (
+          <div className="absolute -top-1 -right-1 h-3 w-3 bg-purple-600 rounded-full"></div>
+        )}
+      </div>
+    </div>
               <p>{product.sub_category?.name} Size</p>
               {product.product_attributes.length > 0 && (
                 <select
@@ -276,7 +302,7 @@ const Product = ({ product }) => {
                 </select>
               )}
             </div>
-
+   
             <div className="flex pt-2 gap-2 font-bold">
               <div className="flex justify-between items-center">
                 <button
@@ -412,7 +438,45 @@ const Product = ({ product }) => {
 
             </div>
 
-
+            <div className="flex flex-col items-center border p-4 rounded-lg md:flex-row md:items-start">
+      <div className="md:w-1/3 mb-4 md:mb-0 md:mr-4">
+        <img
+          alt="Primary Product Image"
+          src={`${image_URL}/${selectedImage || product.primary_photo?.photo}`}
+          className="w-full"
+        />
+      </div>
+      <div className="md:w-1/3 mb-4 md:mb-0 md:mr-4">
+        <img
+          alt="Secondary Product Image"
+          src="https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg"
+          className="w-full"
+        />
+      </div>
+      <div className="md:w-2/3">
+        <h1 className="text-2xl font-bold mb-2">Frequently bought together</h1>
+        <div className="flex items-center mb-2">
+          <input type="checkbox" checked readOnly className="mr-2" />
+          <span className="font-semibold">
+            This Item: {product.name} ({product.volume})
+          </span>
+          <span className="line-through ml-2">৳ {product.original_price}</span>
+          <span className="text-red-500 ml-2">৳ {product.discounted_price}</span>
+        </div>
+        <div className="flex items-center mb-2">
+          <input type="checkbox" checked readOnly className="mr-2" />
+          <span className="font-semibold">
+            Rajkonna Acne Fighting Facial Wash With Jojoba Beads (100 ml)
+          </span>
+          <span className="line-through ml-2">৳ 185.00</span>
+          <span className="text-red-500 ml-2">৳ 157.00</span>
+        </div>
+        <div className="flex items-center mb-4">
+          <span className="text-lg font-bold">Total price: ৳ 256</span>
+        </div>
+        <button className="bg-pink-500 text-white px-4 py-2 rounded">ADD BOTH TO CART</button>
+      </div>
+    </div>
             <div className="my-2 pb-2 flex items-center border-b">
               <button
                 className="text-xl font-bold"
@@ -515,11 +579,33 @@ const Product = ({ product }) => {
             <div className="my-2 pb-2 flex items-center ">
               <button className="text-xl font-bold">Find in Store</button>
             </div>
+            <div className="flex flex-col items-center border p-4 rounded-lg md:flex-row md:items-start">
+     
+    
+      <div className="md:w-2/3">
+        <h1 className="text-2xl font-bold mb-2">Free in-Store Pickup</h1>
+         
+        <div className="flex items-center mb-2">
+           
+        <span className="font-semibold text-gray-800">Please enter a location to check store availability</span>
+ 
+            
+        </div>
+        <div className="border-b pb-2 text-center">
+        <Link href="/Stores" className="bg-black text-white rounded-3xl px-2 py-1">
+                Check nearby stores 
+                </Link>
+            </div>
+        
+      </div>
+    </div>
             <div className="border-b pb-2 text-center">
               <Link href="/Stores" className="bg-black text-white rounded-3xl px-10 py-2">
                 Store Locations
               </Link>
             </div>
+
+
             <div className="col-span-12 flex justify-between">
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
