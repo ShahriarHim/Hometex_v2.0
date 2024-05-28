@@ -18,11 +18,13 @@ import DesignTwelve from "@/components/newDesigns/DesignTwilve";
 import Prefooter2 from "@/components/layout/Prefooter2";
 import ProductsTabs from "@/components/home/ProductsTabs";
 import ChatPopup from "@/components/ChatPopup"; // Import ChatPopup
+import CashbackPopup from "@/components/CashbackPopup";
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false); // State for chat visibility
   const [products, setProducts] = useState([]);
+  const [isPopupVisible, setIsPopupVisible] = useState(true);
 
   const handleScroll = useCallback(() => {
     if (window.pageYOffset > 100) {
@@ -31,6 +33,10 @@ const Home = () => {
       setIsVisible(false);
     }
   }, []);
+
+  const handleClosePopup = () => {
+    setIsPopupVisible(false);
+  };
 
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -98,7 +104,8 @@ const Home = () => {
    
         </>
       )}
-  
+          {isPopupVisible && <CashbackPopup onClose={handleClosePopup} />}
+
       {isChatVisible && <ChatPopup onClose={handleChatToggle} />} {/* Render chat popup */}
   
       <DesignSix/>
