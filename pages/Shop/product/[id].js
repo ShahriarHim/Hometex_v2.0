@@ -12,6 +12,7 @@ import {
   FaDownload,
   FaGooglePlusG,
   FaPinterest,
+  FaPhoneAlt, FaCommentAlt
 } from "react-icons/fa";
 import { FaXTwitter, FaSquareInstagram } from "react-icons/fa6";
 import { MdFavorite } from "react-icons/md";
@@ -36,6 +37,8 @@ export async function getServerSideProps(context) {
 
 
 const Product = ({ product }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const router = useRouter(); // Get the router instance
   const [showBusinessOnly, setShowBusinessOnly] = useState(true);
 
@@ -438,45 +441,7 @@ const Product = ({ product }) => {
 
             </div>
 
-            <div className="flex flex-col items-center border p-4 rounded-lg md:flex-row md:items-start">
-      <div className="md:w-1/3 mb-4 md:mb-0 md:mr-4">
-        <img
-          alt="Primary Product Image"
-          src={`${image_URL}/${selectedImage || product.primary_photo?.photo}`}
-          className="w-full"
-        />
-      </div>
-      <div className="md:w-1/3 mb-4 md:mb-0 md:mr-4">
-        <img
-          alt="Secondary Product Image"
-          src="https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg"
-          className="w-full"
-        />
-      </div>
-      <div className="md:w-2/3">
-        <h1 className="text-2xl font-bold mb-2">Frequently bought together</h1>
-        <div className="flex items-center mb-2">
-          <input type="checkbox" checked readOnly className="mr-2" />
-          <span className="font-semibold">
-            This Item: {product.name} ({product.volume})
-          </span>
-          <span className="line-through ml-2">৳ {product.original_price}</span>
-          <span className="text-red-500 ml-2">৳ {product.discounted_price}</span>
-        </div>
-        <div className="flex items-center mb-2">
-          <input type="checkbox" checked readOnly className="mr-2" />
-          <span className="font-semibold">
-            Rajkonna Acne Fighting Facial Wash With Jojoba Beads (100 ml)
-          </span>
-          <span className="line-through ml-2">৳ 185.00</span>
-          <span className="text-red-500 ml-2">৳ 157.00</span>
-        </div>
-        <div className="flex items-center mb-4">
-          <span className="text-lg font-bold">Total price: ৳ 256</span>
-        </div>
-        <button className="bg-pink-500 text-white px-4 py-2 rounded">ADD BOTH TO CART</button>
-      </div>
-    </div>
+         
             <div className="my-2 pb-2 flex items-center border-b">
               <button
                 className="text-xl font-bold"
@@ -579,6 +544,31 @@ const Product = ({ product }) => {
             <div className="my-2 pb-2 flex items-center ">
               <button className="text-xl font-bold">Find in Store</button>
             </div>
+            <div className="relative">
+            <div className="text-lg font-semibold mb-2">
+        Have a Question in Mind?  
+   
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+      >
+        
+        Connect Us 
+      </button>
+      {isOpen && (
+        <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md">
+          <a href="#" className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">
+            Call Now
+          </a>
+          <a href="#" className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">
+            Chat Us
+          </a>
+        </div>
+        
+      )}
+         </div>
+    </div>
+
             <div className="flex flex-col items-center border p-4 rounded-lg md:flex-row md:items-start">
      
     
@@ -591,7 +581,7 @@ const Product = ({ product }) => {
  
             
         </div>
-        <div className="border-b pb-2 text-center">
+        <div className="border-b pb-2 ">
         <Link href="/Stores" className="bg-black text-white rounded-3xl px-2 py-1">
                 Check nearby stores 
                 </Link>
@@ -605,7 +595,17 @@ const Product = ({ product }) => {
               </Link>
             </div>
 
-
+            <div className="fixed bottom-0 left-0 m-4">
+            <a
+          href="tel:+1234567890"
+          className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md flex justify-center items-center hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <FaPhoneAlt className="h-6 w-6 mr-2" />
+          Have a question? Call now
+        </a>
+        
+            </div>
+            
             <div className="col-span-12 flex justify-between">
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
@@ -650,6 +650,46 @@ const Product = ({ product }) => {
 
       </div>
       </div>
+      <div className="flex flex-col items-center border p-2 rounded-lg md:flex-row md:items-start md:max-w-4xl mx-auto">
+  <div className="md:w-1/4 mb-2 md:mb-0 md:mr-2">
+    <img
+      alt="Primary Product Image"
+      src={`${image_URL}/${selectedImage || product.primary_photo?.photo}`}
+      className="w-full h-auto"
+    />
+  </div>
+  <div className="md:w-1/4 mb-2 md:mb-0 md:mr-2">
+    <img
+      alt="Secondary Product Image"
+      src="https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg"
+      className="w-full h-auto"
+    />
+  </div>
+  <div className="md:w-1/2">
+    <h1 className="text-xl font-bold mb-2">Frequently bought together</h1>
+    <div className="flex items-center mb-2">
+      <input type="checkbox" checked readOnly className="mr-2" />
+      <span className="font-semibold">
+        This Item: {product.name} ({product.volume})
+      </span>
+      <span className="line-through ml-2">৳ {product.original_price}</span>
+      <span className="text-red-500 ml-2">৳ {product.discounted_price}</span>
+    </div>
+    <div className="flex items-center mb-2">
+      <input type="checkbox" checked readOnly className="mr-2" />
+      <span className="font-semibold">
+        Rajkonna Acne Fighting Facial Wash With Jojoba Beads (100 ml)
+      </span>
+      <span className="line-through ml-2">৳ 185.00</span>
+      <span className="text-red-500 ml-2">৳ 157.00</span>
+    </div>
+    <div className="flex items-center mb-2">
+      <span className="text-lg font-bold">Total price: ৳ 256</span>
+    </div>
+    <button className="bg-pink-500 text-white px-3 py-1 rounded">ADD BOTH TO CART</button>
+  </div>
+</div>
+
     </>
   );
 };

@@ -36,7 +36,26 @@ import Swal from 'sweetalert2';
 import DynamicText, { textOptions } from './DynamicText';
 
 const Header3 = () => {
+    const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
 
+    const handleCheckout = () => {
+        if (!auth_token) {
+            setShowCheckoutPopup(true);
+        } else {
+            // Proceed to checkout if the user is logged in
+        }
+    };
+
+    const handleLogin = () => {
+        togglePopup();
+        setShowCheckoutPopup(false);
+    };
+
+    const handleSignup = () => {
+        // Handle signup logic here
+        togglePopup();
+        setShowCheckoutPopup(false);
+    };
     // Registration
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -482,11 +501,45 @@ const Header3 = () => {
                                                         View Cart
                                                     </button>
                                                 </Link>
-                                                <Link href="/checkout">
-                                                    <button className="inline-block bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition-colors duration-200">
+                                                {/* <Link href="/checkout"> */}
+                                                    <button  onClick={handleCheckout} className="inline-block bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition-colors duration-200">
                                                         Checkout
                                                     </button>
-                                                </Link>
+                                                {/* </Link> */}
+
+                                                {showCheckoutPopup && (
+                <div className="fixed z-50 inset-0 overflow-y-auto">
+                    <div className="flex items-center justify-center min-h-screen">
+                        <div className="absolute inset-0 bg-gray-700 opacity-50"></div>
+                        <div className="relative bg-black rounded-lg mx-4 w-auto lg:w-[400px] flex flex-col overflow-hidden">
+                            <div className="px-6 py-5">
+                                <h2 className="text-2xl font-bold mb-4">Oops!! Are you logged in?</h2>
+                                <p className="mb-6">Please login or sign up to proceed with checkout.</p>
+                                <div className="flex justify-center gap-4">
+                                    <button
+                                        onClick={handleLogin }
+                                        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                                    >
+                                        Login
+                                    </button>
+                                    <button
+                                    
+                                        onClick={handleSignup}
+                                        className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
+                                    >
+                                        Sign Up
+                                    </button>
+                                    <Link href="/checkout">
+                                        <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+                                            Bypass Anyhow
+                                        </button>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
                                             </div>
                                         </div>
                                     )}
