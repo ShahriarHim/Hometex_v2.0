@@ -529,7 +529,7 @@ const Header3 = () => {
                                     >
                                         Sign Up
                                     </button>
-                                    <Link href="/checkout">
+                                    <Link href="/Checkout">
                                         <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
                                             Bypass Anyhow
                                         </button>
