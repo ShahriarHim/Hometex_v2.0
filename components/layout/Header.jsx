@@ -24,6 +24,7 @@ import WishListContext from "@/context/WishListContext";
 
 const Header = () => {
   //
+  const [isSearchPopupVisible, setIsSearchPopupVisible] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const toggleDropdown = () => {
