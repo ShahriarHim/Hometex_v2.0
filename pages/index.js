@@ -1,6 +1,8 @@
+// pages/index.js
+
 import React, { useState, useEffect, useCallback, Suspense } from "react";
 import { BsFillArrowUpCircleFill } from 'react-icons/bs';
-import { FaWhatsapp, FaPhoneAlt } from 'react-icons/fa'; // Importing Phone and WhatsApp icons
+import { FaWhatsapp, FaPhoneAlt } from 'react-icons/fa';
 
 import MainSlider from "@/components/home/MainSlider";
 import Constants from "@/ults/Constant";
@@ -17,14 +19,16 @@ import DesignNine from "@/components/newDesigns/DesignNine";
 import DesignTwelve from "@/components/newDesigns/DesignTwilve";
 import Prefooter2 from "@/components/layout/Prefooter2";
 import ProductsTabs from "@/components/home/ProductsTabs";
-import ChatPopup from "@/components/ChatPopup"; // Import ChatPopup
+import ChatPopup from "@/components/ChatPopup";
 import CashbackPopup from "@/components/CashbackPopup";
+import CookiesPopup from "@/components/CookiesPopup";
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isChatVisible, setIsChatVisible] = useState(false); // State for chat visibility
+  const [isChatVisible, setIsChatVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(true);
+  const [isCookiesPopupVisible, setIsCookiesPopupVisible] = useState(true);
 
   const handleScroll = useCallback(() => {
     if (window.pageYOffset > 100) {
@@ -38,12 +42,16 @@ const Home = () => {
     setIsPopupVisible(false);
   };
 
+  const handleCloseCookiesPopup = () => {
+    setIsCookiesPopupVisible(false);
+  };
+
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleChatToggle = () => {
-    setIsChatVisible(prevState => !prevState); // Toggle chat visibility
+    setIsChatVisible(prevState => !prevState);
   };
 
   useEffect(() => {
@@ -83,34 +91,26 @@ const Home = () => {
             <BsFillArrowUpCircleFill size={18} />
           </button>
 
-      
           <button
             className="fixed bottom-16 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
-            onClick={handleChatToggle} // Show chat on click
+            onClick={handleChatToggle}
           >
             <FaWhatsapp size={18} />
           </button>
         </>
       )}
-     {isVisible && (
-        <>
- 
-          <button
-            className="fixed bottom-28 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
-          >
-            <FaPhoneAlt size={18} onClick={() => { /* Add your phone functionality here */ }} />
-          </button>
-
-   
-        </>
+      {isVisible && (
+        <button
+          className="fixed bottom-28 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
+        >
+          <FaPhoneAlt size={18} onClick={() => { /* Add your phone functionality here */ }} />
+        </button>
       )}
-          {isPopupVisible && <CashbackPopup onClose={handleClosePopup} />}
-
-      {isChatVisible && <ChatPopup onClose={handleChatToggle} />} {/* Render chat popup */}
-  
+      {isPopupVisible && <CashbackPopup onClose={handleClosePopup} />}
+      {isCookiesPopupVisible && <CookiesPopup onClose={handleCloseCookiesPopup} />}
+      {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
       <DesignSix/>
       <DesignOne/>
-      {/* <DesignTwo/> */}
       <Suspense fallback={<h1>loading</h1>}>
         <ProductsTabs products={products} />
         <DesignFifteen/>
