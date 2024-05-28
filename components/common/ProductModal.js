@@ -4,7 +4,7 @@ import { RiCloseLine } from "react-icons/ri";
 
 const ProductModal = ({ product, onClose }) => {
   const { addItemToCart } = useContext(CartContext);
-  const [productQty, setProductQty] = useState(0);
+  const [productQty, setProductQty] = useState({});
   const modalRef = useRef();
 
   const handleClickOutside = (event) => {
@@ -20,20 +20,21 @@ const ProductModal = ({ product, onClose }) => {
     };
   }, []);
 
-  const addToCartHandler = () => {
-    addItemToCart({
-      product_id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.primary_photo,
-      quantity: parseInt(productQty, 10),
-      in_stock: product.stock,
-      supplier_id: product.supplier_id,
-      sku: product.sku,
-      total_price: parseFloat(product.price) * parseInt(productQty, 10),
-    });
-    onClose(); // Optionally close the modal on adding to cart
-  };
+const addToCartHandler = () => {
+  const currentProductQty = productQty[product.id] || 1;
+  addItemToCart({
+    product_id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.primary_photo,
+    quantity: parseInt(currentProductQty, 10),
+    in_stock: product.stock,
+    supplier_id: product.supplier_id,
+    sku: product.sku,
+    total_price: parseFloat(product.price) * parseInt(currentProductQty, 10),
+  });
+  onClose(); // Optionally close the modal on adding to cart
+};
 
   if (!product) return null;
 
@@ -84,10 +85,13 @@ const ProductModal = ({ product, onClose }) => {
                 min="1"
                 max={product.stock} // Limit the max quantity to the stock available
                 step="1"
-                value={productQty}
-                onChange={(e) =>
-                  setProductQty(Math.min(e.target.value, product.stock))
-                } // Ensure the quantity does not exceed stock
+                value={productQty[product.id] || 1}
+                onChange={(e) => {
+                  setProductQty({
+                    ...productQty,
+                    [product.id]: Math.min(e.target.value, product.stock),
+                  });
+                }} // Ensure the quantity does not exceed stock
               />
               <button
                 onClick={addToCartHandler}
