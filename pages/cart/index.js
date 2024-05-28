@@ -1,17 +1,16 @@
 import CartContext from '@/context/CartContext';
 import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react'
-import { AiFillPlusCircle, AiOutlineMinusCircle, AiFillDelete, AiOutlineLeft, AiOutlineCreditCard } from 'react-icons/ai'
-import { FaPaypal } from "react-icons/fa";
+import { useContext, useEffect, useState } from 'react';
+import { AiFillPlusCircle, AiOutlineLeft, AiOutlineMinusCircle } from 'react-icons/ai';
 import { BsXLg } from "react-icons/bs";
-import Constants from "../../ults/Constant";
 
 
 
 const CartPage = () => {
 
     const { cart, addItemToCart, deleteItemFromCart } = useContext(CartContext);
-
+        const [totalPrice, setTotalPrice] = useState(0);
+        
     const cartItems = cart?.cartItems;
 
     const increaseQty = (cartItem) => {
@@ -58,6 +57,19 @@ const CartPage = () => {
     ))
 
     const [isLoading, setIsLoading] = useState(true);
+    
+        useEffect(() => {
+          if(cartItems){
+            const finalAmount = cartItems.reduce((total, cartItem) => {
+              let str = cartItem.price;
+              str = str.replace(/[,৳]/g, "");
+              const amount = parseInt(str) * cartItem.quantity;
+              return total + amount;
+            }, 0);
+            setTotalPrice(finalAmount);
+          }
+        }, [cartItems]);
+
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false);
@@ -73,9 +85,6 @@ const CartPage = () => {
         );
     }
 
-    const totalSum = cart?.cartItems?.reduce((accumulator, cartItem) => {
-        return accumulator + parseFloat(cartItem.total_price);
-      }, 0);
 
     return (
         <>
@@ -101,7 +110,7 @@ const CartPage = () => {
                                                 <div className="flex items-center">
                                                     <a href="#" className="flex-shrink-0">
                                                         <img
-                                                            src={`${Constants.BASE_URL}/images/uploads/product_thumb/${cartItem.image.photo}`}
+                                                            src={cartItem.image}
                                                             alt={cartItem.name}
                                                             title={cartItem.name}
                                                             className="w-24 h-24 object-cover rounded-md border border-gray-200"
@@ -155,13 +164,13 @@ const CartPage = () => {
                                     <tr>
                                         <td colSpan={2}></td>
                                         <td className='text-xl font-bold text-center pt-3'>Total</td>
-                                        <td className='text-xl font-bold pt-3' > TK {totalSum}</td>
+                                        <td className='text-xl font-bold pt-3' > TK {totalPrice}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div className='col-span-3 rounded-xl bg-gray-600 text-white'>
+                    {/* <div className='col-span-3 rounded-xl bg-gray-600 text-white'>
                         <div className='px-5 py-3'>
                             <h1 className='font-bold text-4xl pb-4 border-b'>Payment info.</h1>
                             <div className='py-5 border-b'>
@@ -230,7 +239,7 @@ const CartPage = () => {
                             <Link href="/checkout" className='flex justify-center items-center pt-14 pb-4'><button className='bg-blue-600 rounded-full px-20 py-3 text-lg font-bold'>Check Out.</button></Link>
 
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <Link href="/">
