@@ -1,10 +1,11 @@
+import SearchBarPopup from "./searchPopup";
 import CartContext from "@/context/CartContext";
 import WishListContext from "@/context/WishListContext";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import Link from 'next/link';
 import { useContext, useEffect, useRef, useState } from "react";
 import { AiTwotoneDelete } from "react-icons/ai";
-import { FaApple, FaBars, FaFacebook, FaHeart, FaHome, FaLeaf, FaMapMarkerAlt, FaMoneyCheckAlt, FaPhoneSquareAlt, FaSearch, FaShippingFast, FaTimes, FaUserAlt } from "react-icons/fa";
+import { FaLocationArrow, FaApple, FaBars, FaFacebook, FaHeart, FaHome, FaLeaf, FaMapMarkerAlt, FaMoneyCheckAlt, FaPhoneSquareAlt, FaSearch, FaShippingFast, FaTimes, FaUserAlt } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineGift, HiOutlineMail, HiOutlineTicket, HiShoppingCart } from "react-icons/hi";
 import Swal from 'sweetalert2';
@@ -19,267 +20,359 @@ import Modal from "./Modal";
 const Header3 = () => {
     const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
-
-    const handleCheckout = () => {
-        if (!auth_token) {
-            setShowCheckoutPopup(true);
-        } else {
-            // Proceed to checkout if the user is logged in
-        }
-    };
-
-    const handleLogin = () => {
-        togglePopup();
-        setShowCheckoutPopup(false);
-    };
-
-    const handleSignup = () => {
-        // Handle signup logic here
-        togglePopup();
-        setShowCheckoutPopup(false);
-    };
-    // Registration
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const passwordsMatch = password === confirmPassword;
-    const showWarning = confirmPassword.length > 0 && !passwordsMatch;
-    const [value, setValue] = useState('');
-    const reg_init_value = {
-        user_type: "1",
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        password: "",
-        conf_password: "",
-        is_subscribe: '',
-
-    };
-    const [regData, setRegData] = useState(reg_init_value);
-    const [err, setErr] = useState({});
-    const handleChangeRegistration = (e) => {
-        setRegData({ ...regData, [e.target.name]: e.target.value });
-    };
-
-    const regSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmit(true)
-        const response = await fetch(`${Constants.BASE_URL}/api/user-registration`, {
-            method: "POST",
-            cache: "no-cache",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-            body: JSON.stringify(regData),
-        });
-        let res = await response.json();
-        if (res.status == '400') {
-            let err_list = {}
-            for (const [key, value] of Object.entries(res.error)) {
-                err_list[key] = value[0]
-            }
-            setErr(err_list)
-            setIsSubmit(false)
-        } else {
-            setIsSubmit(false)
-            setCookie('home_text_token', res?.success?.authorisation?.token);
-            window.location.href = "/";
-        }
-    }
-
-    // Registration End
-
-    const [isModalOpen, setIsModalOpen] = useState(true);
-
-    const products = [
-        // Example product data; you would fetch this from your backend or service
-        { name: 'Product 1', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/rosario-thu-nov-2-2023-650-pm-87312.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-        { name: 'Product 2', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/burbot-thu-nov-2-2023-744-pm-57895.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-        { name: 'Product 3', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/beboon-thu-nov-2-2023-758-pm-30205.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-        { name: 'Product 4', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/brownie-thu-nov-2-2023-808-pm-85665.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-        { name: 'Product 5', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-        { name: 'Product 6', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/mogra-thu-nov-2-2023-835-pm-92146.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-        // Add more product objects here
-    ];
-
-    const saleEndTime = '2024-04-30T23:59:59';
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-        const togglePopup = () => {
-            // handle popup toggle logic
-        };
-    };
-    // add an event listener to detect clicks outside the dropdown
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsDropdownOpen(false);
-            }
-        };
-
-        const handleEscapeKey = (event) => {
-            if (event.keyCode === 27) {
-                setIsDropdownOpen(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        document.addEventListener("keydown", handleEscapeKey);
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-            document.removeEventListener("keydown", handleEscapeKey);
-        };
-    }, [dropdownRef]);
-    //
-
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    const handleMenuClick = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-    // popup for login
-    const [showPopup, setShowPopup] = useState(false);
-
-    function togglePopup() {
-        setShowPopup(!showPopup);
-    }
-    // Finish login
-
-    const { cart, deleteItemFromCart } = useContext(CartContext);
-
-    const cartItems = cart?.cartItems;
-
-
-    const { wlist } = useContext(WishListContext);
-
-    const handleButtonClick = () => {
-        if (!auth_token) {
-            Swal.fire({
-                title: 'Access Denied',
-                text: 'You must be logged in to view your wishlist.',
-                icon: 'warning',
-                confirmButtonText: 'OK'
-            });
-        }
-    };
-
-    const [isOpen, setIsOpen] = useState(false);
-    const cartRef = useRef(null);
-
-    const handleCartClick = () => {
-        setIsOpen(!isOpen);
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (cartRef.current && !cartRef.current.contains(event.target)) {
-                setIsOpen(false);
-            }
-        };
-
-        const handleKeyPress = (event) => {
-            if (event.keyCode === 27) {
-                setIsOpen(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        document.addEventListener("keydown", handleKeyPress);
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-            document.removeEventListener("keydown", handleKeyPress);
-        };
-    }, [cartRef]);
-
-    //
-    const handleSearchClick = () => {
-        // Perform the search based on the input value
-        const inputValue = document.getElementById("searchInput").value;
-        console.log(`Searching for: ${inputValue}`);
-        // Add your logic to navigate or display search results here
-    };
-
-    const handleKeyDown = (event) => {
-        // Trigger the search when the user presses Enter
-        if (event.key === "Enter") {
-            handleSearchClick();
-        }
-    };
-
-    //
-
-    const [isSubmit, setIsSubmit] = useState(false);
-    // sign in process
-    const signInInitValue = {
-        username: "",
-        password: "",
-    };
-    const [signInData, setSignInData] = useState(signInInitValue);
-    const [signInErr, setSignInErr] = useState({});
-    // input handeler
-    const handleSignIn = (e) => {
-        setSignInData({ ...signInData, [e.target.name]: e.target.value });
-    };
-    // submit handeler
-    const signInSubmitHandler = async (e) => {
-        e.preventDefault();
-        setIsSubmit(true);
-        const response = await fetch(Constants.BASE_URL + "/api/user-signup", {
-            method: "POST",
-            cache: "no-cache",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-            body: JSON.stringify(signInData),
-        });
-        let res = await response.json();
-
-        if (res.status == "400") {
-            let err_list = {};
-            for (const [key, value] of Object.entries(res.error))
-                err_list[key] = value[0];
-            setSignInErr(err_list);
-            setIsSubmit(false);
-        } else if (res.status == "200") {
-            setIsSubmit(false);
-            setSignInErr({});
-            setCookie("home_text_token", res?.token);
-            window.location.href = "/";
-        }
-    };
-
-    // signout handeler
-    const signOutSubmitHandler = async (e) => {
-        e.preventDefault();
-        // setIsSubmit(true)
-        deleteCookie("home_text_token");
-        window.location.href = "/";
-    };
-    let auth_token = getCookie("home_text_token");
+    const [location, setLocation] = useState(null);
+  const [isSearchPopupVisible, setIsSearchPopupVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+let auth_token = getCookie("home_text_token");
     const [menuOpen, setMenuOpen] = useState(false);
     const [subMenuOpen, setSubMenuOpen] = useState({});
 
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
+  const handleCheckout = () => {
+    if (!auth_token) {
+      setShowCheckoutPopup(true);
+    } else {
+      // Proceed to checkout if the user is logged in
+    }
+  };
+
+  const handleLogin = () => {
+    togglePopup();
+    setShowCheckoutPopup(false);
+  };
+
+  const handleSignup = () => {
+    // Handle signup logic here
+    togglePopup();
+    setShowCheckoutPopup(false);
+  };
+  // Registration
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const passwordsMatch = password === confirmPassword;
+  const showWarning = confirmPassword.length > 0 && !passwordsMatch;
+  const [value, setValue] = useState("");
+  const reg_init_value = {
+    user_type: "1",
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    password: "",
+    conf_password: "",
+    is_subscribe: "",
+  };
+  const [regData, setRegData] = useState(reg_init_value);
+  const [err, setErr] = useState({});
+  const handleChangeRegistration = (e) => {
+    setRegData({ ...regData, [e.target.name]: e.target.value });
+  };
+
+  const regSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmit(true);
+    const response = await fetch(
+      `${Constants.BASE_URL}/api/user-registration`,
+      {
+        method: "POST",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(regData),
+      }
+    );
+    let res = await response.json();
+    if (res.status == "400") {
+      let err_list = {};
+      for (const [key, value] of Object.entries(res.error)) {
+        err_list[key] = value[0];
+      }
+      setErr(err_list);
+      setIsSubmit(false);
+    } else {
+      setIsSubmit(false);
+      setCookie("home_text_token", res?.success?.authorisation?.token);
+      window.location.href = "/";
+    }
+  };
+
+  // Registration End
+
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
+
+    const { wlist } = useContext(WishListContext);
+  const products = [
+    // Example product data; you would fetch this from your backend or service
+    {
+      name: "Product 1",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/rosario-thu-nov-2-2023-650-pm-87312.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 2",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/burbot-thu-nov-2-2023-744-pm-57895.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 3",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/beboon-thu-nov-2-2023-758-pm-30205.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 4",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/brownie-thu-nov-2-2023-808-pm-85665.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 5",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 6",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/mogra-thu-nov-2-2023-835-pm-92146.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    // Add more product objects here
+  ];
+  const [isZipPopupVisible, setIsZipPopupVisible] = useState(false);
+
+  const handleZipCodeClick = () => {
+    setIsZipPopupVisible(true);
+  };
+  const saleEndTime = "2024-04-30T23:59:59";
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+    const togglePopup = () => {
+      // handle popup toggle logic
+    };
+  };
+  // add an event listener to detect clicks outside the dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
     };
 
-    const toggleSubMenu = (menuKey) => {
-        setSubMenuOpen((prev) => ({ ...prev, [menuKey]: !prev[menuKey] }));
+    const handleEscapeKey = (event) => {
+      if (event.keyCode === 27) {
+        setIsDropdownOpen(false);
+      }
     };
 
-    const [visitUsText, setVisitUsText] = useState(textOptions ? textOptions[0].visitUs : '');
-    const handleTextChange = (newVisitUsText) => {
-        setVisitUsText(newVisitUsText);
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscapeKey);
 
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscapeKey);
     };
+  }, [dropdownRef]);
+  //
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleMenuClick = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  // popup for login
+  const [showPopup, setShowPopup] = useState(false);
+
+  function togglePopup() {
+    setShowPopup(!showPopup);
+  }
+  // Finish login
+
+  const { cart, deleteItemFromCart } = useContext(CartContext);
+
+  const cartItems = cart?.cartItems;
+
+
+  const handleButtonClick = () => {
+    if (!auth_token) {
+      Swal.fire({
+        title: "Access Denied",
+        text: "You must be logged in to view your wishlist.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const cartRef = useRef(null);
+
+  const handleCartClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cartRef.current && !cartRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleKeyPress = (event) => {
+      if (event.keyCode === 27) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [cartRef]);
+
+  //
+  const handleSearchClick = () => {
+    // Perform the search based on the input value
+    const inputValue = document.getElementById("searchInput").value;
+    console.log(`Searching for: ${inputValue}`);
+    // Add your logic to navigate or display search results here
+  };
+
+  const handleKeyDown = (event) => {
+    // Trigger the search when the user presses Enter
+    if (event.key === "Enter") {
+      handleSearchClick();
+    }
+  };
+
+  //
+
+  const [isSubmit, setIsSubmit] = useState(false);
+  // sign in process
+  const signInInitValue = {
+    username: "",
+    password: "",
+  };
+  const [signInData, setSignInData] = useState(signInInitValue);
+  const [signInErr, setSignInErr] = useState({});
+  // input handeler
+  const handleSignIn = (e) => {
+    setSignInData({ ...signInData, [e.target.name]: e.target.value });
+  };
+  // submit handeler
+  const signInSubmitHandler = async (e) => {
+    e.preventDefault();
+    setIsSubmit(true);
+    const response = await fetch(Constants.BASE_URL + "/api/user-signup", {
+      method: "POST",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify(signInData),
+    });
+    let res = await response.json();
+
+    if (res.status == "400") {
+      let err_list = {};
+      for (const [key, value] of Object.entries(res.error))
+        err_list[key] = value[0];
+      setSignInErr(err_list);
+      setIsSubmit(false);
+    } else if (res.status == "200") {
+      setIsSubmit(false);
+      setSignInErr({});
+      setCookie("home_text_token", res?.token);
+      window.location.href = "/";
+    }
+  };
+
+  // signout handeler
+  const signOutSubmitHandler = async (e) => {
+    e.preventDefault();
+    // setIsSubmit(true)
+    deleteCookie("home_text_token");
+    window.location.href = "/";
+  };
+  
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const toggleSubMenu = (menuKey) => {
+    setSubMenuOpen((prev) => ({ ...prev, [menuKey]: !prev[menuKey] }));
+  };
+
+  const [visitUsText, setVisitUsText] = useState(
+    textOptions ? textOptions[0].visitUs : ""
+  );
+  const handleTextChange = (newVisitUsText) => {
+    setVisitUsText(newVisitUsText);
+  };
+
+  const handleGetLocation = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                fetchLocation(position.coords.latitude, position.coords.longitude);
+            },
+            (error) => {
+                setErrorMessage("Unable to retrieve location");
+            }
+        );
+    } else {
+        setErrorMessage("Geolocation is not supported by this browser");
+    }
+};
+
+const fetchLocation = (latitude, longitude) => {
+    // Use a geocoding service to convert coordinates to a human-readable address
+    // Replace 'YOUR_API_KEY' with your actual API key
+    const apiKey = 'YOUR_API_KEY';
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.results && data.results.length > 0) {
+                setLocation(data.results[0].formatted_address);
+            } else {
+                setErrorMessage("Location not found");
+            }
+        })
+        .catch(error => {
+            setErrorMessage("Error fetching location");
+        });
+};
+
+useEffect(() => {
+    handleGetLocation();
+}, []); // Fetch location on component mount
+
+
 useEffect(() => {
   if (cartItems) {
     const finalAmount = cartItems.reduce((total, cartItem) => {
@@ -330,7 +423,7 @@ useEffect(() => {
                   />{" "}
                   Corporate Inquiries {/* Added mr-2 for margin right */}
                 </Link>
-                <Link href="/order-tracking">
+                <Link href="/orderDash">
                   <div className="flex items-center hover:text-blue-500">
                     <HiOutlineTicket
                       className="mr-2 text-pink-500"
@@ -441,16 +534,49 @@ useEffect(() => {
                 </Link>
               </div>
               <div>
-                <div className="flex flex-row gap-8">
-                  <div className="px-2 flex flex-col items-center text-center">
-                    <FaSearch
+                <div className="flex flex-row gap-4">
+                  <div
+                    className="px-2 flex flex-col items-center text-center cursor-pointer"
+                    onClick={handleGetLocation}
+                  >
+                    <FaLocationArrow
                       className="h-6 w-6 text-blue-600"
                       aria-hidden="true"
                     />
-                    <span className="text-sm mt-2 font-semibold text-gray-800">
-                      Search
+
+                    <span className="text-sm mt-2 font-semibold text-red-500">
+                      {location || errorMessage || "Loading.."}
+                      {/* {errorMessage && <span className="text-red-500">{errorMessage}</span>} */}
                     </span>
                   </div>
+                  <div>
+                    <div className="px-2 flex flex-col items-center text-center">
+                      <button onClick={() => setIsSearchPopupVisible(true)}>
+                        <FaSearch
+                          className="h-6 w-6 text-blue-600"
+                          aria-hidden="true"
+                        />
+                        <span className="text-sm mt-2 font-semibold text-gray-800">
+                          Search
+                        </span>
+                      </button>
+                    </div>
+
+                    {isSearchPopupVisible && (
+                      <SearchBarPopup
+                        onClose={() => setIsSearchPopupVisible(false)}
+                      />
+                    )}
+                  </div>
+                  {/* <div className="px-2 flex flex-col items-center text-center">
+                  <FaSearch
+                    className="h-6 w-6 text-blue-600"
+                    aria-hidden="true"
+                  />
+                  <span className="text-sm mt-2 font-semibold text-gray-800">
+                    Search
+                  </span>
+                </div> */}
 
                   <div className="relative" ref={dropdownRef}>
                     <button
@@ -562,7 +688,7 @@ useEffect(() => {
                                 >
                                   <td className="py-4 pl-4">
                                     <img
-                                      src={cartItem.image}
+                                      src={`${Constants.BASE_URL}/images/uploads/product_thumb/${cartItem.image.photo}`}
                                       alt={cartItem.name}
                                       className="w-20 h-20 object-cover rounded-lg shadow-md"
                                     />
@@ -572,7 +698,7 @@ useEffect(() => {
                                     {cartItem.quantity}
                                   </td>
                                   <td className="px-2 py-4">
-                                    BDT {cartItem.price}
+                                    BDT {cartItem.total_price}
                                   </td>
                                   <td className="px-2 py-4">
                                     <button
@@ -588,9 +714,6 @@ useEffect(() => {
                               ))}
                             </tbody>
                           </table>
-                        </div>
-                        <div className="relative m-10 ml-40">
-                          Total: BDT {totalPrice}
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 flex justify-end space-x-4 p-4 bg-gray-800">
                           {" "}
@@ -634,7 +757,7 @@ useEffect(() => {
                                       >
                                         Sign Up
                                       </button>
-                                      <Link href="/checkout">
+                                      <Link href="/Checkout">
                                         <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
                                           Bypass Anyhow
                                         </button>
@@ -1222,4 +1345,4 @@ useEffect(() => {
     );
 }
 
-export default Header3
+export default Header3;

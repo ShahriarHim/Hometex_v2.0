@@ -24,7 +24,7 @@ const DesignTwelve = () => {
           loop
           controls
         >
-          <source src="videos/vv1.mp4" type="video/mp4" />
+          {/* <source src="videos/vv1.mp4" type="video/mp4" /> */}
           Your browser does not support the video tag.
         </video>
         <div
