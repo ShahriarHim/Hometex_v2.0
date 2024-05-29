@@ -1,11 +1,10 @@
-import SearchBarPopup from "./searchPopup";
 import CartContext from "@/context/CartContext";
 import WishListContext from "@/context/WishListContext";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import Link from 'next/link';
 import { useContext, useEffect, useRef, useState } from "react";
 import { AiTwotoneDelete } from "react-icons/ai";
-import { FaLocationArrow, FaApple, FaBars, FaFacebook, FaHeart, FaHome, FaLeaf, FaMapMarkerAlt, FaMoneyCheckAlt, FaPhoneSquareAlt, FaSearch, FaShippingFast, FaTimes, FaUserAlt } from "react-icons/fa";
+import { FaApple, FaBars, FaFacebook, FaHeart, FaHome, FaLeaf, FaLocationArrow, FaMapMarkerAlt, FaMoneyCheckAlt, FaPhoneSquareAlt, FaSearch, FaShippingFast, FaTimes, FaUserAlt } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineGift, HiOutlineMail, HiOutlineTicket, HiShoppingCart } from "react-icons/hi";
 import Swal from 'sweetalert2';
@@ -16,6 +15,7 @@ import KitchenDinning from '../home/menus/KitchenDinning';
 import LivingDecor from '../home/menus/LivingDecor';
 import DynamicText, { textOptions } from './DynamicText';
 import Modal from "./Modal";
+import SearchBarPopup from "./searchPopup";
 
 const Header3 = () => {
     const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
@@ -688,7 +688,7 @@ useEffect(() => {
                                 >
                                   <td className="py-4 pl-4">
                                     <img
-                                      src={`${Constants.BASE_URL}/images/uploads/product_thumb/${cartItem.image.photo}`}
+                                      src={cartItem.image}
                                       alt={cartItem.name}
                                       className="w-20 h-20 object-cover rounded-lg shadow-md"
                                     />
@@ -698,7 +698,7 @@ useEffect(() => {
                                     {cartItem.quantity}
                                   </td>
                                   <td className="px-2 py-4">
-                                    BDT {cartItem.total_price}
+                                     BDT {cartItem.price}
                                   </td>
                                   <td className="px-2 py-4">
                                     <button
@@ -715,6 +715,9 @@ useEffect(() => {
                             </tbody>
                           </table>
                         </div>
+                        <div className="relative m-10 ml-40">
+                          Total: BDT {totalPrice}
+                        </div>  
                         <div className="absolute bottom-0 left-0 right-0 flex justify-end space-x-4 p-4 bg-gray-800">
                           {" "}
                           {/* Footer background can match or contrast the overall design */}
