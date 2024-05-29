@@ -1,50 +1,42 @@
 .container {
     position: relative;
-    width: 600px;
-    height: 60px;
-    margin: 20px;
+    width: 30%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 .bar {
     position: absolute;
     width: 100%;
-    height: 100%;
-    border-radius: 30px;
-    overflow: hidden;
+    height: 10px;
     display: flex;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .bar div {
     flex: 1;
-    transition: background 0.3s ease;
 }
-.red { background: #e74c3c; }
-.orange { background: #e67e22; }
-.yellow { background: #f1c40f; }
-.green { background: #2ecc71; }
-.blue { background: #3498db; }
+
+.red { background-color: #ff0000; }
+.orange { background-color: #ff9900; }
+.yellow { background-color: #ffff00; }
+.green { background-color: #66ff66; }
+.blue { background-color: #0066ff; }
+
 .cursor {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 50px;
-    background: #34495e;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: left 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-.label {
-    position: absolute;
-    top: 100%;
-    transform: translateY(10px);
-    width: 100%;
+    width: 40px; /* Increased size */
+    height: 40px; /* Increased size */
+    border-radius: 50%;
     display: flex;
-    justify-content: space-between;
-    font-size: 24px; /* Increase the font size for emojis */
-    text-align: center;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffff00;
+    cursor: grab;
 }
-.label span {
-    flex: 1;
-    display: inline-block; /* Ensure the emojis are centered */
+
+.emoji {
+    font-size: 24px; /* Increased size */
+    pointer-events: none;
 }
