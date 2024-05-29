@@ -5,7 +5,7 @@ import { FaStar } from "react-icons/fa";
 
 const ProductModal = ({ product, onClose }) => {
   const { addItemToCart } = useContext(CartContext);
-  const [productQty, setProductQty] = useState(1);
+  const [productQty, setProductQty] = useState({});
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedColor, setSelectedColor] = useState("blue");
   const modalRef = useRef();
@@ -23,22 +23,23 @@ const ProductModal = ({ product, onClose }) => {
     };
   }, []);
 
-  const addToCartHandler = () => {
-    addItemToCart({
-      product_id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.primary_photo,
-      quantity: parseInt(productQty, 10),
-      in_stock: product.stock,
-      supplier_id: product.supplier_id,
-      sku: product.sku,
-      total_price: parseFloat(product.price) * parseInt(productQty, 10),
+const addToCartHandler = () => {
+  const currentProductQty = productQty[product.id] || 1;
+  addItemToCart({
+    product_id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.primary_photo,
+    quantity: parseInt(currentProductQty, 10),
+    in_stock: product.stock,
+    supplier_id: product.supplier_id,
+    sku: product.sku,
+    total_price: parseFloat(product.price) * parseInt(currentProductQty, 10),
       size: selectedSize,
       color: selectedColor,
-    });
-    onClose(); // Optionally close the modal on adding to cart
-  };
+  });
+  onClose(); // Optionally close the modal on adding to cart
+};
 
   const increaseQuantity = () => {
     if (productQty < product.stock) {
@@ -159,6 +160,20 @@ const ProductModal = ({ product, onClose }) => {
               </div>
             </div>
             <div className="flex flex-col pt-2 gap-2 items-center">
+              <input
+                type="number"
+                className="block w-full px-4 py-2 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline-gray"
+                min="1"
+                max={product.stock} // Limit the max quantity to the stock available
+                step="1"
+                value={productQty[product.id] || 1}
+                onChange={(e) => {
+                  setProductQty({
+                    ...productQty,
+                    [product.id]: Math.min(e.target.value, product.stock),
+                  });
+                }} // Ensure the quantity does not exceed stock
+              />
               <button
                 onClick={addToCartHandler}
                 className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
