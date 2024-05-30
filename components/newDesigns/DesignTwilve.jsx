@@ -17,7 +17,7 @@ const DesignTwelve = () => {
   return (
     <div className="max-w-screen-xl mx-auto p-4 flex flex-col md:flex-row">
       {/* Left Side - Video */}
-      <div className="w-full md:w-70 h-80 md:h-auto relative overflow-hidden mb-4 md:mb-0">
+      <div className="w-full md:w-7/10 h-80 md:h-auto relative overflow-hidden mb-4 md:mb-0 p-4">
         <video
           ref={videoRef}
           className="w-full h-full cursor-pointer"
@@ -38,7 +38,7 @@ const DesignTwelve = () => {
       </div>
 
       {/* Right Side - Newsletter */}
-      <div className="w-full md:w-30 p-4">
+      <div className="w-full md:w-3/10 p-4">
         <div className="text-center">
           <h2 className="text-3xl md:text-4xl py-5 font-bold">Newsletter</h2>
           <div className="w-10 h-1 bg-yellow-500 mx-auto my-2"></div>

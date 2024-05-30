@@ -1,6 +1,13 @@
 import React from "react";
+import { useRouter } from 'next/router';
+
 
 const Stores = () => {
+  const router = useRouter();
+
+  const handleShowDirections = () => {
+    router.push('/travelOptions');
+  };
   return (
     <>
       <div className="container mx-auto py-20">
@@ -33,7 +40,12 @@ const Stores = () => {
               <p className="mb-2">Store # 354-355, Level # 03, Twin Tower Concord Shopping Complex, 27 Chamelibag, Santinagar, Dhaka-1217</p>
               <p className="mb-2">Opened at: 10:30 AM - 8:30 PM</p>
               <p className="mb-2">Contact : <a href="tel:+8809610963839">+8809610963839</a></p>
-              <button className="px-3 py-2 bg-blue-500 rounded-full text-white hover:scale-110">View Products</button>
+              <button
+                onClick={handleShowDirections}
+                className="px-3 py-2 bg-blue-500 rounded-full text-white hover:scale-110"
+              >
+                Show Direction
+              </button>
             </div>
           </div>
         </div>
@@ -51,7 +63,12 @@ const Stores = () => {
               <p className="mb-2">Store # 464, Level# 04, Police Plaza Concord Shopping Mall, Gulshan-01, Dhaka-1212</p>
               <p className="mb-2">Opened: 11:00 AM - 9:00 PM</p>
               <p className="mb-2">Contact : <a href="tel:++8809610963839">+8809610963839</a></p>
-              <button className="px-3 py-2 bg-blue-500 rounded-full text-white hover:scale-110">View Products</button>
+              <button
+                onClick={handleShowDirections}
+                className="px-3 py-2 bg-blue-500 rounded-full text-white hover:scale-110"
+              >
+                Show Direction
+              </button>
             </div>
           </div>
         </div>
@@ -69,7 +86,12 @@ const Stores = () => {
               <p className="mb-2">1st Floor, House # 307, S J Jahanara Imam Sharani, New Elephant Road, Dhaka-1205</p>
               <p className="mb-2">Opened: 11:00 AM - 9:00 PM</p>
               <p className="mb-2">Contact : <a href="tel:+8809610963839">+8809610963839</a></p>
-              <button className="px-3 py-2 bg-blue-500 rounded-full text-white hover:scale-110">View Products</button>
+              <button
+                onClick={handleShowDirections}
+                className="px-3 py-2 bg-blue-500 rounded-full text-white hover:scale-110"
+              >
+                Show Direction
+              </button>
             </div>
           </div>
         </div>
