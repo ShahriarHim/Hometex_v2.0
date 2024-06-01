@@ -1,11 +1,9 @@
-/* components/CookiesPopup.module.css */
-
 .cookiesPopup {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   border-top: 1px solid #e0e0e0;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -20,6 +18,9 @@
   flex-direction: column;
   width: 90%;
   max-width: 800px;
+  padding: 20px;
+  background-color: #f1f5fe;
+  border-radius: 10px;
 }
 
 .cookiesPopupHeader {
@@ -51,43 +52,101 @@
 
 .cookiesPopupPreferences {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
+  flex-wrap: wrap; /* Allow wrapping if necessary */
+  justify-content: space-between; /* Space out the preference groups */
+  gap: 20px; /* Adjust based on your needs */
 }
+.preferenceGroup {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  gap: 10px; /* Adjust based on your needs */
+}
+
 
 .cookiesPopupLabel {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 5px;
   font-size: 0.9em;
   color: #333;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
 }
 
+.cookiesPopupLabel:last-child {
+  border-bottom: none;
+}
+
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
 .cookiesPopupFooter {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  display: flex; /* Change to flex */
+  justify-content: flex-end; /* Keep this for right alignment */
+  gap: 10px; /* Keeps the spacing between buttons */
+  margin-top: 20px;
 }
 
 .cookiesPopupButton {
-  flex: 1;
-  padding: 10px;
+  padding: 10px 20px;
   font-size: 0.9em;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  flex-grow: 1; /* Allows buttons to take equal space */
+  text-align: center; /* Centers the text inside the button */
 }
 
 .cookiesPopupButton.acceptAll {
-  background-color: #007bff;
+  background-color: #0066cc;
   color: white;
 }
 
 .cookiesPopupButton.allowSelection {
   background-color: white;
-  color: #333;
-  border: 1px solid #e0e0e0;
+  color: #0066cc;
+  border: 1px solid #0066cc;
 }
 
 .cookiesPopupButton.deny {
