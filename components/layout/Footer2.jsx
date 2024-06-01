@@ -193,29 +193,55 @@ const Footer2 = () => {
           </div>
         </div>
         <div className="bg-[#ddd]">
-          <footer className="container mx-auto px-3 sm:p-6 md:py-2 dark:bg-gray-900 md:justify-between sm:px-4 w-full z-20 left-0 ">
-            <div className="md:flex md:justify-between"></div>
-            <div className="sm:flex sm:items-center sm:justify-between">
-              <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-                Copyright© 2023{" "}
-                <a href="https://hometex.ltd/" className="hover:underline">
-                  {" "}
-                  by Hometex Bangladesh Manufactory
-                </a>
-                . All Rights Reserved.
-              </span>
-              <span className="">
-                <Link href="/" className="flex">
-                  <img
-                    src="/images/footer.jpeg"
-                    className="object-cover overflow-hidden h-auto max-w-lg"
-                    alt="Hometex Bangladesh Logo"
-                  />
-                </Link>
-              </span>
-            </div>
-          </footer>
+  <footer className="container mx-auto px-3 sm:p-6 md:py-2 dark:bg-gray-900 md:justify-between sm:px-4 w-full z-20 left-0 ">
+     
+
+  <div className="container mx-auto px-3">
+        <div className="container mx- flex flex-col sm:flex-row justify-between items-center md:px-6 py-2 my-4 rounded-xl shadow-xl bg-gradient-to-r from-green-300 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white transition-all duration-700 ease-in-out transform hover:scale-105">
+        <div className="mb-4 sm:mb-0 sm:flex-1 text-center sm:text-left">
+        <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+        Copyright© 2023{" "}
+        <a href="https://hometex.ltd/" className="hover:underline">
+          {" "}
+          by Hometex Bangladesh Manufactory
+        </a>
+        . All Rights Reserved.
+      </span>
         </div>
+
+        <div className="mx-2 w-px">
+          <div className=" hidden md:block w-0.5 h-12 bg-gradient-to-b from-transparent via-white to-transparent opacity-75"></div>
+          <div className="block md:hidden w-12 h-0.5  my-2 bg-gradient-to-b from-transparent via-white to-transparent opacity-75"></div>
+        </div>
+
+        <span className="">
+        <Link href="/" className="flex">
+          <img
+            src="/images/footer.jpeg"
+            className="object-cover overflow-hidden h-auto max-w-lg"
+            alt="Hometex Bangladesh Logo"
+          />
+        </Link>
+      </span>
+      
+      </div>
+
+
+      
+      <div className="bg-gradient-to-r from-green-300 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white transition-all duration-700 ease-in-out transform hover:scale-105 rounded-xl">
+      <div className=" px-6 flex flex-col md:flex-row justify-center items-center gap-24 ">
+            
+            <div className="mx-2 w-px">
+         
+        </div>
+          
+          </div>
+        
+          </div>
+        </div>
+    
+  </footer>
+</div>
       </div>
     </>
   );
