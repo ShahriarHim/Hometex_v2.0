@@ -1,0 +1,43 @@
+.promoBannerContainer {
+  width: 100%;
+  max-width: 1200px; /* Adjust as needed */
+  margin: auto;
+}
+
+.promoSwiper {
+  width: 100%;
+  height: auto; /* Let the swiper height adjust based on content */
+}
+
+.bannerImage {
+  width: 150%; /* Make the image take up the full width of the swiper */
+  height: 100px; /* Reduce the height as needed */
+  object-fit: cover; /* Ensure the image covers the area without stretching */
+}
+
+.bannerText {
+  position: absolute; /* Position text over the image */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  color: rgb(255, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent background for better readability */
+  padding: 10px; /* Optional: Add padding around the text */
+  border-radius: 5px; /* Optional: Add border radius for smoother corners */
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animateFadeIn {
+  animation-name: fade-in;
+  animation-duration: 2s; /* Adjust the duration as needed */
+  animation-fill-mode: forwards; /* Keeps the element in its final state after the animation ends */
+}

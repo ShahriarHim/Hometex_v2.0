@@ -18,6 +18,7 @@ import Constants from "@/ults/Constant";
 import ReactStars from "react-rating-stars-component";
 import PurchaseHistory from "./PurchaseHistory";
 import ProductModal from "@/components/common/ProductModal";
+import DealOfTheWeek from "../DealOfTheWeek";
 
 const brands = ["Hometex Bangladesh M.", "Desiattire"];
 
@@ -270,7 +271,7 @@ const King = () => {
   );
   return (
     <>
-      <div className="bg-yellow-50 py-10">
+      {/* <div className="bg-yellow-50 py-10">
         <div className="container mx-auto">
           <div className="grid grid-cols-4 gap-4 mb-4">
             {items.map((item) => (
@@ -436,7 +437,8 @@ const King = () => {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
+      <DealOfTheWeek items={items} />
 
       {/*  */}
 
