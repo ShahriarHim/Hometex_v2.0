@@ -1,13 +1,10 @@
 import CartContext from "@/context/CartContext";
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { RiCloseLine } from "react-icons/ri";
-import { FaStar } from "react-icons/fa";
+import { RiCloseLine } from "react-icons/ri"; 
 
 const ProductModal = ({ product, onClose }) => {
   const { addItemToCart } = useContext(CartContext);
-  const [productQty, setProductQty] = useState(1);
-  const [selectedSize, setSelectedSize] = useState("M");
-  const [selectedColor, setSelectedColor] = useState("blue");
+  const [productQty, setProductQty] = useState({});
   const modalRef = useRef();
 
   const handleClickOutside = (event) => {
@@ -23,30 +20,21 @@ const ProductModal = ({ product, onClose }) => {
     };
   }, []);
 
-  const addToCartHandler = () => {
-    addItemToCart({
-      product_id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.primary_photo,
-      quantity: productQty,
-      in_stock: product.stock,
-      supplier_id: product.supplier_id,
-      sku: product.sku,
-      total_price: parseFloat(product.price) * productQty,
-      size: selectedSize,
-      color: selectedColor,
-    });
-    onClose(); // Optionally close the modal on adding to cart
-  };
-
-  const increaseQuantity = () => {
-    setProductQty((prevQty) => Math.min(prevQty + 1, product.stock));
-  };
-
-  const decreaseQuantity = () => {
-    setProductQty((prevQty) => Math.max(prevQty - 1, 1));
-  };
+const addToCartHandler = () => {
+  const currentProductQty = productQty[product.id] || 1;
+  addItemToCart({
+    product_id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.primary_photo,
+    quantity: parseInt(currentProductQty, 10),
+    in_stock: product.stock,
+    supplier_id: product.supplier_id,
+    sku: product.sku,
+    total_price: parseFloat(product.price) * parseInt(currentProductQty, 10),
+  });
+  onClose(); // Optionally close the modal on adding to cart
+};
 
   if (!product) return null;
 
@@ -83,15 +71,6 @@ const ProductModal = ({ product, onClose }) => {
                   In Stock {product.stock}
                 </span>
               </div>
-              <div className="flex items-center mt-2">
-                {[...Array(5)].map((star, index) => (
-                  <FaStar
-                    key={index}
-                    color={index < product.rating ? "#ffc107" : "#e4e5e9"}
-                    className="mr-1"
-                  />
-                ))}
-              </div>
             </div>
             <div className="mb-2">
               <p className="font-semibold mb-2">Overview</p>
@@ -99,65 +78,21 @@ const ProductModal = ({ product, onClose }) => {
                 Premium Quality {product.category?.name} Product
               </p>
             </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Size</p>
-              <div className="flex gap-2">
-                {["S", "M", "L", "XL"].map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 rounded-md ${selectedSize === size ? "bg-blue-500 text-white" : "bg-gray-100"
-                      }`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Color</p>
-              <div className="flex gap-2">
-                {["blue", "red", "orange", "green"].map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => setSelectedColor(color)}
-                    className={`w-6 h-6 rounded-full ${selectedColor === color ? "ring-2 ring-blue-500" : ""
-                      }`}
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Quantity</p>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={decreaseQuantity}
-                  className="px-2 py-1 bg-gray-200 rounded-md"
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  className="block w-16 px-4 py-2 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline-gray"
-                  min="1"
-                  max={product.stock}
-                  step="1"
-                  value={productQty}
-                  onChange={(e) => {
-                    const newQty = Math.min(Math.max(e.target.value, 1), product.stock);
-                    setProductQty(newQty);
-                  }}
-                />
-                <button
-                  onClick={increaseQuantity}
-                  className="px-2 py-1 bg-gray-200 rounded-md"
-                >
-                  +
-                </button>
-              </div>
-            </div>
             <div className="flex flex-col pt-2 gap-2 items-center">
+              <input
+                type="number"
+                className="block w-full px-4 py-2 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline-gray"
+                min="1"
+                max={product.stock} // Limit the max quantity to the stock available
+                step="1"
+                value={productQty[product.id] || 1}
+                onChange={(e) => {
+                  setProductQty({
+                    ...productQty,
+                    [product.id]: Math.min(e.target.value, product.stock),
+                  });
+                }} // Ensure the quantity does not exceed stock
+              />
               <button
                 onClick={addToCartHandler}
                 className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
