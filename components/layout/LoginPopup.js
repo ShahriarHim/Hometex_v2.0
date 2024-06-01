@@ -1,52 +1,88 @@
-// components/LoginPopup.js
-import React from 'react';
+import React, { useState } from 'react';
 import { FaTimes, FaFacebook, FaApple } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
+import Constants from '@/ults/Constant';
+import Swal from 'sweetalert2';
 
-const signInSubmitHandler = async (e) => {
-    e.preventDefault();
-    setIsSubmit(true);
-    const response = await fetch(Constants.BASE_URL + "/api/user-signup", {
-      method: "POST",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-      body: JSON.stringify(signInData),
-    });
-    let res = await response.json();
-
-    if (res.status == "400") {
-      let err_list = {};
-      for (const [key, value] of Object.entries(res.error))
-        err_list[key] = value[0];
-      setSignInErr(err_list);
-      setIsSubmit(false);
-    } else if (res.status == "200") {
-      setIsSubmit(false);
-      setSignInErr({});
-      setCookie("home_text_token", res?.token);
-      window.location.href = "/";
-    }
-  };
-
-  
 const LoginPopup = ({
   showPopup,
   togglePopup,
   signInData,
+  setSignInData,
   signInErr,
+  setSignInErr,
   handleSignIn,
-  signInSubmitHandler,
   regData,
   err,
+  setErr,
   showWarning,
   handleChangeRegistration,
   regSubmit,
   isSubmit,
+  setIsSubmit,
 }) => {
+  const signInSubmitHandler = async (e) => {
+    e.preventDefault();
+    setIsSubmit(true);
+
+    try {
+      const response = await fetchLoginData();
+      const { status, error, token } = await response.json();
+
+      if (status === 400) {
+        handleLoginError(error);
+      } else if (token) {
+        handleSuccessfulLogin(token);
+        console.log('Login successful');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      // Handle network or other errors
+    } finally {
+      setIsSubmit(false);
+    }
+  };
+
+  const fetchLoginData = () => {
+    return fetch(Constants.BASE_URL + '/api/login', {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        email: signInData.username,
+        password: signInData.password,
+        user_type: 2,
+      }),
+    });
+  };
+
+  const handleLoginError = (error) => {
+    const err_list = Object.fromEntries(
+      Object.entries(error).map(([key, value]) => [key, value[0]])
+    );
+    setSignInErr(err_list);
+  };
+
+  const handleSuccessfulLogin = (token) => {
+    setSignInErr({});
+    setCookie('home_text_token', token, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+    });
+    window.location.href = '/';
+    Swal.fire({
+      title: 'Success',
+      text: 'Login successful!',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    });
+  };
+
   if (!showPopup) return null;
 
   return (
@@ -94,18 +130,8 @@ const LoginPopup = ({
                         title="Username"
                         placeholder="Phone number or email"
                         onChange={handleSignIn}
-                        className="px-2 py-3"
+                        className="px-2 py-3 w-full"
                       />
-
-                      <div
-                        data-lastpass-icon-root="true"
-                        style={{
-                          position: 'relative !important',
-                          height: '0px !important',
-                          width: '0px !important',
-                          float: 'left !important',
-                        }}
-                      ></div>
                     </div>
                     <p className="has_error"> {signInErr?.username} </p>
                   </div>
@@ -120,18 +146,8 @@ const LoginPopup = ({
                         title="Password"
                         placeholder="Password"
                         onChange={handleSignIn}
-                        className="px-2 py-3"
+                        className="px-2 py-3 w-full"
                       />
-
-                      <div
-                        data-lastpass-icon-root="true"
-                        style={{
-                          position: 'relative !important',
-                          height: '0px !important',
-                          width: '0px !important',
-                          float: 'left !important',
-                        }}
-                      ></div>
                     </div>
                     <p className="has_error"> {signInErr?.password} </p>
                   </div>
@@ -233,38 +249,54 @@ const LoginPopup = ({
                   <div>
                     <button
                       onClick={regSubmit}
-                      id="so-checkout-confirm-button"
-                      className="w-full my-3 px-4 py-3 bg-[#9eb7f3] hover:bg-teal-700 text-white text-md font-bold rounded-xl"
+                      type="submit"
+                      className="w-full bg-[#9eb7f3] hover:bg-teal-700 py-3 mt-2 text-white rounded-xl text-md font-semibold"
                     >
-                      {isSubmit ? 'Processing..' : 'Continue'}
+                      <span>{isSubmit ? 'Processing..' : 'Create Account'}</span>
                     </button>
                   </div>
+                  <p className="has_error"> {err?.login_err} </p>
                 </div>
+                <div className="hr text-center mt-4">OR</div>
+                <div className="row social-login mt-2">
+                  <div className="col-12 text-center">
+                    <div className="loginBox">
+                      <button className="facebook social-btn py-2 w-full text-center border rounded flex items-center justify-center">
+                        <FaFacebook className="text-blue-500 mr-2 w-6 h-6" />
+                        <span className="font-semibold text-lg">
+                          Continue with Facebook
+                        </span>
+                      </button>
+                      <button className="google social-btn py-2 w-full text-center border rounded flex items-center justify-center mt-2">
+                        <FcGoogle className="mr-2 w-6 h-6" />
+                        <span className="font-semibold text-lg">
+                          Continue with Google
+                        </span>
+                      </button>
+                      <button className="apple social-btn py-2 w-full text-center border rounded flex items-center justify-center mt-2">
+                        <FaApple className="mr-2 w-6 h-6" />
+                        <span className="font-semibold text-lg">
+                          Continue with Apple
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-center">
+                  By continuing, you agree to Hometex's{' '}
+                  <a href="#" className="underline">
+                    Terms of Use
+                  </a>{' '}
+                  &{' '}
+                  <a href="#" className="underline">
+                    Privacy Policy
+                  </a>
+                </p>
               </div>
             </div>
-            <div className="flex items-center justify-center py-3">
-              <div className="flex-grow border-t border-gray-200"></div>
-              <p className="px-4 text-gray-300">or continue with</p>
-              <div className="flex-grow border-t border-gray-200"></div>
-            </div>
-
-            <div className="flex gap-3 flex-col sm:flex-row justify-between items-center py-5">
-              <div className="w-full rounded-xl flex gap-12 text-2xl items-center px-5 py-3 bg-blue-600 text-white">
-                <FaFacebook /> Facebook
-              </div>
-              <div className="w-full rounded-xl flex gap-12 text-2xl items-center px-5 py-3 bg-white border">
-                <FcGoogle /> Google
-              </div>
-              <div className="w-full rounded-xl flex gap-12 text-2xl items-center px-5 py-3 bg-black text-white">
-                <FaApple /> Apple
-              </div>
-            </div>
-
-            <div className="py-5">
-              <p className="text-sm text-center">
-                By clicking &apos;Login&apos;, &apos;Sign up&apos;, &apos;Facebook&apos;, &apos;Google&apos; or &apos;Apple&apos; you agree to the wish terms of Use and Privacy Policy. This site is protected by reCAPTCHA and the google Privacy Policy and Terms of Service apply
-              </p>
-            </div>
+          </div>
+          <div className="text-center py-3">
+            <p>Hometex Bangladesh</p>
           </div>
         </div>
       </div>

@@ -1,8 +1,9 @@
 .container {
     position: relative;
     width: 30%;
-    height: 50px;
+    height: auto; /* Adjusted to auto to accommodate dynamic content */
     display: flex;
+    flex-direction: column; /* Changed to column to stack items vertically */
     align-items: center;
     justify-content: center;
 }
@@ -10,12 +11,27 @@
 .bar {
     position: absolute;
     width: 100%;
-    height: 20px;
+    height: 40px;
     display: flex;
 }
 
 .bar div {
     flex: 1;
+}
+
+.labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Match the width of the bar */
+    margin-top: 8px; /* Adjust spacing as needed */
+    z-index: 1; /* Ensures labels are above other elements */
+}
+
+.labels span {
+    text-align: center;
+    width: 20%; /* Each label occupies 1/5th of the total width */
+    color: #000; /* Black text for better visibility */
+    font-weight: bold; /* Bold text for emphasis */
 }
 
 .red { background-color: #ff0000; }
@@ -34,6 +50,7 @@
     justify-content: center;
     background-color: #ffff00;
     cursor: grab;
+    z-index: 2; /* Cursor above labels */
 }
 
 .emoji {
