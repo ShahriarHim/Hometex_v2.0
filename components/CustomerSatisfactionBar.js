@@ -50,11 +50,11 @@ const CustomerSatisfactionBar = () => {
     return (
         <div className={styles.container}>
             <div className={styles.bar}>
-                <div className={styles.red}><br></br>Very Dissatisfied</div>
-                <div className={styles.orange}><br></br>Dissatisfied</div>
-                <div className={styles.yellow}><br></br>Neutral</div>
-                <div className={styles.green}><br></br>Satisfied</div>
-                <div className={styles.blue}><br></br>Very Satisfied</div>
+                <div className={styles.red}></div>
+                <div className={styles.orange}></div>
+                <div className={styles.yellow}></div>
+                <div className={styles.green}></div>
+                <div className={styles.blue}></div>
             </div>
             <div className={styles.cursor} draggable="true">
                 <span className={styles.emoji}>{['😠', '😞', '😐', '😊', '😁'][emojiIndex]}</span>
