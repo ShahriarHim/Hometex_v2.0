@@ -1,40 +1,79 @@
 import CartContext from '@/context/CartContext';
 import Constants from '@/ults/Constant';
-import React, { useContext, useState } from 'react';
 import { AiFillPlusCircle, AiOutlineMinusCircle, AiFillDelete, AiOutlineLeft, AiOutlineCreditCard } from 'react-icons/ai';
 import { FaPaypal } from "react-icons/fa";
 import { BsXLg } from "react-icons/bs";
 import Link from 'next/link';
+import { useContext, useEffect, useState } from 'react';
 
 const Checkout = () => {
     const { cart, addItemToCart, deleteItemFromCart } = useContext(CartContext);
-    const [showGiftCardModal, setShowGiftCardModal] = useState(false); // State to control the visibility of the gift card modal
-    const [giftCardCode, setGiftCardCode] = useState(''); // State to store the entered gift card or coupon code
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [showGiftCardModal, setShowGiftCardModal] = useState(false);
     const cartItems = cart?.cartItems;
+    const [giftCardCode, setGiftCardCode] = useState('');
+
+
+
+
     const [discountedTotal, setDiscountedTotal] = useState(null);
 
-    const handleApplyGiftCard = () => {
-        // Check if the entered gift card code is "hometex"
-        if (giftCardCode.toLowerCase() === 'hometex') {
-            // Reduce the total amount by 10%
-            const newDiscountedTotal = totalSum * 0.9;
-            // Update the discounted total in the state
-            setDiscountedTotal(newDiscountedTotal);
-        }
-        // Reset the gift card code input field and hide the modal
-        setGiftCardCode('');
-        setShowGiftCardModal(false);
-    };
 
     const increaseQty = (cartItem) => {
         const newQty = parseInt(cartItem?.quantity) + 1;
-
         let price = cartItem?.price;
         let total_price = newQty * price;
         const item = { ...cartItem, quantity: newQty, total_price: total_price };
         if (newQty > Number(cartItem.stock)) return;
 
         addItemToCart(item);
+    };
+
+    const decreaseQty = (cartItem) => {
+        const newQty = parseInt(cartItem?.quantity) - 1;
+        let price = cartItem?.price;
+        let total_price = newQty * price;
+
+        const item = { ...cartItem, quantity: newQty, total_price: total_price };
+
+        if (newQty <= 0) return;
+
+        addItemToCart(item);
+    };
+
+
+
+    let sumTotal = 0;
+
+    cart?.cartItems?.map((cartItem) => (
+        sumTotal += cartItem.total_price
+    ))
+
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (cartItems) {
+            const finalAmount = cartItems.reduce((total, cartItem) => {
+                let str = cartItem.price;
+                str = str.replace(/[,]/g, "");
+                const amount = parseInt(str) * cartItem.quantity;
+                return total + amount;
+            }, 0);
+            setTotalPrice(finalAmount);
+        }
+    }, [cartItems]);
+    
+    const handleApplyGiftCard = () => {
+        // Check if the entered gift card code is "hometex"
+        if (giftCardCode.toLowerCase() === 'hometex') {
+            // Reduce the total amount by 10%
+            const newDiscountedTotal = totalPrice * 0.9;
+            // Update the discounted total in the state
+            setDiscountedTotal(newDiscountedTotal);
+        }
+        // Reset the gift card code input field and hide the modal
+        setGiftCardCode('');
+        setShowGiftCardModal(false);
     };
 
     const toggleGiftCardModal = () => {
@@ -65,21 +104,11 @@ const Checkout = () => {
         );
     };
 
-    const decreaseQty = (cartItem) => {
-        const newQty = parseInt(cartItem?.quantity) - 1;
-        let price = cartItem?.price;
-        let total_price = newQty * price;
 
-        const item = { ...cartItem, quantity: newQty, total_price: total_price };
 
-        if (newQty <= 0) return;
-
-        addItemToCart(item);
-    };
-
-    const totalSum = cart?.cartItems?.reduce((accumulator, cartItem) => {
-        return accumulator + parseFloat(cartItem.total_price);
-    }, 0);
+    // const totalSum = cart?.cartItems?.reduce((accumulator, cartItem) => {
+    //     return accumulator + parseFloat(cartItem.total_price);
+    // }, 0);
 
     return (
         <>
@@ -103,15 +132,16 @@ const Checkout = () => {
                                         <p className="text-xl font-semibold text-gray-800">{cartItem.name}</p>
                                         <p className="text-sm text-gray-500 pt-3">Type: {cartItem.sub_categoryName}</p>
                                         <p className="text-sm text-gray-500 pt-3">Size: {cartItem.child_sub_categoryName}</p>
-                                        <p className="text-lg font-bold text-green-600 pt-3">TK {cartItem.total_price}</p>
+                                        <p className="text-lg font-bold text-green-600 pt-3">TK {cartItem.price}</p>
                                         <div className="flex items-center py-2 mt-2">
                                             <button
-                                                onClick={() => increaseQty(cartItem)}
-                                                className="text-gray-600 hover:text-green-500 focus:outline-none"
-                                                aria-label="Increase quantity"
+                                                onClick={() => decreaseQty(cartItem)}
+                                                className="text-gray-600 hover:text-red-500 focus:outline-none"
+                                                aria-label="Decrease quantity"
                                             >
-                                                <AiFillPlusCircle size={24} />
+                                                <AiOutlineMinusCircle size={24} />
                                             </button>
+
                                             <input
                                                 type="text"
                                                 name={`quantity[${cartItem.product_id}]`}
@@ -121,12 +151,13 @@ const Checkout = () => {
                                                 readOnly
                                             />
                                             <button
-                                                onClick={() => decreaseQty(cartItem)}
-                                                className="text-gray-600 hover:text-red-500 focus:outline-none"
-                                                aria-label="Decrease quantity"
+                                                onClick={() => increaseQty(cartItem)}
+                                                className="text-gray-600 hover:text-green-500 focus:outline-none"
+                                                aria-label="Increase quantity"
                                             >
-                                                <AiOutlineMinusCircle size={24} />
+                                                <AiFillPlusCircle size={24} />
                                             </button>
+
                                         </div>
                                     </div>
                                     <div>
@@ -158,7 +189,7 @@ const Checkout = () => {
                             <div className='px-4 py-3 shadow-lg rounded-lg bg-white'>
                                 <div className='flex gap-28 justify-between items-center p-3'>
                                     <p className='text-gray-800 font-medium'>Subtotal</p>
-                                    <p className='text-gray-900 font-semibold'>TK {totalSum}</p>
+                                    <p className='text-gray-900 font-semibold'>TK {totalPrice}</p>
                                 </div>
                                 <div className='flex justify-between items-center p-3 border-t border-gray-200'>
                                     <p className='text-gray-800 font-medium'>Delivery</p>
@@ -169,7 +200,7 @@ const Checkout = () => {
 
                                 <div className='flex justify-between items-center p-3 border-t border-gray-200 mt-2'>
                                     <p className='text-lg text-gray-800 font-bold'>Total</p>
-                                    <p className='text-lg text-green-700 font-bold'>TK {discountedTotal ? discountedTotal : totalSum}</p>
+                                    <p className='text-lg text-green-700 font-bold'>TK {discountedTotal ? discountedTotal : totalPrice}</p>
                                 </div>
                             </div>
                         </div>
@@ -177,8 +208,8 @@ const Checkout = () => {
 
                 </div>
             </div>
-    </>
-  );
+        </>
+    );
 };
 
 export default Checkout;
