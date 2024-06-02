@@ -3,9 +3,8 @@ import Link from 'next/link';
 import { FaShoppingCart, FaTimes, FaTrashAlt } from 'react-icons/fa';
 import { getCookie } from 'cookies-next';
 import CartContext from '@/context/CartContext';
-import LoginPopup from '../../../components/layout/LoginPopup';
+import LoginPopup from '../../components/layout/LoginPopup';
 import { useRouter } from "next/router";
-
 
 const PurchaseHistory = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -17,9 +16,6 @@ const PurchaseHistory = () => {
   const auth_token = getCookie("home_text_token");
   const router = useRouter();
 
-
-
-  
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
@@ -55,13 +51,15 @@ const PurchaseHistory = () => {
   }, [isStickyOpen]);
 
   useEffect(() => {
-    const finalAmount = cartItems.reduce((total, cartItem) => {
-      let str = cartItem.price;
-      str = str.replace(/[,]/g, "");
-      const amount = parseInt(str) * cartItem.quantity;
-      return total + amount;
-    }, 0);
-    setTotalPrice(finalAmount);
+    if (cartItems && Array.isArray(cartItems)) {
+      const finalAmount = cartItems.reduce((total, cartItem) => {
+        let str = cartItem.price;
+        str = str.replace(/[,]/g, "");
+        const amount = parseInt(str) * cartItem.quantity;
+        return total + amount;
+      }, 0);
+      setTotalPrice(finalAmount);
+    }
   }, [cartItems]);
 
   const handleCheckout = () => {
@@ -77,7 +75,7 @@ const PurchaseHistory = () => {
     return null;
   }
 
-  const lastItem = cartItems?.[cartItems.length - 1];
+  const lastItem = cartItems[cartItems.length - 1];
 
   return (
     <div className="fixed bottom-0 left-0 m-4 z-50">
