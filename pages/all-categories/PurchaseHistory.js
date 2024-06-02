@@ -54,10 +54,21 @@ const PurchaseHistory = () => {
     if (cartItems && Array.isArray(cartItems)) {
       const finalAmount = cartItems.reduce((total, cartItem) => {
         let str = cartItem.price;
+      
+        // Convert to string if it's not already a string
+        if (typeof str !== 'string') {
+          console.warn(`Expected string but got ${typeof str}:`, str);
+          str = String(str);
+        }
+      
+        // Replace commas
         str = str.replace(/[,]/g, "");
-        const amount = parseInt(str) * cartItem.quantity;
+      
+        // Parse integer and calculate amount
+        const amount = parseInt(str, 10) * cartItem.quantity;
         return total + amount;
       }, 0);
+      
       setTotalPrice(finalAmount);
     }
   }, [cartItems]);
