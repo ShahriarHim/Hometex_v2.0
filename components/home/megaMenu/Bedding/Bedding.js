@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { FaCaretDown, FaBed } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 const Bedding = () => {
+  const router = useRouter();
+
   const sections = [
     {
       id: 1,
@@ -55,11 +58,20 @@ const Bedding = () => {
       ],
     },
   ];
+
+  const handleButtonClick = () => {
+    router.push("/bedding");
+  };
+
   return (
     <>
       <div className="">
-        <div className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group">
-          <FaBed className="mr-1 text-xl" />
+        <div
+          className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group"
+          
+          onClick={handleButtonClick}
+        >
+          <FaBed className="mr-2" />
           Bedding <FaCaretDown />
           <div className="w-full absolute pb-6  z-50 top-full left-0 transform rounded-md justify-center items-center p-2 group-hover:flex hidden">
             <div className="max-w-screen-2xl mx-auto px-3 mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white">
@@ -86,12 +98,12 @@ const Bedding = () => {
                             className="overflow-ellipsis hover:scale-105"
                           >
                             {item.path ? (
-                            <Link href={item.path}>
-                              <span className="hover:underline">{item.name}</span>
-                            </Link>
-                          ) : (
-                            <span>{item.name}</span>
-                          )}
+                              <Link href={item.path}>
+                                <span className="hover:underline">{item.name}</span>
+                              </Link>
+                            ) : (
+                              <span>{item.name}</span>
+                            )}
                           </li>
                         ))}
                       </ul>

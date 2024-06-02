@@ -29,17 +29,18 @@ import {
 } from "react-icons/hi";
 import Swal from "sweetalert2";
 import Constants from "../../ults/Constant";
-import BathSupport from "../home/menus/BathSupport";
-import Bedding from "../home/menus/Bedding";
-import KitchenDinning from "../home/menus/KitchenDinning";
-import LivingDecor from "../home/menus/LivingDecor";
+import BathSupport from "../home/megaMenu/Bath/BathSupport";
+import Bedding from "../home/megaMenu/Bedding/Bedding";
+import KitchenDinning from "../home/megaMenu/Kitchen/KitchenDinning";
+import LivingDecor from "../home/megaMenu/Living/LivingDecor";
 import DynamicText, { textOptions } from "./DynamicText";
 import Modal from "./Modal";
 import SearchBarPopup from "./searchPopup";
 import LoginPopup from "./LoginPopup";
+import { useRouter } from "next/router"; // Ensure this is imported
 
 const Header3 = () => {
-  const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
+  const router = useRouter();
   const [totalPrice, setTotalPrice] = useState(0);
   const [location, setLocation] = useState(null);
   const [isSearchPopupVisible, setIsSearchPopupVisible] = useState(false);
@@ -48,59 +49,65 @@ const Header3 = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState({});
   const [authToken, setAuthToken] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
 
   const handleCheckout = () => {
     if (!auth_token) {
-      setShowCheckoutPopup(true);
+      setShowPopup(true);
     } else {
-      // Proceed to checkout if the user is logged in
+      router.push("/Checkout");
     }
   };
+  
 
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
   // State for form data and submission
-  const [signInData, setSignInData] = useState({ username: '', password: '' });
-  const [signInErr, setSignInErr] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
+  // const [signInData, setSignInData] = useState({ username: "", password: "" });
+  // const [signInErr, setSignInErr] = useState({});
+  // const [isSubmit, setIsSubmit] = useState(false);
 
   useEffect(() => {
-    const token = getCookie('home_text_token');
+    const token = getCookie("home_text_token");
     setAuthToken(token);
   }, []);
 
   const handleLogin = () => {
     togglePopup();
-    
-    setShowCheckoutPopup(false);
+
+    // setShowPopup(false);
   };
 
-  const handleSignup = () => {
-    // Handle signup logic here
-    togglePopup();
-    setShowCheckoutPopup(false);
-  };
+  // const handleSignup = () => {
+  //   togglePopup();
+  //   setShowPopup(false);
+  // };
   // Registration
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const passwordsMatch = password === confirmPassword;
-  const showWarning = confirmPassword.length > 0 && !passwordsMatch;
-  const [value, setValue] = useState("");
-  const reg_init_value = {
-    user_type: "1",
-    first_name: "",
-    last_name: "",
-    email: "",
-    phone: "",
-    password: "",
-    conf_password: "",
-    is_subscribe: "",
-  };
-  const [regData, setRegData] = useState(reg_init_value);
-  const [err, setErr] = useState({});
-  const handleChangeRegistration = (e) => {
-    setRegData({ ...regData, [e.target.name]: e.target.value });
-  };
 
-  console.log()
+  // const [password, setPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
+  // const passwordsMatch = password === confirmPassword;
+  // const showWarning = confirmPassword.length > 0 && !passwordsMatch;
+  // const [value, setValue] = useState("");
+  // const reg_init_value = {
+  //   user_type: "1",
+  //   first_name: "",
+  //   last_name: "",
+  //   email: "",
+  //   phone: "",
+  //   password: "",
+  //   conf_password: "",
+  //   is_subscribe: "",
+  // };
+  // const [regData, setRegData] = useState(reg_init_value);
+  // const [err, setErr] = useState({});
+  // const handleChangeRegistration = (e) => {
+  //   setRegData({ ...regData, [e.target.name]: e.target.value });
+  // };
+
+  console.log();
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const { wlist } = useContext(WishListContext);
@@ -156,11 +163,14 @@ const Header3 = () => {
     },
     // Add more product objects here
   ];
-  const [isZipPopupVisible, setIsZipPopupVisible] = useState(false);
 
-  const handleZipCodeClick = () => {
-    setIsZipPopupVisible(true);
-  };
+
+  // const [isZipPopupVisible, setIsZipPopupVisible] = useState(false);
+
+  // const handleZipCodeClick = () => {
+  //   setIsZipPopupVisible(true);
+  // };
+
   const saleEndTime = "2024-04-30T23:59:59";
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -200,11 +210,9 @@ const Header3 = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   // popup for login
-  const [showPopup, setShowPopup] = useState(false);
 
-  function togglePopup() {
-    setShowPopup(!showPopup);
-  }
+
+
   // Finish login
 
   const { cart, deleteItemFromCart } = useContext(CartContext);
@@ -270,18 +278,17 @@ const Header3 = () => {
   };
 
   //
- 
+
   // sign in process
-  const signInInitValue = {
-    username: "",
-    password: "",
-  };
-  
-  // input handeler
-  const handleSignIn = (e) => {
-    setSignInData({ ...signInData, [e.target.name]: e.target.value });
-  };
- 
+  // const signInInitValue = {
+  //   username: "",
+  //   password: "",
+  // };
+
+
+  // const handleSignIn = (e) => {
+  //   setSignInData({ ...signInData, [e.target.name]: e.target.value });
+  // };
 
   // signout handeler
   const signOutSubmitHandler = async (e) => {
@@ -346,11 +353,10 @@ const Header3 = () => {
   }, []); // Fetch location on component mount
 
   useEffect(() => {
-    const token = getCookie('home_text_token');
-    console.log('home_text_token:', token);
+    const token = getCookie("home_text_token");
+    console.log("home_text_token:", token);
   }, [showPopup]); // Log the cookie whenever the popup is toggled
 
-  
   useEffect(() => {
     if (cartItems) {
       const finalAmount = cartItems.reduce((total, cartItem) => {
@@ -552,53 +558,56 @@ const Header3 = () => {
                   </span>
                 </div> */}
 
-<div className="relative" ref={dropdownRef}>
-      <button
-        type="button"
-        className="flex items-center text-black focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm text-center mb-2 sm:mb-0 sm:mr-3 md:mr-0 dark:bg-[#15803d] dark:hover:bg-[#15803d] dark:focus:ring-green-800"
-        onClick={authToken ? toggleDropdown : handleLogin}
-      >
-        <div className="px-2 flex flex-col items-center text-center">
-          {authToken ? (
-            <>
-              {/* Admin logged in */}
-              <img
-                src="https://htbapi.hometexbd.ltd/images/hometex-logo.ico"
-                alt="Hometex Logo"
-                className="h-6 w-6 text-gray-600"
-              />
-              <span className="text-sm mt-2 font-semibold text-gray-800">
-                Admin Logged In
-              </span>
-            </>
-          ) : (
-            <>
-              {/* Regular user */}
-              <FaUserAlt className="h-6 w-6 text-gray-600" aria-hidden="true" />
-              <span className="text-sm mt-2 font-semibold text-gray-800">
-                My Account
-              </span>
-            </>
-          )}
-        </div>
-      </button>
-      {isDropdownOpen && authToken && (
-        <div className="absolute z-50 top-full right-0 bg-white bg-opacity-95 backdrop-filter backdrop-blur-md border border-gray-300 rounded-lg shadow-md py-2">
-          <Link href="/account/MyAccount">
-            <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
-              Profile
-            </button>
-          </Link>
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    type="button"
+                    className="flex items-center text-black focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm text-center mb-2 sm:mb-0 sm:mr-3 md:mr-0 dark:bg-[#15803d] dark:hover:bg-[#15803d] dark:focus:ring-green-800"
+                    onClick={authToken ? toggleDropdown : handleLogin}
+                  >
+                    <div className="px-2 flex flex-col items-center text-center">
+                      {authToken ? (
+                        <>
+                          {/* Admin logged in */}
+                          <img
+                            src="https://htbapi.hometexbd.ltd/images/hometex-logo.ico"
+                            alt="Hometex Logo"
+                            className="h-6 w-6 text-gray-600"
+                          />
+                          <span className="text-sm mt-2 font-semibold text-gray-800">
+                            Admin Logged In
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          {/* Regular user */}
+                          <FaUserAlt
+                            className="h-6 w-6 text-gray-600"
+                            aria-hidden="true"
+                          />
+                          <span className="text-sm mt-2 font-semibold text-gray-800">
+                            My Account
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </button>
+                  {isDropdownOpen && authToken && (
+                    <div className="absolute z-50 top-full right-0 bg-white bg-opacity-95 backdrop-filter backdrop-blur-md border border-gray-300 rounded-lg shadow-md py-2">
+                      <Link href="/account/MyAccount">
+                        <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
+                          Profile
+                        </button>
+                      </Link>
 
-          <button
-            onClick={signOutSubmitHandler}
-            className="block w-full text-left px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-          >
-            Signout
-          </button>
-        </div>
-      )}
-    </div>
+                      <button
+                        onClick={signOutSubmitHandler}
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                      >
+                        Signout
+                      </button>
+                    </div>
+                  )}
+                </div>
 
                 <button type="button" onClick={handleButtonClick} className="">
                   <div className="px-2 flex flex-col items-center text-center">
@@ -708,82 +717,17 @@ const Header3 = () => {
                       <div className="absolute bottom-0 left-0 right-0 flex justify-end space-x-4 p-4 bg-gray-800">
                         {" "}
                         {/* Footer background can match or contrast the overall design */}
-                        {!authToken && (
-  <div className="flex flex-col items-center">
-    <div className="text-red-500 mb-2">You are not logged in. Sign up here:</div>
-
-    <LoginPopup
-      showPopup={showPopup}
-      togglePopup={togglePopup}
-      signInData={signInData}
-      setSignInData={setSignInData}
-      signInErr={signInErr}
-      setSignInErr={setSignInErr}
-      handleSignIn={handleSignIn}
-      regData={regData}
-      err={err}
-      showWarning={showWarning}
-      handleChangeRegistration={handleChangeRegistration}
-      isSubmit={isSubmit}
-      setIsSubmit={setIsSubmit}
-    />
-  </div>
-)}
-{authToken && (
-  <>
-    <Link href="/cart">
-      <button className="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors duration-200 mr-2">
-        View Cart
-      </button>
-    </Link>
-    <button
-      onClick={handleCheckout}
-      className="inline-block bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition-colors duration-200"
-    >
-      Checkout
-    </button>
-  </>
-)}
-
-{showCheckoutPopup && (
-  <div className="fixed z-50 inset-0 overflow-y-auto">
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="absolute inset-0 bg-gray-700 opacity-50"></div>
-      <div className="relative bg-black rounded-lg mx-4 w-auto lg:w-[400px] flex flex-col overflow-hidden">
-        <div className="px-6 py-5">
-          <h2 className="text-2xl font-bold mb-4">
-            Oops!! Are you logged in?
-          </h2>
-          <p className="mb-6">
-            You are not logged in. Sign up here:
-          </p>
-          <div className="flex justify-center gap-4">
-            <LoginPopup
-              showPopup={showPopup}
-              togglePopup={togglePopup}
-              signInData={signInData}
-              setSignInData={setSignInData}
-              signInErr={signInErr}
-              setSignInErr={setSignInErr}
-              handleSignIn={handleSignIn}
-              regData={regData}
-              err={err}
-              showWarning={showWarning}
-              handleChangeRegistration={handleChangeRegistration}
-              isSubmit={isSubmit}
-              setIsSubmit={setIsSubmit}
-            />
-            <Link href="/Checkout">
-              <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
-                Bypass Anyhow
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+                        <Link href="/cart">
+                          <button className="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors duration-200">
+                            View Cart
+                          </button>
+                        </Link>
+                        <button
+                          onClick={handleCheckout}
+                          className="inline-block bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition-colors duration-200"
+                        >
+                          Checkout
+                        </button>
 
                       </div>
                     </div>
@@ -792,6 +736,10 @@ const Header3 = () => {
               </div>
             </div>
           </div>
+          <LoginPopup
+                          showPopup={showPopup}
+                          togglePopup={togglePopup}
+                        />
           {/* Mid Header end */}
           {/* menu */}
           <div className="flex flex-auto gap-2 container mx-auto justify-end items-center">
@@ -968,11 +916,10 @@ const Header3 = () => {
                                         View Cart
                                       </button>
                                     </Link>
-                                    <Link href="/checkout">
-                                      <button className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">
-                                        Checkout
-                                      </button>
-                                    </Link>
+
+                                    <button className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">
+                                      Checkout
+                                    </button>
                                   </td>
                                 </tr>
                               </tbody>
@@ -987,7 +934,7 @@ const Header3 = () => {
             </nav>
             <a
               href="tel:+8801616101090"
-              class="inline-block bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 cursor-pointer"
+              class="inline-block bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-semibold py-2 px-2 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 cursor-pointer"
             >
               Contact Us
             </a>
@@ -995,26 +942,6 @@ const Header3 = () => {
           {/* menu end */}
         </div>
       </div>
-
-      
-
-      <LoginPopup
-        showPopup={showPopup}
-        togglePopup={togglePopup}
-        signInData={signInData}
-        setSignInData={setSignInData}
-        signInErr={signInErr}
-        setSignInErr={setSignInErr}
-        handleSignIn={handleSignIn}
-        regData={regData}
-        err={err}
-        showWarning={showWarning}
-        handleChangeRegistration={handleChangeRegistration}
-        // regSubmit={regSubmit}
-        isSubmit={isSubmit}
-        setIsSubmit={setIsSubmit}
-      />
-
       <div>
         <button
           onClick={toggleMenu}

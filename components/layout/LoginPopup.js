@@ -5,23 +5,29 @@ import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import Constants from '@/ults/Constant';
 import Swal from 'sweetalert2';
 
-const LoginPopup = ({
-  showPopup,
-  togglePopup,
-  signInData,
-  setSignInData,
-  signInErr,
-  setSignInErr,
-  handleSignIn,
-  regData,
-  err,
-  setErr,
-  showWarning,
-  handleChangeRegistration,
-  regSubmit,
-  isSubmit,
-  setIsSubmit,
-}) => {
+const LoginPopUp = ({ showPopup, togglePopup }) => {
+  const [signInData, setSignInData] = useState({ username: '', password: '' });
+  const [signInErr, setSignInErr] = useState({});
+  const [regData, setRegData] = useState({});
+  const [err, setErr] = useState({});
+  const [showWarning, setShowWarning] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
+
+  const handleSignIn = (e) => {
+    const { name, value } = e.target;
+    setSignInData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleChangeRegistration = (e) => {
+    const { name, value } = e.target;
+    setRegData((prevData) => ({ ...prevData, [name]: value }));
+    if (name === 'conf_password' && regData.password !== value) {
+      setShowWarning(true);
+    } else {
+      setShowWarning(false);
+    }
+  };
+
   const signInSubmitHandler = async (e) => {
     e.preventDefault();
     setIsSubmit(true);
@@ -81,6 +87,12 @@ const LoginPopup = ({
       icon: 'success',
       confirmButtonText: 'OK'
     });
+  };
+
+  const regSubmit = (e) => {
+    e.preventDefault();
+    // Add your registration logic here
+    console.log('Registration data:', regData);
   };
 
   if (!showPopup) return null;
@@ -304,4 +316,4 @@ const LoginPopup = ({
   );
 };
 
-export default LoginPopup;
+export default LoginPopUp;

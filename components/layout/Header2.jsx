@@ -13,10 +13,10 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 
 import CartContext from "@/context/CartContext";
-import Bedding from "../home/menus/Bedding";
-import LivingDecor from "../home/menus/LivingDecor";
-import BathSupport from "../home/menus/BathSupport";
-import KitchenDinning from "../home/menus/KitchenDinning";
+import Bedding from "../home/megaMenu/Bedding/Bedding";
+import LivingDecor from "../home/megaMenu/Living/LivingDecor";
+import BathSupport from "../home/megaMenu/Bath/BathSupport";
+import KitchenDinning from "../home/megaMenu/Kitchen/KitchenDinning";
 import { API_BASE_URL } from "@/ults/Constant";
 import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import Constants from "../../ults/Constant";
@@ -28,16 +28,58 @@ const Header2 = () => {
 
   const products = [
     // Example product data; you would fetch this from your backend or service
-    { name: 'Product 1', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/rosario-thu-nov-2-2023-650-pm-87312.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-    { name: 'Product 2', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/burbot-thu-nov-2-2023-744-pm-57895.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-    { name: 'Product 3', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/beboon-thu-nov-2-2023-758-pm-30205.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-    { name: 'Product 4', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/brownie-thu-nov-2-2023-808-pm-85665.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-    { name: 'Product 5', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
-    { name: 'Product 6', image: 'https://htbapi.hometexbd.ltd/images/uploads/product_thumb/mogra-thu-nov-2-2023-835-pm-92146.jpeg', price: '20.00', originalPrice: '40.00', discount: '50' },
+    {
+      name: "Product 1",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/rosario-thu-nov-2-2023-650-pm-87312.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 2",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/burbot-thu-nov-2-2023-744-pm-57895.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 3",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/beboon-thu-nov-2-2023-758-pm-30205.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 4",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/brownie-thu-nov-2-2023-808-pm-85665.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 5",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 6",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/mogra-thu-nov-2-2023-835-pm-92146.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
     // Add more product objects here
   ];
 
-  const saleEndTime = '2024-04-30T23:59:59';
+  const saleEndTime = "2024-04-30T23:59:59";
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const toggleDropdown = () => {
@@ -198,7 +240,10 @@ const Header2 = () => {
             </div>
             <div className="flex flex-col sm:flex-row sm:justify-end">
               <div>
-                <button onClick={() => setIsModalOpen(true)} className="text-black hover:bg-[#86efac] focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-1 text-center mb-2 sm:mb-0 sm:mr-3 md:mr-0 dark:bg-[#15803d] dark:hover:bg-[#15803d] dark:focus:ring-green-800">
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="text-black hover:bg-[#86efac] focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-1 text-center mb-2 sm:mb-0 sm:mr-3 md:mr-0 dark:bg-[#15803d] dark:hover:bg-[#15803d] dark:focus:ring-green-800"
+                >
                   Daily Deals
                 </button>
                 <Modal
@@ -284,7 +329,13 @@ const Header2 = () => {
       {/* Top Section End*/}
 
       {/* Mid Section Start*/}
-      <div className="sticky top-0 z-20 " style={{background: "radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)"}}>
+      <div
+        className="sticky top-0 z-20 "
+        style={{
+          background:
+            "radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
+        }}
+      >
         <div className="max-w-screen-xl mx-auto px-3 sm:px-4 py-2.5 dark:bg-gray-900 w-full z-20 left-0 border-b border-gray-200 dark:border-gray-600 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 place-content-center text-center">
           <div className="justify-center w-full md:w-auto">
             <Link href="/" className="flex justify-center">
@@ -363,7 +414,7 @@ const Header2 = () => {
                 <BathSupport />
                 <KitchenDinning />
                 <Link
-                  href="/Shop"
+                  href="/"
                   className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
                 >
                   <FaLeaf className="mr-2" />

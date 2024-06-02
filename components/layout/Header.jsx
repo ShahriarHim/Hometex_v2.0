@@ -13,10 +13,10 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 
 import CartContext from "@/context/CartContext";
-import Bedding from "../home/menus/Bedding";
-import LivingDecor from "../home/menus/LivingDecor";
-import BathSupport from "../home/menus/BathSupport";
-import KitchenDinning from "../home/menus/KitchenDinning";
+import Bedding from "../home/megaMenu/Bedding/Bedding";
+import LivingDecor from "../home/megaMenu/Living/LivingDecor";
+import BathSupport from "../home/megaMenu/Bath/BathSupport";
+import KitchenDinning from "../home/megaMenu/Kitchen/KitchenDinning";
 import { API_BASE_URL } from "@/ults/Constant";
 import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import Constants from "../../ults/Constant";

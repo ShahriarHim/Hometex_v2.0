@@ -1,18 +1,28 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/router";
 import { FaCaretDown, FaBath } from "react-icons/fa";
 
 const BathSupport = () => {
+  const router = useRouter();
+
+  const handleButtonClick = (event) => {
+    // Prevent default link behavior
+    event.preventDefault();
+    // Navigate to the bath-support page
+    router.push("/bathSupport");
+  };
+
   return (
     <>
       <div className="">
         <Link
-          href="/Shop"
+          href="/shop"
           className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group"
+          onClick={handleButtonClick}
         >
           <FaBath className="mr-2" />
           Bath Support <FaCaretDown />
-          <div className="w-full absolute  z-50 top-full left-0 transform rounded-md justify-center items-center p-2 group-hover:flex hidden border-teal-500 ">
+          <div className="w-full absolute z-50 top-full left-0 transform rounded-md justify-center items-center p-2 group-hover:flex hidden border-teal-500 ">
             <div className="flex flex-wrap justify-between bg-[#fff] text-black w-full whitespace-nowrap">
               <div className="w-full md:w-1/4 px-4">
                 <h5 className="text-xl uppercase">Towels | Bathmats</h5>
