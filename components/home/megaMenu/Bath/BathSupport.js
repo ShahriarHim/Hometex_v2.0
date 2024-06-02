@@ -56,10 +56,9 @@ const BathSupport = () => {
   return (
     <>
       <div className="">
-        <div
-          href="/shop"
+      <Link
+          href="/bathSupport"
           className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group"
-          onClick={handleButtonClick}
         >
           <FaBath className="mr-2" />
           Bath Support <FaCaretDown />
@@ -112,7 +111,7 @@ const BathSupport = () => {
               ))}
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </>
   );

@@ -41,11 +41,10 @@ const KitchenDinning = () => {
 
   return (
     <>
-      <div>
-        <div
-          href="/shop"
+      <div className="">
+        <Link
+          href="/kitchen_Dining"
           className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group"
-          onClick={handleButtonClick}
         >
           <TbToolsKitchen2 className="mr-2" />
           Kitchen | Dining <FaCaretDown />
@@ -98,7 +97,7 @@ const KitchenDinning = () => {
               ))}
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </>
   );

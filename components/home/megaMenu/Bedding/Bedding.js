@@ -198,9 +198,9 @@ const Bedding = () => {
   return (
     <>
       <div className="">
-        <div
+      <Link
+          href="/bedding"
           className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group"
-          onClick={handleButtonClick}
         >
           <FaBed className="mr-1 text-xl" />
           Bedding <FaCaretDown />
@@ -253,7 +253,7 @@ const Bedding = () => {
               ))}
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </>
   );
