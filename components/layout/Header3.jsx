@@ -415,7 +415,7 @@ const Header3 = () => {
                   Order Tracking
                 </div>
               </Link>
-              <div className="relative bg-black text-white px-2 pt-2 pb-3 flex items-center">
+              <div className="relative bg-black text-white px-2 pt-2 pb-3 flex items-center cursor-pointer">
                 <HiOutlineGift
                   className="mr-2 text-pink-500"
                   style={{ width: "22px", height: "22px" }}
@@ -430,7 +430,7 @@ const Header3 = () => {
                   }}
                 ></div>
               </div>
-              <div className="flex items-center hover:text-blue-500">
+              <div className="flex items-center hover:text-blue-500 cursor-pointer">
                 <FaShippingFast
                   className="mr-2 text-pink-500"
                   style={{ width: "22px", height: "22px" }}

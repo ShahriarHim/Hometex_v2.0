@@ -1,70 +1,51 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { FaCaretDown, FaBath } from "react-icons/fa";
+import { FaCaretDown, FaHome } from "react-icons/fa";
 
-const BathSupport = () => {
+const HomeDecor = () => {
   const sections = [
     {
       id: 1,
-      imageUrl: "https://m.media-amazon.com/images/I/91FUcQAyUoL.__AC_SY300_SX300_QL70_FMwebp_.jpg", // Replace with your image URL
-      title: "Towels | Bathmats",
+      imageUrl: "https://m.media-amazon.com/images/I/810MbOBa92L._AC_UF1000,1000_QL80_.jpg", // Replace with your image URL
+      title: "Wall Decor",
       listItems: [
-        { name: "Basin Towel", path: "/all-categories/Bath-Support/Basin Towel" },
-        { name: "Basin Mat", path: "/all-categories/Bath-Support/Basin Mat" },
-        { name: "Bath Sheet", path: "/all-categories/Bath-Support/Bath Sheet" },
-        { name: "Bath Towel", path: "/all-categories/Bath-Support/Bath Towel" },
-        { name: "Hand Towel", path: "/all-categories/Bath-Support/Hand Towel" },
+        { name: "Wall Art", path: "/all-categories/Home-Decor/Wall Art" },
+        { name: "Wall Clocks", path: "/all-categories/Home-Decor/Wall Clocks" },
+        { name: "Wall Mirrors", path: "/all-categories/Home-Decor/Wall Mirrors" },
+        { name: "Wall Shelves", path: "/all-categories/Home-Decor/Wall Shelves" },
       ],
     },
     {
       id: 2,
-      imageUrl: "https://media.nisbets.com/asset/core/prodimage/large_new/hd222_ecobathrobe1.jpg", // Replace with your image URL
-      title: "Bathrobes",
+      imageUrl: "https://static.athome.com/image/upload/f_auto,q_auto,fl_progressive:steep/v1694533303/webcontent/FallForAll/2023/LP_TestAssets_StoreVsEnviro/FY24_WK32_LP_Test_HomeAccentsInsp-M.png", // Replace with your image URL
+      title: "Home Accents",
       listItems: [
-        { name: "Adult Size", path: "/all-categories/Bath-Support/Adult Size" },
-        { name: "Kids Size", path: "/all-categories/Bath-Support/Kids Size" },
+        { name: "Vases", path: "/all-categories/Home-Decor/Vases" },
+        { name: "Candle Holders", path: "/all-categories/Home-Decor/Candle Holders" },
+        { name: "Figurines", path: "/all-categories/Home-Decor/Figurines" },
+        { name: "Bookends", path: "/all-categories/Home-Decor/Bookends" },
       ],
     },
     {
       id: 3,
-      imageUrl: "https://hips.hearstapps.com/hmg-prod/images/bathroom-decor-ideas-65f16a228586f.jpeg?crop=1.00xw:0.334xh;0,0.324xh&resize=1200:*", // Replace with your image URL
-      title: "Bath Decor",
+      imageUrl: "https://images.herzindagi.info/image/2020/Sep/HOME-LIGHTS.jpg", // Replace with your image URL
+      title: "Lighting",
       listItems: [
-        { name: "Bathroom Rugs", path: "/all-categories/Bath-Support/Bathroom Rugs" },
-      ],
-    },
-    {
-      id: 4,
-      imageUrl: "https://market99.com/cdn/shop/products/ceramic-cylindrical-bathroom-set-of-4-geometric-pattern-bath-accessories-soap-and-lotion-dispensers-1-29122143649962.jpg?v=1697016217&width=1080", // Replace with your image URL
-      title: "Bath Accessories",
-      listItems: [
-        { name: "Bathroom Bin", path: "/all-categories/Bath-Support/Bathroom Bin" },
-        { name: "Shower Curtain", path: "/all-categories/Bath-Support/Shower Curtain" },
+        { name: "Table Lamps", path: "/all-categories/Home-Decor/Table Lamps" },
+        { name: "Floor Lamps", path: "/all-categories/Home-Decor/Floor Lamps" },
+        { name: "Ceiling Lights", path: "/all-categories/Home-Decor/Ceiling Lights" },
+        { name: "String Lights", path: "/all-categories/Home-Decor/String Lights" },
       ],
     },
   ];
 
-  const router = useRouter();
-
-  const handleButtonClick = (event) => {
-    // Prevent default link behavior
-    event.preventDefault();
-    // Navigate to the bath-support page
-    router.push("/bathSupport");
-  };
-
   return (
     <>
       <div className="">
-        <div
-          href="/shop"
-          className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group"
-          onClick={handleButtonClick}
-        >
-          <FaBath className="mr-2" />
-          Bath Support <FaCaretDown />
+        <div className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group">
+          <FaHome className="mr-1 text-xl" />
+          Home Decor <FaCaretDown />
           <div className="w-full absolute pb-6 z-50 top-full left-0 transform rounded-md justify-center items-center p-2 group-hover:flex hidden">
-            <div className="max-w-screen-2xl mx-auto px-3 mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-white">
+            <div className="max-w-screen-2xl mx-auto px-3 mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white">
               {/* Map over sections array */}
               {sections.map((section) => (
                 <div
@@ -118,4 +99,4 @@ const BathSupport = () => {
   );
 };
 
-export default BathSupport;
+export default HomeDecor;
