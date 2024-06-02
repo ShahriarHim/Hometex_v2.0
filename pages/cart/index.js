@@ -9,8 +9,8 @@ import { BsXLg } from "react-icons/bs";
 const CartPage = () => {
 
     const { cart, addItemToCart, deleteItemFromCart } = useContext(CartContext);
-        const [totalPrice, setTotalPrice] = useState(0);
-        
+    const [totalPrice, setTotalPrice] = useState(0);
+
     const cartItems = cart?.cartItems;
 
     const increaseQty = (cartItem) => {
@@ -57,18 +57,18 @@ const CartPage = () => {
     ))
 
     const [isLoading, setIsLoading] = useState(true);
-    
-        useEffect(() => {
-          if(cartItems){
-            const finalAmount = cartItems.reduce((total, cartItem) => {
-              let str = cartItem.price;
-              str = str.replace(/[,]/g, "");
-              const amount = parseInt(str) * cartItem.quantity;
-              return total + amount;
-            }, 0);
-            setTotalPrice(finalAmount);
-          }
-        }, [cartItems]);
+
+    useEffect(() => {
+        if (cartItems) {
+          const finalAmount = cartItems.reduce((total, cartItem) => {
+            let str = cartItem.price;
+            str = str.replace(/[,]/g, "");
+            const amount = parseInt(str) * cartItem.quantity;
+            return total + amount;
+          }, 0);
+          setTotalPrice(finalAmount);
+        }
+      }, [cartItems]);
 
     useEffect(() => {
         setTimeout(() => {
@@ -125,11 +125,11 @@ const CartPage = () => {
                                             <td className="py-4 px-2">
                                                 <div className="flex items-center justify-center bg-gray-100 py-2 rounded-full">
                                                     <button
-                                                        onClick={() => increaseQty(cartItem)}
-                                                        className="text-gray-600 hover:text-green-900"
-                                                        aria-label="Increase quantity"
+                                                        onClick={() => decreaseQty(cartItem)}
+                                                        className="text-gray-600 hover:text-red-900"
+                                                        aria-label="Decrease quantity"
                                                     >
-                                                        <AiFillPlusCircle size={24} />
+                                                        <AiOutlineMinusCircle size={24} />
                                                     </button>
                                                     <input
                                                         type="text"
@@ -140,15 +140,15 @@ const CartPage = () => {
                                                         readOnly
                                                     />
                                                     <button
-                                                        onClick={() => decreaseQty(cartItem)}
-                                                        className="text-gray-600 hover:text-red-900"
-                                                        aria-label="Decrease quantity"
+                                                        onClick={() => increaseQty(cartItem)}
+                                                        className="text-gray-600 hover:text-green-900"
+                                                        aria-label="Increase quantity"
                                                     >
-                                                        <AiOutlineMinusCircle size={24} />
+                                                        <AiFillPlusCircle size={24} />
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td className="py-4 px-6">TK {cartItem.total_price}</td>
+                                            <td className="py-4 px-6">TK {cartItem.price}</td>
                                             <td className="py-4 px-6">
                                                 <a
                                                     onClick={() => deleteItemFromCart(cartItem?.product_id)}
@@ -170,7 +170,13 @@ const CartPage = () => {
                             </table>
                         </div>
                     </div>
-                    {/* <div className='col-span-3 rounded-xl bg-gray-600 text-white'>
+                </div>
+
+                <Link href="/">
+                    <button className='mt-20 flex gap-2 items-center justify-between border rounded-full px-3 py-2 font-bold'><AiOutlineLeft /> <span className='text-xl'>Continue Shopping</span></button>
+                </Link>
+            </div>
+            {/* <div className='col-span-3 rounded-xl bg-gray-600 text-white'>
                         <div className='px-5 py-3'>
                             <h1 className='font-bold text-4xl pb-4 border-b'>Payment info.</h1>
                             <div className='py-5 border-b'>
@@ -240,12 +246,7 @@ const CartPage = () => {
 
                         </div>
                     </div> */}
-                </div>
 
-                <Link href="/">
-                    <button className='mt-20 flex gap-2 items-center justify-between border rounded-full px-3 py-2 font-bold'><AiOutlineLeft /> <span className='text-xl'>Continue Shopping</span></button>
-                </Link>
-            </div>
 
 
 

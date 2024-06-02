@@ -16,7 +16,7 @@ import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { Sticky } from "@/components/home/Sticky";
 import Constants from "@/ults/Constant";
 import ReactStars from "react-rating-stars-component";
-import PurchaseHistory from "./PurchaseHistory";
+import PurchaseHistory from "../PurchaseHistory";
 import ProductModal from "@/components/common/ProductModal";
 import DealOfTheWeek from "../DealOfTheWeek";
 
