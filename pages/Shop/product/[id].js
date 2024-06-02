@@ -21,6 +21,7 @@ import Link from "next/link";
 import { useRouter } from 'next/router'; // Import useRouter
 import { Router, useRouter as useRouterClient } from 'next/router'; // Import Router and useRouterClient
 import CustomerSatisfactionBar from "@/components/CustomerSatisfactionBar";
+import PriceDropNotificationButton from "./PriceDropNoti";
 
 export async function getServerSideProps(context) {
   let id = context.query.id;
@@ -182,6 +183,7 @@ const Product = ({ product }) => {
   };
   return (
     <>
+    
       <div className="container mx-auto">
         <div className="grid grid-cols-12 py-10 gap-3">
           <div className="flex flex-row col-span-5 gap-2">
@@ -546,7 +548,7 @@ const Product = ({ product }) => {
               <button className="text-xl font-bold">Find in Store</button>
             </div>
             <div className="relative">
-            <div className="text-lg font-semibold mb-2">
+            {/* <div className="text-lg font-semibold mb-2">
         Have a Question in Mind?  
    
       <button
@@ -567,7 +569,8 @@ const Product = ({ product }) => {
         </div>
         
       )}
-         </div>
+         </div> */}
+
     </div>
 
             <div className="flex flex-col items-center border p-4 rounded-lg md:flex-row md:items-start">
@@ -597,13 +600,13 @@ const Product = ({ product }) => {
             </div>
 
             <div className="fixed bottom-0 left-0 m-4">
-            <a
+            {/* <a
           href="tel:+1234567890"
           className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md flex justify-center items-center hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           <FaPhoneAlt className="h-6 w-6 mr-2" />
           Have a question? Call now
-        </a>
+        </a> */}
         
             </div>
             
@@ -640,17 +643,12 @@ const Product = ({ product }) => {
           </div>
         </div>
         <div className="alert-me-button fixed bottom-0 left-0 m-4">
-        <button class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md flex justify-center items-center hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 0 18 14.595V10a6 6 0 0 0-6-6h-4l-1-1H8v11zM14 14a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
-  </svg>
-  Get a notification when price drops below ৳ {product.price}
-</button>
-
-
+       
 
       </div>
       </div>
+      <PriceDropNotificationButton product={product} />
+{/* <PurchaseHistory/> */}
       <div className="flex flex-col items-center border p-2 rounded-lg md:flex-row md:items-start md:max-w-4xl mx-auto">
   <div className="md:w-1/4 mb-2 md:mb-0 md:mr-2">
     <img
