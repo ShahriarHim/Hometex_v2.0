@@ -1,0 +1,47 @@
+.bellIcon {
+  position: fixed;
+  bottom: 4px;
+  left: 4px;
+  z-index: 3;
+  cursor: pointer;
+  background-color: #303f9f;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.bellIcon:hover {
+  background-color: #283e8e;
+}
+
+.container {
+  position: fixed;
+  bottom: 50px; /* Adjust to move above the bell icon */
+  left: 4px;
+  z-index: 2;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.open {
+  opacity: 1;
+}
+
+.closed {
+  opacity: 0;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #303f9f;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-color: #283e8e;
+}
