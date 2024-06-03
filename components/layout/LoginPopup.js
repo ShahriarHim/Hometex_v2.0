@@ -89,10 +89,75 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
     });
   };
 
-  const regSubmit = (e) => {
+  const regSubmitHandler = async (e) => {
     e.preventDefault();
-    // Add your registration logic here
-    console.log('Registration data:', regData);
+    setIsSubmit(true);
+    
+    if (regData.password !== regData.conf_password) {
+      setShowWarning(true);
+      setIsSubmit(false);
+      return;
+    }
+
+    try {
+      const response = await fetchRegistrationData();
+      const { status, error } = await response.json();
+      console.log('API Response:', status, error);
+
+      if (status === 400) {
+        handleRegistrationError(error);
+      } else {
+        handleSuccessfulRegistration();
+        console.log('Registration successful');
+      }
+    } catch (error) {
+      console.error('Error registering:', error);
+      // Handle network or other errors
+    } finally {
+      setIsSubmit(false);
+    }
+  };
+
+  const fetchRegistrationData = () => {
+    const payload = {
+      username: regData.username,
+      password: regData.password,
+      conf_password: regData.conf_password, // Ensure this field is included
+      email: regData.email,
+      phone: regData.phone,
+      first_name: regData.first_name
+    };
+
+    console.log('Payload:', payload); // Log the payload
+
+    return fetch(Constants.BASE_URL + '/api/user-registration', {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(payload),
+    });
+  };
+
+  const handleRegistrationError = (error) => {
+    const err_list = Object.fromEntries(
+      Object.entries(error).map(([key, value]) => [key, value[0]])
+    );
+    setErr(err_list);
+  };
+
+  const handleSuccessfulRegistration = () => {
+    setErr({});
+    Swal.fire({
+      title: 'Success',
+      text: 'Registration successful!',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    });
+    togglePopup();
   };
 
   if (!showPopup) return null;
@@ -190,7 +255,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                   <div className="flex gap-3 items-center">
                     <input
                       className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      id="nme"
+                      id="first_name"
                       type="text"
                       placeholder="First Name"
                       name="first_name"
@@ -199,7 +264,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                     />
                     <input
                       className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      id="nme"
+                      id="last_name"
                       type="text"
                       placeholder="Last Name"
                       name="last_name"
@@ -260,7 +325,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
 
                   <div>
                     <button
-                      onClick={regSubmit}
+                      onClick={regSubmitHandler}
                       type="submit"
                       className="w-full bg-[#9eb7f3] hover:bg-teal-700 py-3 mt-2 text-white rounded-xl text-md font-semibold"
                     >
