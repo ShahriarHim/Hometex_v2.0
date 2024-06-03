@@ -122,13 +122,13 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
     const payload = {
       username: regData.username,
       password: regData.password,
-      conf_password: regData.conf_password, // Ensure this field is included
+      conf_password: regData.conf_password,
       email: regData.email,
       phone: regData.phone,
       first_name: regData.first_name
     };
 
-    console.log('Payload:', payload); // Log the payload
+    console.log('Payload:', payload);
 
     return fetch(Constants.BASE_URL + '/api/user-registration', {
       method: 'POST',
@@ -282,6 +282,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                       value={regData?.email || ''}
                       onChange={handleChangeRegistration}
                     />
+                    <p className="has_error"> {err?.email} </p>
                   </div>
                   <div className="mt-2">
                     <input
@@ -293,6 +294,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                       value={regData?.phone || ''}
                       onChange={handleChangeRegistration}
                     />
+                    <p className="has_error"> {err?.phone} </p>
                   </div>
                   <div className="mt-2">
                     <input
@@ -304,6 +306,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                       value={regData?.password || ''}
                       onChange={handleChangeRegistration}
                     />
+                    <p className="has_error"> {err?.password} </p>
                   </div>
                   <div className="mt-2">
                     <input
