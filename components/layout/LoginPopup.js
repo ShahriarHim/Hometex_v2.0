@@ -4,6 +4,8 @@ import { FcGoogle } from 'react-icons/fc';
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import Constants from '@/ults/Constant';
 import Swal from 'sweetalert2';
+import { GoogleOAuthProvider, GoogleLogin, useGoogleLogin, useGoogleOneTapLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
 
 const LoginPopUp = ({ showPopup, togglePopup }) => {
   const [signInData, setSignInData] = useState({ username: '', password: '' });
@@ -12,7 +14,9 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
   const [err, setErr] = useState({});
   const [showWarning, setShowWarning] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [userProfilePicture, setUserProfilePicture] = useState('');
 
+ 
   const handleSignIn = (e) => {
     const { name, value } = e.target;
     setSignInData((prevData) => ({ ...prevData, [name]: value }));
@@ -122,13 +126,13 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
     const payload = {
       username: regData.username,
       password: regData.password,
-      conf_password: regData.conf_password, // Ensure this field is included
+      conf_password: regData.conf_password,
       email: regData.email,
       phone: regData.phone,
       first_name: regData.first_name
     };
 
-    console.log('Payload:', payload); // Log the payload
+    console.log('Payload:', payload);
 
     return fetch(Constants.BASE_URL + '/api/user-registration', {
       method: 'POST',
@@ -157,12 +161,24 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
       icon: 'success',
       confirmButtonText: 'OK'
     });
-    togglePopup();
+    togglePopup();CA
   };
 
   if (!showPopup) return null;
+  const handleGoogleSuccess = (credentialResponse) => {
+    const decode=jwtDecode(credentialResponse?.credential);
+    console.log(decode);
+   
+  };
+  const handleGoogleError = () => {
+    console.log('Google Login Failed');
+    // Handle Google login error
+  };
+  const googleClientId = '91607278395-ivk7qjnbujmvkpc2mek1mliscv2vbeb4.apps.googleusercontent.com';
 
   return (
+    <GoogleOAuthProvider clientId={googleClientId}>
+
     <div className="fixed z-50 inset-0 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen">
         <div className="absolute inset-0 bg-gray-700 opacity-50"></div>
@@ -282,6 +298,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                       value={regData?.email || ''}
                       onChange={handleChangeRegistration}
                     />
+                    <p className="has_error"> {err?.email} </p>
                   </div>
                   <div className="mt-2">
                     <input
@@ -293,6 +310,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                       value={regData?.phone || ''}
                       onChange={handleChangeRegistration}
                     />
+                    <p className="has_error"> {err?.phone} </p>
                   </div>
                   <div className="mt-2">
                     <input
@@ -304,6 +322,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                       value={regData?.password || ''}
                       onChange={handleChangeRegistration}
                     />
+                    <p className="has_error"> {err?.password} </p>
                   </div>
                   <div className="mt-2">
                     <input
@@ -336,7 +355,32 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                 </div>
                 <div className="hr text-center mt-4">OR</div>
                 <div className="row social-login mt-2">
-                  <div className="col-12 text-center">
+                <div className="row social-login mt-2">
+  <div className="col-12 text-center">
+    <div className="loginBox">
+      {/* Other social login buttons */}
+
+      {googleClientId && (
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                  shape="rectangular"
+                  theme="outline"
+                  size="large"
+                  text="signin_with"
+                  logo_alignment="left"
+                  width="100%"
+                />
+      )}
+    </div>
+    <div>
+      {userProfilePicture && (
+        <img src={userProfilePicture} alt="User Profile" />
+      )}
+    </div>
+  </div>
+</div>
+                  {/* <div className="col-12 text-center">
                     <div className="loginBox">
                       <button className="facebook social-btn py-2 w-full text-center border rounded flex items-center justify-center">
                         <FaFacebook className="text-blue-500 mr-2 w-6 h-6" />
@@ -348,8 +392,10 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                         <FcGoogle className="mr-2 w-6 h-6" />
                         <span className="font-semibold text-lg">
                           Continue with Google
+
                         </span>
                       </button>
+                      
                       <button className="apple social-btn py-2 w-full text-center border rounded flex items-center justify-center mt-2">
                         <FaApple className="mr-2 w-6 h-6" />
                         <span className="font-semibold text-lg">
@@ -357,7 +403,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                         </span>
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <p className="text-center">
                   By continuing, you agree to Hometex's{' '}
@@ -378,6 +424,8 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
         </div>
       </div>
     </div>
+    </GoogleOAuthProvider>
+
   );
 };
 
