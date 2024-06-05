@@ -246,7 +246,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                   </div>
 
                   <div className="secondary ft-link-p text-right py-2">
-                    <a className="action remind" href="">
+                    <a className="action remind" href="/account/Forgotten">
                       <span>Forgot Your Password?</span>
                     </a>
                   </div>
