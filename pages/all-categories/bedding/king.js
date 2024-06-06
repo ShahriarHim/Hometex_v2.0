@@ -1,10 +1,10 @@
 import Link from "next/link";
-import React, { useState, useEffect, useMemo } from "react";
+import React, {useRef, useState, useEffect, useMemo } from "react";
 import Slider from "components/allCategory/Slider";
 import { MdFavorite } from "react-icons/md";
 import { CiStar } from "react-icons/ci";
 import { RiShoppingBasketFill, RiExchangeFill } from "react-icons/ri";
- 
+import Swal from 'sweetalert2';
 import {
   FaStar,
   FaShoppingCart,
@@ -20,6 +20,7 @@ import PurchaseHistory from "../PurchaseHistory";
 import ProductModal from "@/components/common/ProductModal";
 import DealOfTheWeek from "../DealOfTheWeek";
 import ProductCard from "@/components/layout/ProductCard";
+import WishComponent from "@/components/layout/WishComponent/WishComponent";
 
 const brands = ["Hometex Bangladesh M.", "Desiattire"];
 
@@ -70,7 +71,7 @@ const King = () => {
       sec: "45",
     },
   };
-
+  const [redirect, setRedirect] = useState(false); // Stat
   const [products, setProducts] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [isBrandsOpen, setIsBrandsOpen] = useState(true);
@@ -104,7 +105,35 @@ const King = () => {
   const closePopup = () => {
     setIsPopupVisible(false);
   };
+  const [wishItems, setWishItems] = useState([]);
+  const [isWishOpen, setIsWishOpen] = useState(false);
+  const wishRef = useRef(null);
 
+  const addToWishlist = (product) => {
+    const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
+    const updatedWishItems = [...wishItems, product];
+    localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
+    console.log(updatedWishItems);
+    setWishItems(updatedWishItems);
+  
+    // Show SweetAlert notification
+    Swal.fire({
+      icon: 'success',
+      title: 'Added to Wishlist',
+      text: `${product.name} has been added to your wishlist!`,
+    }).then(() => {
+      // Redirect to the same page
+      setRedirect(true);
+    });
+  };
+  
+  useEffect(() => {
+    const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
+    setWishItems(wishItems);
+  }, []);
+
+
+ 
   useEffect(() => {
     fetch(`${Constants.BASE_URL}/api/products-web`)
       .then((response) => response.json())
@@ -432,10 +461,19 @@ const King = () => {
           <div className="md:col-span-3">
             <Slider />
             <h2 className="font-bold text-xl mb-3">Products</h2>
+            
+            {/* <WishComponent
+        wishRef={wishRef}
+        handleWishClick={handleWishClick}
+        wishItems={wishItems}
+        isWishOpen={isWishOpen}
+        removeFromWishlist={removeFromWishlist}
+      /> */}
+
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
 
             {displayedProducts.map((product) => (
-        <ProductCard key={product.id} product={product} openModal={openModal} />
+        <ProductCard key={product.id} product={product} openModal={openModal}  addToWishlist={addToWishlist} />
       ))}
     </div>
 

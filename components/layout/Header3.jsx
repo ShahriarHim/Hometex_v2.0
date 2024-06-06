@@ -39,7 +39,7 @@ import SearchBarPopup from "./searchPopup";
 import LoginPopup from "./LoginPopup";
 import { useRouter } from "next/router"; // Ensure this is imported
 import CartComponent from "./CartComponent/CartComponent";
-
+import WishComponent  from "./WishComponent/WishComponent";
 const Header3 = () => {
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState(0);
@@ -60,7 +60,7 @@ const Header3 = () => {
       router.push("/Checkout");
     }
   };
-  
+ 
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -81,34 +81,34 @@ const Header3 = () => {
     // setShowPopup(false);
   };
 
-  // const handleSignup = () => {
-  //   togglePopup();
-  //   setShowPopup(false);
-  // };
-  // Registration
+ 
+  const [wishItems, setWishItems] = useState([]);
+  const [isWishOpen, setIsWishOpen] = useState(false);
+  const wishRef = useRef(null);
+  const handleWishClick = () => {
+    setIsWishOpen(!isWishOpen);
+  };
 
-  // const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
-  // const passwordsMatch = password === confirmPassword;
-  // const showWarning = confirmPassword.length > 0 && !passwordsMatch;
-  // const [value, setValue] = useState("");
-  // const reg_init_value = {
-  //   user_type: "1",
-  //   first_name: "",
-  //   last_name: "",
-  //   email: "",
-  //   phone: "",
-  //   password: "",
-  //   conf_password: "",
-  //   is_subscribe: "",
-  // };
-  // const [regData, setRegData] = useState(reg_init_value);
-  // const [err, setErr] = useState({});
-  // const handleChangeRegistration = (e) => {
-  //   setRegData({ ...regData, [e.target.name]: e.target.value });
-  // };
+  const addToWishlist = (product) => {
+    const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
+    const updatedWishItems = [...wishItems, product];
+    localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
+    console.log(updatedWishItems);
+    setWishItems(updatedWishItems);
+  };
+  useEffect(() => {
+    const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
+    setWishItems(wishItems);
+  }, []);
 
-  console.log();
+  const removeFromWishlist = (productId) => {
+    const storedWishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
+    const updatedWishItems = storedWishItems.filter((item) => item.id !== productId);
+    localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
+    setWishItems(updatedWishItems);
+  };
+
+
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const { wlist } = useContext(WishListContext);
@@ -597,18 +597,15 @@ const Header3 = () => {
                 </div>
 
                 <button type="button" onClick={handleButtonClick} className="">
-                  <div className="px-2 flex flex-col items-center text-center">
-                    <FaHeart
-                      className="h-6 w-6 text-red-500"
-                      aria-hidden="true"
-                    />
-                    <button
-                      onClick={handleWishListClick}
-                      className="text-sm mt-2 font-semibold text-gray-700"
-                    >
-                      Wishlist
-                    </button>
-                  </div>
+   
+                <WishComponent
+        wishRef={wishRef}
+        handleWishClick={handleWishClick}
+        wishItems={wishItems}
+        isWishOpen={isWishOpen}
+        removeFromWishlist={removeFromWishlist}
+      />
+
                   {auth_token && <span>{wlist?.length || 0}</span>}
                 </button>
 
@@ -625,6 +622,8 @@ const Header3 = () => {
 
 
               </div>
+
+              
             </div>
           </div>
           <LoginPopup

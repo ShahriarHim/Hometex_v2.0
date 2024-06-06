@@ -5,7 +5,7 @@ import { RiShoppingBasketFill, RiExchangeFill } from 'react-icons/ri';
 import { MdFavorite } from 'react-icons/md';
 import ReactStars from 'react-rating-stars-component';
 
-const ProductCard = ({ product, openModal }) => {
+const ProductCard = ({ product, openModal, addToWishlist }) => {
   return (
     <div key={product.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 relative">
       <Link href={`/Shop/product/${product.id}`}>
@@ -25,6 +25,7 @@ const ProductCard = ({ product, openModal }) => {
           size={34}
           color="#fff"
           className="bg-[#999] hover:bg-[#009688] m-2 p-2"
+          onClick={() => addToWishlist(product)}
         />
         <RiExchangeFill
           size={34}

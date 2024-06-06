@@ -15,7 +15,7 @@ const CartComponent = ({
   handleCheckout
 }) => {
   return (
-    <div className="relative" ref={cartRef}>
+    <div className="relative" ref={cartRef} style={{ zIndex: 10 }}>
       <div className="relative">
         <button onClick={handleCartClick} type="button">
           <div className="px-2 flex flex-col items-center text-center">
@@ -31,7 +31,7 @@ const CartComponent = ({
       </div>
 
       {isOpen && (
-        <div className="fixed inset-y-0 right-0 w-96 z-50 shadow-xl bg-gradient-to-b from-gray-700 to-gray-900 text-white overflow-hidden transform translate-x-0 transition-transform ease-out duration-300">
+        <div className="fixed inset-y-0 right-0 w-96 z-50 shadow-xl bg-gradient-to-b from-gray-700 to-gray-900 text-white overflow-hidden transform translate-x-0 transition-transform ease-out duration-300" style={{ zIndex: 10000 }}>
           <div className="flex justify-between items-center p-4 border-b border-gray-600">
             <h2 className="text-xl font-semibold">Your Cart</h2>
             <button

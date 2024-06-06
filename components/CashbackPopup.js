@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import styles from "@/styles/CashbackPopup.module.css";
-import Link from "next/link";
 import LoginPopup from "./layout/LoginPopup";
 
 const CashbackPopup = ({ onClose }) => {
@@ -34,11 +33,7 @@ const CashbackPopup = ({ onClose }) => {
         </div>
         <a href="#" className={styles.popupTerms}>T&amp;C</a>
       </div>
-      {showLoginPopup && <LoginPopup
-        showPopup={showLoginPopup}
-        togglePopup={toggleLoginPopup}
-        
-      />}
+      {showLoginPopup && <LoginPopup showPopup={showLoginPopup} togglePopup={toggleLoginPopup} />}
     </div>
   );
 };
