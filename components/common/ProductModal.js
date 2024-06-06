@@ -1,15 +1,20 @@
-import CartContext from "@/context/CartContext";
-import React, { useState, useEffect, useRef, useContext } from "react";
-import { RiCloseLine } from "react-icons/ri";
-import { FaStar } from "react-icons/fa";
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { RiCloseLine } from 'react-icons/ri';
+import { FaStar, FaPrint } from 'react-icons/fa';
+import CartContext from '@/context/CartContext';
+import styles from '@/styles/ProductModal.module.css';
+import Invoice from '../invoice/Invoice';
+import ProductsTabs from '../home/ProductsTabs';
+
 
 const ProductModal = ({ product, onClose }) => {
   const { addItemToCart } = useContext(CartContext);
   const [productQty, setProductQty] = useState(1);
-  const [selectedSize, setSelectedSize] = useState("M");
-  const [selectedColor, setSelectedColor] = useState("blue");
+  const [selectedSize, setSelectedSize] = useState('38');
+  const [selectedColor, setSelectedColor] = useState('blue');
+  const [showInvoice, setShowInvoice] = useState(false); // Add showInvoice state
   const modalRef = useRef();
-
+ 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       onClose();
@@ -17,9 +22,9 @@ const ProductModal = ({ product, onClose }) => {
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -37,7 +42,7 @@ const ProductModal = ({ product, onClose }) => {
       size: selectedSize,
       color: selectedColor,
     });
-    onClose(); // Optionally close the modal on adding to cart
+    onClose();
   };
 
   const increaseQuantity = () => {
@@ -48,133 +53,155 @@ const ProductModal = ({ product, onClose }) => {
     setProductQty((prevQty) => Math.max(prevQty - 1, 1));
   };
 
+ 
+  const toggleInvoice = () => {
+    setShowInvoice(!showInvoice);
+  };
+
   if (!product) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4 py-6 sm:px-0 z-50">
-      <div
-        ref={modalRef}
-        className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-2xl sm:w-full"
-      >
-        <div className="px-4 py-5 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
+    <div className={styles.overlay}>
+      <div ref={modalRef} className={styles.modal}>
+        <button className={styles.closeButton} onClick={onClose}>
+          <RiCloseLine size="24" />
+        </button>
+  
+        <div className={styles.modalContent}>
+          <div className={styles.imageSection}>
             <img
               src={product.primary_photo}
               alt={product.name}
-              className="rounded-md"
+              className={styles.productImage}
             />
+            <div className={styles.thumbnailList}>
+              {/* Thumbnails can be mapped here */}
+              <img
+                src={product.primary_photo}
+                alt={product.name}
+                className={styles.thumbnail}
+              />
+              <img
+                src={product.primary_photo}
+                alt={product.name}
+                className={styles.thumbnail}
+              />
+              <img
+                src={product.primary_photo}
+                alt={product.name}
+                className={styles.thumbnail}
+              />
+            </div>
           </div>
-          <div className="flex flex-col justify-between">
-            <div>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                {product.name}
-              </h3>
-              <p className="mt-2 text-sm text-gray-500">
-                Price: {product.price}
-              </p>
-              <div className="flex items-center mt-2">
-                <input
-                  type="checkbox"
-                  checked={product.stock > 0}
-                  readOnly
-                  className="form-checkbox text-blue-500"
+          <div className={styles.detailsSection}>
+            <h1 className={styles.productDetailsTitle}>Product Details</h1>
+            <h2 className={styles.productName}>{product.name}</h2>
+            <p className={styles.productDescription}>
+              {/* Static description */}
+              The product is a classic and stylish sneaker that combines comfort and durability. With its iconic design and high-quality materials, it's a must-have for any sneaker enthusiast. Whether you're hitting the streets or just hanging out, these sneakers will keep you looking fresh and feeling great.
+            </p>
+            <div className={styles.rating}>
+              {[...Array(5)].map((star, index) => (
+                <FaStar
+                  key={index}
+                  color={index < product.rating ? '#ffc107' : '#e4e5e9'}
                 />
-                <span className="ml-2 text-gray-700">
-                  In Stock {product.stock}
+              ))}
+              <span className={styles.ratingValue}>4.5 (60)</span>
+            </div>
+            <div className={styles.colorOptions}>
+              {['blue', 'red', 'orange', 'green'].map((color) => (
+                <span
+                  key={color}
+                  onClick={() => setSelectedColor(color)}
+                  className={`${styles.colorOption} ${
+                    selectedColor === color ? styles.selectedColor : ''
+                  }`}
+                  style={{ backgroundColor: color }}
+                />
+              ))}
+            </div>
+            <div className={styles.sizeOptions}>
+              {['37', '38', '39', '40', '41', '42'].map((size) => (
+                <span
+                  key={size}
+                  onClick={() => setSelectedSize(size)}
+                  className={`${styles.sizeOption} ${
+                    selectedSize === size ? styles.selectedSize : ''
+                  }`}
+                >
+                  {size}
                 </span>
-              </div>
-              <div className="flex items-center mt-2">
-                {[...Array(5)].map((star, index) => (
-                  <FaStar
-                    key={index}
-                    color={index < product.rating ? "#ffc107" : "#e4e5e9"}
-                    className="mr-1"
-                  />
-                ))}
-              </div>
+              ))}
             </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Overview</p>
-              <p className="text-gray-700">
-                Premium Quality {product.category?.name} Product
-              </p>
+            <div className={styles.price}>
+              ${parseFloat(product.price).toFixed(2)}
             </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Size</p>
-              <div className="flex gap-2">
-                {["S", "M", "L", "XL"].map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 rounded-md ${selectedSize === size ? "bg-blue-500 text-white" : "bg-gray-100"
-                      }`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Color</p>
-              <div className="flex gap-2">
-                {["blue", "red", "orange", "green"].map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => setSelectedColor(color)}
-                    className={`w-6 h-6 rounded-full ${selectedColor === color ? "ring-2 ring-blue-500" : ""
-                      }`}
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Quantity</p>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={decreaseQuantity}
-                  className="px-2 py-1 bg-gray-200 rounded-md"
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  className="block w-16 px-4 py-2 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline-gray"
-                  min="1"
-                  max={product.stock}
-                  step="1"
-                  value={productQty}
-                  onChange={(e) => {
-                    const newQty = Math.min(Math.max(e.target.value, 1), product.stock);
-                    setProductQty(newQty);
-                  }}
-                />
-                <button
-                  onClick={increaseQuantity}
-                  className="px-2 py-1 bg-gray-200 rounded-md"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-            <div className="flex flex-col pt-2 gap-2 items-center">
+            <div className={styles.quantitySelector}>
               <button
-                onClick={addToCartHandler}
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                onClick={decreaseQuantity}
+                className={styles.quantityButton}
               >
-                Add to Cart
+                -
+              </button>
+              <input
+                type="number"
+                className={styles.quantityInput}
+                min="1"
+                max={product.stock}
+                step="1"
+                value={productQty}
+                onChange={(e) =>
+                  setProductQty(Math.min(Math.max(e.target.value, 1), product.stock))
+                }
+              />
+              <button
+                onClick={increaseQuantity}
+                className={styles.quantityButton}
+              >
+                +
               </button>
             </div>
+            <div className={styles.buttonGroup}>
+              <button
+                onClick={addToCartHandler}
+                className={`${styles.showInvoiceButton} bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
+                >
+                Add to cart
+              </button>
+           
+              <button
+    
+  onClick={toggleInvoice}
+  className={`${styles.showInvoiceButton} bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
+>
+  Show Invoice
+</button>
+            </div>
           </div>
         </div>
-        <div className="absolute top-0 right-0 pt-4 pr-4">
-          <button
-            onClick={onClose}
-            className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-          >
-            <RiCloseLine size="24" />
-          </button>
-        </div>
+        <button className={`${styles.showInvoiceButton} bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}>Next Product</button>
+        {showInvoice && (
+          <Invoice
+            order={{
+              id: 123456,
+              date: 'May 16, 2023',
+              customer: {
+                name: 'John Doe',
+                email: 'john.doe@example.com',
+                address: '1234 Street, City, Country',
+              },
+            }}
+            lineItems={[
+              {
+                id: 1,
+                name: product.name,
+                quantity: productQty,
+                price: product.price,
+              },
+            ]}
+          />
+        )}
       </div>
     </div>
   );

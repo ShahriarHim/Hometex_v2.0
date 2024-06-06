@@ -7,7 +7,7 @@ import Invoice from './Invoice'
 
 const OrderHistory = () => {
     const orders = [
-        { id: 1, orderNumber: 'ORD001', date: '2023-05-14', total: 100 },
+        { id: 1, orderNumber: 'OdfbzRD001', date: '2023-05-14', total: 100 },
         { id: 2, orderNumber: 'ORD002', date: '2023-05-15', total: 200 },
         { id: 3, orderNumber: 'ORD003', date: '2023-05-16', total: 150 },
     ];
