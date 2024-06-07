@@ -71,6 +71,27 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
     });
   };
 
+  const handleGuestLogin = () => {
+    const guestToken = generateGuestToken();
+    setCookie('home_text_token', guestToken, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+    });
+    window.location.href = '/';
+    Swal.fire({
+      title: 'Success',
+      text: 'Guest login successful!',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    });
+  };
+ const generateGuestToken = () => {
+    // Generate a random token or use a predefined guest token
+    const guestToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    return guestToken;
+  };
+
+
   const handleLoginError = (error) => {
     const err_list = Object.fromEntries(
       Object.entries(error).map(([key, value]) => [key, value[0]])
@@ -262,6 +283,14 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                     </button>
                   </div>
                 </fieldset>
+                <div className="mt-4">
+            <button
+              onClick={handleGuestLogin}
+              className="w-full bg-gray-300 hover:bg-gray-400 py-3 text-gray-800 rounded-xl text-md font-semibold"
+            >
+              Continue as Guest
+            </button>
+          </div>
               </div>
               <div className="w-full">
                 <div>

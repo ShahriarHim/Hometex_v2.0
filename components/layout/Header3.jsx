@@ -606,7 +606,7 @@ const Header3 = () => {
         removeFromWishlist={removeFromWishlist}
       />
 
-                  {auth_token && <span>{wlist?.length || 0}</span>}
+                  {auth_token && <span>{wlist?.length > 0}</span>}
                 </button>
 
                 <CartComponent
