@@ -1,13 +1,27 @@
-// ProductCard.js
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { RiShoppingBasketFill, RiExchangeFill } from 'react-icons/ri';
 import { MdFavorite } from 'react-icons/md';
 import ReactStars from 'react-rating-stars-component';
 
 const ProductCard = ({ product, openModal, addToWishlist }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
-    <div key={product.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 relative">
+    <div
+      key={product.id}
+      className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 overflow-hidden"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Link href={`/Shop/product/${product.id}`}>
         <img
           src={product.primary_photo}
@@ -15,7 +29,11 @@ const ProductCard = ({ product, openModal, addToWishlist }) => {
           className="w-full object-fit rounded-t-lg"
         />
       </Link>
-      <div className="absolute top-10 right-0 p-2 opacity-0 hover:opacity-100 transition duration-300 bg-[#999]">
+      <div
+        className={`absolute top-10 right-0 p-2 bg-[#999] ${
+          isHovered ? 'opacity-100' : 'opacity-0'
+        } transition-opacity duration-300`}
+      >
         <RiShoppingBasketFill
           size={34}
           color="#fff"
