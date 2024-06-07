@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
-import { FaStar, FaPrint } from 'react-icons/fa';
 import CartContext from '@/context/CartContext';
 import styles from '@/styles/ProductModal.module.css';
 import Invoice from '../invoice/Invoice';
-import ProductsTabs from '../home/ProductsTabs';
-
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const ProductModal = ({ product, onClose }) => {
   const { addItemToCart } = useContext(CartContext);
   const [productQty, setProductQty] = useState(1);
   const [selectedSize, setSelectedSize] = useState('38');
   const [selectedColor, setSelectedColor] = useState('blue');
-  const [showInvoice, setShowInvoice] = useState(false); // Add showInvoice state
+  const [showInvoice, setShowInvoice] = useState(false);
+  const [showShippingInfo, setShowShippingInfo] = useState(false);
   const modalRef = useRef();
- 
+
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       onClose();
@@ -53,12 +54,28 @@ const ProductModal = ({ product, onClose }) => {
     setProductQty((prevQty) => Math.max(prevQty - 1, 1));
   };
 
- 
+  const handleQuantityChange = (e) => {
+    const newQty = Math.min(Math.max(parseInt(e.target.value, 10) || 1, 1), product.stock);
+    setProductQty(newQty);
+  };
+
   const toggleInvoice = () => {
     setShowInvoice(!showInvoice);
   };
 
+  const handleShippingInfoChange = (e) => {
+    setShowShippingInfo(e.target.checked);
+  };
+
   if (!product) return null;
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
 
   return (
     <div className={styles.overlay}>
@@ -66,121 +83,119 @@ const ProductModal = ({ product, onClose }) => {
         <button className={styles.closeButton} onClick={onClose}>
           <RiCloseLine size="24" />
         </button>
-  
-        <div className={styles.modalContent}>
-          <div className={styles.imageSection}>
-            <img
-              src={product.primary_photo}
-              alt={product.name}
-              className={styles.productImage}
-            />
-            <div className={styles.thumbnailList}>
-              {/* Thumbnails can be mapped here */}
-              <img
-                src={product.primary_photo}
-                alt={product.name}
-                className={styles.thumbnail}
-              />
-              <img
-                src={product.primary_photo}
-                alt={product.name}
-                className={styles.thumbnail}
-              />
-              <img
-                src={product.primary_photo}
-                alt={product.name}
-                className={styles.thumbnail}
-              />
+        <div className={styles.container}>
+          <div className={styles.card}>
+            <div className={styles.shoeBackground}>
+              <img src={product.primary_photo} alt={product.name} className={`${styles.shoe} ${styles.show}`} />
+              <div className={styles.gradients}>
+                <div className={`${styles.gradient} ${styles.first}`} color="blue"></div>
+                <div className={`${styles.gradient}`} color="red"></div>
+                <div className={`${styles.gradient}`} color="green"></div>
+                <div className={`${styles.gradient}`} color="orange"></div>
+                <div className={`${styles.gradient}`} color="black"></div>
+              </div>
             </div>
-          </div>
-          <div className={styles.detailsSection}>
-            <h1 className={styles.productDetailsTitle}>Product Details</h1>
-            <h2 className={styles.productName}>{product.name}</h2>
-            <p className={styles.productDescription}>
-              {/* Static description */}
-              The product is a classic and stylish sneaker that combines comfort and durability. With its iconic design and high-quality materials, it's a must-have for any sneaker enthusiast. Whether you're hitting the streets or just hanging out, these sneakers will keep you looking fresh and feeling great.
-            </p>
-            <div className={styles.rating}>
-              {[...Array(5)].map((star, index) => (
-                <FaStar
-                  key={index}
-                  color={index < product.rating ? '#ffc107' : '#e4e5e9'}
-                />
-              ))}
-              <span className={styles.ratingValue}>4.5 (60)</span>
-            </div>
-            <div className={styles.colorOptions}>
-              {['blue', 'red', 'orange', 'green'].map((color) => (
-                <span
-                  key={color}
-                  onClick={() => setSelectedColor(color)}
-                  className={`${styles.colorOption} ${
-                    selectedColor === color ? styles.selectedColor : ''
-                  }`}
-                  style={{ backgroundColor: color }}
-                />
-              ))}
-            </div>
-            <div className={styles.sizeOptions}>
-              {['37', '38', '39', '40', '41', '42'].map((size) => (
-                <span
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`${styles.sizeOption} ${
-                    selectedSize === size ? styles.selectedSize : ''
-                  }`}
-                >
-                  {size}
-                </span>
-              ))}
-            </div>
-            <div className={styles.price}>
-              ${parseFloat(product.price).toFixed(2)}
-            </div>
-            <div className={styles.quantitySelector}>
-              <button
-                onClick={decreaseQuantity}
-                className={styles.quantityButton}
-              >
-                -
-              </button>
-              <input
-                type="number"
-                className={styles.quantityInput}
-                min="1"
-                max={product.stock}
-                step="1"
-                value={productQty}
-                onChange={(e) =>
-                  setProductQty(Math.min(Math.max(e.target.value, 1), product.stock))
-                }
-              />
-              <button
-                onClick={increaseQuantity}
-                className={styles.quantityButton}
-              >
-                +
-              </button>
-            </div>
-            <div className={styles.buttonGroup}>
-              <button
-                onClick={addToCartHandler}
-                className={`${styles.showInvoiceButton} bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
-                >
-                Add to cart
-              </button>
-           
-              <button
-    
-  onClick={toggleInvoice}
-  className={`${styles.showInvoiceButton} bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
->
-  Show Invoice
-</button>
+            <div className={styles.info}>
+              <div className={styles.shoeName}>
+                <div>
+                  <h1 className={styles.big}>{product.name}</h1>
+                  <span className={styles.new}>new</span>
+                </div>
+                <h3 className={styles.small}>Running Collection</h3>
+              </div>
+              <div className={styles.description}>
+                <h3 className={styles.title}>Product Info</h3>
+                <Slider {...sliderSettings}>
+                  <div>
+                    <div className={styles.colorContainer}>
+                      <h3 className={styles.title}>Color</h3>
+                      <div className={styles.colors}>
+                        {['blue', 'red', 'green', 'orange', 'black'].map((color) => (
+                          <span
+                            key={color}
+                            className={`${styles.color} ${selectedColor === color ? styles.active : ''}`}
+                            onClick={() => setSelectedColor(color)}
+                            style={{ backgroundColor: color }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div className={styles.sizeContainer}>
+                      <h3 className={styles.title}>Size</h3>
+                      <div className={styles.sizes}>
+                        {['37', '38', '39', '40', '41', '42'].map((size) => (
+                          <span
+                            key={size}
+                            className={`${styles.size} ${selectedSize === size ? styles.active : ''}`}
+                            onClick={() => setSelectedSize(size)}
+                          >
+                            {size}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mb-2">
+                      <p className="font-semibold mb-2">Quantity</p>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={decreaseQuantity}
+                          className="px-2 py-1 bg-gray-200 rounded-md"
+                        >
+                          -
+                        </button>
+                        <input
+                          type="number"
+                          className="block w-16 px-4 py-2 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline-gray"
+                          min="1"
+                          max={product.stock}
+                          step="1"
+                          value={productQty}
+                          onChange={handleQuantityChange}
+                        />
+                        <button
+                          onClick={increaseQuantity}
+                          className="px-2 py-1 bg-gray-200 rounded-md"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                    <div className={styles.buyPrice}>
+                      <div className={styles.price}>
+                        <span>$</span>
+                        <h1>{product.price}</h1>
+                      </div>
+                      <button className={styles.buy} onClick={addToCartHandler}>
+                        Add to cart
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <p className={styles.text}>{product.description}</p>
+                    <button className={styles.buy} onClick={toggleInvoice}>
+                      Show Invoice
+                    </button>
+                    <div className={styles.checkboxContainer}>
+                      <input
+                        type="checkbox"
+                        id="shippingInfo"
+                        checked={showShippingInfo}
+                        onChange={handleShippingInfoChange}
+                      />
+                      <label htmlFor="shippingInfo">Add Shipping and Pricing Info</label>
+                    </div>
+                    {showShippingInfo && (
+                      <div className={styles.shippingInfo}>
+                        <p className={styles.text}>Shipping: Free standard shipping.</p>
+                        <p className={styles.text}>Price: ${product.price}</p>
+                      </div>
+                    )}
+                  </div>
+                </Slider>
+              </div>
             </div>
           </div>
         </div>
-        <button className={`${styles.showInvoiceButton} bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}>Next Product</button>
         {showInvoice && (
           <Invoice
             order={{
