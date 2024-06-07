@@ -13,20 +13,7 @@ const WishComponent = (props) => {
     removeFromWishlist(productId);
   };
 
-  const addToWishlistHandler = (wishItem) => {
-    console.log('Adding to wishlist:', wishItem);
-    // Add your logic for adding to wishlist here
-
-    // Show SweetAlert notification
-    Swal.fire({
-      icon: 'success',
-      title: 'Added to Wishlist',
-      text: `${wishItem.name} has been added to your wishlist!`,
-    }).then(() => {
-      // Redirect to the same page
-      setRedirect(true);
-    });
-  };
+ 
 
   // Redirect to the wishlist page
   if (redirect) {
