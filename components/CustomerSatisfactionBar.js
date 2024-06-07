@@ -49,17 +49,32 @@ const CustomerSatisfactionBar = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.bar}>
-                <div className={styles.red}></div>
-                <div className={styles.orange}></div>
-                <div className={styles.yellow}></div>
-                <div className={styles.green}></div>
-                <div className={styles.blue}></div>
-            </div>
-            <div className={styles.cursor} draggable="true">
-                <span className={styles.emoji}>{['😠', '😞', '😐', '😊', '😁'][emojiIndex]}</span>
-            </div>
+    <div className={styles.bar}>
+        <div className={styles.barWrapper}>
+            <div className={styles.red}></div>
+            <div className={styles.barText}>Very Dissatisfied</div>
         </div>
+        <div className={styles.barWrapper}>
+            <div className={styles.orange}></div>
+            <div className={styles.barText}>Dissatisfied</div>
+        </div>
+        <div className={styles.barWrapper}>
+            <div className={styles.yellow}></div>
+            <div className={styles.barText}>Neutral</div>
+        </div>
+        <div className={styles.barWrapper}>
+            <div className={styles.green}></div>
+            <div className={styles.barText}>Satisfied</div>
+        </div>
+        <div className={styles.barWrapper}>
+            <div className={styles.blue}></div>
+            <div className={styles.barText}>Very Satisfied</div>
+        </div>
+    </div>
+    <div className={styles.cursor} draggable="true">
+        <span className={styles.emoji}>{['😠', '😞', '😐', '😊', '😁'][emojiIndex]}</span>
+    </div>
+</div>
     );
 };
 

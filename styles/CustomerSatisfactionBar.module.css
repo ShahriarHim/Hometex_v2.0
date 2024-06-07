@@ -1,6 +1,6 @@
 .container {
     position: relative;
-    width: 30%;
+    width:35%;
     height: auto; /* Adjusted to auto to accommodate dynamic content */
     display: flex;
     flex-direction: column; /* Changed to column to stack items vertically */
@@ -56,4 +56,22 @@
 .emoji {
     font-size: 24px; /* Increased size */
     pointer-events: none;
+}
+
+.barWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Each bar occupies 1/5th of the total width */
+}
+
+.barWrapper div:first-child {
+    width: 100%;
+    height: 40px;
+}
+
+.barText {
+    text-align: center;
+    color: #000; /* Black text for better visibility */
+    font-weight: bold; /* Bold text for emphasis */
 }
