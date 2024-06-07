@@ -11,6 +11,10 @@ const Checkout = () => {
     country: "",
     city: "",
     postcode: "",
+    Division : "",
+    District : "",
+
+
   });
   const router = useRouter();
 
@@ -23,7 +27,7 @@ const Checkout = () => {
   
     if (name === "country") {
       // Fetch district data based on the selected division
-      fetchDistricts(value);
+      // fetchDistricts(value);
     } else if (name === "city") {
       // Fetch area data based on the selected district
       fetch(`https://htbapi.hometexbd.ltd/api/area/${value}`)
@@ -41,6 +45,13 @@ const Checkout = () => {
   useEffect(() => {
     fetchDivisions();
   }, []);
+
+  useEffect(() => {
+    if(formData.Division) {
+      fetchDistricts(formData.Division);
+    }
+  }, [formData.Division]);
+  
   
   const fetchDivisions = () => {
     fetch("https://htbapi.hometexbd.ltd/api/divisions")
@@ -51,6 +62,7 @@ const Checkout = () => {
   
   const fetchDistricts = (divisionId) => {
     fetch(`https://htbapi.hometexbd.ltd/api/district/${divisionId}`)
+ 
       .then((response) => response.json())
       .then((data) => setDistricts(data))
       .catch((error) => console.error("Error fetching districts:", error));
@@ -63,7 +75,7 @@ const Checkout = () => {
         const { latitude, longitude } = position.coords;
         console.log("Latitude: ", latitude);
         console.log("Longitude: ", longitude);
-        setFormData({ ...formData, postcode: "12345" });
+        setFormData(prevFormData => ({ ...prevFormData, postcode: "12345" }));
       }, (error) => {
         console.error("Error getting location: ", error);
       });
@@ -72,28 +84,49 @@ const Checkout = () => {
     }
   };
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   emailjs.send('service_27al8ux', 'template_d11y0qg', formData, 'GXi-JhoKe7IM5tmqe')
+  //     .then((result) => {
+  //       console.log(result.text);
+  //       setFormData({
+  //         firstName: "",
+  //         lastName: "",
+  //         email: "",
+  //         phoneNumber: "",
+  //         country: "",
+  //         city: "",
+  //         postcode: "",
+  //         Division : "",
+  //         District : "",
+  //       });
+  //       router.push('/totalPrice');
+  //     }, (error) => {
+  //       console.log(error.text);
+  //       alert("Failed to submit the form. Please try again.");
+  //     });
+  // };
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    emailjs.send('service_27al8ux', 'template_d11y0qg', formData, 'GXi-JhoKe7IM5tmqe')
-      .then((result) => {
-        console.log(result.text);
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNumber: "",
-          country: "",
-          city: "",
-          postcode: "",
-        });
-        router.push('/totalPrice');
-      }, (error) => {
-        console.log(error.text);
-        alert("Failed to submit the form. Please try again.");
-      });
+  
+    // Reset the form data
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      country: "",
+      city: "",
+      postcode: "",
+      Division: "",
+      District: "",
+    });
+  
+    // Navigate to the specified page
+    router.push('/totalPrice');
   };
-
+  
 
   return (
     <div className="py-10">
@@ -330,27 +363,26 @@ const Checkout = () => {
                   <option value="IQ">Iraq</option>
                   <option value="IE">Ireland</option>
                   <option value="IM">Isle of Man</option>
-                  <option value="IL">Israel</option>
+                   
                   <option value="IT">Italy</option>
                   <option value="JM">Jamaica</option>
                 </select>
               </div>
 
             
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
   <div>
     <label
-      htmlFor="country"
+      htmlFor="Division"
       className="block text-sm font-medium text-gray-700"
     >
       Select Division *
     </label>
     <select
-      // id="country"
-      // name="country"
-      // value={formData.country}
-      // onChange={handleChange}
-      // required
+      name="Division"
+      value={formData.Division}
+      onChange={handleChange}
+      required
       className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
     >
       <option value="">Select Division</option>
@@ -364,15 +396,14 @@ const Checkout = () => {
 
   <div>
     <label
-      htmlFor="city"
+      htmlFor="District"
       className="block text-sm font-medium text-gray-700"
     >
       Select District *
     </label>
     <select
-      id="city"
-      name="city"
-      value={formData.city}
+      name="District"
+      value={formData.District}
       onChange={handleChange}
       required
       className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -385,9 +416,8 @@ const Checkout = () => {
       ))}
     </select>
   </div>
-
- 
 </div>
+
             </div>
          
             <p>
