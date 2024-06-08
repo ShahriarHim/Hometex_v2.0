@@ -183,7 +183,7 @@ const Product = ({ product }) => {
   };
   return (
     <>
-    
+
       <div className="container mx-auto">
         <div className="grid grid-cols-12 py-10 gap-3">
           <div className="flex flex-row col-span-5 gap-2">
@@ -208,10 +208,10 @@ const Product = ({ product }) => {
                 />
               )}
             </div>
-            
+
             <div>
 
-              
+
               {/* Main image without magnify effect */}
               <img
                 alt="Primary Product Image"
@@ -220,9 +220,9 @@ const Product = ({ product }) => {
                 style={{ width: "80%" }} // This ensures the image is responsive and fits the container
               />
             </div>
-            
+
           </div>
- 
+
           <div className="col-span-4 mx-2">
             <h1 className="text-2xl pb-2">{product.name}</h1>
             <p className="text-sm pb-2">
@@ -273,23 +273,22 @@ const Product = ({ product }) => {
             <div className="my-2">
               <p className="font-semibold mb-2">Available Options</p>
               <div className="flex items-center">
-      {/* <div className="bg-purple-600 text-white px-2 py-1 rounded-md mr-2"> */}
-        <p className=" text-purple-600 font-semibold">Pro Price:     </p>
-      {/* </div> */}
-      <div
-        className={`cursor-pointer border border-purple-600 px-1 py-1 rounded-md relative ${
-          showBusinessOnly ? 'bg-white text-purple-600' : 'bg-purple-500 text-white'
-        }`}
-        onClick={toggleBusinessOnly}
-      >
-        <span className="font-semibold">
-          {showBusinessOnly ? 'Business Only' : '$2000.99'}
-        </span>
-        {showBusinessOnly && (
-          <div className="absolute -top-1 -right-1 h-3 w-3 bg-purple-600 rounded-full"></div>
-        )}
-      </div>
-    </div>
+                {/* <div className="bg-purple-600 text-white px-2 py-1 rounded-md mr-2"> */}
+                <p className=" text-purple-600 font-semibold">Pro Price:     </p>
+                {/* </div> */}
+                <div
+                  className={`cursor-pointer border border-purple-600 px-1 py-1 rounded-md relative ${showBusinessOnly ? 'bg-white text-purple-600' : 'bg-purple-500 text-white'
+                    }`}
+                  onClick={toggleBusinessOnly}
+                >
+                  <span className="font-semibold">
+                    {showBusinessOnly ? 'Business Only' : '$2000.99'}
+                  </span>
+                  {showBusinessOnly && (
+                    <div className="absolute -top-1 -right-1 h-3 w-3 bg-purple-600 rounded-full"></div>
+                  )}
+                </div>
+              </div>
               <p>{product.sub_category?.name} Size</p>
               {product.product_attributes.length > 0 && (
                 <select
@@ -308,7 +307,7 @@ const Product = ({ product }) => {
                 </select>
               )}
             </div>
-   
+
             <div className="flex pt-2 gap-2 font-bold">
               <div className="flex justify-between items-center">
                 <button
@@ -407,7 +406,7 @@ const Product = ({ product }) => {
                           <div className="absolute inset-0 px-4 sm:px-6">
                             <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true">
                               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
-                              <svg
+                                <svg
                                   className="h-6 w-6 text-blue-600"
                                   fill="none"
                                   viewBox="0 0 24 24"
@@ -444,7 +443,7 @@ const Product = ({ product }) => {
 
             </div>
 
-         
+
             <div className="my-2 pb-2 flex items-center border-b">
               <button
                 className="text-xl font-bold"
@@ -548,51 +547,45 @@ const Product = ({ product }) => {
               <button className="text-xl font-bold">Find in Store</button>
             </div>
             <div className="relative">
-            {/* <div className="text-lg font-semibold mb-2">
-        Have a Question in Mind?  
-   
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-      >
-        
-        Connect Us 
-      </button>
-      {isOpen && (
-        <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md">
-          <a href="#" className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">
-            Call Now
-          </a>
-          <a href="#" className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">
-            Chat Us
-          </a>
-        </div>
-        
-      )}
-         </div> */}
+              <div className="text-lg font-semibold mb-4">
+                Have a Question in Mind?
+              </div>
+              <div className="flex gap-2">
+                <button
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded"
+                >
+                  Call Now
+                </button>
+                <button
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded"
+                >
+                  Chat Us
+                </button>
+              </div>
+            </div>
 
-    </div>
+
 
             <div className="flex flex-col items-center border p-4 rounded-lg md:flex-row md:items-start">
-     
-    
-      <div className="md:w-2/3">
-        <h1 className="text-2xl font-bold mb-2">Free in-Store Pickup</h1>
-         
-        <div className="flex items-center mb-2">
-           
-        <span className="font-semibold text-gray-800">Please enter a location to check store availability</span>
- 
-            
-        </div>
-        <div className="border-b pb-2 ">
-        <Link href="/Stores" className="bg-black text-white rounded-3xl px-2 py-1">
-                Check nearby stores 
-                </Link>
+
+
+              <div className="md:w-2/3">
+                <h1 className="text-2xl font-bold mb-2">Free in-Store Pickup</h1>
+
+                <div className="flex items-center mb-2">
+
+                  <span className="font-semibold text-gray-800">Please enter a location to check store availability</span>
+
+
+                </div>
+                <div className="border-b pb-2 ">
+                  <Link href="/Stores" className="bg-black text-white rounded-3xl px-2 py-1">
+                    Check nearby stores
+                  </Link>
+                </div>
+
+              </div>
             </div>
-        
-      </div>
-    </div>
             <div className="border-b pb-2 text-center">
               <Link href="/Stores" className="bg-black text-white rounded-3xl px-10 py-2">
                 Store Locations
@@ -600,41 +593,41 @@ const Product = ({ product }) => {
             </div>
 
             <div className="fixed bottom-0 left-0 m-4">
-            {/* <a
+              {/* <a
           href="tel:+1234567890"
           className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md flex justify-center items-center hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           <FaPhoneAlt className="h-6 w-6 mr-2" />
           Have a question? Call now
         </a> */}
-        
+
             </div>
-            
+
             <div className="col-span-12 flex justify-between">
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}
               // disabled={parseInt(router.query.id) === 64} // Disable the "Previous" button for the first product
-            >
-              Previous
-            </button>
+              >
+                Previous
+              </button>
 
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}
               // disabled={parseInt(router.query.id) === 65} // Disable the "Next" button for the last product
-            >
-              Next
-            </button>
-          </div>
+              >
+                Next
+              </button>
+            </div>
 
 
-            <div className="flex justify-center items-center my-5 gap-3">
+            {/* <div className="flex justify-center items-center my-5 gap-3">
               <FaXTwitter className="text-2xl text-blue-400 hover:text-blue-600 transition-transform transform hover:scale-110" />
               <FaGooglePlusG className="text-3xl text-red-400 hover:text-red-600 transition-transform transform hover:scale-110" />
               <FaPinterest className="text-2xl text-red-700 hover:text-red-900 transition-transform transform hover:scale-110" />
               <FaSquareInstagram className="text-3xl text-pink-600 hover:text-pink-800 transition-transform transform hover:scale-110" />
-            </div>
+            </div> */}
           </div>
           <div className="col-span-3">
             <div className="flex flex-col">
@@ -643,52 +636,52 @@ const Product = ({ product }) => {
           </div>
         </div>
         <div className="alert-me-button fixed bottom-0 left-0 m-4">
-       
 
-      </div>
+
+        </div>
       </div>
       <PriceDropNotificationButton product={product} />
-{/* <PurchaseHistory/> */}
+      {/* <PurchaseHistory/> */}
       <div className="flex flex-col items-center border p-2 rounded-lg md:flex-row md:items-start md:max-w-4xl mx-auto">
-  <div className="md:w-1/4 mb-2 md:mb-0 md:mr-2">
-    <img
-      alt="Primary Product Image"
-      src={`${image_URL}/${selectedImage || product.primary_photo?.photo}`}
-      className="w-full h-auto"
-    />
-  </div>
-  <div className="md:w-1/4 mb-2 md:mb-0 md:mr-2">
-    <img
-      alt="Secondary Product Image"
-      src="https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg"
-      className="w-full h-auto"
-    />
-  </div>
-  <div className="md:w-1/2">
-    <h1 className="text-xl font-bold mb-2">Frequently bought together</h1>
-    <div className="flex items-center mb-2">
-      <input type="checkbox" checked readOnly className="mr-2" />
-      <span className="font-semibold">
-        This Item: {product.name} ({product.volume})
-      </span>
-      <span className="line-through ml-2">৳ {product.original_price}</span>
-      <span className="text-red-500 ml-2">৳ {product.discounted_price}</span>
-    </div>
-    <div className="flex items-center mb-2">
-      <input type="checkbox" checked readOnly className="mr-2" />
-      <span className="font-semibold">
-        Rajkonna Acne Fighting Facial Wash With Jojoba Beads (100 ml)
-      </span>
-      <span className="line-through ml-2">৳ 185.00</span>
-      <span className="text-red-500 ml-2">৳ 157.00</span>
-    </div>
-    <div className="flex items-center mb-2">
-      <span className="text-lg font-bold">Total price: ৳ 256</span>
-    </div>
-    <button className="bg-pink-500 text-white px-3 py-1 rounded">ADD BOTH TO CART</button>
-  </div>
-</div>
-<CustomerSatisfactionBar/>
+        <div className="md:w-1/4 mb-2 md:mb-0 md:mr-2">
+          <img
+            alt="Primary Product Image"
+            src={`${image_URL}/${selectedImage || product.primary_photo?.photo}`}
+            className="w-full h-auto"
+          />
+        </div>
+        <div className="md:w-1/4 mb-2 md:mb-0 md:mr-2">
+          <img
+            alt="Secondary Product Image"
+            src="https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg"
+            className="w-full h-auto"
+          />
+        </div>
+        <div className="md:w-1/2">
+          <h1 className="text-xl font-bold mb-2">Frequently bought together</h1>
+          <div className="flex items-center mb-2">
+            <input type="checkbox" checked readOnly className="mr-2" />
+            <span className="font-semibold">
+              This Item: {product.name} ({product.volume})
+            </span>
+            <span className="line-through ml-2">৳ {product.original_price}</span>
+            <span className="text-red-500 ml-2">৳ {product.discounted_price}</span>
+          </div>
+          <div className="flex items-center mb-2">
+            <input type="checkbox" checked readOnly className="mr-2" />
+            <span className="font-semibold">
+              Rajkonna Acne Fighting Facial Wash With Jojoba Beads (100 ml)
+            </span>
+            <span className="line-through ml-2">৳ 185.00</span>
+            <span className="text-red-500 ml-2">৳ 157.00</span>
+          </div>
+          <div className="flex items-center mb-2">
+            <span className="text-lg font-bold">Total price: ৳ 256</span>
+          </div>
+          <button className="bg-pink-500 text-white px-3 py-1 rounded">ADD BOTH TO CART</button>
+        </div>
+      </div>
+      <CustomerSatisfactionBar />
     </>
   );
 };

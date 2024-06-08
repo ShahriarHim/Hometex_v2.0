@@ -12,13 +12,16 @@
 }
 
 .modal {
-  background: #f87408;
+  background: #ffffff;
   border-radius: 8px;
-  max-width: 900px;
-  width: 90%;
+  max-width: 1000px;
+  width: 60%;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
 }
 
 .closeButton {
@@ -30,136 +33,130 @@
   cursor: pointer;
 }
 
+.printButton {
+  position: absolute;
+  top: 15px;
+  right: 60px;
+  background: #03a9f4;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.checkboxLabel {
+  margin-left: 5px;
+}
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px;
   overflow: hidden;
 }
 
 .card {
   display: flex;
   width: 100%;
-}
-
-.shoeBackground {
-  position: relative;
-  width: 50%;
-  height: 475px;
-  box-shadow: -15px 0 35px rgba(0, 0, 0, 0.1), 0 -15px 35px rgba(0, 0, 0, 0.1), 0 15px 35px rgba(0, 0, 0, 0.1);
-  transition: 0.5s;
-}
-
-.shoe {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  right: 0;
-  /* transform: rotate(-20deg); */
-  transition: 0.5s;
-  object-fit: contain;
-}
-
-.shoe.show {
-  opacity: 1;
-}
-
-.gradients {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-}
-
-.gradient {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  z-index: -2;
-}
-
-.first {
-  z-index: 0;
-  animation: 1s width ease;
-}
-
-@keyframes width {
-  from {
-    width: 0%;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-.second {
-  z-index: -1;
-}
-
-.gradient[color="red"] {
-  background-image: linear-gradient(45deg, #d62926, #ee625f);
-}
-
-.gradient[color="green"] {
-  background-image: linear-gradient(45deg, #11998e, #1ce669);
-}
-
-.gradient[color="orange"] {
-  background-image: linear-gradient(45deg, #fc4a1a, #f7b733);
-}
-
-.gradient[color="black"] {
-  background-image: linear-gradient(45deg, #000000, #434343);
-}
-
-.info {
-  padding: 20px;
-  width: 50%;
-}
-
-.shoeName {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
-.big {
-  font-size: 30px;
-}
-
-.new {
-  background: #03a9f4;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-.small {
-  font-size: 18px;
-  color: #999;
-}
-
 .description {
-  margin: 20px 0;
+  flex: 1;
+  padding-right: 20px;
 }
 
 .title {
-  font-size: 22px;
+  font-size: 24px;
+  text-align: center;
   margin-bottom: 10px;
 }
 
-.text {
-  color: #666;
+.productTitle {
+  font-size: 30px;
+  margin-bottom: 10px;
 }
 
-.colorContainer, .sizeContainer {
-  margin: 20px 0;
+.descriptionText {
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.text {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.shortText {
+  display: -webkit-box;
+  max-height: 100px;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fullText {
+  max-height: none;
+}
+
+.showMore {
+  color: #03a9f4;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.shoe {
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: contain;
+  margin: 0 auto;
+  border-radius: 50%;
+}
+
+.price {
+  font-size: 30px;
+  display: flex;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+.details {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.subTitle {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.colorContainer, .sizeContainer, .quantityContainer {
+  margin-bottom: 20px;
 }
 
 .colors, .sizes {
@@ -182,20 +179,26 @@
   border: 2px solid #03a9f4;
 }
 
-.buyPrice {
+.quantity {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
+  gap: 5px;
 }
 
-.price {
-  display: flex;
-  align-items: flex-end;
-  font-size: 30px;
+.quantityButton {
+  background: #03a9f4;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.buy {
+.quantityInput {
+  width: 50px;
+  text-align: center;
+}
+
+.addToCart {
   background: #03a9f4;
   color: #fff;
   border: none;
@@ -205,6 +208,18 @@
   font-size: 16px;
 }
 
-.buy:hover {
-  background: #0288d1;
+.leftArrow, .rightArrow {
+  position: absolute;
+  top: 15%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.leftArrow {
+  left: 10px;
+}
+
+.rightArrow {
+  right: 10px;
 }
