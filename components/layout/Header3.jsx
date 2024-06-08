@@ -8,6 +8,7 @@ import { MdFavorite } from 'react-icons/md';
 import {
   FaApple,
   FaBars,
+  FaBriefcase,
   FaFacebook,
   FaHeart,
   FaHome,
@@ -480,8 +481,8 @@ const Header3 = () => {
 
               <button onClick={() => setIsModalOpen(true)}>
                 <div className="px-2 flex flex-col items-center text-center">
-                  <FaMoneyCheckAlt
-                    className="h-6 w-6 text-green-500"
+                  <FaBriefcase
+                    className="h-6 w-6 text-gray-500"
                     aria-hidden="true"
                   />
                   <span className="text-sm mt-2 font-semibold text-gray-800">

@@ -55,7 +55,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
   };
 
   const fetchLoginData = () => {
-    return fetch(Constants.BASE_URL + '/api/login', {
+    return fetch(Constants.BASE_URL + '/api/user-login', {
       method: 'POST',
       cache: 'no-cache',
       headers: {

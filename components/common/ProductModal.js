@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
+import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
 import CartContext from '@/context/CartContext';
 import styles from '@/styles/ProductModal.module.css';
 import Invoice from '../invoice/Invoice';
@@ -7,13 +8,14 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const ProductModal = ({ product, onClose }) => {
+const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
   const { addItemToCart } = useContext(CartContext);
   const [productQty, setProductQty] = useState(1);
   const [selectedSize, setSelectedSize] = useState('38');
   const [selectedColor, setSelectedColor] = useState('blue');
   const [showInvoice, setShowInvoice] = useState(false);
   const [showShippingInfo, setShowShippingInfo] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
   const modalRef = useRef();
 
   const handleClickOutside = (event) => {
@@ -67,6 +69,10 @@ const ProductModal = ({ product, onClose }) => {
     setShowShippingInfo(e.target.checked);
   };
 
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
   if (!product) return null;
 
   const sliderSettings = {
@@ -83,119 +89,115 @@ const ProductModal = ({ product, onClose }) => {
         <button className={styles.closeButton} onClick={onClose}>
           <RiCloseLine size="24" />
         </button>
+        <button className={styles.printButton} onClick={() => window.print()}>Print</button>
+        <div className={styles.checkboxContainer}>
+          <input
+            type="checkbox"
+            id="shippingInfo"
+            checked={showShippingInfo}
+            onChange={handleShippingInfoChange}
+          />
+          <label htmlFor="shippingInfo" className={styles.checkboxLabel}>Include delivery and shipping info</label>
+        </div>
         <div className={styles.container}>
           <div className={styles.card}>
-            <div className={styles.shoeBackground}>
-              <img src={product.primary_photo} alt={product.name} className={`${styles.shoe} ${styles.show}`} />
-              <div className={styles.gradients}>
-                <div className={`${styles.gradient} ${styles.first}`} color="blue"></div>
-                <div className={`${styles.gradient}`} color="red"></div>
-                <div className={`${styles.gradient}`} color="green"></div>
-                <div className={`${styles.gradient}`} color="orange"></div>
-                <div className={`${styles.gradient}`} color="black"></div>
+            <div className={styles.description}>
+              <h2 className={styles.productTitle}>{product.name}</h2>
+              <div className={styles.descriptionText}>
+                <p className={`${styles.text} ${showFullDescription ? styles.fullText : styles.shortText}`}>
+                  {product.description}
+                </p>
+                <span onClick={toggleDescription} className={styles.showMore}>
+                  {showFullDescription ? 'Show Less' : 'Show More'}
+                </span>
               </div>
             </div>
-            <div className={styles.info}>
-              <div className={styles.shoeName}>
-                <div>
-                  <h1 className={styles.big}>{product.name}</h1>
-                  <span className={styles.new}>new</span>
-                </div>
-                <h3 className={styles.small}>Running Collection</h3>
+            <div className={styles.center}>
+            <h1 className={styles.title}>Product Details</h1>
+              <img src={product.primary_photo} alt={product.name} className={styles.shoe} />
+              <div className={styles.price}>
+                <span>$</span>
+                <h1>{product.price}</h1>
               </div>
-              <div className={styles.description}>
-                <h3 className={styles.title}>Product Info</h3>
-                <Slider {...sliderSettings}>
-                  <div>
-                    <div className={styles.colorContainer}>
-                      <h3 className={styles.title}>Color</h3>
-                      <div className={styles.colors}>
-                        {['blue', 'red', 'green', 'orange', 'black'].map((color) => (
-                          <span
-                            key={color}
-                            className={`${styles.color} ${selectedColor === color ? styles.active : ''}`}
-                            onClick={() => setSelectedColor(color)}
-                            style={{ backgroundColor: color }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <div className={styles.sizeContainer}>
-                      <h3 className={styles.title}>Size</h3>
-                      <div className={styles.sizes}>
-                        {['37', '38', '39', '40', '41', '42'].map((size) => (
-                          <span
-                            key={size}
-                            className={`${styles.size} ${selectedSize === size ? styles.active : ''}`}
-                            onClick={() => setSelectedSize(size)}
-                          >
-                            {size}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="mb-2">
-                      <p className="font-semibold mb-2">Quantity</p>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={decreaseQuantity}
-                          className="px-2 py-1 bg-gray-200 rounded-md"
-                        >
-                          -
-                        </button>
-                        <input
-                          type="number"
-                          className="block w-16 px-4 py-2 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline-gray"
-                          min="1"
-                          max={product.stock}
-                          step="1"
-                          value={productQty}
-                          onChange={handleQuantityChange}
-                        />
-                        <button
-                          onClick={increaseQuantity}
-                          className="px-2 py-1 bg-gray-200 rounded-md"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                    <div className={styles.buyPrice}>
-                      <div className={styles.price}>
-                        <span>$</span>
-                        <h1>{product.price}</h1>
-                      </div>
-                      <button className={styles.buy} onClick={addToCartHandler}>
-                        Add to cart
-                      </button>
-                    </div>
-                  </div>
-                  <div>
-                    <p className={styles.text}>{product.description}</p>
-                    <button className={styles.buy} onClick={toggleInvoice}>
-                      Show Invoice
-                    </button>
-                    <div className={styles.checkboxContainer}>
-                      <input
-                        type="checkbox"
-                        id="shippingInfo"
-                        checked={showShippingInfo}
-                        onChange={handleShippingInfoChange}
+            </div>
+            <div className={styles.details}>
+              <div className={styles.info}>
+              <div className="flex items-center mt-2">
+                <input
+                  type="checkbox"
+                  checked={product.stock > 0}
+                  readOnly
+                  className="form-checkbox text-blue-500"
+                />
+                <span className="ml-2 text-gray-700">
+                  In Stock {product.stock}
+                </span>
+              </div>
+              <div className="flex items-center mt-2">
+                {[...Array(5)].map((star, index) => (
+                  <FaStar
+                    key={index}
+                    color={index < product.rating ? "#ffc107" : "#e4e5e9"}
+                    className="mr-1"
+                  />
+                ))}
+              </div>
+                <div className={styles.colorContainer}>
+                  <h3 className={styles.subTitle}>Color</h3>
+                  <div className={styles.colors}>
+                    {['blue', 'red', 'green', 'orange', 'black'].map((color) => (
+                      <span
+                        key={color}
+                        className={`${styles.color} ${selectedColor === color ? styles.active : ''}`}
+                        onClick={() => setSelectedColor(color)}
+                        style={{ backgroundColor: color }}
                       />
-                      <label htmlFor="shippingInfo">Add Shipping and Pricing Info</label>
-                    </div>
-                    {showShippingInfo && (
-                      <div className={styles.shippingInfo}>
-                        <p className={styles.text}>Shipping: Free standard shipping.</p>
-                        <p className={styles.text}>Price: ${product.price}</p>
-                      </div>
-                    )}
+                    ))}
                   </div>
-                </Slider>
+                </div>
+                <div className={styles.sizeContainer}>
+                  <h3 className={styles.subTitle}>Size</h3>
+                  <div className={styles.sizes}>
+                    {['37', '38', '39', '40', '41', '42'].map((size) => (
+                      <span
+                        key={size}
+                        className={`${styles.size} ${selectedSize === size ? styles.active : ''}`}
+                        onClick={() => setSelectedSize(size)}
+                      >
+                        {size}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className={styles.quantityContainer}>
+                  <h3 className={styles.subTitle}>Quantity</h3>
+                  <div className={styles.quantity}>
+                    <button onClick={decreaseQuantity} className={styles.quantityButton}>-</button>
+                    <input
+                      type="number"
+                      className={styles.quantityInput}
+                      min="1"
+                      max={product.stock}
+                      step="1"
+                      value={productQty}
+                      onChange={handleQuantityChange}
+                    />
+                    <button onClick={increaseQuantity} className={styles.quantityButton}>+</button>
+                  </div>
+                </div>
+                <button className={styles.addToCart} onClick={addToCartHandler}>
+                  Add to Cart
+                </button>
               </div>
             </div>
           </div>
         </div>
+        <button className={styles.leftArrow} onClick={onPrevious}>
+          <FaArrowLeft size="24" />
+        </button>
+        <button className={styles.rightArrow} onClick={onNext}>
+          <FaArrowRight size="24" />
+        </button>
         {showInvoice && (
           <Invoice
             order={{
