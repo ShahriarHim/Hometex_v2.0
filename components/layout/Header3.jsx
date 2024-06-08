@@ -54,6 +54,9 @@ const Header3 = () => {
   const [authToken, setAuthToken] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
 
+  const updateWishItems = (updatedWishItems) => {
+    setWishItems(updatedWishItems);
+  };
 
   const handleCheckout = () => {
     if (!auth_token) {
@@ -67,10 +70,7 @@ const Header3 = () => {
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
-  // State for form data and submission
-  // const [signInData, setSignInData] = useState({ username: "", password: "" });
-  // const [signInErr, setSignInErr] = useState({});
-  // const [isSubmit, setIsSubmit] = useState(false);
+  
 
   useEffect(() => {
     const token = getCookie("home_text_token");
@@ -91,24 +91,17 @@ const Header3 = () => {
     setIsWishOpen(!isWishOpen);
   };
 
-  const addToWishlist = (product) => {
-    const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
-    const updatedWishItems = [...wishItems, product];
-    localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
-    console.log(updatedWishItems);
-    setWishItems(updatedWishItems);
-  };
   useEffect(() => {
     const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
     setWishItems(wishItems);
   }, []);
 
-  const removeFromWishlist = (productId) => {
-    const storedWishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
-    const updatedWishItems = storedWishItems.filter((item) => item.id !== productId);
-    localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
-    setWishItems(updatedWishItems);
-  };
+ const removeFromWishlistHandler = (productId) => {
+  console.log('Removing from wishlist:', productId);
+  const updatedWishItems = wishItems.filter((item) => item.id !== productId);
+  updateWishItems(updatedWishItems);
+  localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
+};
 
 
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -168,11 +161,6 @@ const Header3 = () => {
   ];
 
 
-  // const [isZipPopupVisible, setIsZipPopupVisible] = useState(false);
-
-  // const handleZipCodeClick = () => {
-  //   setIsZipPopupVisible(true);
-  // };
 
   const saleEndTime = "2024-04-30T23:59:59";
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -602,15 +590,16 @@ const Header3 = () => {
    
                 {authToken ? (
   <WishComponent
-    wishRef={wishRef}
-    handleWishClick={handleWishClick}
-    wishItems={wishItems}
-    isWishOpen={isWishOpen}
-    removeFromWishlist={removeFromWishlist}
-  />
+  wishItems={wishItems}
+  updateWishItems={updateWishItems}
+  removeFromWishlist={removeFromWishlistHandler}
+  isWishOpen={isWishOpen}
+  handleWishClick={handleWishClick}
+  wishRef={wishRef}
+/>
 ) : (
   <div>
-    <MdFavorite className="h-6 w-6 text-red-500" aria-hidden="true" />
+    <MdFavorite className="h-7 w-7 text-blue-500" aria-hidden="true" />
     <span className="text-sm mt-2 font-semibold text-gray-700">Wishlist</span>
   </div>
 )}

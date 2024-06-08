@@ -21,16 +21,16 @@ const WishComponent = (props) => {
   }
 
   return (
-    <div className="relative" ref={wishRef} style={{ zIndex: 10000 }}>
+    <div className="relative" ref={wishRef} >
       <div className="relative">
         <button onClick={handleWishClick} type="button">
           <div className="px-2 flex flex-col items-center text-center">
-            <MdFavorite className="h-6 w-6 text-red-500" aria-hidden="true" />
+            <MdFavorite className="h-7 w-7 text-blue-500" aria-hidden="true" />
             <span className="text-sm mt-2 font-semibold text-gray-700">Wishlist</span>
           </div>
         </button>
         {wishItems?.length > 0 && (
-          <span className="absolute -top-3 -right-3 bg-red-600 rounded-full text-white px-2 py-1 text-xs flex items-center justify-center animate-pulse">
+          <span className="absolute -top-1 -right-1 bg-red-600 rounded-full text-white px-2 py-1 text-xs flex items-center justify-center animate-pulse">
             {wishItems.length}
           </span>
         )}

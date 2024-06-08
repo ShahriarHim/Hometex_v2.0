@@ -1,11 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState,useRef,useEffect } from 'react';
 import Link from 'next/link';
 import { RiShoppingBasketFill, RiExchangeFill } from 'react-icons/ri';
 import { MdFavorite } from 'react-icons/md';
 import ReactStars from 'react-rating-stars-component';
+import WishComponent from './WishComponent/WishComponent';
+import Swal from 'sweetalert2';
 
-const ProductCard = ({ product, openModal, addToWishlist }) => {
+const ProductCard = ({ product, openModal }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  const [wishItems, setWishItems] = useState([]);
+  
+  const wishRef = useRef(null);
+  const [redirect, setRedirect] = useState(false); // Stat
+
+  const updateWishItems = (updatedWishItems) => {
+    setWishItems(updatedWishItems);
+  };
+  
+  const addToWishlist = (product) => {
+    const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
+    const isProductInWishlist = wishItems.some((item) => item.id === product.id);
+  
+    if (!isProductInWishlist) {
+      const updatedWishItems = [...wishItems, product];
+      localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
+      updateWishItems(updatedWishItems); // Update the wishItems state
+  
+      // Show SweetAlert notification
+      Swal.fire({
+        icon: 'success',
+        title: 'Added to Wishlist',
+        text: `${product.name} has been added to your wishlist!`,
+      }).then(() => {
+        // Redirect to the same page
+        setRedirect(true);
+      });
+    } else {
+      Swal.fire({
+        icon: 'info',
+        title: 'Already in Wishlist',
+        text: `${product.name} is already in your wishlist!`,
+      });
+    }
+  };
+  
+  useEffect(() => {
+    const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
+    setWishItems(wishItems);
+  }, []);
+
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -14,6 +58,8 @@ const ProductCard = ({ product, openModal, addToWishlist }) => {
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
+
+
 
   return (
     <div
