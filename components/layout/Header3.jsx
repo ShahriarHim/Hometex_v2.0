@@ -47,6 +47,8 @@ import CartComponent from "./CartComponent/CartComponent";
 import WishComponent from "./WishComponent/WishComponent";
 import ChatPopup from "../ChatPopup";
 
+import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 
@@ -66,6 +68,10 @@ const Header3 = () => {
   const [isChatVisible, setIsChatVisible] = useState(false);
 
 
+const handleChatToggle = () => {
+   
+  setIsChatVisible(prevState => !prevState);
+};
 
   const updateWishItems = (updatedWishItems) => {
     setWishItems(updatedWishItems);
@@ -845,14 +851,13 @@ const Header3 = () => {
                 </div>
               )}
             </nav>
-            <Link
-              href="/"
-              className=" inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
-              onClick={handleChatToggle}
-            >
-              <FaCommentDots className="text-xl" />
-            </Link>
-            {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
+             <button
+      className="inline-block bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 cursor-pointer flex items-center justify-center"
+      onClick={handleChatToggle}
+    >
+      <FontAwesomeIcon icon={faCommentDots} />
+    </button>
+            
           </div>
           {/* menu end */}
         </div>
