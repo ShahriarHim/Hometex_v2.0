@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { MdFavorite } from 'react-icons/md';
+import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import {
   FaApple,
   FaBars,
@@ -44,16 +47,8 @@ import SearchBarPopup from "./searchPopup";
 import LoginPopup from "./LoginPopup";
 import { useRouter } from "next/router"; // Ensure this is imported
 import CartComponent from "./CartComponent/CartComponent";
-import WishComponent from "./WishComponent/WishComponent";
+import WishComponent  from "./WishComponent/WishComponent";
 import ChatPopup from "../ChatPopup";
-
-import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-
-
-
-
 const Header3 = () => {
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState(0);
@@ -65,9 +60,6 @@ const Header3 = () => {
   const [subMenuOpen, setSubMenuOpen] = useState({});
   const [authToken, setAuthToken] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [isChatVisible, setIsChatVisible] = useState(false);
-
- 
 
   const updateWishItems = (updatedWishItems) => {
     setWishItems(updatedWishItems);
@@ -86,11 +78,7 @@ const Header3 = () => {
     setShowPopup(!showPopup);
   };
 
-  const handleChatToggle = () => {
-    setIsChatVisible(prevState => !prevState);
-  };
-
-
+   
   useEffect(() => {
     const token = getCookie("home_text_token");
     setAuthToken(token);
@@ -102,7 +90,7 @@ const Header3 = () => {
     // setShowPopup(false);
   };
 
-
+  const [isChatVisible, setIsChatVisible] = useState(false);
   const [wishItems, setWishItems] = useState([]);
   const [isWishOpen, setIsWishOpen] = useState(false);
   const wishRef = useRef(null);
@@ -122,6 +110,10 @@ const Header3 = () => {
     localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
   };
 
+const handleChatToggle = () => {
+   
+  setIsChatVisible(prevState => !prevState);
+};
 
   const [isModalOpen, setIsModalOpen] = useState(true);
 
@@ -438,7 +430,8 @@ const Header3 = () => {
         </div>
       </div>
       {/* Pre Header end */}
-
+      {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
+      
       <div
         className="pt-1 hidden md:block sticky top-0 z-20"
         style={{
@@ -847,13 +840,12 @@ const Header3 = () => {
                 </div>
               )}
             </nav>
-             <button
+            <button
       className="inline-block bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 cursor-pointer flex items-center justify-center"
       onClick={handleChatToggle}
     >
       <FontAwesomeIcon icon={faCommentDots} />
     </button>
-            
           </div>
           {/* menu end */}
         </div>

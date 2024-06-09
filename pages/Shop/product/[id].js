@@ -79,6 +79,8 @@ const [showDownloadAppPopup, setShowDownloadAppPopup] = useState(false);
     setSelectedAttribute(selectedAttribute);
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOptionsModalOpen , setIsOptionsModalOpen] = useState(false);
+  const [isReviewModalOpen,setIsReviewModalOpen, ] = useState(false);
   const [isDelivaryModalOpen, setIsDelivaryModalOpen] = useState(false);
 
   const getPrice = () => {
@@ -569,7 +571,10 @@ return (
             )}
 
           </div>
-
+          <DownloadAppPopup
+  isOpen={showDownloadAppPopup}
+  onClose={toggleDownloadAppPopup}
+/>
           <div className="my-2 pb-2 flex items-center border-b">
             <button
               className="text-xl font-bold"
@@ -665,7 +670,7 @@ return (
           </div>
 
           <div className="my-2 pb-2 flex items-center border-b"><button className="text-xl font-bold">Size Gides</button></div>
-          <div className="my-2 pb-2 flex items-center border-b"><button className="text-xl font-bold">Reviews</button></div>
+           
           <div className="my-2 pb-2 flex items-center ">
             <button className="text-xl font-bold">Find in Store</button>
           </div>
