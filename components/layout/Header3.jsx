@@ -67,11 +67,7 @@ const Header3 = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
 
-
-const handleChatToggle = () => {
-   
-  setIsChatVisible(prevState => !prevState);
-};
+ 
 
   const updateWishItems = (updatedWishItems) => {
     setWishItems(updatedWishItems);
