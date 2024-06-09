@@ -47,7 +47,7 @@ import SearchBarPopup from "./searchPopup";
 import LoginPopup from "./LoginPopup";
 import { useRouter } from "next/router"; // Ensure this is imported
 import CartComponent from "./CartComponent/CartComponent";
-import WishComponent  from "./WishComponent/WishComponent";
+import WishComponent from "./WishComponent/WishComponent";
 import ChatPopup from "../ChatPopup";
 const Header3 = () => {
   const router = useRouter();
@@ -78,7 +78,7 @@ const Header3 = () => {
     setShowPopup(!showPopup);
   };
 
-   
+
   useEffect(() => {
     const token = getCookie("home_text_token");
     setAuthToken(token);
@@ -110,10 +110,10 @@ const Header3 = () => {
     localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
   };
 
-const handleChatToggle = () => {
-   
-  setIsChatVisible(prevState => !prevState);
-};
+  const handleChatToggle = () => {
+
+    setIsChatVisible(prevState => !prevState);
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(true);
 
@@ -431,7 +431,7 @@ const handleChatToggle = () => {
       </div>
       {/* Pre Header end */}
       {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
-      
+
       <div
         className="pt-1 hidden md:block sticky top-0 z-20"
         style={{
@@ -840,16 +840,27 @@ const handleChatToggle = () => {
                 </div>
               )}
             </nav>
-            <button
-      className="inline-block bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 cursor-pointer flex items-center justify-center"
-      onClick={handleChatToggle}
-    >
-      <FontAwesomeIcon icon={faCommentDots} />
-    </button>
-          </div>
-          {/* menu end */}
+            {/* <button
+              className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+              onClick={handleChatToggle}
+            >
+              {/* <FontAwesomeIcon icon={faCommentDots} /> 
+              <FaCommentDots className=""/>
+            </button> */}
+
+            <Link
+              href="/"
+              className=" inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+              onClick={handleChatToggle}
+            >
+
+            <FaCommentDots className="text-xl" />
+          </Link>
+          {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
         </div>
+        {/* menu end */}
       </div>
+    </div >
       <div>
         <button
           onClick={toggleMenu}
