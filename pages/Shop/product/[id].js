@@ -395,7 +395,23 @@ return (
               </button>
             </div>
           </div>
+          <div className="col-span-12 flex justify-between">
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}
+            // disabled={parseInt(router.query.id) === 64} // Disable the "Previous" button for the first product
+            >
+              Previous
+            </button>
 
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}
+            // disabled={parseInt(router.query.id) === 65} // Disable the "Next" button for the last product
+            >
+              Next
+            </button>
+          </div>
           <div className="my-2 py-2 flex items-center border-b border-t">
             <button
               className="text-xl font-bold"
@@ -823,23 +839,7 @@ return (
 
           </div>
 
-          <div className="col-span-12 flex justify-between">
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}
-            // disabled={parseInt(router.query.id) === 64} // Disable the "Previous" button for the first product
-            >
-              Previous
-            </button>
 
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}
-            // disabled={parseInt(router.query.id) === 65} // Disable the "Next" button for the last product
-            >
-              Next
-            </button>
-          </div>
 
 
           {/* <div className="flex justify-center items-center my-5 gap-3">

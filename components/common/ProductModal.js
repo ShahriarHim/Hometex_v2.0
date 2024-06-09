@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
+import { useRouter } from 'next/router'; 
+import { Router, useRouter as useRouterClient } from 'next/router';
 import CartContext from '@/context/CartContext';
 import styles from '@/styles/ProductModal.module.css';
 import Invoice from '../invoice/Invoice';
@@ -8,7 +10,30 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Link from 'next/link';
-const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
+
+
+export async function getServerSideProps(context) {
+  let id = context.query.id;
+  const res = await fetch(
+    `${Constants.BASE_URL}/api/products-details-web/` + id
+  );
+  const product = await res.json();
+
+  return {
+    props: {
+      product,
+    },
+  };
+}
+
+
+
+
+
+
+
+
+const ProductModal = ({ product, onClose }) => {
   const { addItemToCart } = useContext(CartContext);
   const [productQty, setProductQty] = useState(1);
   const [selectedSize, setSelectedSize] = useState('38');
@@ -17,6 +42,8 @@ const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
   const [showShippingInfo, setShowShippingInfo] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const modalRef = useRef();
+  const router = useRouter(); 
+
 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -104,13 +131,12 @@ const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
           </div>
         
         <Link href='#'  onClick={toggleInvoice}>Show Invoice</Link>
-        <button className={styles.leftArrow} onClick={onPrevious}>
+        <button className={styles.leftArrow} onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}>
           <FaArrowLeft size="24" />
         </button>
-        <button className={styles.rightArrow} onClick={onNext}>
+        <button className={styles.rightArrow} onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}>
           <FaArrowRight size="24" />
         </button>
-
         <div className={styles.container}>
           <div className={styles.card}>
             <div className={styles.description}>
