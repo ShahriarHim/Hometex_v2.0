@@ -9,6 +9,7 @@ import {
   FaApple,
   FaBars,
   FaBriefcase,
+  FaCommentDots,
   FaFacebook,
   FaHeart,
   FaHome,
@@ -17,10 +18,12 @@ import {
   FaMapMarkerAlt,
   FaMoneyCheckAlt,
   FaPhoneSquareAlt,
+  FaQuestionCircle,
   FaSearch,
   FaShippingFast,
   FaTimes,
   FaUserAlt,
+
 } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import {
@@ -41,7 +44,14 @@ import SearchBarPopup from "./searchPopup";
 import LoginPopup from "./LoginPopup";
 import { useRouter } from "next/router"; // Ensure this is imported
 import CartComponent from "./CartComponent/CartComponent";
-import WishComponent  from "./WishComponent/WishComponent";
+import WishComponent from "./WishComponent/WishComponent";
+import ChatPopup from "../ChatPopup";
+
+
+
+
+
+
 const Header3 = () => {
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState(0);
@@ -53,6 +63,9 @@ const Header3 = () => {
   const [subMenuOpen, setSubMenuOpen] = useState({});
   const [authToken, setAuthToken] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [isChatVisible, setIsChatVisible] = useState(false);
+
+
 
   const updateWishItems = (updatedWishItems) => {
     setWishItems(updatedWishItems);
@@ -65,12 +78,16 @@ const Header3 = () => {
       router.push("/Checkout");
     }
   };
- 
+
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
-  
+
+  const handleChatToggle = () => {
+    setIsChatVisible(prevState => !prevState);
+  };
+
 
   useEffect(() => {
     const token = getCookie("home_text_token");
@@ -83,7 +100,7 @@ const Header3 = () => {
     // setShowPopup(false);
   };
 
- 
+
   const [wishItems, setWishItems] = useState([]);
   const [isWishOpen, setIsWishOpen] = useState(false);
   const wishRef = useRef(null);
@@ -96,12 +113,12 @@ const Header3 = () => {
     setWishItems(wishItems);
   }, []);
 
- const removeFromWishlistHandler = (productId) => {
-  console.log('Removing from wishlist:', productId);
-  const updatedWishItems = wishItems.filter((item) => item.id !== productId);
-  updateWishItems(updatedWishItems);
-  localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
-};
+  const removeFromWishlistHandler = (productId) => {
+    console.log('Removing from wishlist:', productId);
+    const updatedWishItems = wishItems.filter((item) => item.id !== productId);
+    updateWishItems(updatedWishItems);
+    localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
+  };
 
 
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -167,7 +184,7 @@ const Header3 = () => {
   const dropdownRef = useRef(null);
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
-   
+
   };
   // add an event listener to detect clicks outside the dropdown
   useEffect(() => {
@@ -255,7 +272,7 @@ const Header3 = () => {
     // Add your logic to navigate or display search results here
   };
 
- 
+
   // signout handeler
   const signOutSubmitHandler = async (e) => {
     e.preventDefault();
@@ -327,21 +344,21 @@ const Header3 = () => {
     if (cartItems) {
       const finalAmount = cartItems.reduce((total, cartItem) => {
         let str = cartItem.price;
-      
+
         // Convert to string if it's not already a string
         if (typeof str !== 'string') {
           console.warn(`Expected string but got ${typeof str}:`, str);
           str = String(str);
         }
-      
+
         // Replace commas
         str = str.replace(/[,]/g, "");
-      
+
         // Parse integer and calculate amount
         const amount = parseInt(str, 10) * cartItem.quantity;
         return total + amount;
       }, 0);
-      
+
       setTotalPrice(finalAmount);
     }
   }, [cartItems]);
@@ -587,48 +604,48 @@ const Header3 = () => {
                 </div>
 
                 <button type="button" onClick={handleButtonClick} className="">
-   
-                {authToken ? (
-  <WishComponent
-  wishItems={wishItems}
-  updateWishItems={updateWishItems}
-  removeFromWishlist={removeFromWishlistHandler}
-  isWishOpen={isWishOpen}
-  handleWishClick={handleWishClick}
-  wishRef={wishRef}
-/>
-) : (
-  <div>
-    <MdFavorite className="h-7 w-7 text-blue-500" aria-hidden="true" />
-    <span className="text-sm mt-2 font-semibold text-gray-700">Wishlist</span>
-  </div>
-)}
+
+                  {authToken ? (
+                    <WishComponent
+                      wishItems={wishItems}
+                      updateWishItems={updateWishItems}
+                      removeFromWishlist={removeFromWishlistHandler}
+                      isWishOpen={isWishOpen}
+                      handleWishClick={handleWishClick}
+                      wishRef={wishRef}
+                    />
+                  ) : (
+                    <div>
+                      <MdFavorite className="h-7 w-7 text-blue-500" aria-hidden="true" />
+                      <span className="text-sm mt-2 font-semibold text-gray-700">Wishlist</span>
+                    </div>
+                  )}
 
 
                   {/* {auth_token && <span>{wlist?.length > 0}</span>} */}
                 </button>
 
                 <CartComponent
-        cartRef={cartRef}
-        handleCartClick={handleCartClick}
-        cartItems={cartItems}
-        isOpen={isOpen}
-        cart={{ cartItems }}
-        deleteItemFromCart={deleteItemFromCart}
-        totalPrice={totalPrice}
-        handleCheckout={handleCheckout}
-      />
+                  cartRef={cartRef}
+                  handleCartClick={handleCartClick}
+                  cartItems={cartItems}
+                  isOpen={isOpen}
+                  cart={{ cartItems }}
+                  deleteItemFromCart={deleteItemFromCart}
+                  totalPrice={totalPrice}
+                  handleCheckout={handleCheckout}
+                />
 
 
               </div>
 
-              
+
             </div>
           </div>
           <LoginPopup
-                          showPopup={showPopup}
-                          togglePopup={togglePopup}
-                        />
+            showPopup={showPopup}
+            togglePopup={togglePopup}
+          />
           {/* Mid Header end */}
           {/* menu */}
           <div className="flex flex-auto gap-2 container mx-auto justify-end items-center">
@@ -657,6 +674,13 @@ const Header3 = () => {
                         <FaLeaf className="mr-2" />
                         Home Decor
                       </Link>
+                      <Link
+                        href="/Faq"
+                        className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+                      >
+                        <FaQuestionCircle className="mr-2" />
+                        FAQ
+                      </Link>
                     </div>
                   </div>
                   <div className="-mr-2 flex md:hidden">
@@ -673,7 +697,7 @@ const Header3 = () => {
               {isMenuOpen && (
                 <div className="md:hidden">
                   <div className="px-2 pt-2 pb-3 sm:px-3">
-                    <Link
+                    {/* <Link
                       href="/"
                       className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
                     >
@@ -711,7 +735,7 @@ const Header3 = () => {
                     </Link>
                     <Link
                       href="/Contact"
-                      className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
+                      className="text-black-300 hover:text-white hover:bg-black block px-2 py-2 rounded-md text-base font-medium"
                     >
                       Contact Us
                     </Link>
@@ -726,7 +750,7 @@ const Header3 = () => {
                       className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
                     >
                       Find A Store
-                    </Link>
+                    </Link> */}
                     <div className="relative" ref={cartRef}>
                       <div className="relative">
                         <button
@@ -821,12 +845,14 @@ const Header3 = () => {
                 </div>
               )}
             </nav>
-            <a
-              href="tel:+8801616101090"
-              class="inline-block bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-semibold py-2 px-2 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 cursor-pointer"
+            <Link
+              href="/"
+              className=" inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+              onClick={handleChatToggle}
             >
-              Contact Us
-            </a>
+              <FaCommentDots className="text-xl" />
+            </Link>
+            {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
           </div>
           {/* menu end */}
         </div>
@@ -837,25 +863,21 @@ const Header3 = () => {
           className="md:hidden fixed z-50 flex flex-col items-center justify-center w-12 h-12 bg-transparent border-none cursor-pointer focus:outline-none top-5 right-5"
         >
           <div
-            className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${
-              menuOpen ? "rotate-45 translate-y-2.5" : ""
-            }`}
+            className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${menuOpen ? "rotate-45 translate-y-2.5" : ""
+              }`}
           ></div>
           <div
-            className={`block w-8 h-0.5 bg-black my-2 transition-opacity duration-500 ease-in-out ${
-              menuOpen ? "opacity-0" : "opacity-100"
-            }`}
+            className={`block w-8 h-0.5 bg-black my-2 transition-opacity duration-500 ease-in-out ${menuOpen ? "opacity-0" : "opacity-100"
+              }`}
           ></div>
           <div
-            className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${
-              menuOpen ? "-rotate-45 -translate-y-2.5" : ""
-            }`}
+            className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${menuOpen ? "-rotate-45 -translate-y-2.5" : ""
+              }`}
           ></div>
         </button>
         <div
-          className={`fixed top-0 left-0 w-full h-full bg-white z-40 transform ${
-            menuOpen ? "translate-x-0" : "-translate-x-full"
-          } transition-transform duration-500 ease-in-out`}
+          className={`fixed top-0 left-0 w-full h-full bg-white z-40 transform ${menuOpen ? "translate-x-0" : "-translate-x-full"
+            } transition-transform duration-500 ease-in-out`}
         >
           <div className="p-5">
             <img
@@ -890,9 +912,8 @@ const Header3 = () => {
                 </div>
                 <div className="w-full flex flex-col">
                   <ul
-                    className={`text-2xl pl-4 mt-2 ${
-                      subMenuOpen["services"] ? "block" : "hidden"
-                    }`}
+                    className={`text-2xl pl-4 mt-2 ${subMenuOpen["services"] ? "block" : "hidden"
+                      }`}
                   >
                     <li>
                       <a

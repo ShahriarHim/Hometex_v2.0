@@ -1,0 +1,28 @@
+.collapsible .content {
+    display: none;
+  }
+  
+  .collapsible .header {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    color: rgb(255, 0, 0);
+    padding: 10px;
+    margin-bottom: 5px;
+  }
+  
+  .collapsible .toggle-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+  }
+  
+  .collapsible .content {
+    display: block;
+    margin-top: 5px;
+  }
+  
