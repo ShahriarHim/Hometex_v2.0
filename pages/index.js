@@ -23,6 +23,8 @@ import ChatPopup from "@/components/ChatPopup";
 import CashbackPopup from "@/components/CashbackPopup";
 import CookiesPopup from "@/components/CookiesPopup";
 import { getCookie } from "@/ults/cookies";
+import AdPromotionSection from "@/components/layout/AdPromotionSection";
+import FirstOrderPopup from "@/components/layout/FirstOrderPopup";
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -100,12 +102,14 @@ const Home = () => {
 
   return (
     <>
+    <FirstOrderPopup/>
+        {/* <AdPromotionSection/> */}
       <MainSlider />
       
       {isVisible && (
         <>
           <button
-            className="fixed bottom-5 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
+            className="fixed bottom-5 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600 rounded"
             onClick={handleBackToTop}
           >
             <BsFillArrowUpCircleFill size={18} />
@@ -132,10 +136,13 @@ const Home = () => {
       {showCookiesPopup && <CookiesPopup onClose={handleClosePopup} />}
       
       {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
+  
       <DesignSix/>
       <DesignOne/>
       <Suspense fallback={<h1>loading</h1>}>
+      
         <ProductsTabs products={products} />
+     
         <DesignFifteen/>
         <DesignEight/>
         <DesignThree/>
