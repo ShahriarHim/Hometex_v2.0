@@ -56,6 +56,7 @@ const Header3 = () => {
   const [isSearchPopupVisible, setIsSearchPopupVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   let auth_token = getCookie("home_text_token");
+  let auth_name = getCookie("home_text_name");
   const [menuOpen, setMenuOpen] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState({});
   const [authToken, setAuthToken] = useState(null);
@@ -272,6 +273,7 @@ const Header3 = () => {
     e.preventDefault();
     // setIsSubmit(true)
     deleteCookie("home_text_token");
+    deleteCookie("home_text_name");
     window.location.href = "/";
   };
 
@@ -553,32 +555,33 @@ const Header3 = () => {
                     // className="flex items-center text-black focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm text-center mb-2 sm:mb-0 sm:mr-3 md:mr-0 dark:bg-[#15803d] dark:hover:bg-[#15803d] dark:focus:ring-green-800"
                     onClick={authToken ? toggleDropdown : handleLogin}
                   >
-                    <div className="px-2 flex flex-col items-center text-center">
-                      {authToken ? (
-                        <>
-                          {/* Admin logged in */}
-                          <img
-                            src="https://htbapi.hometexbd.ltd/images/hometex-logo.ico"
-                            alt="Hometex Logo"
-                            className="h-6 w-6 text-gray-600"
-                          />
-                          <span className="text-sm mt-2 font-semibold text-gray-800">
-                            Admin Logged In
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          {/* Regular user */}
-                          <FaUserAlt
-                            className="h-6 w-6 text-gray-600"
-                            aria-hidden="true"
-                          />
-                          <span className="text-sm mt-2 font-semibold text-gray-800">
-                            My Account
-                          </span>
-                        </>
-                      )}
-                    </div>
+                  <div className="px-2 flex flex-col items-center text-center">
+  {authToken ? (
+    <>
+      {/* Admin logged in */}
+      <img
+        src="https://htbapi.hometexbd.ltd/images/hometex-logo.ico"
+        alt="Hometex Logo"
+        className="h-6 w-6 text-gray-600"
+      />
+      <span className="text-sm mt-2 font-semibold text-gray-800">
+        {auth_name ? `${auth_name}` : "Guest User"}
+      </span>
+    </>
+  ) : (
+    <>
+      {/* Regular user */}
+      <FaUserAlt
+        className="h-6 w-6 text-gray-600"
+        aria-hidden="true"
+      />
+      <span className="text-sm mt-2 font-semibold text-gray-800">
+        My Account
+      </span>
+    </>
+  )}
+</div>
+
                   </button>
                   {isDropdownOpen && authToken && (
                     <div className="absolute z-50 top-full right-0 bg-white bg-opacity-95 backdrop-filter backdrop-blur-md border border-gray-300 rounded-lg shadow-md py-2">
