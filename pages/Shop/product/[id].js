@@ -24,6 +24,7 @@ import { useRouter } from 'next/router'; // Import useRouter
 import { Router, useRouter as useRouterClient } from 'next/router'; // Import Router and useRouterClient
 import CustomerSatisfactionBar from "@/components/CustomerSatisfactionBar";
 import PriceDropNotificationButton from "./PriceDropNoti";
+import TimeReminderBox from "@/components/layout/TimeReminderBox";
 
 export async function getServerSideProps(context) {
   let id = context.query.id;
@@ -691,6 +692,9 @@ return (
               </button>
             </div>
           </div>
+          <TimeReminderBox/>
+
+
   <div id="so-groups" className="fixed right-0 top-80 flex flex-col z-50 hidden md:block">
             <button
         className="sticky-review bg-red-600 hover:bg-red-700 text-black font-bold py-2 px-4 h-20 w-6 cursor-pointer flex justify-center items-center border border-white rounded"
