@@ -7,6 +7,7 @@ import Constants from "@/ults/Constant";
 import { CiStar } from "react-icons/ci";
 import DisclaimerModal from "@/pages/DisclaimerModal";
 import styles from './faq.module.css';
+import DownloadAppPopup from "@/components/layout/AppDownload/DownloadAppPopup";
 
 import {
   FaShoppingBasket,
@@ -61,7 +62,11 @@ const Product = ({ product }) => {
   const handleDecrement = () => {
     setProductQty((prevQty) => Math.max(prevQty - 1, 1));
   };
+const [showDownloadAppPopup, setShowDownloadAppPopup] = useState(false);
 
+  const toggleDownloadAppPopup = () => {
+    setShowDownloadAppPopup(!showDownloadAppPopup);
+  };
   const handleIncrement = () => {
     setProductQty((prevQty) => Math.min(prevQty + 1, 100));
   };
@@ -277,10 +282,12 @@ return (
           <div className="flex flex-auto text-sm">
             {" "}
             <p className="bg-purple-200 py-2 px-4 rounded-xl mt-2 flex flex-row gap-2 items-center">
-              <FaDownload /> Download App for
-              <span className="font-bold">ios</span> or{" "}
-              <span className="font-bold">Android</span>
-            </p>
+  <FaDownload />
+  <button onClick={toggleDownloadAppPopup}>
+    Download App for <span className="font-bold">ios</span> or{' '}
+    <span className="font-bold">Android</span>
+  </button>
+</p>
           </div>
           <div className="flex flex-auto mt-2 text-sm">
             {" "}
@@ -679,6 +686,94 @@ return (
               </button>
             </div>
           </div>
+  <div id="so-groups" className="fixed right-0 top-80 flex flex-col z-50 hidden md:block">
+            <button
+        className="sticky-review bg-red-600 hover:bg-red-700 text-black font-bold py-2 px-4 h-20 w-6 cursor-pointer flex justify-center items-center border border-white rounded"
+        onClick={() => setIsReviewModalOpen(true)}
+      >
+        <span className="text-xl transform rotate-90">Review</span>
+      </button>
+
+      <button
+        className="sticky-review bg-red-600 hover:bg-red-700 text-black font-bold py-2 px-4 h-20 w-6 cursor-pointer flex justify-center items-center border border-white rounded"
+        onClick={() => setIsOptionsModalOpen(true)}
+      >
+        <span className="text-xl transform rotate-90"> Options</span>
+      </button>
+
+{/* Review Modal */}
+{isReviewModalOpen && (
+  <div className="fixed inset-0 z-50 overflow-hidden" onClick={() => setIsReviewModalOpen(false)}>
+    <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+    <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex" onClick={(e) => e.stopPropagation()}>
+      <div className="relative w-screen max-w-md">
+        <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-auto">
+          <div className="px-4 sm:px-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-medium text-gray-900">Review Modal</h2>
+              <div className="ml-3 h-7 flex items-center">
+                <button onClick={() => setIsReviewModalOpen(false)} className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500">
+                  <span className="sr-only">Close panel</span>
+                  <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="relative mt-6 flex-1 px-4 sm:px-6">
+            <div className="absolute inset-0 px-4 sm:px-6">
+              <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true">
+                {/* Demo review data */}
+                <p className="text-sm text-gray-500 text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac dapibus nisi. Integer eleifend eros non nulla convallis volutpat. Nam sagittis risus vel augue faucibus, a aliquam dui viverra. Donec euismod elit at purus tincidunt condimentum. Donec gravida, magna ut dictum consequat, libero est consectetur velit, nec mollis neque justo id nunc. Nam et eleifend felis, ut aliquet elit. Curabitur volutpat eros vitae tincidunt congue. Integer tincidunt libero at arcu ultrices, vel tincidunt ex faucibus. Ut bibendum, nisi vitae fringilla suscipit, ipsum magna iaculis purus, ut dapibus dui arcu ac ligula.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* Options Modal */}
+{isOptionsModalOpen && (
+  <div className="fixed inset-0 z-50 overflow-hidden" onClick={() => setIsOptionsModalOpen(false)}>
+    <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+    <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex" onClick={(e) => e.stopPropagation()}>
+      <div className="relative w-screen max-w-md">
+        <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-auto">
+          <div className="px-4 sm:px-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-medium text-gray-900">Options Modal</h2>
+              <div className="ml-3 h-7 flex items-center">
+                <button onClick={() => setIsOptionsModalOpen(false)} className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500">
+                  <span className="sr-only">Close panel</span>
+                  <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="relative mt-6 flex-1 px-4 sm:px-6">
+            <div className="absolute inset-0 px-4 sm:px-6">
+              <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true">
+                {/* Demo options data */}
+                <p className="text-sm text-gray-500 text-justify">Option 1</p>
+                <p className="text-sm text-gray-500 text-justify">Option 2</p>
+                <p className="text-sm text-gray-500 text-justify">Option 3</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
+</div>
 
 
 

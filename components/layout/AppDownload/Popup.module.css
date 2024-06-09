@@ -1,0 +1,74 @@
+.popup {
+    display: flex;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .popupContent {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+  }
+  
+  .closeBtn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .closeBtn:hover,
+  .closeBtn:focus {
+    color: black;
+  }
+  
+  .phoneInput {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  
+  .phoneInput input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .phoneInput button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .phoneInput button:hover {
+    background-color: #45a049;
+  }
+  
+  .appLinks {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .appLinks img {
+    width: 150px;
+  }
+  
