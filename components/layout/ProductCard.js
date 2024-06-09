@@ -1,4 +1,4 @@
-import React, { useState,useRef,useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { RiShoppingBasketFill, RiExchangeFill } from 'react-icons/ri';
 import { MdFavorite } from 'react-icons/md';
@@ -10,23 +10,23 @@ const ProductCard = ({ product, openModal }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const [wishItems, setWishItems] = useState([]);
-  
+
   const wishRef = useRef(null);
   const [redirect, setRedirect] = useState(false); // Stat
 
   const updateWishItems = (updatedWishItems) => {
     setWishItems(updatedWishItems);
   };
-  
+
   const addToWishlist = (product) => {
     const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
     const isProductInWishlist = wishItems.some((item) => item.id === product.id);
-  
+
     if (!isProductInWishlist) {
       const updatedWishItems = [...wishItems, product];
       localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
       updateWishItems(updatedWishItems); // Update the wishItems state
-  
+
       // Show SweetAlert notification
       Swal.fire({
         icon: 'success',
@@ -44,7 +44,7 @@ const ProductCard = ({ product, openModal }) => {
       });
     }
   };
-  
+
   useEffect(() => {
     const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
     setWishItems(wishItems);
@@ -76,9 +76,8 @@ const ProductCard = ({ product, openModal }) => {
         />
       </Link>
       <div
-        className={`absolute top-10 right-0 p-2 bg-[#999] ${
-          isHovered ? 'opacity-100' : 'opacity-0'
-        } transition-opacity duration-300`}
+        className={`absolute top-10 right-0 p-2 bg-[#999] ${isHovered ? 'opacity-100' : 'opacity-0'
+          } transition-opacity duration-300`}
       >
         <RiShoppingBasketFill
           size={34}
@@ -111,15 +110,24 @@ const ProductCard = ({ product, openModal }) => {
           <p className="text-gray-700">{product.color}</p>
         </div>
       </div>
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4  border-t border-gray-200">
         <button
           onClick={() => openModal(product)}
           className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
         >
-          Add to Cart
+          ADD TO CART
+        </button>
+
+      </div>
+      <div className="p-4  border-t border-gray-200">
+        <button
+          // onClick={() => openModal(product)}
+          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
+        >
+          OR MAKE AN OFFER
         </button>
       </div>
-    </div>
+    </div >
   );
 };
 

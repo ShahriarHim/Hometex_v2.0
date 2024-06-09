@@ -7,7 +7,7 @@ import Invoice from '../invoice/Invoice';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
+import Link from 'next/link';
 const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
   const { addItemToCart } = useContext(CartContext);
   const [productQty, setProductQty] = useState(1);
@@ -89,7 +89,10 @@ const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
         <button className={styles.closeButton} onClick={onClose}>
           <RiCloseLine size="24" />
         </button>
+        
         <button className={styles.printButton} onClick={() => window.print()}>Print</button>
+        {/* <button className={styles.invoiceButton} onClick={toggleInvoice}>Invoice</button> */}
+        
         <div className={styles.checkboxContainer}>
           <input
             type="checkbox"
@@ -98,7 +101,16 @@ const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
             onChange={handleShippingInfoChange}
           />
           <label htmlFor="shippingInfo" className={styles.checkboxLabel}>Include delivery and shipping info</label>
-        </div>
+          </div>
+        
+        <Link href='#'  onClick={toggleInvoice}>Show Invoice</Link>
+        <button className={styles.leftArrow} onClick={onPrevious}>
+          <FaArrowLeft size="24" />
+        </button>
+        <button className={styles.rightArrow} onClick={onNext}>
+          <FaArrowRight size="24" />
+        </button>
+
         <div className={styles.container}>
           <div className={styles.card}>
             <div className={styles.description}>
@@ -113,7 +125,7 @@ const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
               </div>
             </div>
             <div className={styles.center}>
-            <h1 className={styles.title}>Product Details</h1>
+              <h1 className={styles.title}>Product Details</h1>
               <img src={product.primary_photo} alt={product.name} className={styles.shoe} />
               <div className={styles.price}>
                 <span>$</span>
@@ -122,26 +134,26 @@ const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
             </div>
             <div className={styles.details}>
               <div className={styles.info}>
-              <div className="flex items-center mt-2">
-                <input
-                  type="checkbox"
-                  checked={product.stock > 0}
-                  readOnly
-                  className="form-checkbox text-blue-500"
-                />
-                <span className="ml-2 text-gray-700">
-                  In Stock {product.stock}
-                </span>
-              </div>
-              <div className="flex items-center mt-2">
-                {[...Array(5)].map((star, index) => (
-                  <FaStar
-                    key={index}
-                    color={index < product.rating ? "#ffc107" : "#e4e5e9"}
-                    className="mr-1"
+                <div className="flex items-center mt-2">
+                  <input
+                    type="checkbox"
+                    checked={product.stock > 0}
+                    readOnly
+                    className="form-checkbox text-blue-500"
                   />
-                ))}
-              </div>
+                  <span className="ml-2 text-gray-700">
+                    In Stock {product.stock}
+                  </span>
+                </div>
+                <div className="flex items-center mt-2">
+                  {[...Array(5)].map((star, index) => (
+                    <FaStar
+                      key={index}
+                      color={index < product.rating ? "#ffc107" : "#e4e5e9"}
+                      className="mr-1"
+                    />
+                  ))}
+                </div>
                 <div className={styles.colorContainer}>
                   <h3 className={styles.subTitle}>Color</h3>
                   <div className={styles.colors}>
@@ -192,32 +204,30 @@ const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
             </div>
           </div>
         </div>
-        <button className={styles.leftArrow} onClick={onPrevious}>
-          <FaArrowLeft size="24" />
-        </button>
-        <button className={styles.rightArrow} onClick={onNext}>
-          <FaArrowRight size="24" />
-        </button>
+
+        
         {showInvoice && (
-          <Invoice
-            order={{
-              id: 123456,
-              date: 'May 16, 2023',
-              customer: {
-                name: 'John Doe',
-                email: 'john.doe@example.com',
-                address: '1234 Street, City, Country',
-              },
-            }}
-            lineItems={[
-              {
-                id: 1,
-                name: product.name,
-                quantity: productQty,
-                price: product.price,
-              },
-            ]}
-          />
+          <div className={styles.invoice}>
+            <Invoice
+              order={{
+                id: 123456,
+                date: 'May 16, 2023',
+                customer: {
+                  name: 'John Doe',
+                  email: 'john.doe@example.com',
+                  address: '1234 Street, City, Country',
+                },
+              }}
+              lineItems={[
+                {
+                  id: 1,
+                  name: product.name,
+                  quantity: productQty,
+                  price: product.price,
+                },
+              ]}
+            />
+          </div>
         )}
       </div>
     </div>
