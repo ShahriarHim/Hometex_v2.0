@@ -10,6 +10,8 @@ import PurchaseHistory from "../PurchaseHistory";
 import ProductModal from "@/components/common/ProductModal";
 import DealOfTheWeek from "../DealOfTheWeek";
 import ProductCard from "@/components/layout/ProductCard";
+ 
+import LatestProducts from "@/components/LatestProducts";
 
 const brands = ["Hometex Bangladesh M.", "Desiattire"];
 
@@ -420,6 +422,7 @@ const King = () => {
                 </button>
               </div>
             </div>
+      <LatestProducts/>
           </div>
           <div className="md:col-span-3">
             <Slider />

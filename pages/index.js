@@ -25,6 +25,7 @@ import CookiesPopup from "@/components/CookiesPopup";
 import { getCookie } from "@/ults/cookies";
 import AdPromotionSection from "@/components/layout/AdPromotionSection";
 import FirstOrderPopup from "@/components/layout/FirstOrderPopup";
+import CostomerCount from "@/components/newDesigns/Customercount";
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -152,6 +153,7 @@ const Home = () => {
         <DesignFour/>
         <DesignNine/>
         <DesignTwelve/>
+        <CostomerCount/>
         <Prefooter2/>
       </Suspense>
     </>

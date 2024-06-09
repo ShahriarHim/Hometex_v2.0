@@ -25,6 +25,7 @@ import { Router, useRouter as useRouterClient } from 'next/router'; // Import Ro
 import CustomerSatisfactionBar from "@/components/CustomerSatisfactionBar";
 import PriceDropNotificationButton from "./PriceDropNoti";
 import TimeReminderBox from "@/components/layout/TimeReminderBox";
+import SpinTheWheelPopup from "@/components/layout/spinwhile/SpinTheWheelPopup";
 
 export async function getServerSideProps(context) {
   let id = context.query.id;
@@ -43,6 +44,19 @@ export async function getServerSideProps(context) {
 
 const Product = ({ product }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+
 
   const router = useRouter(); // Get the router instance
   const [showBusinessOnly, setShowBusinessOnly] = useState(true);
@@ -83,7 +97,31 @@ const [showDownloadAppPopup, setShowDownloadAppPopup] = useState(false);
   const [isOptionsModalOpen , setIsOptionsModalOpen] = useState(false);
   const [isReviewModalOpen,setIsReviewModalOpen, ] = useState(false);
   const [isDelivaryModalOpen, setIsDelivaryModalOpen] = useState(false);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const [iswhileModalOpen, setwhileModalOpen] = useState(false);
 
+  const handlespinOpenPopup = () => {
+    setwhileModalOpen(true);
+  };
+
+  const handlespinClosePopup = () => {
+    setwhileModalOpen(false);
+  };
+
+  const [feedbackText, setFeedbackText] = useState('');
+  const [rating, setRating] = useState(0);
+
+  // Function to handle submission of feedback
+  const submitFeedback = () => {
+    // Here you can handle the submission logic, such as sending the feedback to your server
+    console.log("Feedback:", feedbackText);
+    console.log("Rating:", rating);
+    // Reset input fields and close modal
+    setFeedbackText('');
+    setRating(0);
+    setIsFeedbackModalOpen(false);
+  };
+ 
   const getPrice = () => {
     if (selectedAttribute) {
       const { attribute_math_sign, attribute_number } = selectedAttribute;
@@ -709,22 +747,103 @@ return (
             </div>
           </div>
           <TimeReminderBox/>
+          <div id="so-groups" className="fixed left-0 top-80 flex flex-col z-50 hidden md:block">
+            <button
+  className="sticky-review bg-red-600 hover:bg-red-700 text-white  py-2 px-4 h-40 w-9 cursor-pointer flex justify-center items-center border border-white rounded"
+ onClick={handlespinOpenPopup}
+      >
+        <span className="text-xl transform rotate-90">Clickme</span>
+      </button>
+
+      <SpinTheWheelPopup isOpen={iswhileModalOpen} onClose={handlespinClosePopup} />
+
+
+
+</div>
+
 
 
   <div id="so-groups" className="fixed right-0 top-80 flex flex-col z-50 hidden md:block">
             <button
-        className="sticky-review bg-red-600 hover:bg-red-700 text-black font-bold py-2 px-4 h-20 w-6 cursor-pointer flex justify-center items-center border border-white rounded"
+        className="sticky-review bg-red-600 hover:bg-red-700 text-white py-2 px-4 h-20 w-6 cursor-pointer flex justify-center items-center border border-white rounded"
         onClick={() => setIsReviewModalOpen(true)}
       >
         <span className="text-xl transform rotate-90">Review</span>
       </button>
 
       <button
-        className="sticky-review bg-red-600 hover:bg-red-700 text-black font-bold py-2 px-4 h-20 w-6 cursor-pointer flex justify-center items-center border border-white rounded"
+        className="sticky-review bg-red-600 hover:bg-red-700 text-white   py-2 px-4 h-20 w-6 cursor-pointer flex justify-center items-center border border-white rounded"
         onClick={() => setIsOptionsModalOpen(true)}
       >
         <span className="text-xl transform rotate-90"> Options</span>
       </button>
+      <button
+  className="sticky-review bg-red-600 hover:bg-red-700 text-white  py-2 px-4 h-40 w-9 cursor-pointer flex justify-center items-center border border-white rounded"
+  onClick={() => setIsFeedbackModalOpen(true)}
+>
+  <span className="text-xl transform rotate-90">Feedback</span>
+</button>
+
+ {/* Feedback Modal */}
+ {isFeedbackModalOpen && (
+  <div className="fixed inset-0 z-50 overflow-hidden" onClick={() => setIsFeedbackModalOpen(false)}>
+    <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+    <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex" onClick={(e) => e.stopPropagation()}>
+      <div className="relative w-screen max-w-md">
+        <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-auto">
+          <div className="px-4 sm:px-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-medium text-gray-900">Feedback</h2>
+              <div className="ml-3 h-7 flex items-center">
+                <button onClick={() => setIsFeedbackModalOpen(false)} className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500">
+                  <span className="sr-only">Close panel</span>
+                  <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="relative mt-6 flex-1 px-4 sm:px-6">
+            <div className="absolute inset-0 px-4 sm:px-6">
+              <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true">
+                {/* Feedback content */}
+                <p className="text-sm text-gray-500 text-justify mb-4">Your feedback helps us improve! Please share your thoughts below.</p>
+                <textarea
+                  value={feedbackText}
+                  onChange={(e) => setFeedbackText(e.target.value)}
+                  placeholder="Your feedback here..."
+                  className="w-full h-24 border-gray-300 rounded-md resize-none focus:ring-indigo-500 focus:border-indigo-500 mt-2 p-2"
+                ></textarea>
+                <div className="mt-4">
+                  {/* Star rating */}
+                  <p className="text-sm text-gray-500 text-justify mb-2">Rate your experience:</p>
+                  {[...Array(5)].map((_, index) => (
+                    <button
+                      key={index}
+                      className={`text-2xl ${index < rating ? 'text-yellow-400' : 'text-gray-300'} focus:outline-none focus:text-yellow-400`}
+                      onClick={() => setRating(index + 1)}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+                {/* Submit button */}
+                <button
+                  onClick={submitFeedback}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
 {/* Review Modal */}
 {isReviewModalOpen && (
@@ -860,6 +979,12 @@ return (
 
       </div>
     </div>
+<div>
+      {/* Your other components */}
+      <button onClick={handleOpenPopup}>Open Spin the Wheel Popup</button>
+      <SpinTheWheelPopup isOpen={isPopupOpen} onClose={handleClosePopup} />
+    </div>
+    
     <PriceDropNotificationButton product={product} />
     {/* <PurchaseHistory/> */}
     <div className="flex flex-col items-center border p-2 rounded-lg md:flex-row md:items-start md:max-w-4xl mx-auto">

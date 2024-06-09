@@ -1,0 +1,166 @@
+/* SpinTheWheelPopup.module.css */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.show {
+  display: flex;
+}
+
+.hide {
+  display: none;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease;
+}
+
+.container {
+  position: relative;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(238, 118, 6);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.closeButton {
+  background: white;
+  border: none;
+  cursor: pointer;
+}
+
+.closeIcon {
+  width: 24px;
+  height: 24px;
+  color: #666;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wheelContainer {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wheel {
+  width: 100%;
+  height: 100%;
+  border: 4px solid white;
+  border-radius: 50%;
+  position: relative;
+  transition: transform 4s ease-out;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.segment {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  transform-origin: center;
+}
+
+.segment:nth-child(1) { transform: rotate(0deg) translateY(-75%); }
+.segment:nth-child(2) { transform: rotate(45deg) translateY(-75%); }
+.segment:nth-child(3) { transform: rotate(90deg) translateY(-75%); }
+.segment:nth-child(4) { transform: rotate(135deg) translateY(-75%); }
+.segment:nth-child(5) { transform: rotate(180deg) translateY(-75%); }
+.segment:nth-child(6) { transform: rotate(225deg) translateY(-75%); }
+.segment:nth-child(7) { transform: rotate(270deg) translateY(-75%); }
+.segment:nth-child(8) { transform: rotate(315deg) translateY(-75%); }
+
+.spin {
+  animation: spin 4s ease-out forwards;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(1440deg); /* Ensuring at least 4 full rotations */
+  }
+}
+
+.spinButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background: #007bff;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.spinButton:hover {
+  background: #0056b3;
+}
+
+.result {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.resultText {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.discountText {
+  font-size: 1rem;
+  color: #083bc7;
+}

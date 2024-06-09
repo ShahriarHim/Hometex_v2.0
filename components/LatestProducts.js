@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const RelatedProduct = () => {
+const LatestProducts = () => {
   const [products, setProducts] = useState([
     {
       id: "1",
@@ -68,14 +68,14 @@ const RelatedProduct = () => {
           <div className="flex flex-col justify-between p-4 bg-white w-full">
             <div>
               <h5 className="text-lg font-bold mb-2">{product.name}</h5>
-              <button className="bg-red-500 text-white font-bold py-2 px-4 rounded-full hover:bg-red-600 mt-4 self-start">SALE</button>
+              <button className="bg-green-500 text-white font-bold py-2 px-4 rounded-full hover:bg-green-600 mt-4 self-start">NEW</button>
               <p>
                 <span className="text-lg font-bold text-red-600">{product.ProductDiscountedPrice}</span>
                 <span className="text-sm text-gray-500 line-through ml-2">{product.ProductMaindPrice}</span>
               <p className="text-sm text-gray-600 mb-4">{product.offer} off</p>
               </p>
             </div>
-            <button className="bg-red-500 text-white font-bold py-2 px-3 rounded-full hover:bg-red-600 mt-4 self-start">
+            <button className="bg-green-500 text-white font-bold py-2 px-3 rounded-full hover:bg-green-600 mt-4 self-start">
               Add to Cart
             </button>
           </div>
@@ -85,4 +85,4 @@ const RelatedProduct = () => {
   );
 };
 
-export default RelatedProduct;
+export default LatestProducts;
