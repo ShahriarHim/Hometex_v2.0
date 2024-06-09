@@ -1,0 +1,272 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background:  #e98f11;
+  border-radius: 20px;
+  max-width: 1000px;
+  width: 60%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.printButton {
+  position: absolute;
+  top: 15px;
+  background: #000000;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.invoiceButton {
+  position: absolute;
+  top: 12px;
+  background: #ffffff;
+  color: #fff;
+  border: none;
+  padding: 3px 0px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.printButton {
+  right: 60px;
+}
+
+.invoiceButton {
+  right: 120px;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.checkboxLabel {
+  margin-left: 5px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.card {
+  background-color: #eed1a9;
+  border-radius: 20px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding-left: 5px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+}
+
+.description {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.title {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 10px;
+
+}
+
+.productTitle {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: rgb(24, 24, 93);
+}
+
+.descriptionText {
+  max-width: 600px;
+  margin-bottom: 20px;
+
+}
+
+.text {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.shortText {
+  display: -webkit-box;
+  max-height: 100px;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fullText {
+  max-height: none;
+}
+
+.showMore {
+  color: #0b1b92;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.shoe {
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: contain;
+  margin: 0 auto;
+  border-radius: 50%;
+}
+
+.price {
+  font-size: 30px;
+  display: flex;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+.details {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.subTitle {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.colorContainer, .sizeContainer, .quantityContainer {
+  margin-bottom: 10px;
+}
+
+.colors, .sizes{
+  display: flex;
+  gap: 10px;
+}
+
+
+.color{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff2e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.size {
+  width: 40px;
+  height: 30px;
+  border-radius: 20%;
+  background: #fff2e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.color.active{
+  border: 4px solid #ffffff;
+}
+.size.active {
+  border: 2px solid #e98f11;
+}
+
+.quantity {
+  display: flex;
+  gap: 5px;
+}
+
+.quantityButton {
+  background: #ccc;
+  color: #000000;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.quantityInput {
+  width: 40px;
+  text-align: center;
+  background: transparent;
+}
+
+.addToCart {
+  background: #000000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  max-width: 200px; /* Add this line to limit the width */
+  margin: 0 auto;
+   /* Center the button */
+}
+
+
+.leftArrow, .rightArrow {
+  position: fixed;
+  top: 25%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transform: translateY(-50%);
+  z-index: 1001;
+}
+
+.leftArrow {
+  left: 990px;
+}
+
+.rightArrow {
+  right: 325px;
+}

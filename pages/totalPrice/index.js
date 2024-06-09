@@ -54,11 +54,12 @@ const Checkout = () => {
     useEffect(() => {
         if (cartItems) {
             const finalAmount = cartItems.reduce((total, cartItem) => {
-                let str = cartItem.price;
-                str = str.replace(/[,]/g, "");
+                let str = String(cartItem.price); // Convert to string
+                str = str.replace(/[,]/g, ""); // Replace commas if present
                 const amount = parseInt(str) * cartItem.quantity;
                 return total + amount;
             }, 0);
+            
             setTotalPrice(finalAmount);
         }
     }, [cartItems]);

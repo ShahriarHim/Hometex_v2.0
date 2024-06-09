@@ -1,17 +1,7 @@
 import Link from "next/link";
-import React, { useState, useEffect, useMemo } from "react";
+import React, {useRef, useState, useEffect, useMemo } from "react";
 import Slider from "components/allCategory/Slider";
-import { MdFavorite } from "react-icons/md";
-import { CiStar } from "react-icons/ci";
-import { RiShoppingBasketFill, RiExchangeFill } from "react-icons/ri";
- 
-import {
-  FaStar,
-  FaShoppingCart,
-  FaRegCaretSquareLeft,
-  FaRegCaretSquareRight,
-  FaRegWindowClose,
-} from "react-icons/fa";
+
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { Sticky } from "@/components/home/Sticky";
 import Constants from "@/ults/Constant";
@@ -19,6 +9,7 @@ import ReactStars from "react-rating-stars-component";
 import PurchaseHistory from "../PurchaseHistory";
 import ProductModal from "@/components/common/ProductModal";
 import DealOfTheWeek from "../DealOfTheWeek";
+import ProductCard from "@/components/layout/ProductCard";
 
 const brands = ["Hometex Bangladesh M.", "Desiattire"];
 
@@ -69,7 +60,7 @@ const King = () => {
       sec: "45",
     },
   };
-
+ 
   const [products, setProducts] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [isBrandsOpen, setIsBrandsOpen] = useState(true);
@@ -104,6 +95,8 @@ const King = () => {
     setIsPopupVisible(false);
   };
 
+
+ 
   useEffect(() => {
     fetch(`${Constants.BASE_URL}/api/products-web`)
       .then((response) => response.json())
@@ -271,173 +264,7 @@ const King = () => {
   );
   return (
     <>
-      {/* <div className="bg-yellow-50 py-10">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-4 gap-4 mb-4">
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className="text-center"
-                onClick={() => handleItemClick(item)}
-              >
-                {item.imageUrl ? (
-                  <div className="w-36 h-36 rounded-full overflow-hidden mx-auto relative shadow-lg bg-white">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.name}
-                      className="object-cover object-center w-full h-full"
-                      style={{ transform: "scale(1.1)" }}
-                    />
-                  </div>
-                ) : null}
-                <p className="mt-2">{item.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {isPopupVisible && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="relative bg-white p-8 rounded-lg max-w-6xl w-full mx-auto">
-              <button
-                onClick={closePopup}
-                className="absolute top-0 right-1 text-lg p-2 rounded-full hover:bg-gray-200"
-              >
-                <FaRegWindowClose />
-              </button>
-              <div className="flex justify-between items-center border-b">
-                <h2 className="text-2xl font-bold mb-4">DEAL OF THE WEEK</h2>
-                <div className="flex justify-between items-center gap-2 text-2xl">
-                  <button className="hover:text-blue-500 transition-colors duration-200">
-                    <FaRegCaretSquareLeft />
-                  </button>
-                  <button className="hover:text-blue-500 transition-colors duration-200">
-                    <FaRegCaretSquareRight />
-                  </button>
-                </div>
-              </div>
-              <div className="flex justify-center items-center pt-3">
-                <div className="flex flex-col md:flex-row justify-center items-center p-4 bg-white rounded-lg mx-auto">
-                  <div className="md:w-1/2 p-4">
-                    <div className="flex gap-2">
-                      <div>
-                        <p className="px-2 py-1 bg-red-700 text-white rounded-tr-lg rounded-bl-lg">
-                        {popupProduct.percent}%
-                        </p>
-                      </div>
-                      <img
-                        src={popupProduct.imageUrl}
-                        alt={popupProduct.name}
-                        className="object-cover object-center rounded-md"
-                      />
-                    </div>
-                  </div>
-                  <div className="md:w-1/2 p-4 flex flex-col justify-between">
-                    <div>
-                      <h2 className="text-xl font-bold">{popupProduct.name}</h2>
-                      <div className="flex my-2">
-                        {[...Array(5)].map((star, index) => (
-                          <FaStar
-                            key={index}
-                            className={
-                              index < popupProduct.rating
-                                ? "text-yellow-500"
-                                : "text-gray-300"
-                            }
-                          />
-                        ))}
-                      </div>
-                      <div className="my-2">
-                        <span className="text-red-500 text-lg font-bold">
-                          {popupProduct.discountPrice}
-                        </span>
-                        <span className="text-gray-500 line-through ml-2">
-                          {popupProduct.originalPrice}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-4 gap-2 text-center mt-4">
-                      {Object.entries(popupProduct.countdown).map(
-                        ([unit, value], index) => (
-                          <div key={index}>
-                            <span className="text-lg font-semibold">
-                              {value}
-                            </span>
-                            <p className="text-sm text-gray-600">
-                              {unit.toUpperCase()}
-                            </p>
-                          </div>
-                        )
-                      )}
-                    </div>
-                    <button className="mt-4 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors flex items-center justify-center">
-                      <FaShoppingCart className="mr-2" /> Add to Cart
-                    </button>
-                  </div>
-                </div>
-                <div className="flex flex-col md:flex-row justify-center items-center p-4 bg-white rounded-lg mx-auto border-l">
-                  <div className="md:w-1/2 p-4">
-                    <div className="flex gap-2">
-                      <div>
-                        <p className="px-2 py-1 bg-red-700 text-white rounded-tr-lg rounded-bl-lg">
-                        {popupProduct.percent}%
-                        </p>
-                      </div>
-                      <img
-                        src={popupProduct.imageUrl}
-                        alt={popupProduct.name}
-                        className="object-cover object-center rounded-md"
-                      />
-                    </div>
-                  </div>
-                  <div className="md:w-1/2 p-4 flex flex-col justify-between">
-                    <div>
-                      <h2 className="text-xl font-bold">{popupProduct.name}</h2>
-                      <div className="flex my-2">
-                        {[...Array(5)].map((star, index) => (
-                          <FaStar
-                            key={index}
-                            className={
-                              index < popupProduct.rating
-                                ? "text-yellow-500"
-                                : "text-gray-300"
-                            }
-                          />
-                        ))}
-                      </div>
-                      <div className="my-2">
-                        <span className="text-red-500 text-lg font-bold">
-                          {popupProduct.discountPrice}
-                        </span>
-                        <span className="text-gray-500 line-through ml-2">
-                          {popupProduct.originalPrice}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-4 gap-2 text-center mt-4">
-                      {Object.entries(popupProduct.countdown).map(
-                        ([unit, value], index) => (
-                          <div key={index}>
-                            <span className="text-lg font-semibold">
-                              {value}
-                            </span>
-                            <p className="text-sm text-gray-600">
-                              {unit.toUpperCase()}
-                            </p>
-                          </div>
-                        )
-                      )}
-                    </div>
-                    <button className="mt-4 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors flex items-center justify-center">
-                      <FaShoppingCart className="mr-2" /> Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div> */}
+   
       <DealOfTheWeek items={items} />
 
       {/*  */}
@@ -597,55 +424,22 @@ const King = () => {
           <div className="md:col-span-3">
             <Slider />
             <h2 className="font-bold text-xl mb-3">Products</h2>
+            
+            {/* <WishComponent
+        wishRef={wishRef}
+        handleWishClick={handleWishClick}
+        wishItems={wishItems}
+        isWishOpen={isWishOpen}
+        removeFromWishlist={removeFromWishlist}
+      /> */}
+
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
+
             {displayedProducts.map((product) => (
-  <div key={product.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 relative">
-    <Link href={`/Shop/product/${product.id}`}>
-      <img
-        src={product.primary_photo}
-        alt={product.name}
-        className="w-full object-fit rounded-t-lg"
-      />
-    </Link>
-    <div className="absolute top-10 right-0 p-2 opacity-0 hover:opacity-100 transition duration-300 bg-[#999]">
-      <RiShoppingBasketFill
-        size={34}
-        color="#fff"
-        className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-      />
-      <MdFavorite
-        size={34}
-        color="#fff"
-        className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-      />
-      <RiExchangeFill
-        size={34}
-        color="#fff"
-        className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-      />
+        <ProductCard key={product.id} product={product} openModal={openModal}    />
+      ))}
     </div>
-    <div className="p-4">
-      <ReactStars
-        count={5}
-        size={24}
-        value={5}
-        edit={false}
-        activeColor="#ffd700"
-      />
-      <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
-      <div className="flex justify-between mt-2">
-        <p className="text-gray-700">${product.price}</p>
-        <p className="text-gray-700">{product.color}</p>
-      </div>
-    </div>
-    <div className="p-4 border-t border-gray-200">
-      <button onClick={() => openModal(product)} className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300">
-        Add to Cart
-      </button>
-    </div>
-  </div>
-))}
-            </div>
+
             <div className="flex flex-col justify-center py-10">
   {filteredProducts.length > currentPage * itemsPerPage ? (
     <button onClick={readMoreHandler}>

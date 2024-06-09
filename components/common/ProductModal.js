@@ -1,13 +1,21 @@
-import CartContext from "@/context/CartContext";
-import React, { useState, useEffect, useRef, useContext } from "react";
-import { RiCloseLine } from "react-icons/ri";
-import { FaStar } from "react-icons/fa";
-
-const ProductModal = ({ product, onClose }) => {
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { RiCloseLine } from 'react-icons/ri';
+import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
+import CartContext from '@/context/CartContext';
+import styles from '@/styles/ProductModal.module.css';
+import Invoice from '../invoice/Invoice';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Link from 'next/link';
+const ProductModal = ({ product, onClose, onPrevious, onNext }) => {
   const { addItemToCart } = useContext(CartContext);
   const [productQty, setProductQty] = useState(1);
-  const [selectedSize, setSelectedSize] = useState("M");
-  const [selectedColor, setSelectedColor] = useState("blue");
+  const [selectedSize, setSelectedSize] = useState('38');
+  const [selectedColor, setSelectedColor] = useState('blue');
+  const [showInvoice, setShowInvoice] = useState(false);
+  const [showShippingInfo, setShowShippingInfo] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
   const modalRef = useRef();
 
   const handleClickOutside = (event) => {
@@ -17,9 +25,9 @@ const ProductModal = ({ product, onClose }) => {
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -37,7 +45,7 @@ const ProductModal = ({ product, onClose }) => {
       size: selectedSize,
       color: selectedColor,
     });
-    onClose(); // Optionally close the modal on adding to cart
+    onClose();
   };
 
   const increaseQuantity = () => {
@@ -48,133 +56,179 @@ const ProductModal = ({ product, onClose }) => {
     setProductQty((prevQty) => Math.max(prevQty - 1, 1));
   };
 
+  const handleQuantityChange = (e) => {
+    const newQty = Math.min(Math.max(parseInt(e.target.value, 10) || 1, 1), product.stock);
+    setProductQty(newQty);
+  };
+
+  const toggleInvoice = () => {
+    setShowInvoice(!showInvoice);
+  };
+
+  const handleShippingInfoChange = (e) => {
+    setShowShippingInfo(e.target.checked);
+  };
+
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
   if (!product) return null;
 
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4 py-6 sm:px-0 z-50">
-      <div
-        ref={modalRef}
-        className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-2xl sm:w-full"
-      >
-        <div className="px-4 py-5 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <img
-              src={product.primary_photo}
-              alt={product.name}
-              className="rounded-md"
-            />
+    <div className={styles.overlay}>
+      <div ref={modalRef} className={styles.modal}>
+        <button className={styles.closeButton} onClick={onClose}>
+          <RiCloseLine size="24" />
+        </button>
+        
+        <button className={styles.printButton} onClick={() => window.print()}>Print</button>
+        {/* <button className={styles.invoiceButton} onClick={toggleInvoice}>Invoice</button> */}
+        
+        <div className={styles.checkboxContainer}>
+          <input
+            type="checkbox"
+            id="shippingInfo"
+            checked={showShippingInfo}
+            onChange={handleShippingInfoChange}
+          />
+          <label htmlFor="shippingInfo" className={styles.checkboxLabel}>Include delivery and shipping info</label>
           </div>
-          <div className="flex flex-col justify-between">
-            <div>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                {product.name}
-              </h3>
-              <p className="mt-2 text-sm text-gray-500">
-                Price: {product.price}
-              </p>
-              <div className="flex items-center mt-2">
-                <input
-                  type="checkbox"
-                  checked={product.stock > 0}
-                  readOnly
-                  className="form-checkbox text-blue-500"
-                />
-                <span className="ml-2 text-gray-700">
-                  In Stock {product.stock}
+        
+        <Link href='#'  onClick={toggleInvoice}>Show Invoice</Link>
+        <button className={styles.leftArrow} onClick={onPrevious}>
+          <FaArrowLeft size="24" />
+        </button>
+        <button className={styles.rightArrow} onClick={onNext}>
+          <FaArrowRight size="24" />
+        </button>
+
+        <div className={styles.container}>
+          <div className={styles.card}>
+            <div className={styles.description}>
+              <h2 className={styles.productTitle}>{product.name}</h2>
+              <div className={styles.descriptionText}>
+                <p className={`${styles.text} ${showFullDescription ? styles.fullText : styles.shortText}`}>
+                  {product.description}
+                </p>
+                <span onClick={toggleDescription} className={styles.showMore}>
+                  {showFullDescription ? 'Show Less' : 'Show More'}
                 </span>
               </div>
-              <div className="flex items-center mt-2">
-                {[...Array(5)].map((star, index) => (
-                  <FaStar
-                    key={index}
-                    color={index < product.rating ? "#ffc107" : "#e4e5e9"}
-                    className="mr-1"
+            </div>
+            <div className={styles.center}>
+              <h1 className={styles.title}>Product Details</h1>
+              <img src={product.primary_photo} alt={product.name} className={styles.shoe} />
+              <div className={styles.price}>
+                <span>$</span>
+                <h1>{product.price}</h1>
+              </div>
+            </div>
+            <div className={styles.details}>
+              <div className={styles.info}>
+                <div className="flex items-center mt-2">
+                  <input
+                    type="checkbox"
+                    checked={product.stock > 0}
+                    readOnly
+                    className="form-checkbox text-blue-500"
                   />
-                ))}
-              </div>
-            </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Overview</p>
-              <p className="text-gray-700">
-                Premium Quality {product.category?.name} Product
-              </p>
-            </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Size</p>
-              <div className="flex gap-2">
-                {["S", "M", "L", "XL"].map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 rounded-md ${selectedSize === size ? "bg-blue-500 text-white" : "bg-gray-100"
-                      }`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Color</p>
-              <div className="flex gap-2">
-                {["blue", "red", "orange", "green"].map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => setSelectedColor(color)}
-                    className={`w-6 h-6 rounded-full ${selectedColor === color ? "ring-2 ring-blue-500" : ""
-                      }`}
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="mb-2">
-              <p className="font-semibold mb-2">Quantity</p>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={decreaseQuantity}
-                  className="px-2 py-1 bg-gray-200 rounded-md"
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  className="block w-16 px-4 py-2 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline-gray"
-                  min="1"
-                  max={product.stock}
-                  step="1"
-                  value={productQty}
-                  onChange={(e) => {
-                    const newQty = Math.min(Math.max(e.target.value, 1), product.stock);
-                    setProductQty(newQty);
-                  }}
-                />
-                <button
-                  onClick={increaseQuantity}
-                  className="px-2 py-1 bg-gray-200 rounded-md"
-                >
-                  +
+                  <span className="ml-2 text-gray-700">
+                    In Stock {product.stock}
+                  </span>
+                </div>
+                <div className="flex items-center mt-2">
+                  {[...Array(5)].map((star, index) => (
+                    <FaStar
+                      key={index}
+                      color={index < product.rating ? "#ffc107" : "#e4e5e9"}
+                      className="mr-1"
+                    />
+                  ))}
+                </div>
+                <div className={styles.colorContainer}>
+                  <h3 className={styles.subTitle}>Color</h3>
+                  <div className={styles.colors}>
+                    {['blue', 'red', 'green', 'orange', 'black'].map((color) => (
+                      <span
+                        key={color}
+                        className={`${styles.color} ${selectedColor === color ? styles.active : ''}`}
+                        onClick={() => setSelectedColor(color)}
+                        style={{ backgroundColor: color }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className={styles.sizeContainer}>
+                  <h3 className={styles.subTitle}>Size</h3>
+                  <div className={styles.sizes}>
+                    {['37', '38', '39', '40', '41', '42'].map((size) => (
+                      <span
+                        key={size}
+                        className={`${styles.size} ${selectedSize === size ? styles.active : ''}`}
+                        onClick={() => setSelectedSize(size)}
+                      >
+                        {size}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className={styles.quantityContainer}>
+                  <h3 className={styles.subTitle}>Quantity</h3>
+                  <div className={styles.quantity}>
+                    <button onClick={decreaseQuantity} className={styles.quantityButton}>-</button>
+                    <input
+                      type="number"
+                      className={styles.quantityInput}
+                      min="1"
+                      max={product.stock}
+                      step="1"
+                      value={productQty}
+                      onChange={handleQuantityChange}
+                    />
+                    <button onClick={increaseQuantity} className={styles.quantityButton}>+</button>
+                  </div>
+                </div>
+                <button className={styles.addToCart} onClick={addToCartHandler}>
+                  Add to Cart
                 </button>
               </div>
-            </div>
-            <div className="flex flex-col pt-2 gap-2 items-center">
-              <button
-                onClick={addToCartHandler}
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Add to Cart
-              </button>
             </div>
           </div>
         </div>
-        <div className="absolute top-0 right-0 pt-4 pr-4">
-          <button
-            onClick={onClose}
-            className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-          >
-            <RiCloseLine size="24" />
-          </button>
-        </div>
+
+        
+        {showInvoice && (
+          <div className={styles.invoice}>
+            <Invoice
+              order={{
+                id: 123456,
+                date: 'May 16, 2023',
+                customer: {
+                  name: 'John Doe',
+                  email: 'john.doe@example.com',
+                  address: '1234 Street, City, Country',
+                },
+              }}
+              lineItems={[
+                {
+                  id: 1,
+                  name: product.name,
+                  quantity: productQty,
+                  price: product.price,
+                },
+              ]}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -22,14 +22,37 @@ import ProductsTabs from "@/components/home/ProductsTabs";
 import ChatPopup from "@/components/ChatPopup";
 import CashbackPopup from "@/components/CashbackPopup";
 import CookiesPopup from "@/components/CookiesPopup";
+import { getCookie } from "@/ults/cookies";
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(true);
-  const [isCookiesPopupVisible, setIsCookiesPopupVisible] = useState(true);
+  const [showCookiesPopup, setShowCookiesPopup] = useState(false);
 
+  const [showCashbackPopup, setShowCashbackPopup] = useState(false);
+
+  useEffect(() => {
+    const authToken = getCookie("home_text_token");
+    if (!authToken) {
+      setShowCashbackPopup(true);
+    }
+  }, []);
+
+  const handleCashbackClosePopup = () => {
+    setShowCashbackPopup(false);
+  };
+
+
+  useEffect(() => {
+    const savedPreferences = localStorage.getItem('cookiePreferences');
+    if (!savedPreferences) {
+      setShowCookiesPopup(true);
+    }
+  }, []);
+
+   
   const handleScroll = useCallback(() => {
     if (window.pageYOffset > 100) {
       setIsVisible(true);
@@ -39,12 +62,9 @@ const Home = () => {
   }, []);
 
   const handleClosePopup = () => {
-    setIsPopupVisible(false);
+    setShowCookiesPopup(false);
   };
 
-  const handleCloseCookiesPopup = () => {
-    setIsCookiesPopupVisible(false);
-  };
 
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -106,8 +126,11 @@ const Home = () => {
           <FaPhoneAlt size={18} onClick={() => { /* Add your phone functionality here */ }} />
         </button>
       )}
-      {isPopupVisible && <CashbackPopup onClose={handleClosePopup} />}
-      {isCookiesPopupVisible && <CookiesPopup onClose={handleCloseCookiesPopup} />}
+      {showCashbackPopup && <CashbackPopup onClose={handleCashbackClosePopup} />}
+
+      
+      {showCookiesPopup && <CookiesPopup onClose={handleClosePopup} />}
+      
       {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
       <DesignSix/>
       <DesignOne/>

@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './PriceDropNotificationButton.module.css'; // Import CSS module
 
 const PriceDropNotificationButton = ({ product }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    let timer;
+    if (isVisible) {
+      timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 10000); // 10000 ms = 10 seconds
+    }
+    return () => clearTimeout(timer);
+  }, [isVisible]);
 
   const handleClick = () => {
-    setIsVisible(prevState => !prevState);
+    setIsVisible(true);
   };
 
   return (
@@ -26,16 +36,14 @@ const PriceDropNotificationButton = ({ product }) => {
           />
         </svg>
       </div>
-      {isVisible && (
-        <div className={`${styles.container} ${isVisible ? styles.open : styles.closed}`}>
-          <button
-            className={`${styles.button} ${isVisible ? styles.buttonHover : ''}`}
-            aria-expanded={isVisible}
-          >
-            Get a notification when price drops below ৳ {product.price}
-          </button>
-        </div>
-      )}
+      <div className={`${styles.container} ${isVisible ? styles.open : styles.closed}`}>
+        <button
+          className={`${styles.button}`}
+          aria-expanded={isVisible}
+        >
+          Get a notification when price drops below ৳ {product.price}
+        </button>
+      </div>
     </>
   );
 };

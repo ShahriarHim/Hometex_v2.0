@@ -4,9 +4,15 @@ import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AiTwotoneDelete } from "react-icons/ai";
+import { MdFavorite } from 'react-icons/md';
+import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import {
   FaApple,
   FaBars,
+  FaBriefcase,
+  FaCommentDots,
   FaFacebook,
   FaHeart,
   FaHome,
@@ -15,10 +21,12 @@ import {
   FaMapMarkerAlt,
   FaMoneyCheckAlt,
   FaPhoneSquareAlt,
+  FaQuestionCircle,
   FaSearch,
   FaShippingFast,
   FaTimes,
   FaUserAlt,
+
 } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import {
@@ -38,7 +46,9 @@ import Modal from "./Modal";
 import SearchBarPopup from "./searchPopup";
 import LoginPopup from "./LoginPopup";
 import { useRouter } from "next/router"; // Ensure this is imported
-
+import CartComponent from "./CartComponent/CartComponent";
+import WishComponent  from "./WishComponent/WishComponent";
+import ChatPopup from "../ChatPopup";
 const Header3 = () => {
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState(0);
@@ -51,6 +61,9 @@ const Header3 = () => {
   const [authToken, setAuthToken] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
 
+  const updateWishItems = (updatedWishItems) => {
+    setWishItems(updatedWishItems);
+  };
 
   const handleCheckout = () => {
     if (!auth_token) {
@@ -59,16 +72,13 @@ const Header3 = () => {
       router.push("/Checkout");
     }
   };
-  
+
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
-  // State for form data and submission
-  // const [signInData, setSignInData] = useState({ username: "", password: "" });
-  // const [signInErr, setSignInErr] = useState({});
-  // const [isSubmit, setIsSubmit] = useState(false);
 
+   
   useEffect(() => {
     const token = getCookie("home_text_token");
     setAuthToken(token);
@@ -80,34 +90,31 @@ const Header3 = () => {
     // setShowPopup(false);
   };
 
-  // const handleSignup = () => {
-  //   togglePopup();
-  //   setShowPopup(false);
-  // };
-  // Registration
+  const [isChatVisible, setIsChatVisible] = useState(false);
+  const [wishItems, setWishItems] = useState([]);
+  const [isWishOpen, setIsWishOpen] = useState(false);
+  const wishRef = useRef(null);
+  const handleWishClick = () => {
+    setIsWishOpen(!isWishOpen);
+  };
 
-  // const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
-  // const passwordsMatch = password === confirmPassword;
-  // const showWarning = confirmPassword.length > 0 && !passwordsMatch;
-  // const [value, setValue] = useState("");
-  // const reg_init_value = {
-  //   user_type: "1",
-  //   first_name: "",
-  //   last_name: "",
-  //   email: "",
-  //   phone: "",
-  //   password: "",
-  //   conf_password: "",
-  //   is_subscribe: "",
-  // };
-  // const [regData, setRegData] = useState(reg_init_value);
-  // const [err, setErr] = useState({});
-  // const handleChangeRegistration = (e) => {
-  //   setRegData({ ...regData, [e.target.name]: e.target.value });
-  // };
+  useEffect(() => {
+    const wishItems = JSON.parse(localStorage.getItem('wishItems')) || [];
+    setWishItems(wishItems);
+  }, []);
 
-  console.log();
+  const removeFromWishlistHandler = (productId) => {
+    console.log('Removing from wishlist:', productId);
+    const updatedWishItems = wishItems.filter((item) => item.id !== productId);
+    updateWishItems(updatedWishItems);
+    localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
+  };
+
+const handleChatToggle = () => {
+   
+  setIsChatVisible(prevState => !prevState);
+};
+
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const { wlist } = useContext(WishListContext);
@@ -165,20 +172,13 @@ const Header3 = () => {
   ];
 
 
-  // const [isZipPopupVisible, setIsZipPopupVisible] = useState(false);
-
-  // const handleZipCodeClick = () => {
-  //   setIsZipPopupVisible(true);
-  // };
 
   const saleEndTime = "2024-04-30T23:59:59";
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
-    const togglePopup = () => {
-      // handle popup toggle logic
-    };
+
   };
   // add an event listener to detect clicks outside the dropdown
   useEffect(() => {
@@ -209,11 +209,7 @@ const Header3 = () => {
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  // popup for login
 
-
-
-  // Finish login
 
   const { cart, deleteItemFromCart } = useContext(CartContext);
 
@@ -270,25 +266,6 @@ const Header3 = () => {
     // Add your logic to navigate or display search results here
   };
 
-  const handleKeyDown = (event) => {
-    // Trigger the search when the user presses Enter
-    if (event.key === "Enter") {
-      handleSearchClick();
-    }
-  };
-
-  //
-
-  // sign in process
-  // const signInInitValue = {
-  //   username: "",
-  //   password: "",
-  // };
-
-
-  // const handleSignIn = (e) => {
-  //   setSignInData({ ...signInData, [e.target.name]: e.target.value });
-  // };
 
   // signout handeler
   const signOutSubmitHandler = async (e) => {
@@ -361,21 +338,21 @@ const Header3 = () => {
     if (cartItems) {
       const finalAmount = cartItems.reduce((total, cartItem) => {
         let str = cartItem.price;
-      
+
         // Convert to string if it's not already a string
         if (typeof str !== 'string') {
           console.warn(`Expected string but got ${typeof str}:`, str);
           str = String(str);
         }
-      
+
         // Replace commas
         str = str.replace(/[,]/g, "");
-      
+
         // Parse integer and calculate amount
         const amount = parseInt(str, 10) * cartItem.quantity;
         return total + amount;
       }, 0);
-      
+
       setTotalPrice(finalAmount);
     }
   }, [cartItems]);
@@ -453,7 +430,8 @@ const Header3 = () => {
         </div>
       </div>
       {/* Pre Header end */}
-
+      {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
+      
       <div
         className="pt-1 hidden md:block sticky top-0 z-20"
         style={{
@@ -503,8 +481,8 @@ const Header3 = () => {
 
               <button onClick={() => setIsModalOpen(true)}>
                 <div className="px-2 flex flex-col items-center text-center">
-                  <FaMoneyCheckAlt
-                    className="h-6 w-6 text-green-500"
+                  <FaBriefcase
+                    className="h-6 w-6 text-gray-500"
                     aria-hidden="true"
                   />
                   <span className="text-sm mt-2 font-semibold text-gray-800">
@@ -572,7 +550,7 @@ const Header3 = () => {
                 <div className="relative" ref={dropdownRef}>
                   <button
                     type="button"
-                    className="flex items-center text-black focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm text-center mb-2 sm:mb-0 sm:mr-3 md:mr-0 dark:bg-[#15803d] dark:hover:bg-[#15803d] dark:focus:ring-green-800"
+                    // className="flex items-center text-black focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm text-center mb-2 sm:mb-0 sm:mr-3 md:mr-0 dark:bg-[#15803d] dark:hover:bg-[#15803d] dark:focus:ring-green-800"
                     onClick={authToken ? toggleDropdown : handleLogin}
                   >
                     <div className="px-2 flex flex-col items-center text-center">
@@ -621,136 +599,48 @@ const Header3 = () => {
                 </div>
 
                 <button type="button" onClick={handleButtonClick} className="">
-                  <div className="px-2 flex flex-col items-center text-center">
-                    <FaHeart
-                      className="h-6 w-6 text-red-500"
-                      aria-hidden="true"
+
+                  {authToken ? (
+                    <WishComponent
+                      wishItems={wishItems}
+                      updateWishItems={updateWishItems}
+                      removeFromWishlist={removeFromWishlistHandler}
+                      isWishOpen={isWishOpen}
+                      handleWishClick={handleWishClick}
+                      wishRef={wishRef}
                     />
-                    <button
-                      onClick={handleWishListClick}
-                      className="text-sm mt-2 font-semibold text-gray-700"
-                    >
-                      Wishlist
-                    </button>
-                  </div>
-                  {auth_token && <span>{wlist?.length || 0}</span>}
-                </button>
-
-                <div className="relative" ref={cartRef}>
-                  <div className="relative">
-                    <button onClick={handleCartClick} type="button">
-                      <div className="px-2 flex flex-col items-center text-center">
-                        <HiShoppingCart
-                          className="h-6 w-6 text-blue-500"
-                          aria-hidden="true"
-                        />
-                        <span className="text-sm mt-2 font-semibold text-gray-700">
-                          Cart
-                        </span>
-                      </div>
-                    </button>
-                    {cartItems?.length > 0 && (
-                      <span className="absolute -top-3 -right-3 bg-red-600 rounded-full text-white px-2 py-1 text-xs flex items-center justify-center animate-pulse">
-                        {cartItems.length}
-                      </span>
-                    )}
-                  </div>
-
-                  {isOpen && (
-                    <div className="fixed inset-y-0 right-0 w-96 z-50 shadow-xl bg-gradient-to-b from-gray-700 to-gray-900 text-white overflow-hidden transform translate-x-0 transition-transform ease-out duration-300">
-                      <div className="flex justify-between items-center p-4 border-b border-gray-600">
-                        <h2 className="text-xl font-semibold">Your Cart</h2>
-                        <button
-                          onClick={handleCartClick} // Assuming this closes the cart
-                          className="text-gray-400 hover:text-white rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                      <div
-                        className="overflow-y-auto max-h-60"
-                        style={{ maxHeight: "calc(100vh - 200px)" }}
-                      >
-                        {" "}
-                        {/* Adjust maxHeight according to your header and footer size */}
-                        <table className="w-full">
-                          <tbody>
-                            {cart?.cartItems?.map((cartItem) => (
-                              <tr
-                                key={cartItem.product_id}
-                                className="border-b border-gray-600"
-                              >
-                                <td className="py-4 pl-4">
-                                  <img
-                                    src={cartItem.image}
-                                    alt={cartItem.name}
-                                    className="w-20 h-20 object-cover rounded-lg shadow-md"
-                                  />
-                                </td>
-                                <td className="px-2 py-4">{cartItem.name}</td>
-                                <td className="px-2 py-4">
-                                  {cartItem.quantity}
-                                </td>
-                                <td className="px-2 py-4">
-                                  BDT {cartItem.price}
-                                </td>
-                                <td className="px-2 py-4">
-                                  <button
-                                    className="text-red-400 hover:text-red-600"
-                                    onClick={() =>
-                                      deleteItemFromCart(cartItem.product_id)
-                                    }
-                                  >
-                                    <AiTwotoneDelete size={24} />
-                                  </button>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                      <div className="relative m-10 ml-40">
-                        Total: BDT {totalPrice}
-                      </div>
-                      <div className="absolute bottom-0 left-0 right-0 flex justify-end space-x-4 p-4 bg-gray-800">
-                        {" "}
-                        {/* Footer background can match or contrast the overall design */}
-                        <Link href="/cart">
-                          <button className="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors duration-200">
-                            View Cart
-                          </button>
-                        </Link>
-                        <button
-                          onClick={handleCheckout}
-                          className="inline-block bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition-colors duration-200"
-                        >
-                          Checkout
-                        </button>
-
-                      </div>
+                  ) : (
+                    <div>
+                      <MdFavorite className="h-7 w-7 text-blue-500" aria-hidden="true" />
+                      <span className="text-sm mt-2 font-semibold text-gray-700">Wishlist</span>
                     </div>
                   )}
-                </div>
+
+
+                  {/* {auth_token && <span>{wlist?.length > 0}</span>} */}
+                </button>
+
+                <CartComponent
+                  cartRef={cartRef}
+                  handleCartClick={handleCartClick}
+                  cartItems={cartItems}
+                  isOpen={isOpen}
+                  cart={{ cartItems }}
+                  deleteItemFromCart={deleteItemFromCart}
+                  totalPrice={totalPrice}
+                  handleCheckout={handleCheckout}
+                />
+
+
               </div>
+
+
             </div>
           </div>
           <LoginPopup
-                          showPopup={showPopup}
-                          togglePopup={togglePopup}
-                        />
+            showPopup={showPopup}
+            togglePopup={togglePopup}
+          />
           {/* Mid Header end */}
           {/* menu */}
           <div className="flex flex-auto gap-2 container mx-auto justify-end items-center">
@@ -779,6 +669,13 @@ const Header3 = () => {
                         <FaLeaf className="mr-2" />
                         Home Decor
                       </Link>
+                      <Link
+                        href="/Faq"
+                        className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+                      >
+                        <FaQuestionCircle className="mr-2" />
+                        FAQ
+                      </Link>
                     </div>
                   </div>
                   <div className="-mr-2 flex md:hidden">
@@ -795,7 +692,7 @@ const Header3 = () => {
               {isMenuOpen && (
                 <div className="md:hidden">
                   <div className="px-2 pt-2 pb-3 sm:px-3">
-                    <Link
+                    {/* <Link
                       href="/"
                       className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
                     >
@@ -833,7 +730,7 @@ const Header3 = () => {
                     </Link>
                     <Link
                       href="/Contact"
-                      className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
+                      className="text-black-300 hover:text-white hover:bg-black block px-2 py-2 rounded-md text-base font-medium"
                     >
                       Contact Us
                     </Link>
@@ -848,7 +745,7 @@ const Header3 = () => {
                       className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
                     >
                       Find A Store
-                    </Link>
+                    </Link> */}
                     <div className="relative" ref={cartRef}>
                       <div className="relative">
                         <button
@@ -943,12 +840,12 @@ const Header3 = () => {
                 </div>
               )}
             </nav>
-            <a
-              href="tel:+8801616101090"
-              class="inline-block bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-semibold py-2 px-2 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 cursor-pointer"
-            >
-              Contact Us
-            </a>
+            <button
+      className="inline-block bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 cursor-pointer flex items-center justify-center"
+      onClick={handleChatToggle}
+    >
+      <FontAwesomeIcon icon={faCommentDots} />
+    </button>
           </div>
           {/* menu end */}
         </div>
@@ -959,25 +856,21 @@ const Header3 = () => {
           className="md:hidden fixed z-50 flex flex-col items-center justify-center w-12 h-12 bg-transparent border-none cursor-pointer focus:outline-none top-5 right-5"
         >
           <div
-            className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${
-              menuOpen ? "rotate-45 translate-y-2.5" : ""
-            }`}
+            className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${menuOpen ? "rotate-45 translate-y-2.5" : ""
+              }`}
           ></div>
           <div
-            className={`block w-8 h-0.5 bg-black my-2 transition-opacity duration-500 ease-in-out ${
-              menuOpen ? "opacity-0" : "opacity-100"
-            }`}
+            className={`block w-8 h-0.5 bg-black my-2 transition-opacity duration-500 ease-in-out ${menuOpen ? "opacity-0" : "opacity-100"
+              }`}
           ></div>
           <div
-            className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${
-              menuOpen ? "-rotate-45 -translate-y-2.5" : ""
-            }`}
+            className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${menuOpen ? "-rotate-45 -translate-y-2.5" : ""
+              }`}
           ></div>
         </button>
         <div
-          className={`fixed top-0 left-0 w-full h-full bg-white z-40 transform ${
-            menuOpen ? "translate-x-0" : "-translate-x-full"
-          } transition-transform duration-500 ease-in-out`}
+          className={`fixed top-0 left-0 w-full h-full bg-white z-40 transform ${menuOpen ? "translate-x-0" : "-translate-x-full"
+            } transition-transform duration-500 ease-in-out`}
         >
           <div className="p-5">
             <img
@@ -1012,9 +905,8 @@ const Header3 = () => {
                 </div>
                 <div className="w-full flex flex-col">
                   <ul
-                    className={`text-2xl pl-4 mt-2 ${
-                      subMenuOpen["services"] ? "block" : "hidden"
-                    }`}
+                    className={`text-2xl pl-4 mt-2 ${subMenuOpen["services"] ? "block" : "hidden"
+                      }`}
                   >
                     <li>
                       <a

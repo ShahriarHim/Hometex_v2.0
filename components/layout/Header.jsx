@@ -157,6 +157,8 @@ const Header = () => {
     e.preventDefault();
     // setIsSubmit(true)
     deleteCookie("home_text_token");
+    localStorage.removeItem("wishlisttotal"); // Corrected line
+
     window.location.href = "/";
   };
   let auth_token = getCookie("home_text_token");

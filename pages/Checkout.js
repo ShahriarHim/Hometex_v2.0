@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useRouter } from 'next/router';
 import emailjs from 'emailjs-com';
 
@@ -11,6 +11,10 @@ const Checkout = () => {
     country: "",
     city: "",
     postcode: "",
+    Division : "",
+    District : "",
+
+
   });
   const router = useRouter();
 
@@ -20,15 +24,58 @@ const Checkout = () => {
       ...prevFormData,
       [name]: value,
     }));
+  
+    if (name === "country") {
+      // Fetch district data based on the selected division
+      // fetchDistricts(value);
+    } else if (name === "city") {
+      // Fetch area data based on the selected district
+      fetch(`https://htbapi.hometexbd.ltd/api/area/${value}`)
+        .then((response) => response.json())
+        .then((data) => setAreas(data))
+        .catch((error) => console.error("Error fetching areas:", error));
+    }
   };
 
+
+  const [cities, setCities] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [areas, setAreas] = useState([]);
+
+  useEffect(() => {
+    fetchDivisions();
+  }, []);
+
+  useEffect(() => {
+    if(formData.Division) {
+      fetchDistricts(formData.Division);
+    }
+  }, [formData.Division]);
+  
+  
+  const fetchDivisions = () => {
+    fetch("https://htbapi.hometexbd.ltd/api/divisions")
+      .then((response) => response.json())
+      .then((data) => setCities(data))
+      .catch((error) => console.error("Error fetching divisions:", error));
+  };
+  
+  const fetchDistricts = (divisionId) => {
+    fetch(`https://htbapi.hometexbd.ltd/api/district/${divisionId}`)
+ 
+      .then((response) => response.json())
+      .then((data) => setDistricts(data))
+      .catch((error) => console.error("Error fetching districts:", error));
+  };
+
+  
   const handleUseCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
         console.log("Latitude: ", latitude);
         console.log("Longitude: ", longitude);
-        setFormData({ ...formData, postcode: "12345" });
+        setFormData(prevFormData => ({ ...prevFormData, postcode: "12345" }));
       }, (error) => {
         console.error("Error getting location: ", error);
       });
@@ -37,28 +84,49 @@ const Checkout = () => {
     }
   };
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   emailjs.send('service_27al8ux', 'template_d11y0qg', formData, 'GXi-JhoKe7IM5tmqe')
+  //     .then((result) => {
+  //       console.log(result.text);
+  //       setFormData({
+  //         firstName: "",
+  //         lastName: "",
+  //         email: "",
+  //         phoneNumber: "",
+  //         country: "",
+  //         city: "",
+  //         postcode: "",
+  //         Division : "",
+  //         District : "",
+  //       });
+  //       router.push('/totalPrice');
+  //     }, (error) => {
+  //       console.log(error.text);
+  //       alert("Failed to submit the form. Please try again.");
+  //     });
+  // };
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    emailjs.send('service_27al8ux', 'template_d11y0qg', formData, 'GXi-JhoKe7IM5tmqe')
-      .then((result) => {
-        console.log(result.text);
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNumber: "",
-          country: "",
-          city: "",
-          postcode: "",
-        });
-        router.push('/totalPrice');
-      }, (error) => {
-        console.log(error.text);
-        alert("Failed to submit the form. Please try again.");
-      });
+  
+    // Reset the form data
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      country: "",
+      city: "",
+      postcode: "",
+      Division: "",
+      District: "",
+    });
+  
+    // Navigate to the specified page
+    router.push('/totalPrice');
   };
-
+  
 
   return (
     <div className="py-10">
@@ -72,32 +140,7 @@ const Checkout = () => {
           </h4>
 
           <form onSubmit={handleSubmit} className="space-y-6 mt-5">
-            {/* <div>
-              <label
-                htmlFor="topic"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Select Topic *
-              </label>
-              <select
-                id="topic"
-                name="topic"
-                value={formData.topic}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="">Please Select</option>
-                <option value="customer_service">Customer Service</option>
-                <option value="online_orders">Online Orders</option>
-                <option value="my_rewards">My Rewards</option>
-                <option value="corporate_enquiry">Corporate Enquiry</option>
-                <option value="partnership_opportunities">
-                  Partnership Opportunities
-                </option>
-                <option value="general">General</option>
-              </select>
-            </div> */}
+            
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -320,37 +363,60 @@ const Checkout = () => {
                   <option value="IQ">Iraq</option>
                   <option value="IE">Ireland</option>
                   <option value="IM">Isle of Man</option>
-                  <option value="IL">Israel</option>
+                   
                   <option value="IT">Italy</option>
                   <option value="JM">Jamaica</option>
                 </select>
               </div>
 
-              <div>
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Select City *
-                </label>
-                <select
-                  id="city"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                >
-                  <option value="">Select City</option>
-                  <option value="AF">Dhaka</option>
-                  <option value="AL">Rajshahi</option>
-                  <option value="DZ">Barisal</option>
-                  <option value="AS">Rangpur</option>
-                  <option value="AD">Chittagong</option>
-                  <option value="AO">Sylhet</option>
-                </select>
-              </div>
+            
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <label
+      htmlFor="Division"
+      className="block text-sm font-medium text-gray-700"
+    >
+      Select Division *
+    </label>
+    <select
+      name="Division"
+      value={formData.Division}
+      onChange={handleChange}
+      required
+      className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+    >
+      <option value="">Select Division</option>
+      {cities.map((city) => (
+        <option key={city.id} value={city.id}>
+          {city.name}
+        </option>
+      ))}
+    </select>
+  </div>
 
+  <div>
+    <label
+      htmlFor="District"
+      className="block text-sm font-medium text-gray-700"
+    >
+      Select District *
+    </label>
+    <select
+      name="District"
+      value={formData.District}
+      onChange={handleChange}
+      required
+      className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+    >
+      <option value="">Select District</option>
+      {districts.map((district) => (
+        <option key={district.id} value={district.id}>
+          {district.name}
+        </option>
+      ))}
+    </select>
+  </div>
+</div>
 
             </div>
          
