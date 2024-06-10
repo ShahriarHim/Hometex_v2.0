@@ -9,6 +9,7 @@ import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
+  FaUser,
   FaApple,
   FaBars,
   FaBriefcase,
@@ -521,8 +522,9 @@ const Header3 = () => {
                   </span>
                 </div>
                 <div>
-                  <div className="px-2 flex flex-col items-center text-center">
-                    <button onClick={() => setIsSearchPopupVisible(true)}>
+
+                  <button onClick={() => setIsSearchPopupVisible(true)}>
+                    <div className="px-2 flex flex-col items-center text-center">
                       <FaSearch
                         className="h-6 w-6 text-blue-600"
                         aria-hidden="true"
@@ -530,9 +532,9 @@ const Header3 = () => {
                       <span className="text-sm mt-2 font-semibold text-gray-800">
                         Search
                       </span>
-                    </button>
-                  </div>
 
+                    </div>
+                  </button>
                   {isSearchPopupVisible && (
                     <SearchBarPopup
                       onClose={() => setIsSearchPopupVisible(false)}
@@ -555,32 +557,36 @@ const Header3 = () => {
                     // className="flex items-center text-black focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm text-center mb-2 sm:mb-0 sm:mr-3 md:mr-0 dark:bg-[#15803d] dark:hover:bg-[#15803d] dark:focus:ring-green-800"
                     onClick={authToken ? toggleDropdown : handleLogin}
                   >
-                  <div className="px-2 flex flex-col items-center text-center">
-  {authToken ? (
-    <>
-      {/* Admin logged in */}
-      <img
-        src="https://htbapi.hometexbd.ltd/images/hometex-logo.ico"
-        alt="Hometex Logo"
-        className="h-6 w-6 text-gray-600"
-      />
-      <span className="text-sm mt-2 font-semibold text-gray-800">
-        {auth_name ? `${auth_name}` : "Guest User"}
-      </span>
-    </>
-  ) : (
-    <>
-      {/* Regular user */}
-      <FaUserAlt
-        className="h-6 w-6 text-gray-600"
-        aria-hidden="true"
-      />
-      <span className="text-sm mt-2 font-semibold text-gray-800">
-        My Account
-      </span>
-    </>
-  )}
-</div>
+                    <div className="px-2 flex flex-col items-center text-center">
+                      {authToken ? (
+                        <>
+                          {/* Admin logged in */}
+                          {/* <img
+                            src="https://htbapi.hometexbd.ltd/images/hometex-logo.ico"
+                            alt="Hometex Logo"
+                            className="h-6 w-6 text-gray-600"
+                          /> */}
+                          <FaUser
+                            className="h-6 w-6 text-blue-600"
+                            aria-hidden="true"
+                          />
+                          <span className="text-sm mt-2 font-semibold text-gray-800">
+                            {auth_name ? `${auth_name}` : "Guest User"}
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          {/* Regular user */}
+                          <FaUserAlt
+                            className="h-6 w-6 text-gray-600"
+                            aria-hidden="true"
+                          />
+                          <span className="text-sm mt-2 font-semibold text-gray-800">
+                            My Account
+                          </span>
+                        </>
+                      )}
+                    </div>
 
                   </button>
                   {isDropdownOpen && authToken && (
@@ -614,8 +620,8 @@ const Header3 = () => {
                     />
                   ) : (
                     <div>
-                      <MdFavorite className="h-7 w-7 text-blue-500" aria-hidden="true" />
-                      <span className="text-sm mt-2 font-semibold text-gray-700">Wishlist</span>
+                      <FaHeart className="h-6 w-6text-blue-600" aria-hidden="true" />
+                      <span className="text-sm mt-2 font-semibold text-gray-800">Wishlist</span>
                     </div>
                   )}
 
@@ -857,13 +863,13 @@ const Header3 = () => {
               onClick={handleChatToggle}
             >
 
-            <FaCommentDots className="text-xl" />
-          </Link>
-          {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
+              <FaCommentDots className="text-xl" />
+            </Link>
+            {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
+          </div>
+          {/* menu end */}
         </div>
-        {/* menu end */}
-      </div>
-    </div >
+      </div >
       <div>
         <button
           onClick={toggleMenu}

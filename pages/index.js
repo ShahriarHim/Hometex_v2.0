@@ -55,7 +55,7 @@ const Home = () => {
     }
   }, []);
 
-   
+
   const handleScroll = useCallback(() => {
     if (window.pageYOffset > 100) {
       setIsVisible(true);
@@ -103,8 +103,9 @@ const Home = () => {
 
   return (
     <>
-    <FirstOrderPopup/>
-        {/* <AdPromotionSection/> */}
+      <FirstOrderPopup />
+      {/* <NewCustomerSignup /> */}
+      {/* <AdPromotionSection/> */}
       <MainSlider />
       
       {isVisible && (
@@ -133,28 +134,27 @@ const Home = () => {
       )}
       {showCashbackPopup && <CashbackPopup onClose={handleCashbackClosePopup} />}
 
-      
+
       {showCookiesPopup && <CookiesPopup onClose={handleClosePopup} />}
-      
+
       {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
-  
-      <DesignSix/>
-      <DesignOne/>
+
+      <DesignSix />
+      <DesignOne />
       <Suspense fallback={<h1>loading</h1>}>
-      
+
         <ProductsTabs products={products} />
-     
-        <DesignFifteen/>
-        <DesignEight/>
-        <DesignThree/>
-        <DesignFive/>
-        <DesignSeven/>
-        <DesignEleven/>
-        <DesignFour/>
-        <DesignNine/>
-        <DesignTwelve/>
-        <CostomerCount/>
-        <Prefooter2/>
+        <DesignFifteen />
+        <DesignEight />
+        <DesignThree />
+        <DesignFive />
+        <DesignSeven />
+        <DesignEleven />
+        <DesignFour />
+        <DesignNine />
+        <DesignTwelve />
+        <CostomerCount />
+        <Prefooter2 />
       </Suspense>
     </>
   );

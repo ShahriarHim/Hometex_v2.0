@@ -3,6 +3,7 @@ import React from 'react';
 import { HiShoppingCart } from 'react-icons/hi';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import Link from 'next/link';
+import { FaShoppingBasket, FaShoppingCart } from 'react-icons/fa';
 
 const CartComponent = ({
   cartRef,
@@ -19,8 +20,8 @@ const CartComponent = ({
       <div className="relative">
         <button onClick={handleCartClick} type="button">
           <div className="px-2 flex flex-col items-center text-center">
-            <HiShoppingCart className="h-6 w-6 text-blue-500" aria-hidden="true" />
-            <span className="text-sm mt-2 font-semibold text-gray-700">Cart</span>
+            <FaShoppingCart className="h-6 w-6 text-blue-600" aria-hidden="true" />
+            <span className="text-sm mt-2 font-semibold text-gray-800">Cart</span>
           </div>
         </button>
         {cartItems?.length > 0 && (
