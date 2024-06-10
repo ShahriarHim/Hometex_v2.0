@@ -33,9 +33,10 @@
   align-items: center;
   background: rgb(238, 118, 6);
   border-radius: 8px;
-  padding: 20px;
+  padding: 50px; /* Increase padding for a bigger popup */
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
+
 
 .content {
   display: flex;
@@ -78,16 +79,16 @@
 
 .wheelContainer {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 400px; /* Increase width for a bigger wheel */
+  height: 400px; /* Increase height for a bigger wheel */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .wheel {
-  width: 100%;
-  height: 100%;
+  width: 90%; /* Adjust width to fit the container */
+  height: 90%; /* Adjust height to fit the container */
   border: 4px solid white;
   border-radius: 50%;
   position: relative;
@@ -107,7 +108,7 @@
   align-items: center;
   position: absolute;
   transform-origin: center;
-}
+} 
 
 .segment:nth-child(1) { transform: rotate(0deg) translateY(-75%); }
 .segment:nth-child(2) { transform: rotate(45deg) translateY(-75%); }
@@ -116,7 +117,54 @@
 .segment:nth-child(5) { transform: rotate(180deg) translateY(-75%); }
 .segment:nth-child(6) { transform: rotate(225deg) translateY(-75%); }
 .segment:nth-child(7) { transform: rotate(270deg) translateY(-75%); }
-.segment:nth-child(8) { transform: rotate(315deg) translateY(-75%); }
+.segment:nth-child(8) { transform: rotate(315deg) translateY(-75%); } 
+
+/*.segment {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid; /* Adjust height for the pizza slices 
+  position: absolute;
+  transform-origin: bottom center;
+} */
+
+/* .segment:nth-child(1) { 
+  transform: rotate(0deg); 
+  background-color: #ffeb3b; /* Color for the first slice 
+}
+.segment:nth-child(2) { 
+  transform: rotate(45deg); 
+  background-color: #f44336; /* Color for the second slice 
+}
+.segment:nth-child(3) { 
+  transform: rotate(90deg); 
+  background-color: #4caf50; /* Color for the third slice 
+}
+.segment:nth-child(4) { 
+  transform: rotate(135deg); 
+  background-color: #2196f3; /* Color for the fourth slice 
+}
+.segment:nth-child(5) { 
+  transform: rotate(180deg); 
+  background-color: #ffeb3b; /* Color for the fifth slice 
+}
+.segment:nth-child(6) { 
+  transform: rotate(225deg); 
+  background-color: #f44336; /* Color for the sixth slice 
+}
+.segment:nth-child(7) { 
+  transform: rotate(270deg); 
+  background-color: #4caf50; /* Color for the seventh slice 
+}
+.segment:nth-child(8) { 
+  transform: rotate(315deg); 
+  background-color: #2196f3; /* Color for the eighth slice 
+}
+
+ */
+
+
 
 .spin {
   animation: spin 4s ease-out forwards;
