@@ -15,12 +15,12 @@ const PriceDropNotificationButton = ({ product }) => {
   }, [isVisible]);
 
   const handleClick = () => {
-    setIsVisible(true);
+    setIsVisible(prevIsVisible => !prevIsVisible);
   };
 
   return (
     <>
-      <div className={`${styles.bellIcon}`} onClick={handleClick}>
+      <div className={styles.bellIcon} onClick={handleClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -38,8 +38,9 @@ const PriceDropNotificationButton = ({ product }) => {
       </div>
       <div className={`${styles.container} ${isVisible ? styles.open : styles.closed}`}>
         <button
-          className={`${styles.button}`}
+          className={styles.button}
           aria-expanded={isVisible}
+          onClick={handleClick}
         >
           Get a notification when price drops below ৳ {product.price}
         </button>

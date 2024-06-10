@@ -25,6 +25,8 @@ import CookiesPopup from "@/components/CookiesPopup";
 import { getCookie } from "@/ults/cookies";
 import AdPromotionSection from "@/components/layout/AdPromotionSection";
 import FirstOrderPopup from "@/components/layout/FirstOrderPopup";
+import CostomerCount from "@/components/newDesigns/Customercount";
+import NewCustomerPopup from "@/components/layout/NewCustomerPopup";
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -54,7 +56,7 @@ const Home = () => {
     }
   }, []);
 
-   
+
   const handleScroll = useCallback(() => {
     if (window.pageYOffset > 100) {
       setIsVisible(true);
@@ -102,10 +104,11 @@ const Home = () => {
 
   return (
     <>
-    <FirstOrderPopup/>
-        {/* <AdPromotionSection/> */}
+      <FirstOrderPopup />
+      {/* <NewCustomerSignup /> */}
+      {/* <AdPromotionSection/> */}
       <MainSlider />
-      
+      <NewCustomerPopup/>
       {isVisible && (
         <>
           <button
@@ -132,27 +135,27 @@ const Home = () => {
       )}
       {showCashbackPopup && <CashbackPopup onClose={handleCashbackClosePopup} />}
 
-      
+
       {showCookiesPopup && <CookiesPopup onClose={handleClosePopup} />}
-      
+
       {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
-  
-      <DesignSix/>
-      <DesignOne/>
+
+      <DesignSix />
+      <DesignOne />
       <Suspense fallback={<h1>loading</h1>}>
-      
+
         <ProductsTabs products={products} />
-     
-        <DesignFifteen/>
-        <DesignEight/>
-        <DesignThree/>
-        <DesignFive/>
-        <DesignSeven/>
-        <DesignEleven/>
-        <DesignFour/>
-        <DesignNine/>
-        <DesignTwelve/>
-        <Prefooter2/>
+        <DesignFifteen />
+        <DesignEight />
+        <DesignThree />
+        <DesignFive />
+        <DesignSeven />
+        <DesignEleven />
+        <DesignFour />
+        <DesignNine />
+        <DesignTwelve />
+        <CostomerCount />
+        <Prefooter2 />
       </Suspense>
     </>
   );

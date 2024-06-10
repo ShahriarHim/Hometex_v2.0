@@ -9,6 +9,7 @@ import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
+  FaUser,
   FaApple,
   FaBars,
   FaBriefcase,
@@ -47,7 +48,7 @@ import SearchBarPopup from "./searchPopup";
 import LoginPopup from "./LoginPopup";
 import { useRouter } from "next/router"; // Ensure this is imported
 import CartComponent from "./CartComponent/CartComponent";
-import WishComponent  from "./WishComponent/WishComponent";
+import WishComponent from "./WishComponent/WishComponent";
 import ChatPopup from "../ChatPopup";
 const Header3 = () => {
   const router = useRouter();
@@ -56,6 +57,7 @@ const Header3 = () => {
   const [isSearchPopupVisible, setIsSearchPopupVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   let auth_token = getCookie("home_text_token");
+  let auth_name = getCookie("home_text_name");
   const [menuOpen, setMenuOpen] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState({});
   const [authToken, setAuthToken] = useState(null);
@@ -78,7 +80,7 @@ const Header3 = () => {
     setShowPopup(!showPopup);
   };
 
-   
+
   useEffect(() => {
     const token = getCookie("home_text_token");
     setAuthToken(token);
@@ -110,10 +112,10 @@ const Header3 = () => {
     localStorage.setItem('wishItems', JSON.stringify(updatedWishItems));
   };
 
-const handleChatToggle = () => {
-   
-  setIsChatVisible(prevState => !prevState);
-};
+  const handleChatToggle = () => {
+
+    setIsChatVisible(prevState => !prevState);
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(true);
 
@@ -272,6 +274,7 @@ const handleChatToggle = () => {
     e.preventDefault();
     // setIsSubmit(true)
     deleteCookie("home_text_token");
+    deleteCookie("home_text_name");
     window.location.href = "/";
   };
 
@@ -431,7 +434,7 @@ const handleChatToggle = () => {
       </div>
       {/* Pre Header end */}
       {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
-      
+
       <div
         className="pt-1 hidden md:block sticky top-0 z-20"
         style={{
@@ -519,8 +522,9 @@ const handleChatToggle = () => {
                   </span>
                 </div>
                 <div>
-                  <div className="px-2 flex flex-col items-center text-center">
-                    <button onClick={() => setIsSearchPopupVisible(true)}>
+
+                  <button onClick={() => setIsSearchPopupVisible(true)}>
+                    <div className="px-2 flex flex-col items-center text-center">
                       <FaSearch
                         className="h-6 w-6 text-blue-600"
                         aria-hidden="true"
@@ -528,9 +532,9 @@ const handleChatToggle = () => {
                       <span className="text-sm mt-2 font-semibold text-gray-800">
                         Search
                       </span>
-                    </button>
-                  </div>
 
+                    </div>
+                  </button>
                   {isSearchPopupVisible && (
                     <SearchBarPopup
                       onClose={() => setIsSearchPopupVisible(false)}
@@ -557,13 +561,17 @@ const handleChatToggle = () => {
                       {authToken ? (
                         <>
                           {/* Admin logged in */}
-                          <img
+                          {/* <img
                             src="https://htbapi.hometexbd.ltd/images/hometex-logo.ico"
                             alt="Hometex Logo"
                             className="h-6 w-6 text-gray-600"
+                          /> */}
+                          <FaUser
+                            className="h-6 w-6 text-blue-600"
+                            aria-hidden="true"
                           />
                           <span className="text-sm mt-2 font-semibold text-gray-800">
-                            Admin Logged In
+                            {auth_name ? `${auth_name}` : "Guest User"}
                           </span>
                         </>
                       ) : (
@@ -579,6 +587,7 @@ const handleChatToggle = () => {
                         </>
                       )}
                     </div>
+
                   </button>
                   {isDropdownOpen && authToken && (
                     <div className="absolute z-50 top-full right-0 bg-white bg-opacity-95 backdrop-filter backdrop-blur-md border border-gray-300 rounded-lg shadow-md py-2">
@@ -610,9 +619,9 @@ const handleChatToggle = () => {
                       wishRef={wishRef}
                     />
                   ) : (
-                    <div>
-                      <MdFavorite className="h-7 w-7 text-blue-500" aria-hidden="true" />
-                      <span className="text-sm mt-2 font-semibold text-gray-700">Wishlist</span>
+                    <div className="px-2 flex flex-col items-center text-center">
+                    <FaHeart className="h-6 w-6 text-blue-600" aria-hidden="true" />
+                    <span className="text-sm mt-2 font-semibold text-gray-800">Wishlist</span>
                     </div>
                   )}
 
@@ -840,16 +849,27 @@ const handleChatToggle = () => {
                 </div>
               )}
             </nav>
-            <button
-      className="inline-block bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 cursor-pointer flex items-center justify-center"
-      onClick={handleChatToggle}
-    >
-      <FontAwesomeIcon icon={faCommentDots} />
-    </button>
+            {/* <button
+              className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+              onClick={handleChatToggle}
+            >
+              {/* <FontAwesomeIcon icon={faCommentDots} /> 
+              <FaCommentDots className=""/>
+            </button> */}
+
+            <Link
+              href="/"
+              className=" inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+              onClick={handleChatToggle}
+            >
+
+              <FaCommentDots className="text-xl" />
+            </Link>
+            {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
           </div>
           {/* menu end */}
         </div>
-      </div>
+      </div >
       <div>
         <button
           onClick={toggleMenu}

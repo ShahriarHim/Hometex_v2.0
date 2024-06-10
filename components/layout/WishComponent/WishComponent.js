@@ -3,6 +3,8 @@ import { MdFavorite } from 'react-icons/md';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
+import { FaHeart} from 'react-icons/fa';
+
 
 const WishComponent = (props) => {
   const { wishRef, handleWishClick, wishItems, isWishOpen, removeFromWishlist } = props;
@@ -25,12 +27,12 @@ const WishComponent = (props) => {
       <div className="relative">
         <button onClick={handleWishClick} type="button">
           <div className="px-2 flex flex-col items-center text-center">
-            <MdFavorite className="h-7 w-7 text-blue-500" aria-hidden="true" />
-            <span className="text-sm mt-2 font-semibold text-gray-700">Wishlist</span>
+          <FaHeart className="h-6 w-6 text-blue-600" aria-hidden="true" />
+          <span className="text-sm mt-2 font-semibold text-gray-800">Wishlist</span>
           </div>
         </button>
         {wishItems?.length > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-600 rounded-full text-white px-2 py-1 text-xs flex items-center justify-center animate-pulse">
+          <span className="absolute -top-3 -right-1 bg-red-600 rounded-full text-white px-2 py-1 text-xs flex items-center justify-center animate-pulse">
             {wishItems.length}
           </span>
         )}
