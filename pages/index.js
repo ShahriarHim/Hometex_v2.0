@@ -26,7 +26,6 @@ import { getCookie } from "@/ults/cookies";
 import AdPromotionSection from "@/components/layout/AdPromotionSection";
 import FirstOrderPopup from "@/components/layout/FirstOrderPopup";
 import CostomerCount from "@/components/newDesigns/Customercount";
-import NewCustomerSignup from "@/components/layout/NewCustomerSignup";
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
