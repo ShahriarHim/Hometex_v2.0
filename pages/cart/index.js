@@ -98,7 +98,7 @@ const CartPage = () => {
             <div className='container mx-auto py-10'>
                 <div className="grid grid-cols-12 gap-4 justify-between">
                     <div className='col-span-8'>
-                        <h1 className='text-4xl font-bold'>Shopping Cart.</h1>
+                        <h1 className='text-3xl font-bold mb-2'>Shopping Cart.</h1>
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200 shadow-md rounded-lg overflow-hidden">
                                 <thead className="bg-gray-50">
@@ -169,7 +169,7 @@ const CartPage = () => {
                                     ))}
 
                                     <tr>
-                                        <td colSpan={2}></td>
+                                        <td colSpan={3}></td>
                                         <td className='text-xl font-bold text-center pt-3'>Total</td>
                                         <td className='text-xl font-bold pt-3' > TK {totalPrice}</td>
                                     </tr>

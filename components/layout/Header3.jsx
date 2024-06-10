@@ -42,7 +42,7 @@ import BathSupport from "../home/megaMenu/Bath/BathSupport";
 import Bedding from "../home/megaMenu/Bedding/Bedding";
 import KitchenDinning from "../home/megaMenu/Kitchen/KitchenDinning";
 import LivingDecor from "../home/megaMenu/Living/LivingDecor";
-import DynamicText, { textOptions } from "./DynamicText";
+import { DynamicText, textOptions } from "./DynamicText";
 import Modal from "./Modal";
 import SearchBarPopup from "./searchPopup";
 import LoginPopup from "./LoginPopup";

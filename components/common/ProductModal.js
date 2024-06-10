@@ -215,7 +215,7 @@ const ProductModal = ({ product, onClose }) => {
                 <div className={styles.sizeContainer}>
                   <h3 className={styles.subTitle}>Size</h3>
                   <div className={styles.sizes}>
-                    {['37', '38', '39', '40', '41', '42'].map((size) => (
+                    {['King', 'Extra King', 'Single', 'Double'].map((size) => (
                       <span
                         key={size}
                         className={`${styles.size} ${selectedSize === size ? styles.active : ''}`}

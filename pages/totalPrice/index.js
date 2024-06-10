@@ -1,6 +1,6 @@
 import CartContext from '@/context/CartContext';
 import Constants from '@/ults/Constant';
-import { AiFillPlusCircle, AiOutlineMinusCircle, AiOutlineLeft } from 'react-icons/ai';
+import { AiFillPlusCircle, AiOutlineMinusCircle, AiOutlineLeft , AiOutlineRight} from 'react-icons/ai';
 import { BsXLg } from "react-icons/bs";
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
@@ -112,11 +112,11 @@ const Checkout = () => {
                             SHOPPING BAG
                             <span className="absolute bottom-0 left-0 w-2/5 h-1 bg-yellow-500"></span>
                         </h1>
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-4 py-4" >
                             {cart?.cartItems?.map((cartItem) => (
                                 <div className="flex flex-row justify-between shadow-md p-4 gap-4 bg-white rounded-lg transition duration-300 ease-in-out hover:shadow-xl" key={cartItem.product_id}>
                                     <img
-                                        src={`${Constants.BASE_URL}/images/uploads/product_thumb/${cartItem.image.photo}`}
+                                        src={cartItem.image}
                                         alt={cartItem.name}
                                         title={cartItem.name}
                                         className="w-auto h-[200px] object-cover rounded-lg"
@@ -163,18 +163,9 @@ const Checkout = () => {
                                 </div>
                             ))}
                         </div>
-                        <div className='flex flex-row justify-between px-3 mt-3 gap-10'>
-                            <div>
-                                <Link href="/">
-                                    <button className='mt-20 flex gap-2 items-center justify-between border rounded-full px-3 py-2 font-bold'><AiOutlineLeft /> <span className='text-xl'>Continue Shopping</span></button>
-                                </Link>
-                            </div>
-                            <div>
-                                <button onClick={handleNext} className='mt-20 flex gap-2 items-center justify-between border rounded-full px-3 py-2 font-bold'><span className='text-xl'>Next</span></button>
-                            </div>
-                        </div>
+
                         <div>
-                            <div className='px-4 py-3 shadow-lg rounded-lg bg-white'>
+                            <div className='px-4 py-2 shadow-lg rounded-lg bg-white'>
                                 <div className='flex gap-28 justify-between items-center p-3'>
                                     <p className='text-gray-800 font-medium'>Subtotal</p>
                                     <p className='text-gray-900 font-semibold'>TK {totalPrice}</p>
@@ -189,6 +180,16 @@ const Checkout = () => {
                                     <p className='text-lg text-gray-800 font-bold'>Total</p>
                                     <p className='text-lg text-green-700 font-bold'>TK {discountedTotal ? discountedTotal : totalPrice}</p>
                                 </div>
+                            </div>
+                        </div>
+                        <div className='flex flex-row justify-between px-3 mt-3 gap-10'>
+                            <div>
+                                <Link href="/">
+                                    <button className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2 '><AiOutlineLeft /> <span className='text-xl'>Continue Shopping</span></button>
+                                </Link>
+                            </div>
+                            <div>
+                                <button onClick={handleNext} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2 '>  <span className='text-xl'>Next</span><AiOutlineRight/></button>
                             </div>
                         </div>
                     </div>
