@@ -334,7 +334,7 @@ const Header3 = () => {
 
   useEffect(() => {
     const token = getCookie("home_text_token");
-    console.log("home_text_token:", token);
+    // console.log("home_text_token:", token);
   }, [showPopup]); // Log the cookie whenever the popup is toggled
 
   useEffect(() => {
