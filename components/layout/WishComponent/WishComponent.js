@@ -32,7 +32,7 @@ const WishComponent = (props) => {
           </div>
         </button>
         {wishItems?.length > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-600 rounded-full text-white px-2 py-1 text-xs flex items-center justify-center animate-pulse">
+          <span className="absolute -top-3 -right-1 bg-red-600 rounded-full text-white px-2 py-1 text-xs flex items-center justify-center animate-pulse">
             {wishItems.length}
           </span>
         )}

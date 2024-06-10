@@ -38,12 +38,12 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
 
     try {
       const response = await fetchLoginData();
-      const { status, error, token ,name} = await response.json();
+      const { status, error, token ,name,phone,email} = await response.json();
 
       if (status === 400) {
         handleLoginError(error);
       } else if (token) {
-        handleSuccessfulLogin(token,name);
+        handleSuccessfulLogin(token,name,phone,email);
         console.log('Login successful');
       }
     } catch (error) {
@@ -99,13 +99,21 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
     setSignInErr(err_list);
   };
 
-  const handleSuccessfulLogin = (token,name) => {
+  const handleSuccessfulLogin = (token,name,phone,email) => {
     setSignInErr({});
     setCookie('home_text_token', token, {
       maxAge: 30 * 24 * 60 * 60,
       path: '/',
     });
     setCookie('home_text_name', name, {  
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+    });
+    setCookie('home_text_phone', phone, {  
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+    });
+    setCookie('home_text_email', email, {  
       maxAge: 30 * 24 * 60 * 60,
       path: '/',
     });

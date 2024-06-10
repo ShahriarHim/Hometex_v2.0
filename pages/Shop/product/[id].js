@@ -990,12 +990,7 @@ const Product = ({ product }) => {
 
         </div>
       </div>
-      <div>
-        {/* Your other components */}
-        <button onClick={handleOpenPopup}>Open Spin the Wheel Popup</button>
-        <SpinTheWheelPopup isOpen={isPopupOpen} onClose={handleClosePopup} />
-      </div>
-
+    
       <PriceDropNotificationButton product={product} />
       {/* <PurchaseHistory/> */}
       <div className="flex flex-col items-center border p-2 rounded-lg md:flex-row md:items-start md:max-w-4xl mx-auto">

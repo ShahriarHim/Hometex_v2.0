@@ -1,10 +1,10 @@
 import CartContext from '@/context/CartContext';
 import Constants from '@/ults/Constant';
-import { AiFillPlusCircle, AiOutlineMinusCircle, AiFillDelete, AiOutlineLeft, AiOutlineCreditCard } from 'react-icons/ai';
-import { FaPaypal } from "react-icons/fa";
+import { AiFillPlusCircle, AiOutlineMinusCircle, AiOutlineLeft } from 'react-icons/ai';
 import { BsXLg } from "react-icons/bs";
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const Checkout = () => {
     const { cart, addItemToCart, deleteItemFromCart } = useContext(CartContext);
@@ -12,12 +12,15 @@ const Checkout = () => {
     const [showGiftCardModal, setShowGiftCardModal] = useState(false);
     const cartItems = cart?.cartItems;
     const [giftCardCode, setGiftCardCode] = useState('');
+    const router = useRouter();
+    const formData = router.query;
 
-
-
+    // useEffect(() => {
+    //     console.log(cartItems)
+    //     console.log("Form Data: ", formData);
+    //   }, [formData]);
 
     const [discountedTotal, setDiscountedTotal] = useState(null);
-
 
     const increaseQty = (cartItem) => {
         const newQty = parseInt(cartItem?.quantity) + 1;
@@ -25,7 +28,6 @@ const Checkout = () => {
         let total_price = newQty * price;
         const item = { ...cartItem, quantity: newQty, total_price: total_price };
         if (newQty > Number(cartItem.stock)) return;
-
         addItemToCart(item);
     };
 
@@ -33,46 +35,33 @@ const Checkout = () => {
         const newQty = parseInt(cartItem?.quantity) - 1;
         let price = cartItem?.price;
         let total_price = newQty * price;
-
         const item = { ...cartItem, quantity: newQty, total_price: total_price };
-
         if (newQty <= 0) return;
-
         addItemToCart(item);
     };
 
-
-
     let sumTotal = 0;
-
     cart?.cartItems?.map((cartItem) => (
         sumTotal += cartItem.total_price
-    ))
-
-    const [isLoading, setIsLoading] = useState(true);
+    ));
 
     useEffect(() => {
         if (cartItems) {
             const finalAmount = cartItems.reduce((total, cartItem) => {
-                let str = String(cartItem.price); // Convert to string
-                str = str.replace(/[,]/g, ""); // Replace commas if present
+                let str = String(cartItem.price);
+                str = str.replace(/[,]/g, "");
                 const amount = parseInt(str) * cartItem.quantity;
                 return total + amount;
             }, 0);
-            
             setTotalPrice(finalAmount);
         }
     }, [cartItems]);
-    
+
     const handleApplyGiftCard = () => {
-        // Check if the entered gift card code is "hometex"
         if (giftCardCode.toLowerCase() === 'hometex') {
-            // Reduce the total amount by 10%
             const newDiscountedTotal = totalPrice * 0.9;
-            // Update the discounted total in the state
             setDiscountedTotal(newDiscountedTotal);
         }
-        // Reset the gift card code input field and hide the modal
         setGiftCardCode('');
         setShowGiftCardModal(false);
     };
@@ -88,7 +77,6 @@ const Checkout = () => {
             <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
                 <div className="bg-white p-6 rounded-lg shadow-lg">
                     <h2 className="text-xl font-semibold mb-4">Gift Card / Coupon</h2>
-                    {/* Input field for entering the gift card code */}
                     <input
                         type="text"
                         value={giftCardCode}
@@ -96,20 +84,24 @@ const Checkout = () => {
                         placeholder="Enter gift card or coupon code"
                         className="border border-gray-300 rounded-md px-4 py-2 mb-4 w-full"
                     />
-                    {/* Apply button */}
                     <button onClick={handleApplyGiftCard} className="mt-4 bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md text-white">Apply</button>
-                    {/* Cancel button */}
                     <button onClick={toggleGiftCardModal} className="mt-4 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-md ml-2">Cancel</button>
                 </div>
             </div>
         );
     };
 
-
-
-    // const totalSum = cart?.cartItems?.reduce((accumulator, cartItem) => {
-    //     return accumulator + parseFloat(cartItem.total_price);
-    // }, 0);
+    const handleNext = () => {
+        router.push({
+            pathname: '/payment_method',
+            query: {
+                ...formData,
+                cartItems: JSON.stringify(cartItems),
+                totalPrice,
+                discountedTotal: discountedTotal || totalPrice,
+            },
+        });
+    };
 
     return (
         <>
@@ -142,7 +134,6 @@ const Checkout = () => {
                                             >
                                                 <AiOutlineMinusCircle size={24} />
                                             </button>
-
                                             <input
                                                 type="text"
                                                 name={`quantity[${cartItem.product_id}]`}
@@ -158,7 +149,6 @@ const Checkout = () => {
                                             >
                                                 <AiFillPlusCircle size={24} />
                                             </button>
-
                                         </div>
                                     </div>
                                     <div>
@@ -173,7 +163,6 @@ const Checkout = () => {
                                 </div>
                             ))}
                         </div>
-
                         <div className='flex flex-row justify-between px-3 mt-3 gap-10'>
                             <div>
                                 <Link href="/">
@@ -181,9 +170,7 @@ const Checkout = () => {
                                 </Link>
                             </div>
                             <div>
-                                <Link href="/payment_method">
-                                    <button className='mt-20 flex gap-2 items-center justify-between border rounded-full px-3 py-2 font-bold'><span className='text-xl'>Next</span></button>
-                                </Link>
+                                <button onClick={handleNext} className='mt-20 flex gap-2 items-center justify-between border rounded-full px-3 py-2 font-bold'><span className='text-xl'>Next</span></button>
                             </div>
                         </div>
                         <div>
@@ -198,7 +185,6 @@ const Checkout = () => {
                                 </div>
                                 <button onClick={toggleGiftCardModal} className="mt-4 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md">Apply Gift Card / Coupon</button>
                                 {renderGiftCardModal()}
-
                                 <div className='flex justify-between items-center p-3 border-t border-gray-200 mt-2'>
                                     <p className='text-lg text-gray-800 font-bold'>Total</p>
                                     <p className='text-lg text-green-700 font-bold'>TK {discountedTotal ? discountedTotal : totalPrice}</p>
@@ -206,7 +192,6 @@ const Checkout = () => {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </>
