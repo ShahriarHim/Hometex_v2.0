@@ -1,16 +1,16 @@
 import Link from "next/link";
-import React, {useRef, useState, useEffect, useMemo } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import Slider from "components/allCategory/Slider";
 
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { Sticky } from "@/components/home/Sticky";
 import Constants from "@/ults/Constant";
 import ReactStars from "react-rating-stars-component";
-import PurchaseHistory from "../PurchaseHistory";
+import PurchaseHistory from "../../PurchaseHistory";
 import ProductModal from "@/components/common/ProductModal";
-import DealOfTheWeek from "../DealOfTheWeek";
+import DealOfTheWeek from "../../DealOfTheWeek";
 import ProductCard from "@/components/layout/ProductCard";
- 
+
 import LatestProducts from "@/components/LatestProducts";
 
 const brands = ["Hometex Bangladesh M.", "Desiattire"];
@@ -46,7 +46,7 @@ const items = [
   { id: 8, name: "", imageUrl: "/images/all-categories/king/saving.png" },
 ];
 
-const King = () => {
+const KingSize = () => {
   const popupProduct = {
     name: "Comfy Mattress",
     imageUrl:
@@ -62,7 +62,7 @@ const King = () => {
       sec: "45",
     },
   };
- 
+
   const [products, setProducts] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [isBrandsOpen, setIsBrandsOpen] = useState(true);
@@ -98,7 +98,7 @@ const King = () => {
   };
 
 
- 
+
   useEffect(() => {
     fetch(`${Constants.BASE_URL}/api/products-web`)
       .then((response) => response.json())
@@ -266,14 +266,14 @@ const King = () => {
   );
   return (
     <>
-   
+
       <DealOfTheWeek items={items} />
 
       {/*  */}
 
       <div className="max-w-screen-xl mx-auto px-3 mb-10 py-3">
         <Sticky />
-        <PurchaseHistory/>
+        <PurchaseHistory />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <div className="border-b-2">
@@ -295,9 +295,8 @@ const King = () => {
                   {brands.map((brand) => (
                     <li
                       key={brand}
-                      className={`cursor-pointer ${
-                        selectedBrand === brand ? "text-blue-500 font-bold" : ""
-                      }`}
+                      className={`cursor-pointer ${selectedBrand === brand ? "text-blue-500 font-bold" : ""
+                        }`}
                       onClick={() => handleBrandChange(brand)}
                     >
                       {brand}
@@ -372,11 +371,10 @@ const King = () => {
                       (color) => (
                         <button
                           key={color}
-                          className={`h-8 w-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                            selectedColors.includes(color)
+                          className={`h-8 w-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 ${selectedColors.includes(color)
                               ? "ring-2 ring-offset-2 ring-blue-500"
                               : ""
-                          }`}
+                            }`}
                           style={{ backgroundColor: color.toLowerCase() }} // Ensure your colors are in a valid CSS format
                           onClick={() => handleColorClick(color)}
                         ></button>
@@ -422,12 +420,12 @@ const King = () => {
                 </button>
               </div>
             </div>
-      <LatestProducts/>
+            <LatestProducts />
           </div>
           <div className="md:col-span-3">
             <Slider />
             <h2 className="font-bold text-xl mb-3">Products</h2>
-            
+
             {/* <WishComponent
         wishRef={wishRef}
         handleWishClick={handleWishClick}
@@ -438,23 +436,23 @@ const King = () => {
 
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
 
-            {displayedProducts.map((product) => (
-        <ProductCard key={product.id} product={product} openModal={openModal}    />
-      ))}
-    </div>
+              {displayedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} openModal={openModal} />
+              ))}
+            </div>
 
             <div className="flex flex-col justify-center py-10">
-  {filteredProducts.length > currentPage * itemsPerPage ? (
-    <button onClick={readMoreHandler}>
-      <span className="px-3 py-2 bg-black text-white">
-        Load 12 More Products
-      </span>
-    </button>
-  ) : (
-    <span className="px-3 py-2 bg-gray-400 text-white">End of Products</span>
-  )}
-  <div className="py-2 my-3 border-t border-b">{paginationBar}</div>
-</div>
+              {filteredProducts.length > currentPage * itemsPerPage ? (
+                <button onClick={readMoreHandler}>
+                  <span className="px-3 py-2 bg-black text-white">
+                    Load 12 More Products
+                  </span>
+                </button>
+              ) : (
+                <span className="px-3 py-2 bg-gray-400 text-white">End of Products</span>
+              )}
+              <div className="py-2 my-3 border-t border-b">{paginationBar}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -470,4 +468,4 @@ const King = () => {
   );
 };
 
-export default King;
+export default KingSize;

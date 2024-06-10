@@ -37,14 +37,15 @@ const PaymentMethod = () => {
     e.preventDefault();
     if (paymentMethod) {
       console.log("Selected payment method: ", paymentMethod);
-      router.push('/order_summary');
+      // router.push('/order_summary');
+      router.push('https://pay.hometexbd.ltd/process/324061010361217')
     } else {
       alert("Please select a payment method");
     }
   };
 
   return (
-    <div className="py-10">
+    <div className='px-2 py-2 shadow-lg rounded-full bg-white mt-4'>
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-5 gap-2 px-24">
         <div className="lg:col-span-4 mx-8 md:mx-14">
           <h4 className="mt-5 font-bold">Select Payment Method</h4>
@@ -78,7 +79,7 @@ const PaymentMethod = () => {
             <div className="mt-4 flex justify-center">
               <button
                 type="submit"
-                className="inline-flex justify-center py-2 px-6 w-48 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                className="inline-flex justify-center py-2 px-6 w-48 border border-transparent shadow-sm text-sm font-medium rounded-full text-black bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
                 Next
               </button>
