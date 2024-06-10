@@ -58,17 +58,32 @@ const Invoice = ({ order, lineItems }) => {
             .invoice-details {
               margin-bottom: 2rem;
             }
-            table {
+            .invoice-table {
               width: 100%;
               border-collapse: collapse;
+              margin-bottom: 2rem;
             }
-            th, td {
-              padding: 0.5rem;
+            .invoice-table td {
+              padding: 0.5rem 0;
+              text-align: right;
+            }
+            .invoice-table .label {
               text-align: left;
-              border-bottom: 1px solid #ddd;
+              padding-right: 1rem;
             }
-            tfoot td {
-              font-weight: bold;
+            .totals {
+              width: 100%;
+              border-top: 1px solid #ddd;
+              margin-top: 1rem;
+              padding-top: 1rem;
+            }
+            .totals td {
+              padding: 0.5rem 0;
+              text-align: right;
+            }
+            .totals .label {
+              text-align: left;
+              padding-right: 1rem;
             }
           </style>
         </head>
@@ -91,22 +106,26 @@ const Invoice = ({ order, lineItems }) => {
   };
 
   const calculateTotal = () => {
-    const subtotal = lineItems.reduce((total, item) => total + item.quantity * item.price, 0);
+    const subtotal = lineItems.reduce((total, item) => {
+      const itemPrice = parseFloat(item.price.replace(/[^0-9.-]+/g,""));
+      return total + item.quantity * (isNaN(itemPrice) ? 0 : itemPrice);
+    }, 0);
+    const vat = subtotal * 0.1;
     const tax = subtotal * 0.1;
-    const grandTotal = subtotal + tax;
-    return { subtotal, tax, grandTotal };
+    const grandTotal = subtotal + vat + tax;
+    return { subtotal, vat, tax, grandTotal };
   };
 
-  const { subtotal, tax, grandTotal } = calculateTotal();
+  const { subtotal, vat, tax, grandTotal } = calculateTotal();
 
   return (
     <>
       <button
-        className="bg-blue-400 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+        className="bg-black-400 hover:bg-orange-300 text-black  py-1 px-1 rounded"
         onClick={toggleInvoice}
       >
-        <FaFileInvoice className="inline-block mr-2" />
-        
+        <FaFileInvoice className="inline-block mr-1" /> 
+        Show Invoice
       </button>
 
       {showInvoice && (
@@ -140,48 +159,41 @@ const Invoice = ({ order, lineItems }) => {
               <p className="text-gray-600">{order.customer.email}</p>
               <p className="text-gray-600">{order.customer.address}</p>
             </div>
-            <table>
-            <thead>
-          <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {lineItems.map((item) => (
-            <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{item.quantity}</td>
-              <td>${typeof item.price === 'number' && Number.isFinite(item.price) ? item.price.toFixed(2) : item.price}</td>
-              <td>${(item.quantity * (typeof item.price === 'number' && Number.isFinite(item.price) ? item.price : 0)).toFixed(2)}</td>
-            </tr>
-          ))}
-        </tbody>
-              <tfoot>
-                <tr>
-                  <td colSpan="3" className="text-right pr-4">
-                    Subtotal
-                  </td>
-                  <td>${subtotal.toFixed(2)}</td>
-                </tr>
-                <tr>
-                  <td colSpan="3" className="text-right pr-4">
-                    Tax (10%)
-                  </td>
-                  <td>${tax.toFixed(2)}</td>
-                </tr>
-                <tr>
-                  <td colSpan="3" className="text-right pr-4">
-                    Grand Total
-                  </td>
-                  <td>${grandTotal.toFixed(2)}</td>
-                </tr>
-              </tfoot>
-            </table>
+            {lineItems.map((item) => {
+              const itemPrice = parseFloat(item.price.replace(/[^0-9.-]+/g,""));
+              return (
+                <div key={item.id} className="invoice-table">
+                  <div className="flex justify-between">
+                    <div className="label"><strong>Product Name:</strong></div>
+                    <div>{item.name}</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="label"><strong>Quantity:</strong></div>
+                    <div>{item.quantity} pc</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="label"><strong>Price:</strong></div>
+                    <div>৳{isNaN(itemPrice) ? '0.00' : itemPrice.toFixed(2)}</div>
+                  </div>
+                  <hr />
+                </div>
+              );
+            })}
+            <div className="totals">
+              <div className="flex justify-between">
+                <div className="label">VAT (10%)</div>
+                <div>৳{vat.toFixed(2)}</div>
+              </div>
+              <div className="flex justify-between">
+                <div className="label">Tax (10%)</div>
+                <div>৳{tax.toFixed(2)}</div>
+              </div>
+              <div className="flex justify-between">
+                <div className="label">Sub Total</div>
+                <div>৳{grandTotal.toFixed(2)}</div>
+              </div>
+            </div>
 
-            
             <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4" onClick={printInvoice}>
               Print
             </button>
