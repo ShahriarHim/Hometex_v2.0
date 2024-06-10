@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { RiCloseLine } from "react-icons/ri";
+import { RiCloseLine, RiSearchLine, RiQrScanLine } from "react-icons/ri";
 
 const SearchBarPopup = ({ onClose }) => {
     const [sort, setSort] = useState("");
@@ -7,7 +7,9 @@ const SearchBarPopup = ({ onClose }) => {
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
     const [advancedSearchVisible, setAdvancedSearchVisible] = useState(false);
+    const [photoFile, setPhotoFile] = useState(null);
     const modalRef = useRef();
+    const fileInputRef = useRef(null);
 
     const handleClickOutside = (event) => {
         if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -24,7 +26,18 @@ const SearchBarPopup = ({ onClose }) => {
 
     const handleShowItems = () => {
         // Handle the search logic here
-        console.log("Show items with filters: ", { sort, orientation, minPrice, maxPrice });
+        console.log("Show items with filters: ", { sort, orientation, minPrice, maxPrice, photoFile });
+    };
+
+    const handlePhotoUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setPhotoFile(file);
+        }
+    };
+
+    const triggerFileInput = () => {
+        fileInputRef.current.click();
     };
 
     return (
@@ -112,8 +125,37 @@ const SearchBarPopup = ({ onClose }) => {
                     </button>
                     {advancedSearchVisible && (
                         <div className="mt-2 p-4 border rounded-md">
-                            {/* Add advanced search options here */}
-                            <p>Advanced search options will go here...</p>
+                            {/* Advanced search options */}
+                            <div className="flex flex-col mb-4">
+                                <label className="mb-1 text-gray-700">Search by Image</label>
+                                <div className="relative flex items-center">
+                                    <div className="absolute left-0 flex items-center pl-2 cursor-pointer" onClick={triggerFileInput}>
+                                        <img
+                                            src="/images/icons/capture.png"
+                                            alt="Camera Viewfinder Icon"
+                                            className="h-6 w-6"
+                                        />
+                                        <input
+                                            type="file"
+                                            ref={fileInputRef}
+                                            id="photo-upload"
+                                            accept="image/*"
+                                            onChange={handlePhotoUpload}
+                                            className="hidden"
+                                        />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        placeholder="Search by image"
+                                        className="w-full px-10 py-2 border rounded-md"
+                                    />
+                                    <div className="absolute right-0 flex items-center pr-2 space-x-2">
+                                        <RiSearchLine size="24" className="text-gray-500 cursor-pointer" />
+                                        <RiQrScanLine size="24" className="text-gray-500 cursor-pointer" />
+                                    </div>
+                                </div>
+                                {photoFile && <p className="mt-2 text-sm text-gray-600">Selected file: {photoFile.name}</p>}
+                            </div>
                         </div>
                     )}
                 </div>

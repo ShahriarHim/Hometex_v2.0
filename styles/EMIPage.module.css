@@ -1,0 +1,111 @@
+/* EMIPage.module.css */
+.card {
+  position: relative; /* Add position relative to the container */
+  display: flex;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+}
+.container {
+  position: relative; /* Add position relative to the container */
+  display: flex;
+  width: 100%; /* Adjust to fill the entire width of the card */
+  margin: 15px; /* Adjust margins as needed */
+  margin-top: 100px; /* Adjust top margin as needed */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+
+.header-left {
+  position: absolute; /* Position the left header absolutely */
+  left: 30px; /* Adjust as needed */
+  top: 30px; /* Adjust as needed */
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.header-right {
+  position: absolute; /* Position the right header absolutely */
+  right: 30px; /* Adjust as needed */
+  top: 30px; /* Adjust as needed */
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff5722;
+}
+
+.bank-list {
+  width: 260px;
+  background-color: #348ad1;
+  border-right: 2px solid #dee2e6;
+  padding: 20px;
+  color: #fff;
+}
+
+.bank-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bank-list li {
+  padding: 15px 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.bank-list li:hover {
+  background-color: #3571ad;
+  transform: scale(1.02);
+}
+
+.bank-list li.active {
+  background-color: #1e3983;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bank-list i {
+  margin-right: 10px;
+}
+
+.emi-details {
+  flex-grow: 1;
+  padding: 30px;
+  background-color: #f8f9fa;
+}
+
+.emi-details h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.emi-option {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+.emi-option:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.emi-option strong {
+  color: #ff5722;
+  display: block;
+  margin-bottom: 5px;
+}
