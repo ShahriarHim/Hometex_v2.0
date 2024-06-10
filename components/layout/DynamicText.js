@@ -32,4 +32,4 @@ const DynamicText = ({ onTextChange }) => {
   return <p className="transition-opacity duration-500 ease-in-out">{textOptions[currentIndex].main}</p>;
 };
 
-export default DynamicText;
+export { DynamicText, textOptions };
