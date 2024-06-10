@@ -53,6 +53,7 @@ const LatestProducts = () => {
 
   return (
     <div className="flex flex-wrap justify-center items-center">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-black mt-8 mb-4">Latest Products</h2>
       {products.map((product) => (
         <div key={product.id} className="m-2 flex border rounded-lg max-w-xl overflow-hidden shadow-sm hover:shadow-md">
           {/* Image and Quantity Control */}
