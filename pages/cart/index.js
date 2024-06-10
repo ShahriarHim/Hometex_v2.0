@@ -60,12 +60,19 @@ const CartPage = () => {
 
     useEffect(() => {
         if (cartItems) {
-          const finalAmount = cartItems.reduce((total, cartItem) => {
-            let str = cartItem.price;
-            str = str.replace(/[,]/g, "");
-            const amount = parseInt(str) * cartItem.quantity;
-            return total + amount;
-          }, 0);
+            const finalAmount = cartItems.reduce((total, cartItem) => {
+                let str = cartItem.price;
+                // Check if price is a string before calling replace
+                if (typeof str === 'string') {
+                    str = str.replace(/[,]/g, "");
+                } else {
+                    console.error("Price is not a string:", str);
+                    return total; // Skip this item and continue with the next one
+                }
+                const amount = parseInt(str) * cartItem.quantity;
+                return total + amount;
+            }, 0);
+            
           setTotalPrice(finalAmount);
         }
       }, [cartItems]);

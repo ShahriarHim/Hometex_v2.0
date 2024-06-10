@@ -16,6 +16,10 @@ const WishComponent = (props) => {
   };
 
  
+// Handle redirection to wishlist page
+const handleViewWishlist = () => {
+  router.push('/account/Wishlist');
+};
 
   // Redirect to the wishlist page
   if (redirect) {
@@ -85,7 +89,7 @@ const WishComponent = (props) => {
           </div>
           <div className="absolute bottom-0 left-0 right-0 flex justify-end space-x-4 p-4 bg-gray-800">
             <Link href="/account/Wishlist">
-              <button className="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors duration-200">
+              <button  onClick={handleViewWishlist} className="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors duration-200">
                 View Wishlist
               </button>
             </Link>

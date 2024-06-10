@@ -28,11 +28,6 @@ export async function getServerSideProps(context) {
 
 
 
-
-
-
-
-
 const ProductModal = ({ product, onClose }) => {
   const { addItemToCart } = useContext(CartContext);
   const [productQty, setProductQty] = useState(1);

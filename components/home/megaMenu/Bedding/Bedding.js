@@ -130,6 +130,7 @@
 // };
 
 // export default Bedding;
+
 import Link from "next/link";
 import { useState } from "react";
 import { FaCaretDown, FaBed } from "react-icons/fa";
