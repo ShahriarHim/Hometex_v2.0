@@ -1,9 +1,33 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useRouter } from 'next/router';
 
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const router = useRouter();
+
+ 
+  const { query } = router;
+
+  const [formData, setFormData] = useState({});
+  const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [discountedTotal, setDiscountedTotal] = useState(0);
+
+  useEffect(() => {
+    if (query) {
+        setFormData(query);
+        setCartItems(JSON.parse(query.cartItems || '[]'));
+        setTotalPrice(query.totalPrice);
+        setDiscountedTotal(query.discountedTotal);
+        
+            console.log("Form Data:", query);
+            console.log("Cart Items:", JSON.parse(query.cartItems || '[]'));
+            console.log("Total Price:", query.totalPrice);
+            console.log("Discounted Total:", query.discountedTotal);
+    }
+}, [query]);
+
+
 
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
