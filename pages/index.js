@@ -26,6 +26,7 @@ import { getCookie } from "@/ults/cookies";
 import AdPromotionSection from "@/components/layout/AdPromotionSection";
 import FirstOrderPopup from "@/components/layout/FirstOrderPopup";
 import CostomerCount from "@/components/newDesigns/Customercount";
+import NewCustomerPopup from "@/components/layout/NewCustomerPopup";
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -106,7 +107,7 @@ const Home = () => {
     <FirstOrderPopup/>
         {/* <AdPromotionSection/> */}
       <MainSlider />
-      
+      <NewCustomerPopup/>
       {isVisible && (
         <>
           <button

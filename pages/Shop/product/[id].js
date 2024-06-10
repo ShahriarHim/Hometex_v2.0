@@ -979,11 +979,7 @@ return (
 
       </div>
     </div>
-<div>
-      {/* Your other components */}
-      <button onClick={handleOpenPopup}>Open Spin the Wheel Popup</button>
-      <SpinTheWheelPopup isOpen={isPopupOpen} onClose={handleClosePopup} />
-    </div>
+
     
     <PriceDropNotificationButton product={product} />
     {/* <PurchaseHistory/> */}
