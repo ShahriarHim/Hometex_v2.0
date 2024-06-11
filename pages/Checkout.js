@@ -1,95 +1,71 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
-import emailjs from 'emailjs-com';
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 const Checkout = () => {
-  let auth_token = getCookie("home_text_token");
-  let auth_name = getCookie("home_text_name");
-  let auth_phone = getCookie("home_text_phone");
-  let auth_email= getCookie("home_text_email");
-
-  useEffect(() => {
-    setFormData({
-      firstName: auth_name || '',
-      lastName:  '',
-      email: auth_email || '',
-      phoneNumber: auth_phone || '',
-      country: "",
-      city: "",
-      postcode: "",
-      Division: "",
-      District: "",
-    });
-  }, [auth_name, auth_email, auth_phone]);
-
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    country: "",
-    city: "",
-    postcode: "",
-    Division : "",
-    District : "",
-
-
-  });
-  
-  const router = useRouter();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  
-    if (name === "country") {
-      // Fetch district data based on the selected division
-      // fetchDistricts(value);
-    } else if (name === "city") {
-      // Fetch area data based on the selected district
-      fetch(`https://htbapi.hometexbd.ltd/api/area/${value}`)
-        .then((response) => response.json())
-        .then((data) => setAreas(data))
-        .catch((error) => console.error("Error fetching areas:", error));
-    }
-  };
-
-
+  const auth_name = getCookie("home_text_name");
+  const auth_phone = getCookie("home_text_phone");
+  const auth_email = getCookie("home_text_email");
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
-  const [areas, setAreas] = useState([]);
+  const [selectedDivision, setSelectedDivision] = useState('');
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+
+  const [formData, setFormData] = useState({
+    firstName: auth_name || '',
+    lastName: '',
+    email: auth_email || '',
+    phoneNumber: auth_phone || '',
+    country: "",
+    city: "",
+    postcode: ""
+  });
+
+
+  const router = useRouter();
 
   useEffect(() => {
     fetchDivisions();
   }, []);
 
   useEffect(() => {
-    if(formData.Division) {
+    if (formData.Division) {
       fetchDistricts(formData.Division);
     }
   }, [formData.Division]);
-  
-  
+
   const fetchDivisions = () => {
     fetch("https://htbapi.hometexbd.ltd/api/divisions")
       .then((response) => response.json())
       .then((data) => setCities(data))
       .catch((error) => console.error("Error fetching divisions:", error));
   };
-  
+
   const fetchDistricts = (divisionId) => {
     fetch(`https://htbapi.hometexbd.ltd/api/district/${divisionId}`)
- 
       .then((response) => response.json())
       .then((data) => setDistricts(data))
       .catch((error) => console.error("Error fetching districts:", error));
   };
 
-  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === 'Division') {
+      const selectedDiv = cities.find(city => city.id === parseInt(value));
+      setSelectedDivision(selectedDiv ? selectedDiv.name : '');
+      fetchDistricts(value);
+    } else if (name === 'District') {
+      const selectedDist = districts.find(district => district.id === parseInt(value));
+      setSelectedDistrict(selectedDist ? selectedDist.name : '');
+    }
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
   const handleUseCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -104,34 +80,21 @@ const Checkout = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   };
-  const [submittedFormData, setSubmittedFormData] = useState(null);
-   
+
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    // Store the form data in the submittedFormData state
-    setSubmittedFormData(formData);
-  // console.log(formData)
-    // Reset the form data
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      country: "",
-      city: "",
-      postcode: "",
-      Division: "",
-      District: "",
-    });
-  
+    const updatedFormData = {
+      ...formData,
+      Division: selectedDivision,
+      District: selectedDistrict,
+    };
+    console.log("Form Data:", updatedFormData);
     router.push({
       pathname: '/totalPrice',
-      query: formData,
+      query: updatedFormData,
     });
-
   };
-
+  
   return (
     <div className="py-10">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-5 gap-2 px-24">
@@ -375,51 +338,56 @@ const Checkout = () => {
 
             
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  <div>
-    <label
-      htmlFor="Division"
-      className="block text-sm font-medium text-gray-700"
-    >
-      Select Division *
-    </label>
-    <select
-      name="Division"
-      value={formData.Division}
-      onChange={handleChange}
-      required
-      className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-    >
-      <option value="">Select Division</option>
-      {cities.map((city) => (
-        <option key={city.id} value={city.id}>
-          {city.name}
-        </option>
-      ))}
-    </select>
-  </div>
+              <div>
+  <label
+    htmlFor="Division"
+    className="block text-sm font-medium text-gray-700"
+  >
+    Select Division *
+  </label>
+  <select
+    name="Division"
+    value={formData.Division}
+    onChange={handleChange}
+    required
+    className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+  >
+    <option value="">Select Division</option>
+    {cities.map((city) => (
+      <option key={city.id} value={city.id}>
+        {city.name}
+      </option>
+    ))}
+  </select>
+  {selectedDivision && <p>Selected Division: {selectedDivision}</p>}
+</div>
 
-  <div>
-    <label
-      htmlFor="District"
-      className="block text-sm font-medium text-gray-700"
-    >
-      Select District *
-    </label>
-    <select
-      name="District"
-      value={formData.District}
-      onChange={handleChange}
-      required
-      className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-    >
-      <option value="">Select District</option>
-      {districts.map((district) => (
-        <option key={district.id} value={district.id}>
-          {district.name}
-        </option>
-      ))}
-    </select>
-  </div>
+<div>
+  <label
+    htmlFor="District"
+    className="block text-sm font-medium text-gray-700"
+  >
+    Select District *
+  </label>
+  <select
+    name="District"
+    value={formData.District}
+    onChange={handleChange}
+    required
+    className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+  >
+    <option value="">Select District</option>
+    {districts.map((district) => (
+      <option key={district.id} value={district.id}>
+        {district.name}
+      </option>
+    ))}
+  </select>
+  {selectedDistrict && <p>Selected District: {selectedDistrict}</p>}
+</div>
+
+
+
 </div>
 
             </div>
