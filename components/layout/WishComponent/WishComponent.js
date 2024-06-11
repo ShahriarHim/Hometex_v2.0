@@ -15,7 +15,14 @@ const WishComponent = (props) => {
     removeFromWishlist(productId);
   };
 
- 
+   // Function to handle "View Wishlist" button click
+   const handleViewWishlistClick = () => {
+    // Close the wishlist component
+    handleWishClick();
+    // Set redirect state to true to redirect to the wishlist page
+    setRedirect(true);
+  };
+
 
   // Redirect to the wishlist page
   if (redirect) {
@@ -85,7 +92,7 @@ const WishComponent = (props) => {
           </div>
           <div className="absolute bottom-0 left-0 right-0 flex justify-end space-x-4 p-4 bg-gray-800">
             <Link href="/account/Wishlist">
-              <button className="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors duration-200">
+              <button onClick={handleViewWishlistClick}  className="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors duration-200">
                 View Wishlist
               </button>
             </Link>

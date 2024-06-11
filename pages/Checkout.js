@@ -1,8 +1,28 @@
 import React, { useState,useEffect } from "react";
 import { useRouter } from 'next/router';
 import emailjs from 'emailjs-com';
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 const Checkout = () => {
+  let auth_token = getCookie("home_text_token");
+  let auth_name = getCookie("home_text_name");
+  let auth_phone = getCookie("home_text_phone");
+  let auth_email= getCookie("home_text_email");
+
+  useEffect(() => {
+    setFormData({
+      firstName: auth_name || '',
+      lastName:  '',
+      email: auth_email || '',
+      phoneNumber: auth_phone || '',
+      country: "",
+      city: "",
+      postcode: "",
+      Division: "",
+      District: "",
+    });
+  }, [auth_name, auth_email, auth_phone]);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -16,6 +36,7 @@ const Checkout = () => {
 
 
   });
+  
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -83,33 +104,14 @@ const Checkout = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   emailjs.send('service_27al8ux', 'template_d11y0qg', formData, 'GXi-JhoKe7IM5tmqe')
-  //     .then((result) => {
-  //       console.log(result.text);
-  //       setFormData({
-  //         firstName: "",
-  //         lastName: "",
-  //         email: "",
-  //         phoneNumber: "",
-  //         country: "",
-  //         city: "",
-  //         postcode: "",
-  //         Division : "",
-  //         District : "",
-  //       });
-  //       router.push('/totalPrice');
-  //     }, (error) => {
-  //       console.log(error.text);
-  //       alert("Failed to submit the form. Please try again.");
-  //     });
-  // };
+  const [submittedFormData, setSubmittedFormData] = useState(null);
+   
   const handleSubmit = (e) => {
     e.preventDefault();
   
+    // Store the form data in the submittedFormData state
+    setSubmittedFormData(formData);
+  // console.log(formData)
     // Reset the form data
     setFormData({
       firstName: "",
@@ -123,10 +125,12 @@ const Checkout = () => {
       District: "",
     });
   
-    // Navigate to the specified page
-    router.push('/totalPrice');
+    router.push({
+      pathname: '/totalPrice',
+      query: formData,
+    });
+
   };
-  
 
   return (
     <div className="py-10">

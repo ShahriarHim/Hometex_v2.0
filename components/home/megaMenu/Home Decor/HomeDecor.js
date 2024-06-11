@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaCaretDown, FaHome } from "react-icons/fa";
+import { FaCaretDown, FaLeaf } from "react-icons/fa";
 
 const HomeDecor = () => {
   const sections = [
@@ -8,10 +8,10 @@ const HomeDecor = () => {
       imageUrl: "https://m.media-amazon.com/images/I/810MbOBa92L._AC_UF1000,1000_QL80_.jpg", // Replace with your image URL
       title: "Wall Decor",
       listItems: [
-        { name: "Wall Art", path: "/all-categories/Home-Decor/Wall Art" },
-        { name: "Wall Clocks", path: "/all-categories/Home-Decor/Wall Clocks" },
-        { name: "Wall Mirrors", path: "/all-categories/Home-Decor/Wall Mirrors" },
-        { name: "Wall Shelves", path: "/all-categories/Home-Decor/Wall Shelves" },
+        { name: "Wall Art", path: "/all-categories/Home-Decor/WallArt" },
+        { name: "Wall Clocks", path: "/all-categories/Home-Decor/WallClocks" },
+        { name: "Wall Mirrors", path: "/all-categories/Home-Decor/WallMirrors" },
+        { name: "Wall Shelves", path: "/all-categories/Home-Decor/WallShelves" },
       ],
     },
     {
@@ -20,7 +20,7 @@ const HomeDecor = () => {
       title: "Home Accents",
       listItems: [
         { name: "Vases", path: "/all-categories/Home-Decor/Vases" },
-        { name: "Candle Holders", path: "/all-categories/Home-Decor/Candle Holders" },
+        { name: "Candle Holders", path: "/all-categories/Home-Decor/CandleHolders" },
         { name: "Figurines", path: "/all-categories/Home-Decor/Figurines" },
         { name: "Bookends", path: "/all-categories/Home-Decor/Bookends" },
       ],
@@ -30,19 +30,21 @@ const HomeDecor = () => {
       imageUrl: "https://images.herzindagi.info/image/2020/Sep/HOME-LIGHTS.jpg", // Replace with your image URL
       title: "Lighting",
       listItems: [
-        { name: "Table Lamps", path: "/all-categories/Home-Decor/Table Lamps" },
-        { name: "Floor Lamps", path: "/all-categories/Home-Decor/Floor Lamps" },
-        { name: "Ceiling Lights", path: "/all-categories/Home-Decor/Ceiling Lights" },
-        { name: "String Lights", path: "/all-categories/Home-Decor/String Lights" },
+        { name: "Table Lamps", path: "/all-categories/Home-Decor/TableLamps" },
+        { name: "Floor Lamps", path: "/all-categories/Home-Decor/FloorLamps" },
+        { name: "Ceiling Lights", path: "/all-categories/Home-Decor/CeilingLights" },
+        { name: "String Lights", path: "/all-categories/Home-Decor/StringLights" },
       ],
     },
   ];
-
   return (
     <>
       <div className="">
-        <div className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group">
-          <FaHome className="mr-1 text-xl" />
+        <Link 
+        href="/homeDecor"
+        className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group"
+        >
+          <FaLeaf className="mr-1 text-xl" />
           Home Decor <FaCaretDown />
           <div className="w-full absolute pb-6 z-50 top-full left-0 transform rounded-md justify-center items-center p-2 group-hover:flex hidden">
             <div className="max-w-screen-2xl mx-auto px-3 mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white">
@@ -93,7 +95,7 @@ const HomeDecor = () => {
               ))}
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </>
   );

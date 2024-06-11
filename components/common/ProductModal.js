@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
-import { useRouter } from 'next/router'; 
+import { useRouter } from 'next/router';
 import { Router, useRouter as useRouterClient } from 'next/router';
 import CartContext from '@/context/CartContext';
 import styles from '@/styles/ProductModal.module.css';
@@ -28,11 +28,6 @@ export async function getServerSideProps(context) {
 
 
 
-
-
-
-
-
 const ProductModal = ({ product, onClose }) => {
   const { addItemToCart } = useContext(CartContext);
   const [productQty, setProductQty] = useState(1);
@@ -42,7 +37,7 @@ const ProductModal = ({ product, onClose }) => {
   const [showShippingInfo, setShowShippingInfo] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const modalRef = useRef();
-  const router = useRouter(); 
+  const router = useRouter();
 
 
   const handleClickOutside = (event) => {
@@ -90,6 +85,7 @@ const ProductModal = ({ product, onClose }) => {
 
   const toggleInvoice = () => {
     setShowInvoice(!showInvoice);
+
   };
 
   const handleShippingInfoChange = (e) => {
@@ -116,10 +112,10 @@ const ProductModal = ({ product, onClose }) => {
         <button className={styles.closeButton} onClick={onClose}>
           <RiCloseLine size="24" />
         </button>
-        
+
         <button className={styles.printButton} onClick={() => window.print()}>Print</button>
         {/* <button className={styles.invoiceButton} onClick={toggleInvoice}>Invoice</button> */}
-        
+
         <div className={styles.checkboxContainer}>
           <input
             type="checkbox"
@@ -128,15 +124,38 @@ const ProductModal = ({ product, onClose }) => {
             onChange={handleShippingInfoChange}
           />
           <label htmlFor="shippingInfo" className={styles.checkboxLabel}>Include delivery and shipping info</label>
+        </div>
+
+        <Link href='#' onClick={toggleInvoice}>Generate Invoice ⬇</Link>
+        {showInvoice && (
+          <div className={styles.invoice}>
+            <Invoice
+              order={{
+                id: 123456,
+                date: 'May 16, 2023',
+                customer: {
+                  name: 'John Doe',
+                  email: 'john.doe@example.com',
+                  address: '1234 Street, City, Country',
+                },
+              }}
+              lineItems={[
+                {
+                  id: 1,
+                  name: product.name,
+                  quantity: productQty,
+                  price: product.price,
+                },
+              ]}
+            />
           </div>
-        
-        <Link href='#'  onClick={toggleInvoice}>Show Invoice</Link>
-        <button className={styles.leftArrow} onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}>
+        )}
+        {/* <button className={styles.leftArrow} onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}>
           <FaArrowLeft size="24" />
         </button>
         <button className={styles.rightArrow} onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}>
           <FaArrowRight size="24" />
-        </button>
+        </button> */}
         <div className={styles.container}>
           <div className={styles.card}>
             <div className={styles.description}>
@@ -154,7 +173,7 @@ const ProductModal = ({ product, onClose }) => {
               <h1 className={styles.title}>Product Details</h1>
               <img src={product.primary_photo} alt={product.name} className={styles.shoe} />
               <div className={styles.price}>
-                <span>$</span>
+
                 <h1>{product.price}</h1>
               </div>
             </div>
@@ -196,7 +215,7 @@ const ProductModal = ({ product, onClose }) => {
                 <div className={styles.sizeContainer}>
                   <h3 className={styles.subTitle}>Size</h3>
                   <div className={styles.sizes}>
-                    {['37', '38', '39', '40', '41', '42'].map((size) => (
+                    {['King', 'Extra King', 'Single', 'Double'].map((size) => (
                       <span
                         key={size}
                         className={`${styles.size} ${selectedSize === size ? styles.active : ''}`}
@@ -231,30 +250,8 @@ const ProductModal = ({ product, onClose }) => {
           </div>
         </div>
 
-        
-        {showInvoice && (
-          <div className={styles.invoice}>
-            <Invoice
-              order={{
-                id: 123456,
-                date: 'May 16, 2023',
-                customer: {
-                  name: 'John Doe',
-                  email: 'john.doe@example.com',
-                  address: '1234 Street, City, Country',
-                },
-              }}
-              lineItems={[
-                {
-                  id: 1,
-                  name: product.name,
-                  quantity: productQty,
-                  price: product.price,
-                },
-              ]}
-            />
-          </div>
-        )}
+
+
       </div>
     </div>
   );

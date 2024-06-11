@@ -22,6 +22,7 @@ import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import Constants from "../../ults/Constant";
 import WishListContext from "@/context/WishListContext";
 import Modal from "./Modal";
+import HomeDecor from "../home/megaMenu/Home-Decor/HomeDecor";
 
 const Header2 = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -413,6 +414,7 @@ const Header2 = () => {
                 <LivingDecor />
                 <BathSupport />
                 <KitchenDinning />
+                <HomeDecor/>
                 <Link
                   href="/"
                   className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"

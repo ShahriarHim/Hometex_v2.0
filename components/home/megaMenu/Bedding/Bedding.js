@@ -130,6 +130,7 @@
 // };
 
 // export default Bedding;
+
 import Link from "next/link";
 import { useState } from "react";
 import { FaCaretDown, FaBed } from "react-icons/fa";
@@ -144,10 +145,10 @@ const Bedding = () => {
       imageUrl: "/images/menuCategories/Bed Sheet Category-100x100.webp",
       title: "Bed Sheet",
       listItems: [
-        { name: "King", path: "/all-categories/bedding/king" },
-        { name: "Extra King", path: "/shop" },
-        { name: "Semi Double", path: "/shop" },
-        { name: "Single", path: "/shop" },
+        { name: "King", path: "/all-categories/bedding/bed-sheet/king" },
+        { name: "Extra King", path: "/all-categories/bedding/bed-sheet/extra-king" },
+        { name: "Semi Double", path: "/all-categories/bedding/bed-sheet/semi-double" },
+        { name: "Single", path: "/all-categories/bedding/bed-sheet/single" },
       ],
     },
     {
@@ -155,8 +156,8 @@ const Bedding = () => {
       imageUrl: "/images/menuCategories/Bed Cover Category-100x100.webp",
       title: "Bed Cover",
       listItems: [
-        { name: "Extra King size", path: "/shop" },
-        { name: "King size", path: "/shop" },
+        { name: "Extra King size", path: "/all-categories/bedding/bed-cover/extra-king-size" },
+        { name: "King size", path: "/all-categories/bedding/bed-cover/king-size" },
       ],
     },
     {
@@ -170,8 +171,8 @@ const Bedding = () => {
       imageUrl: "/images/menuCategories/p01-500x500-100x100.webp",
       title: "Pillow||Pillow Protector",
       listItems: [
-        { name: "Pillow Potector", path: "/shop" },
-        { name: "Sleeping Pillow", path: "/shop" },
+        { name: "Pillow Protector", path: "/all-categories/bedding/pillow/pillow-protector" },
+        { name: "Sleeping Pillow", path: "/all-categories/bedding/pillow/sleeping-pillow" },
       ],
     },
     {
@@ -183,10 +184,10 @@ const Bedding = () => {
     {
       id: 6,
       imageUrl: "/images/menuCategories/Mattress-100x100.webp",
-      title: "Mattress | Mattress Potector",
+      title: "Mattress | Mattress Protector",
       listItems: [
-        { name: "Mattres Topper", path: "/shop" },
-        { name: "Premium Mattress", path: "/shop" },
+        { name: "Mattress Topper", path: "/all-categories/bedding/mattress/mattress-topper" },
+        { name: "Premium Mattress", path: "/all-categories/bedding/mattress/premium-mattress" },
       ],
     },
   ];

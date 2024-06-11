@@ -106,7 +106,7 @@ const ProductCard = ({ product, openModal }) => {
         />
         <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
         <div className="flex justify-between mt-2">
-          <p className="text-gray-700">${product.price}</p>
+          <p className="text-gray-700">{product.price}</p>
           <p className="text-gray-700">{product.color}</p>
         </div>
       </div>

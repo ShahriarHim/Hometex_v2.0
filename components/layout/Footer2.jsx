@@ -52,10 +52,10 @@ const Footer2 = () => {
                 <ul className="py-3">
                   <Link href="Giftsomeone"><li className="py-1 hover:shadow-md">Gift card</li></Link>
                   <Link href="/Contact"><li className="py-1 hover:shadow-md">Contact Us</li></Link>
-                  <li className="py-1 hover:shadow-md">Shipping</li>
-                  <li className="py-1 hover:shadow-md">Returns</li>
-                  <li className="py-1 hover:shadow-md">Payment & Gift</li>
-                  <li className="py-1 hover:shadow-md">Cards</li>
+                  <Link href="/">  <li className="py-1 hover:shadow-md">Shipping</li></Link>
+                  <Link href="/"><li className="py-1 hover:shadow-md">Returns</li></Link>
+                  <Link href="/"><li className="py-1 hover:shadow-md">Payment & Gift</li></Link>
+                  <Link href="/"><li className="py-1 hover:shadow-md">Cards</li></Link>
                 </ul>
               </div>
 
@@ -179,10 +179,10 @@ const Footer2 = () => {
                   </h2>
                   <ul className="py-3">
                       <Link href="/account/MyAccount"><li className="py-1 hover:shadow-md">Account</li></Link>
-                      <li className="py-1 hover:shadow-md">Order History</li>
-                      <li className="py-1 hover:shadow-md">Site Map</li>
-                      <li className="py-1 hover:shadow-md">Wish List</li>
-                      <li className="py-1 hover:shadow-md">Returns</li>
+                      <Link href="PrivacyPolicy"><li className="py-1 hover:shadow-md">Order History</li></Link>
+                      <Link href=""><li className="py-1 hover:shadow-md">Site Map</li></Link>
+                      <Link href=""> <li className="py-1 hover:shadow-md">Wish List</li></Link>
+                      <Link href=""> <li className="py-1 hover:shadow-md">Returns</li></Link>
                     </ul>
                 </div>
 

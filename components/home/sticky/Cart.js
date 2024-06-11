@@ -8,6 +8,8 @@ import Image from 'next/image';
 
 const Cart = () => {
     const { cart, deleteItemFromCart } = useContext(CartContext);
+    const [totalPrice, setTotalPrice] = useState(0);
+
     const cartItems = cart?.cartItems;
 
 
@@ -44,10 +46,29 @@ const Cart = () => {
     };
   }, [isStickyOpen]);
 
-    let sumTotal= 0;
-    cart?.cartItems?.map((cartItem) => (
-        sumTotal +=cartItem.total_price 
-        ))
+  useEffect(() => {
+    if (cartItems) {
+        const finalAmount = cartItems.reduce((total, cartItem) => {
+            let str = cartItem.price;
+            // Check if price is a string before calling replace
+            if (typeof str === 'string') {
+                str = str.replace(/[,]/g, "");
+            } else {
+                console.error("Price is not a string:", str);
+                return total; // Skip this item and continue with the next one
+            }
+            const amount = parseInt(str) * cartItem.quantity;
+            return total + amount;
+        }, 0);
+        
+      setTotalPrice(finalAmount);
+    }
+  }, [cartItems]);
+  let sumTotal = 0;
+
+  cart?.cartItems?.map((cartItem) => (
+      sumTotal += cartItem.total_price
+  ))
   return (
     <>
     <div className="relative z-50">
@@ -81,7 +102,7 @@ const Cart = () => {
                                             <tr>
                                                 <td>
                                                     <img
-                                                        src={`${Constants.BASE_URL}/images/uploads/product_thumb/${cartItem.image.photo}`}
+                                                        src={cartItem.image}
                                                         alt={cartItem.name}
                                                         width={50}
                                                         height={50}
@@ -89,7 +110,7 @@ const Cart = () => {
                                                 </td>
                                                 <td>{cartItem.name}</td>
                                                 <td>{cartItem.quantity} </td>
-                                                <td className="text-[#ff0000]">TK {cartItem.total_price} </td>
+                                                <td className="text-[#ff0000]">TK {cartItem.price} </td>
                                                 <td><FaTrashAlt  onClick={() =>
                                                     deleteItemFromCart(cartItem?.product_id)
                                                 } /></td>
@@ -105,13 +126,13 @@ const Cart = () => {
                                     </table>
                                     <table className="w-full table-fixed table-striped text-center">
                                         <tbody>
-                                            <tr>
+                                            {/* <tr>
                                                 <td className="w-1/2 py-4 text-left font-medium">Sub-Total</td>
-                                                <td className="w-1/2 py-4 text-right font-medium">TK {sumTotal}</td>
-                                            </tr>
+                                                <td className="w-1/2 py-4 text-right font-medium">TK {totalPrice}</td>
+                                            </tr> */}
                                             <tr>
                                                 <td className="w-1/2 py-4 text-left font-medium">Total</td>
-                                                <td className="w-1/2 py-4 text-right font-medium">TK {sumTotal}</td>
+                                                <td className="w-1/2 py-4 text-right font-medium">TK {totalPrice}৳</td>
                                             </tr>
                                         </tbody>
                                     </table>

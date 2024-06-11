@@ -15,8 +15,18 @@ const CartComponent = ({
   totalPrice,
   handleCheckout
 }) => {
+   // Function to handle checkout
+   const handleCheckoutClick = () => {
+    // Call the handleCheckout function
+    handleCheckout();
+    // Close the cart popup
+    handleCartClick();
+  };
+
+
   return (
-    <div className="relative" ref={cartRef} style={{ zIndex: 10 }}>
+    <div className="relative" ref={cartRef} style={{ zIndex: 21 }}>
+    
       <div className="relative">
         <button onClick={handleCartClick} type="button">
           <div className="px-2 flex flex-col items-center text-center">
@@ -88,7 +98,7 @@ const CartComponent = ({
               </button>
             </Link>
             <button
-              onClick={handleCheckout}
+              onClick={handleCheckoutClick}
               className="inline-block bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition-colors duration-200"
             >
               Checkout
