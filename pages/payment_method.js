@@ -35,10 +35,50 @@ const PaymentMethod = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(e)
     if (paymentMethod) {
       console.log("Selected payment method: ", paymentMethod);
-      // router.push('/order_summary');
-      router.push('https://pay.hometexbd.ltd/process/324061010361217')
+      if(paymentMethod == "Online Payment")
+        {
+          router.push('https://pay.hometexbd.ltd/process/324061010361217')
+
+          // var url = '<?php echo $submit_url; ?>';
+          // var access_token = '<?php echo $access_token; ?>';
+          // var formData = $("#pay-form").serializeArray();
+//           // Define the URL and the form data
+// const url = 'https://pay.hometexbd.ltd/api/v1.0/pay';
+// const formData = new FormData(); // Populate your formData appropriately
+
+// // Make the POST request using fetch
+// fetch(url, {
+//     method: 'POST',
+//     headers: {
+//         'Authorization': 'Bearer ' + access_token
+//     },
+//     body: formData
+// })
+// .then(response => response.json())
+// .then(data => {
+//     if (data.expected_response) {
+//         const newUrl = data.expected_response;
+//         window.location = newUrl;
+//         // new route from this url
+//         //  https://pay.hometexbd.ltd/process/324061010361217
+//     } else {
+//         console.log(data.errorMessage);
+//         alert(data.errorMessage);
+//     }
+// })
+// .catch(error => {
+//     console.error('Error:', error);
+//     alert(error.message || 'An error occurred');
+// });
+
+        }
+        else{
+      router.push('/order_summary');
+
+        }
     } else {
       alert("Please select a payment method");
     }
