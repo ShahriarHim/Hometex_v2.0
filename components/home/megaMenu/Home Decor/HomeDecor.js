@@ -8,10 +8,10 @@ const HomeDecor = () => {
       imageUrl: "https://m.media-amazon.com/images/I/810MbOBa92L._AC_UF1000,1000_QL80_.jpg", // Replace with your image URL
       title: "Wall Decor",
       listItems: [
-        { name: "Wall Art", path: "/all-categories/Home-Decor/Wall Art" },
-        { name: "Wall Clocks", path: "/all-categories/Home-Decor/Wall Clocks" },
-        { name: "Wall Mirrors", path: "/all-categories/Home-Decor/Wall Mirrors" },
-        { name: "Wall Shelves", path: "/all-categories/Home-Decor/Wall Shelves" },
+        { name: "Wall Art", path: "/all-categories/Home-Decor/WallArt" },
+        { name: "Wall Clocks", path: "/all-categories/Home-Decor/WallClocks" },
+        { name: "Wall Mirrors", path: "/all-categories/Home-Decor/WallMirrors" },
+        { name: "Wall Shelves", path: "/all-categories/Home-Decor/WallShelves" },
       ],
     },
     {
@@ -20,7 +20,7 @@ const HomeDecor = () => {
       title: "Home Accents",
       listItems: [
         { name: "Vases", path: "/all-categories/Home-Decor/Vases" },
-        { name: "Candle Holders", path: "/all-categories/Home-Decor/Candle Holders" },
+        { name: "Candle Holders", path: "/all-categories/Home-Decor/CandleHolders" },
         { name: "Figurines", path: "/all-categories/Home-Decor/Figurines" },
         { name: "Bookends", path: "/all-categories/Home-Decor/Bookends" },
       ],
@@ -30,14 +30,13 @@ const HomeDecor = () => {
       imageUrl: "https://images.herzindagi.info/image/2020/Sep/HOME-LIGHTS.jpg", // Replace with your image URL
       title: "Lighting",
       listItems: [
-        { name: "Table Lamps", path: "/all-categories/Home-Decor/Table Lamps" },
-        { name: "Floor Lamps", path: "/all-categories/Home-Decor/Floor Lamps" },
-        { name: "Ceiling Lights", path: "/all-categories/Home-Decor/Ceiling Lights" },
-        { name: "String Lights", path: "/all-categories/Home-Decor/String Lights" },
+        { name: "Table Lamps", path: "/all-categories/Home-Decor/TableLamps" },
+        { name: "Floor Lamps", path: "/all-categories/Home-Decor/FloorLamps" },
+        { name: "Ceiling Lights", path: "/all-categories/Home-Decor/CeilingLights" },
+        { name: "String Lights", path: "/all-categories/Home-Decor/StringLights" },
       ],
     },
   ];
-
   return (
     <>
       <div className="">
