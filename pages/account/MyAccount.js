@@ -76,6 +76,9 @@ const MyAccount = () => {
         e.preventDefault();
         // setIsSubmit(true)
         deleteCookie("home_text_token");
+        deleteCookie("home_text_name");
+        deleteCookie("home_text_phone");
+        deleteCookie("home_text_email");
         window.location.href = "/";
     };
 

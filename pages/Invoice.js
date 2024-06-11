@@ -69,31 +69,31 @@ const Invoice = () => {
 
   return (
     <div className="container mx-auto py-8">
-      <div id="invoice-section" className="bg-white shadow overflow-hidden sm:rounded-lg">
-        <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Order Summary</h3>
+      <div id="invoice-section" className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="px-6 py-4 border-b">
+          <h3 className="text-2xl font-semibold text-gray-800">Order Summary</h3>
         </div>
-        <div className="border-t border-gray-200">
+        <div className="px-6 py-4">
           <dl>
-            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Name</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{auth_name}</dd>
+            <div className="flex justify-between py-2 border-b">
+              <dt className="text-sm font-medium text-gray-600">Name</dt>
+              <dd className="text-sm text-gray-900">{formData.firstName}</dd>
             </div>
-            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Email</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{formData.email}</dd>
+            <div className="flex justify-between py-2 border-b">
+              <dt className="text-sm font-medium text-gray-600">Email</dt>
+              <dd className="text-sm text-gray-900">{formData.email}</dd>
             </div>
-            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Phone</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{auth_phone}</dd>
+            <div className="flex justify-between py-2 border-b">
+              <dt className="text-sm font-medium text-gray-600">Phone</dt>
+              <dd className="text-sm text-gray-900">{formData.phoneNumber}</dd>
             </div>
-            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Address</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{formData.address}</dd>
+            <div className="flex justify-between py-2 border-b">
+              <dt className="text-sm font-medium text-gray-600">Address</dt>
+              <dd className="text-sm text-gray-900">{formData.address}</dd>
             </div>
-            <div className="bg-gray-50 px-4 py-5 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Items</dt>
-              <dd className="mt-1 text-sm text-gray-900">
+            <div className="py-4">
+              <dt className="text-sm font-medium text-gray-600">Items</dt>
+              <dd className="text-sm text-gray-900">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
@@ -122,26 +122,36 @@ const Invoice = () => {
             </div>
           </dl>
         </div>
-        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt className="text-sm font-medium text-gray-500">Total Price</dt>
-          <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{totalPrice}৳</dd>
+        <div className="px-6 py-4 border-t">
+          <div className="flex justify-between py-2">
+            <dt className="text-sm font-medium text-gray-600">Total Price</dt>
+            <dd className="text-sm text-gray-900">{totalPrice}৳</dd>
+          </div>
+          <div className="flex justify-between py-2">
+            <dt className="text-sm font-medium text-gray-600">Discounted Total</dt>
+            <dd className="text-sm text-gray-900">{discountedTotal}৳</dd>
+          </div>
+          <div className="flex justify-between py-2">
+            <dt className="text-sm font-medium text-gray-600">Delivery Fee</dt>
+            <dd className="text-sm text-gray-900">10৳</dd>
+          </div>
+          <div className="flex justify-between py-2">
+            <dt className="text-sm font-medium text-gray-600">Tax</dt>
+            <dd className="text-sm text-gray-900">5৳</dd>
+          </div>
+          <div className="flex justify-between py-2">
+            <dt className="text-sm font-medium text-gray-600">Final Total</dt>
+            <dd className="text-sm text-gray-900">{parseFloat(discountedTotal) + 10 + 5}৳</dd>
+          </div>
         </div>
-        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt className="text-sm font-medium text-gray-500">Discounted Total</dt>
-          <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{discountedTotal}৳</dd>
-        </div>
-        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt className="text-sm font-medium text-gray-500">Delivery Fee</dt>
-          <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">10৳</dd>
-        </div>
-        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt className="text-sm font-medium text-gray-500">Tax</dt>
-          <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">5৳</dd>
-        </div>
-        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt className="text-sm font-medium text-gray-500">Final Total</dt>
-          <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{parseFloat(discountedTotal) + 10 + 5}৳</dd>
-        </div>
+      </div>
+      <div className="flex justify-end mt-8">
+        <button
+          onClick={handlePrint}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Print Invoice
+        </button>
       </div>
       <div className="flex justify-end mt-8">
         <button
