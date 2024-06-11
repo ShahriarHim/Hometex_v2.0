@@ -1,88 +1,82 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const router = useRouter();
 
- 
   const { query } = router;
 
   const [formData, setFormData] = useState({});
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountedTotal, setDiscountedTotal] = useState(0);
+  const [accessToken, setAccessToken] = useState('');
   const url = 'https://pay.hometexbd.ltd/api/v1.0/pay';
 
   useEffect(() => {
     if (query) {
-        setFormData(query);
-        setCartItems(JSON.parse(query.cartItems || '[]'));
-        setTotalPrice(query.totalPrice);
-        setDiscountedTotal(query.discountedTotal);
-        
-            console.log("Form Data:", query);
-            console.log("Cart Items:", JSON.parse(query.cartItems || '[]'));
-            console.log("Total Price:", query.totalPrice);
-            console.log("Discounted Total:", query.discountedTotal);
+      setFormData(query);
+      setCartItems(JSON.parse(query.cartItems || '[]'));
+      setTotalPrice(query.totalPrice);
+      setDiscountedTotal(query.discountedTotal);
     }
-}, [query]);
+  }, [query]);
 
-useEffect(() => {
-  fetch('http://127.0.0.1:8000/api/get-token').then((response) =>{}).then((data) => {})
-},[])
+  useEffect(() => {
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow"
+    };
+    
+    fetch("http://127.0.0.1:8000/api/get-token", requestOptions)
+      .then((response) => response.text())
+      .then((result) => setAccessToken(result))
+      .catch((error) => console.error(error));
+  },[])
 
-console.log("Form Data:", formData);
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({formData})
+console.log(formData)
     if (paymentMethod) {
-      console.log("Selected payment method: ", paymentMethod);
-      if(paymentMethod == "Online Payment")
-        {
-          router.push('https://pay.hometexbd.ltd/process/324061010361217')
-       
     
-          // var access_token = '<?php echo $access_token; ?>';
-          // var formData = $("#pay-form").serializeArray();
-//           // Define the URL and the form data
-// const url = 'https://pay.hometexbd.ltd/api/v1.0/pay';
-// const formData = new FormData(); // Populate your formData appropriately
+      if (paymentMethod === "Online Payment") {
+        
 
-// // Make the POST request using fetch
-// fetch(url, {
-//     method: 'POST',
-//     headers: {
-//         'Authorization': 'Bearer ' + access_token
-//     },
-//     body: formData
-// })
-// .then(response => response.json())
-// .then(data => {
-//     if (data.expected_response) {
-//         const newUrl = data.expected_response;
-//         window.location = newUrl;
-//         // new route from this url
-//         //  https://pay.hometexbd.ltd/process/324061010361217
-//     } else {
-//         console.log(data.errorMessage);
-//         alert(data.errorMessage);
-//     }
-// })
-// .catch(error => {
-//     console.error('Error:', error);
-//     alert(error.message || 'An error occurred');
-// });
+        fetch(url, {
+          method: 'POST',
+          headers: {
+              'Authorization': 'Bearer ' + accessToken
+          },
+          body: formData
+      }).then(response => {
+        console.log(response);
+        response.json()
 
-        }
-        else{
-      router.push('/order_summary');
-
-        }
+      })
+      .then(data => {
+        console.log(data)
+          // if (data.expected_response) {
+          //     const newUrl = data.expected_response;
+          //     window.location = newUrl;
+          //     console.log(newUrl)
+          // } else {
+          //     console.log(data.errorMessage);
+          //     alert(data.errorMessage);
+          // }
+      })
+      // router.push('https://pay.hometexbd.ltd/process/324061010361217');
+   
+      } else {
+        router.push({
+          pathname: '/Invoice',
+          query: { ...formData, cartItems: JSON.stringify(cartItems), totalPrice, discountedTotal },
+        });
+      }
     } else {
       alert("Please select a payment method");
     }
