@@ -41,33 +41,30 @@ const PaymentMethod = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-console.log(formData)
+
     if (paymentMethod) {
     
       if (paymentMethod === "Online Payment") {
         
-
+        console.log(formData)
+        console.log(accessToken)
+        console.log(url)
         fetch(url, {
           method: 'POST',
           headers: {
               'Authorization': 'Bearer ' + accessToken
           },
           body: formData
-      }).then(response => {
-        console.log(response);
-        response.json()
-
-      })
+      }).then(response => response.json())
       .then(data => {
-        console.log(data)
-          // if (data.expected_response) {
-          //     const newUrl = data.expected_response;
-          //     window.location = newUrl;
-          //     console.log(newUrl)
-          // } else {
-          //     console.log(data.errorMessage);
-          //     alert(data.errorMessage);
-          // }
+          if (data.expected_response) {
+              const newUrl = data.expected_response;
+              window.location = newUrl;
+              console.log(newUrl)
+          } else {
+              console.log(data.errorMessage);
+              alert(data.errorMessage);
+          }
       })
       // router.push('https://pay.hometexbd.ltd/process/324061010361217');
    
