@@ -22,7 +22,7 @@ import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import Constants from "../../ults/Constant";
 import WishListContext from "@/context/WishListContext";
 import Modal from "./Modal";
-import HomeDecor from "../home/menus/HomeDecor";
+import HomeDecor from "../home/megaMenu/Home-Decor/HomeDecor";
 
 const Header2 = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
