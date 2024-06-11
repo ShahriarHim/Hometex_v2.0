@@ -1,11 +1,10 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const router = useRouter();
 
- 
   const { query } = router;
 
   const [formData, setFormData] = useState({});
@@ -15,19 +14,17 @@ const PaymentMethod = () => {
 
   useEffect(() => {
     if (query) {
-        setFormData(query);
-        setCartItems(JSON.parse(query.cartItems || '[]'));
-        setTotalPrice(query.totalPrice);
-        setDiscountedTotal(query.discountedTotal);
-        
-            console.log("Form Data:", query);
-            console.log("Cart Items:", JSON.parse(query.cartItems || '[]'));
-            console.log("Total Price:", query.totalPrice);
-            console.log("Discounted Total:", query.discountedTotal);
+      setFormData(query);
+      setCartItems(JSON.parse(query.cartItems || '[]'));
+      setTotalPrice(query.totalPrice);
+      setDiscountedTotal(query.discountedTotal);
+
+      // console.log("Form Data:", query);
+      // console.log("Cart Items:", JSON.parse(query.cartItems || '[]'));
+      // console.log("Total Price:", query.totalPrice);
+      // console.log("Discounted Total:", query.discountedTotal);
     }
-}, [query]);
-
-
+  }, [query]);
 
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -35,10 +32,17 @@ const PaymentMethod = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Form Data:", formData);
     if (paymentMethod) {
       console.log("Selected payment method: ", paymentMethod);
-      // router.push('/order_summary');
-      router.push('https://pay.hometexbd.ltd/process/324061010361217')
+      if (paymentMethod === "Online Payment") {
+        router.push('https://pay.hometexbd.ltd/process/324061010361217');
+      } else {
+        router.push({
+          pathname: '/Invoice',
+          query: { ...formData, cartItems: JSON.stringify(cartItems), totalPrice, discountedTotal },
+        });
+      }
     } else {
       alert("Please select a payment method");
     }
