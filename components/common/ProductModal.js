@@ -173,7 +173,7 @@ const ProductModal = ({ product, onClose }) => {
               <h1 className={styles.title}>Product Details</h1>
               <img src={product.primary_photo} alt={product.name} className={styles.shoe} />
               <div className={styles.price}>
-                <span>$</span>
+
                 <h1>{product.price}</h1>
               </div>
             </div>

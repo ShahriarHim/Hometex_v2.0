@@ -42,6 +42,7 @@ import BathSupport from "../home/megaMenu/Bath/BathSupport";
 import Bedding from "../home/megaMenu/Bedding/Bedding";
 import KitchenDinning from "../home/megaMenu/Kitchen/KitchenDinning";
 import LivingDecor from "../home/megaMenu/Living/LivingDecor";
+import HomeDecor from "../home/megaMenu/Home Decor/HomeDecor";
 import { DynamicText, textOptions } from "./DynamicText";
 import Modal from "./Modal";
 import SearchBarPopup from "./searchPopup";
@@ -672,13 +673,14 @@ const Header3 = () => {
                         <LivingDecor />
                         <BathSupport />
                         <KitchenDinning />
-                        <Link
-                          href="/Shop"
+                        <HomeDecor />
+                        {/* <Link
+                          href="/menus/HomeDecor"
                           className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
                         >
                           <FaLeaf className="mr-2" />
                           Home Decor
-                        </Link>
+                        </Link> */}
                         <Link
                           href="/Faq"
                           className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"

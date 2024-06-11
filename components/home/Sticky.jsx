@@ -20,11 +20,11 @@ export const Sticky = () => {
     <div>
         {/* Sticky */}
         <div id="so-groups" className="fixed left-0 top-80 flex flex-col z-50 hidden md:block">
-                <Categories />
-                <Cart />
+                {/* <Categories />
+                
                 <User />
                 <Search />
-                <RecentView />
+                <RecentView /> */}
                 <a onClick={handleClick} className="sticky-recent bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 h-12 cursor-pointer flex justify-center items-center border border-white transition-all duration-300" data-target="popup" data-popup="#popup-recent">
                     <span className="text-xl"><FaArrowUp /></span>
                 </a>
@@ -33,13 +33,14 @@ export const Sticky = () => {
             {/*  */}
 
             <div id="so-groups" className="fixed right-0 top-80 flex flex-col z-50 hidden md:block">
-                <a className="sticky-facebook bg-blue-600 hover:bg-teal-700 text-white font-bold py-2 px-4  h-12 cursor-pointer flex justify-center items-center border border-white" href="#" target="_blank">
+                {/* <a className="sticky-facebook bg-blue-600 hover:bg-teal-700 text-white font-bold py-2 px-4  h-12 cursor-pointer flex justify-center items-center border border-white" href="#" target="_blank">
                     <span className="text-xl"><FaFacebook /></span>
                 </a>
 
                 <a className="sticky-twitter bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4  h-12 cursor-pointer flex justify-center items-center border border-white" href="#" target="_blank">
                     <span className="text-xl"><FaTwitter /></span>
-                </a>
+                </a> */}
+                <Cart />
             </div>
 
 
