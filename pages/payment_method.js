@@ -12,6 +12,7 @@ const PaymentMethod = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountedTotal, setDiscountedTotal] = useState(0);
+  const url = 'https://pay.hometexbd.ltd/api/v1.0/pay';
 
   useEffect(() => {
     if (query) {
@@ -27,22 +28,25 @@ const PaymentMethod = () => {
     }
 }, [query]);
 
+useEffect(() => {
+  fetch('http://127.0.0.1:8000/api/get-token').then((response) =>{}).then((data) => {})
+},[])
 
-
+console.log("Form Data:", formData);
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e)
+    console.log({formData})
     if (paymentMethod) {
       console.log("Selected payment method: ", paymentMethod);
       if(paymentMethod == "Online Payment")
         {
           router.push('https://pay.hometexbd.ltd/process/324061010361217')
-
-          // var url = '<?php echo $submit_url; ?>';
+       
+    
           // var access_token = '<?php echo $access_token; ?>';
           // var formData = $("#pay-form").serializeArray();
 //           // Define the URL and the form data
