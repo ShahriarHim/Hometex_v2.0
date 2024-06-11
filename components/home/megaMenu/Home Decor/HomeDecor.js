@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaCaretDown, FaHome } from "react-icons/fa";
+import { FaCaretDown, FaLeaf } from "react-icons/fa";
 
 const HomeDecor = () => {
   const sections = [
@@ -41,8 +41,11 @@ const HomeDecor = () => {
   return (
     <>
       <div className="">
-        <div className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group">
-          <FaHome className="mr-1 text-xl" />
+        <Link 
+        href="/homeDecor"
+        className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group"
+        >
+          <FaLeaf className="mr-1 text-xl" />
           Home Decor <FaCaretDown />
           <div className="w-full absolute pb-6 z-50 top-full left-0 transform rounded-md justify-center items-center p-2 group-hover:flex hidden">
             <div className="max-w-screen-2xl mx-auto px-3 mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white">
@@ -93,7 +96,7 @@ const HomeDecor = () => {
               ))}
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </>
   );

@@ -25,7 +25,7 @@ const CartComponent = ({
 
 
   return (
-    <div className="relative" ref={cartRef} style={{ zIndex: 10 }}>
+    <div className="relative" ref={cartRef} style={{ zIndex: 21 }}>
     
       <div className="relative">
         <button onClick={handleCartClick} type="button">
