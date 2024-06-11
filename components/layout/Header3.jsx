@@ -442,7 +442,7 @@ const Header3 = () => {
             "radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
         }}
       >
-        <div className="container mx-auto px-5">
+        <div className="container mx-auto px-3">
           {/* Mid Header */}
           <div className="flex flex-auto gap-2 justify-between items-center mt-3 container mx-auto">
             <div className="flex flex-row">
@@ -652,56 +652,57 @@ const Header3 = () => {
           />
           {/* Mid Header end */}
           {/* menu */}
-          <div className="flex flex-auto gap-2 container mx-auto justify-end items-center">
-            <nav className="">
-              <div className="container mx-auto px-4 sm:px-6 lg:px-0">
-                <div
-                  className="flex items-center justify-between h-16 "
-                  style={{ marginRight: "77px" }}
-                >
-                  <div className="hidden md:block">
-                    <div className="flex items-center place-content-center relative px-40">
-                      <Link
-                        href="/"
-                        className=" inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+          
+            <div className="flex flex-auto gap-2 container mx-auto justify-end items-center">
+              <nav className="">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-0">
+                  <div
+                    className="flex items-center justify-between h-16 "
+                    style={{ marginRight: "77px" }}
+                  >
+                    <div className="hidden md:block">
+                      <div className="flex items-center place-content-center relative px-40">
+                        <Link
+                          href="/"
+                          className=" inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+                        >
+                          <FaHome className="text-xl" />
+                        </Link>
+                        <Bedding />
+                        <LivingDecor />
+                        <BathSupport />
+                        <KitchenDinning />
+                        <Link
+                          href="/Shop"
+                          className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+                        >
+                          <FaLeaf className="mr-2" />
+                          Home Decor
+                        </Link>
+                        <Link
+                          href="/Faq"
+                          className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+                        >
+                          <FaQuestionCircle className="mr-2" />
+                          FAQ
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="-mr-2 flex md:hidden">
+                      <button
+                        onClick={handleMenuClick}
+                        type="button"
+                        className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white transition duration-150 ease-in-out"
                       >
-                        <FaHome className="text-xl" />
-                      </Link>
-                      <Bedding />
-                      <LivingDecor />
-                      <BathSupport />
-                      <KitchenDinning />
-                      <Link
-                        href="/Shop"
-                        className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
-                      >
-                        <FaLeaf className="mr-2" />
-                        Home Decor
-                      </Link>
-                      <Link
-                        href="/Faq"
-                        className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
-                      >
-                        <FaQuestionCircle className="mr-2" />
-                        FAQ
-                      </Link>
+                        {isMenuOpen ? <FaTimes /> : <FaBars />}
+                      </button>
                     </div>
                   </div>
-                  <div className="-mr-2 flex md:hidden">
-                    <button
-                      onClick={handleMenuClick}
-                      type="button"
-                      className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white transition duration-150 ease-in-out"
-                    >
-                      {isMenuOpen ? <FaTimes /> : <FaBars />}
-                    </button>
-                  </div>
                 </div>
-              </div>
-              {isMenuOpen && (
-                <div className="md:hidden">
-                  <div className="px-2 pt-2 pb-3 sm:px-3">
-                    {/* <Link
+                {isMenuOpen && (
+                  <div className="md:hidden">
+                    <div className="px-2 pt-2 pb-3 sm:px-3">
+                      {/* <Link
                       href="/"
                       className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
                     >
@@ -755,101 +756,101 @@ const Header3 = () => {
                     >
                       Find A Store
                     </Link> */}
-                    <div className="relative" ref={cartRef}>
-                      <div className="relative">
-                        <button
-                          onClick={handleCartClick}
-                          type="button"
-                          className="ml-3 text-white bg-[#009688] hover:bg-[#86efac] focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center mr-3 md:mr-0 dark:bg-[#15803d] dark:hover:bg-[#15803d] dark:focus:ring-green-800"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-4 h-4"
+                      <div className="relative" ref={cartRef}>
+                        <div className="relative">
+                          <button
+                            onClick={handleCartClick}
+                            type="button"
+                            className="ml-3 text-white bg-[#009688] hover:bg-[#86efac] focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center mr-3 md:mr-0 dark:bg-[#15803d] dark:hover:bg-[#15803d] dark:focus:ring-green-800"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                            />
-                          </svg>
-                        </button>
-                        {cartItems?.length > 0 && (
-                          <span className="absolute top-0 right-0 bg-red-500 rounded-full text-white w-4 h-4 text-xs flex items-center justify-center">
-                            {cartItems.length}
-                          </span>
-                        )}
-                      </div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="w-4 h-4"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                              />
+                            </svg>
+                          </button>
+                          {cartItems?.length > 0 && (
+                            <span className="absolute top-0 right-0 bg-red-500 rounded-full text-white w-4 h-4 text-xs flex items-center justify-center">
+                              {cartItems.length}
+                            </span>
+                          )}
+                        </div>
 
-                      {isOpen && (
-                        <div className="absolute whitespace-nowrap flex justify-center items-center right-150 z-50 w-full bg-gray-500 bg-opacity-75 rounded shadow-lg ">
-                          <div className="bg-white rounded shadow-lg">
-                            <table className="w-full">
-                              <tbody>
-                                {cart?.cartItems?.map((cartItem) => (
-                                  <tr
-                                    key={cartItem.product_id}
-                                    className="border-b border-gray-300"
-                                  >
-                                    <td className="py-2 pl-4">
-                                      <img
-                                        src={`${Constants.BASE_URL}/images/uploads/product_thumb/${cartItem.image.photo}`}
-                                        alt={cartItem.name}
-                                        className="w-16 h-16 object-cover rounded"
-                                      />
-                                    </td>
-                                    <td className="p-2">{cartItem.name}</td>
-                                    <td className="p-2">{cartItem.quantity}</td>
-                                    <td className="p-2">
-                                      BDT {cartItem.total_price}{" "}
-                                    </td>
-                                    <td className="p-2">
-                                      <button
-                                        className="text-gray-500 hover:text-red-500"
-                                        onClick={() =>
-                                          deleteItemFromCart(
-                                            cartItem.product_id
-                                          )
-                                        }
-                                      >
-                                        <AiTwotoneDelete
-                                          className="text-red-600"
-                                          size={24}
+                        {isOpen && (
+                          <div className="absolute whitespace-nowrap flex justify-center items-center right-150 z-50 w-full bg-gray-500 bg-opacity-75 rounded shadow-lg ">
+                            <div className="bg-white rounded shadow-lg">
+                              <table className="w-full">
+                                <tbody>
+                                  {cart?.cartItems?.map((cartItem) => (
+                                    <tr
+                                      key={cartItem.product_id}
+                                      className="border-b border-gray-300"
+                                    >
+                                      <td className="py-2 pl-4">
+                                        <img
+                                          src={`${Constants.BASE_URL}/images/uploads/product_thumb/${cartItem.image.photo}`}
+                                          alt={cartItem.name}
+                                          className="w-16 h-16 object-cover rounded"
                                         />
+                                      </td>
+                                      <td className="p-2">{cartItem.name}</td>
+                                      <td className="p-2">{cartItem.quantity}</td>
+                                      <td className="p-2">
+                                        BDT {cartItem.total_price}{" "}
+                                      </td>
+                                      <td className="p-2">
+                                        <button
+                                          className="text-gray-500 hover:text-red-500"
+                                          onClick={() =>
+                                            deleteItemFromCart(
+                                              cartItem.product_id
+                                            )
+                                          }
+                                        >
+                                          <AiTwotoneDelete
+                                            className="text-red-600"
+                                            size={24}
+                                          />
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  <tr className="border-b border-gray-300">
+                                    <td
+                                      colSpan="5"
+                                      className="p-2 pt-3 flex justify-between items-center"
+                                    >
+                                      <Link href="/cart">
+                                        <button className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded mr-2">
+                                          View Cart
+                                        </button>
+                                      </Link>
+
+                                      <button className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">
+                                        Checkout
                                       </button>
                                     </td>
                                   </tr>
-                                ))}
-                                <tr className="border-b border-gray-300">
-                                  <td
-                                    colSpan="5"
-                                    className="p-2 pt-3 flex justify-between items-center"
-                                  >
-                                    <Link href="/cart">
-                                      <button className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded mr-2">
-                                        View Cart
-                                      </button>
-                                    </Link>
-
-                                    <button className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">
-                                      Checkout
-                                    </button>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </nav>
-            {/* <button
+                )}
+              </nav>
+              {/* <button
               className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
               onClick={handleChatToggle}
             >
@@ -857,16 +858,17 @@ const Header3 = () => {
               <FaCommentDots className=""/>
             </button> */}
 
-            <Link
-              href="/"
-              className=" inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
-              onClick={handleChatToggle}
-            >
+              <Link
+                href="/"
+                className=" inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
+                onClick={handleChatToggle}
+              >
 
-              <FaCommentDots className="text-xl" />
-            </Link>
-            {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
-          </div>
+                <FaCommentDots className="text-xl" />
+              </Link>
+              {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
+            </div>
+          
           {/* menu end */}
         </div>
       </div >
