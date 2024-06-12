@@ -45,28 +45,48 @@ const PaymentMethod = () => {
     if (paymentMethod) {
     
       if (paymentMethod === "Online Payment") {
-        
+        const dummyData = JSON.stringify({
+          "client_id": "16",
+          "order_id_of_merchant": Math.floor(Math.random() * 100000).toString(),
+          "amount": "1",
+          "currency_of_transaction": "BDT",
+          "buyer_name": "S.M.F.Karim",
+          "buyer_email": "smfkarim.24@gmail.com",
+          "buyer_address": "dhaka",
+          "buyer_contact_number": "01670885658",
+          "order_details": "545646454564",
+          "callback_success_url": "https://hometex.vercel.app/success",
+          "callback_fail_url": "http://gopaysenz.com/invoice/fail.php",
+          "callback_cancel_url": "http://gopaysenz.com/invoice/cancel.php",
+          "expected_response_type": "JSON"
+        });
+      
         console.log(formData)
-        console.log(accessToken)
-        console.log(url)
-        fetch(url, {
-          method: 'POST',
-          headers: {
-              'Authorization': 'Bearer ' + accessToken
-          },
-          body: formData
-      }).then(response => response.json())
-      .then(data => {
-          if (data.expected_response) {
-              const newUrl = data.expected_response;
-              window.location = newUrl;
-              console.log(newUrl)
-          } else {
-              console.log(data.errorMessage);
-              alert(data.errorMessage);
-          }
-      })
-      // router.push('https://pay.hometexbd.ltd/process/324061010361217');
+   
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", `Bearer ${accessToken}`);
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: dummyData,
+          redirect: "follow"
+        };
+        
+        fetch(url, requestOptions)
+          .then((response) => response.json())
+          .then(data => {
+            console.log(data)
+            if (data.expected_response) {
+                const newUrl = data.expected_response;
+                // window.location = newUrl;
+                console.log(newUrl)
+            } else {
+                console.log(data.errorMessage);
+                alert(data.errorMessage);
+            }
+        })
+          .catch((error) => console.error(error));
    
       } else {
         router.push({
