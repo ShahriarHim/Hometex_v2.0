@@ -9,11 +9,11 @@ const BathSupport = () => {
         "imageUrl": "https://m.media-amazon.com/images/I/91FUcQAyUoL.__AC_SY300_SX300_QL70_FMwebp_.jpg",
         "title": "Towels | Bathmats",
         "listItems": [
-            {"name": "Basin Towel", "path": "/all-categories/Bath-Support/BasinTowel"},
-            {"name": "Basin Mat", "path": "/all-categories/Bath-Support/BasinMat"},
-            {"name": "Bath Sheet", "path": "/all-categories/Bath-Support/BathSheet"},
-            {"name": "Bath Towel", "path": "/all-categories/Bath-Support/BathTowel"},
-            {"name": "Hand Towel", "path": "/all-categories/Bath-Support/HandTowel"},
+            {"name": "Basin Towel", "path": "/all-categories/bathSupport/BasinTowel"},
+            {"name": "Basin Mat", "path": "/all-categories/bathSupport/BasinMat"},
+            {"name": "Bath Sheet", "path": "/all-categories/bathSupport/BathSheet"},
+            {"name": "Bath Towel", "path": "/all-categories/bathSupport/BathTowel"},
+            {"name": "Hand Towel", "path": "/all-categories/bathSupport/HandTowel"},
         ],
     },
     {
@@ -21,8 +21,8 @@ const BathSupport = () => {
         "imageUrl": "https://media.nisbets.com/asset/core/prodimage/large_new/hd222_ecobathrobe1.jpg",
         "title": "Bathrobes",
         "listItems": [
-            {"name": "Adult Size", "path": "/all-categories/Bath-Support/AdultSize"},
-            {"name": "Kids Size", "path": "/all-categories/Bath-Support/KidsSize"},
+            {"name": "Adult Size", "path": "/all-categories/bathSupport/AdultSize"},
+            {"name": "Kids Size", "path": "/all-categories/bathSupport/KidsSize"},
         ],
     },
     {
@@ -30,7 +30,7 @@ const BathSupport = () => {
         "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/bathroom-decor-ideas-65f16a228586f.jpeg?crop=1.00xw:0.334xh;0,0.324xh&resize=1200:*",
         "title": "Bath Decor",
         "listItems": [
-            {"name": "Bathroom Rugs", "path": "/all-categories/Bath-Support/BathroomRugs"},
+            {"name": "Bathroom Rugs", "path": "/all-categories/bathSupport/BathroomRugs"},
         ],
     },
     {
@@ -38,8 +38,8 @@ const BathSupport = () => {
         "imageUrl": "https://market99.com/cdn/shop/products/ceramic-cylindrical-bathroom-set-of-4-geometric-pattern-bath-accessories-soap-and-lotion-dispensers-1-29122143649962.jpg?v=1697016217&width=1080",
         "title": "Bath Accessories",
         "listItems": [
-            {"name": "Bathroom Bin", "path": "/all-categories/Bath-Support/BathroomBin"},
-            {"name": "Shower Curtain", "path": "/all-categories/Bath-Support/ShowerCurtain"},
+            {"name": "Bathroom Bin", "path": "/all-categories/bathSupport/BathroomBin"},
+            {"name": "Shower Curtain", "path": "/all-categories/bathSupport/ShowerCurtain"},
         ],
     },
 ]
@@ -51,7 +51,7 @@ const BathSupport = () => {
   const handleButtonClick = (event) => {
     // Prevent default link behavior
     event.preventDefault();
-    // Navigate to the bath-support page
+    // Navigate to the bathSupport page
     router.push("/bathSupport");
   };
 
