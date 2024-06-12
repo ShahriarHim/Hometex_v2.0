@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import Link from 'next/link';
+import {  AiOutlineLeft, AiFillPrinter } from 'react-icons/ai';
 
 const Invoice = () => {
   const router = useRouter();
@@ -25,7 +27,7 @@ const Invoice = () => {
         discountedTotal,
         ...rest
       } = query;
-      
+
       const address = `${country}, ${city}, ${postcode}, ${Division}, ${District}`;
 
       setFormData({
@@ -52,7 +54,7 @@ const Invoice = () => {
         const amount = parseFloat(str) * cartItem.quantity;
         return total + amount;
       }, 0);
-      
+
       setTotalPrice(finalAmount);
     }
   }, [cartItems]);
@@ -145,21 +147,23 @@ const Invoice = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-end mt-8">
+      {/* <div className="flex justify-end mt-8">
         <button
           onClick={handlePrint}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           Print Invoice
         </button>
-      </div>
-      <div className="flex justify-end mt-8">
-        <button
-          onClick={handlePrint}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Print Invoice
-        </button>
+      </div> */}
+      <div className='flex flex-row justify-between px-0 mt-3 gap-10'>
+        <div>
+          <Link href="/">
+            <button className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2 '><AiOutlineLeft /> <span className='text-xl'>Continue Shopping</span></button>
+          </Link>
+        </div>
+        <div>
+          <button onClick={handlePrint} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2 '>  <AiFillPrinter/><span className='text-xl'>Print</span></button>
+        </div>
       </div>
     </div>
   );
