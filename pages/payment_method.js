@@ -49,12 +49,12 @@ const PaymentMethod = () => {
         const buyerContactNumber = formData.phoneNumber;
         const buyer_email = formData.email;
   
-        const Payamount = totalPrice < discountedTotal ? totalPrice : discountedTotal;
+        const PayAbleAmount = totalPrice < discountedTotal ? totalPrice : discountedTotal;
   
         const dummyData = {
-          client_id: "16",
+          client_id: 3,
           order_id_of_merchant: orderId,
-          amount: Payamount,
+          amount: PayAbleAmount,
           currency_of_transaction: "BDT",
           buyer_name: buyerName,
           buyer_email: buyer_email,
@@ -87,7 +87,7 @@ const PaymentMethod = () => {
             if (data.expected_response) {
               const newUrl = data.expected_response;
               console.log(newUrl);
-              // window.location = newUrl;
+              window.location = newUrl;
             } else {
               console.log(data.errorMessage);
               alert(data.errorMessage);
