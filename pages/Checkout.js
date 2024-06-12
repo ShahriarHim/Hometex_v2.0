@@ -359,7 +359,7 @@ const Checkout = () => {
       </option>
     ))}
   </select>
-  {selectedDivision && <p>Selected Division: {selectedDivision}</p>}
+  {/* {selectedDivision && <p>Selected Division: {selectedDivision}</p>} */}
 </div>
 
 <div>
@@ -383,7 +383,7 @@ const Checkout = () => {
       </option>
     ))}
   </select>
-  {selectedDistrict && <p>Selected District: {selectedDistrict}</p>}
+  {/* {selectedDistrict && <p>Selected District: {selectedDistrict}</p>} */}
 </div>
 
 

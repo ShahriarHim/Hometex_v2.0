@@ -132,22 +132,22 @@ const ProductsTabs = ({ products }) => {
   return (
     <>
       <div className="max-w-screen-xl mx-auto px-3 mb-10">
-        <Tabs>
-          <TabList className="flex flex-wrap justify-center lg:justify-start items-center gap-24 py-2">
-            <Tab className="text-gray-500 bg-gray-100 py-6 px-4 hover:text-gray-900 focus:outline-none focus:text-gray-900 focus:bg-gray-100 transition duration-150 ease-in-out rounded-lg shadow-sm hover:shadow-lg w-full lg:w-auto flex justify-center items-center">
+      <Tabs>
+          <TabList className="flex flex-wrap justify-center lg:justify-start items-center gap-4 py-2">
+            <Tab className="text-gray-500 bg-gray-100 py-2 px-4 hover:text-gray-900 focus:outline-none focus:text-gray-900 focus:bg-gray-100 transition duration-150 ease-in-out rounded-lg shadow-sm lg:w-auto">
               All Products
             </Tab>
-            <Tab className="group py-2 px-4 focus:outline-none transition duration-150 ease-in-out rounded-lg shadow-sm hover:shadow-lg bg-white w-full lg:w-auto flex justify-center items-center">
-              <img src="/images/icons/extra-king.png" className="rounded-full h-14 group-hover:scale-110 transition-transform" alt="Extra King" />
+            <Tab className="group py-2 px-4 focus:outline-none transition duration-150 ease-in-out rounded-lg shadow-sm bg-white lg:w-auto">
+              <img src="/images/icons/extra-king.png" className="rounded-full h-12 group-hover:scale-110 transition-transform" alt="Extra King" />
             </Tab>
-            <Tab className="group py-2 px-4 focus:outline-none transition duration-150 ease-in-out rounded-lg shadow-sm hover:shadow-lg bg-white w-full lg:w-auto flex justify-center items-center">
-              <img src="/images/icons/king.png" className="rounded-full h-14 group-hover:scale-110 transition-transform" alt="King" />
+            <Tab className="group py-2 px-4 focus:outline-none transition duration-150 ease-in-out rounded-lg shadow-sm bg-white lg:w-auto">
+              <img src="/images/icons/king.png" className="rounded-full h-12 group-hover:scale-110 transition-transform" alt="King" />
             </Tab>
-            <Tab className="group py-2 px-4 focus:outline-none transition duration-150 ease-in-out rounded-lg shadow-sm hover:shadow-lg bg-white w-full lg:w-auto flex justify-center items-center">
-              <img src="/images/icons/semi-double.png" className="rounded-full h-14 group-hover:scale-110 transition-transform" alt="Semi Double" />
+            <Tab className="group py-2 px-4 focus:outline-none transition duration-150 ease-in-out rounded-lg shadow-sm bg-white lg:w-auto">
+              <img src="/images/icons/semi-double.png" className="rounded-full h-12 group-hover:scale-110 transition-transform" alt="Semi Double" />
             </Tab>
-            <Tab className="group py-2 px-4 focus:outline-none transition duration-150 ease-in-out rounded-lg shadow-sm hover:shadow-lg bg-white w-full lg:w-auto flex justify-center items-center">
-              <img src="/images/icons/single.png" className="rounded-full h-14 group-hover:scale-110 transition-transform" alt="Single" />
+            <Tab className="group py-2 px-4 focus:outline-none transition duration-150 ease-in-out rounded-lg shadow-sm bg-white lg:w-auto">
+              <img src="/images/icons/single.png" className="rounded-full h-12 group-hover:scale-110 transition-transform" alt="Single" />
             </Tab>
           </TabList>
           <div className="lg:flex-grow">

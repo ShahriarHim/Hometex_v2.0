@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const sections = [
   {
@@ -44,6 +45,7 @@ const sections = [
 
 const BathSupportPage = () => {
   const router = useRouter();
+    
   const handleGoBack = () => {
     router.back();
   };
@@ -54,7 +56,7 @@ const BathSupportPage = () => {
         <h1 className="text-2xl font-bold">Bath Support</h1>
         <button
           onClick={handleGoBack}
-          className="px-4 py-2 bg-blue-200 rounded-md hover:bg-gray-300"
+          className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
         >
           Go Back
         </button>
@@ -64,9 +66,17 @@ const BathSupportPage = () => {
         {sections.map((section) => (
           <div key={section.id} className="flex flex-col items-center">
             <div className="w-40 h-40 bg-gray-200 rounded-full overflow-hidden">
-              <img src={section.imageUrl} alt={section.title} className="object-cover w-full h-full" />
+              <img
+                src={section.imageUrl}
+                alt={section.title}
+                className="object-cover w-full h-full"
+              />
             </div>
-            <h2 className="mt-2 text-center text-lg font-semibold">{section.title}</h2>
+            <h2 className="mt-2 text-center text-lg font-semibold">
+              <Link href={`/BathSupport/${section.title.replace(/\s+/g, '-').toLowerCase()}`}>
+                {section.title}
+              </Link>
+            </h2>
           </div>
         ))}
       </div>

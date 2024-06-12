@@ -39,34 +39,43 @@ const sections = [
 
 const HomeDecorPage = () => {
   const router = useRouter();
-  const handleGoBack = () => {
-    router.back();
-  };
-
-  return (
-    <div className="max-w-screen-lg mx-auto py-6 px-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Home Decor</h1>
-        <button
-          onClick={handleGoBack}
-          className="px-4 py-2 bg-gray-200 rounded-md hover:bg-blue-300"
-        >
-          Go Back
-        </button>
-      </div>
-      <hr className="mb-4 border-t-2 border-gray-300" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {sections.map((section) => (
-          <div key={section.id} className="flex flex-col items-center">
-            <div className="w-40 h-40 bg-gray-200 rounded-full overflow-hidden">
-              <img src={section.imageUrl} alt={section.title} className="object-cover w-full h-full" />
+    
+    const handleGoBack = () => {
+      router.back();
+    };
+  
+    return (
+      <div className="max-w-screen-lg mx-auto py-6 px-4">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">Living Decor</h1>
+          <button
+            onClick={handleGoBack}
+            className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+          >
+            Go Back
+          </button>
+        </div>
+        <hr className="mb-4 border-t-2 border-gray-300" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {sections.map((section) => (
+            <div key={section.id} className="flex flex-col items-center">
+              <div className="w-40 h-40 bg-gray-200 rounded-full overflow-hidden">
+                <img
+                  src={section.imageUrl}
+                  alt={section.title}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+              <h2 className="mt-2 text-center text-lg font-semibold">
+                <Link href={`/home-decor/${section.title.replace(/\s+/g, '-').toLowerCase()}`}>
+                  {section.title}
+                </Link>
+              </h2>
             </div>
-            <h2 className="mt-2 text-center text-lg font-semibold">{section.title}</h2>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  );
-};
-
+    );
+  };
+  
 export default HomeDecorPage;
