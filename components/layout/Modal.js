@@ -17,19 +17,20 @@ const Modal = ({ isOpen, closeModal, products }) => {
 
   const saveModalState = (state) => {
     const expiryTime = new Date().getTime() + 5 * 60 * 1000; // 5 minutes from now
-    localStorage.setItem('modalState', JSON.stringify({ isOpen: state, expiryTime }));
+    localStorage.setItem('modalState', JSON.stringify({ isOpen: state, expiryTime, manuallyClosed: false }));
   };
-
+  
   const getModalState = () => {
     const savedState = localStorage.getItem('modalState');
     if (savedState) {
-      const { isOpen, expiryTime } = JSON.parse(savedState);
-      if (new Date().getTime() < expiryTime) {
+      const { isOpen, expiryTime, manuallyClosed } = JSON.parse(savedState);
+      if (!manuallyClosed && new Date().getTime() < expiryTime) {
         return isOpen;
       }
     }
     return false;
   };
+  
 
   useEffect(() => {
     const savedIsOpen = getModalState();
