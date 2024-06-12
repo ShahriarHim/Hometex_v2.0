@@ -6,6 +6,7 @@ const PaymentMethod = () => {
   const router = useRouter();
 
   const { query } = router;
+  const orderId = `Id#-${new Date().getTime()}`;
 
   const [formData, setFormData] = useState({});
   const [cartItems, setCartItems] = useState([]);
@@ -41,53 +42,59 @@ const PaymentMethod = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     if (paymentMethod) {
-    
       if (paymentMethod === "Online Payment") {
-        const dummyData = JSON.stringify({
-          "client_id": "16",
-          "order_id_of_merchant": Math.floor(Math.random() * 100000).toString(),
-          "amount": "1",
-          "currency_of_transaction": "BDT",
-          "buyer_name": "S.M.F.Karim",
-          "buyer_email": "smfkarim.24@gmail.com",
-          "buyer_address": "dhaka",
-          "buyer_contact_number": "01670885658",
-          "order_details": "545646454564",
-          "callback_success_url": "https://hometex.vercel.app/success",
-          "callback_fail_url": "http://gopaysenz.com/invoice/fail.php",
-          "callback_cancel_url": "http://gopaysenz.com/invoice/cancel.php",
-          "expected_response_type": "JSON"
-        });
-      
-        console.log(formData)
-   
+        const buyerName = formData.firstName + ' ' + formData.lastName;
+        const buyerContactNumber = formData.phoneNumber;
+        const buyer_email = formData.email;
+  
+        const Payamount = totalPrice < discountedTotal ? totalPrice : discountedTotal;
+  
+        const dummyData = {
+          client_id: "16",
+          order_id_of_merchant: orderId,
+          amount: Payamount,
+          currency_of_transaction: "BDT",
+          buyer_name: buyerName,
+          buyer_email: buyer_email,
+          buyer_address: "dhaka",
+          buyer_contact_number: buyerContactNumber,
+          order_details: orderId,
+          callback_success_url: "https://hometex.vercel.app/success",
+          callback_fail_url: "http://gopaysenz.com/invoice/fail.php",
+          callback_cancel_url: "http://gopaysenz.com/invoice/cancel.php",
+          expected_response_type: "JSON"
+        };
+  
+        console.log(dummyData);
+  
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", `Bearer ${accessToken}`);
+        
         const requestOptions = {
           method: "POST",
           headers: myHeaders,
-          body: dummyData,
+          body: JSON.stringify(dummyData),
           redirect: "follow"
         };
-        
+  
         fetch(url, requestOptions)
           .then((response) => response.json())
           .then(data => {
-            console.log(data)
+            console.log(data);
             if (data.expected_response) {
-                const newUrl = data.expected_response;
-                // window.location = newUrl;
-                console.log(newUrl)
+              const newUrl = data.expected_response;
+              console.log(newUrl);
+              // window.location = newUrl;
             } else {
-                console.log(data.errorMessage);
-                alert(data.errorMessage);
+              console.log(data.errorMessage);
+              alert(data.errorMessage);
             }
-        })
+          })
           .catch((error) => console.error(error));
-   
+  
       } else {
         router.push({
           pathname: '/Invoice',
@@ -98,6 +105,7 @@ const PaymentMethod = () => {
       alert("Please select a payment method");
     }
   };
+  
 
   return (
     <div className='px-2 py-2 shadow-lg rounded-full bg-white mt-4'>

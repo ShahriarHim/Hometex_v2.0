@@ -7,8 +7,7 @@ import { AiOutlineLeft, AiFillPrinter, AiFillCheckCircle } from 'react-icons/ai'
 const Invoice = () => {
   const router = useRouter();
   const { query } = router;
-  let auth_name = getCookie("home_text_name");
-  let auth_phone = getCookie("home_text_phone");
+
   const [formData, setFormData] = useState({});
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -31,7 +30,7 @@ const Invoice = () => {
         ...rest
       } = query;
 
-      const address = `${country}, ${city}, ${postcode}, ${Division}, ${District}`;
+      const address = `${country}, ${postcode}, ${Division}, ${District}`;
 
       setFormData({
         ...rest,
@@ -81,12 +80,10 @@ const Invoice = () => {
     document.body.innerHTML = originalContents;
     window.location.reload(); // reload the page to restore the original content
   };
-
+  const orderId = `Id#-${new Date().getTime()}`;
   const handleConfirm = () => {
     // Generate a unique order ID
-    const orderId = `ORDER-${new Date().getTime()}`;
-  
-    // Create an order object
+
     const order = {
       orderId,
       formData,
@@ -126,13 +123,13 @@ const Invoice = () => {
     <div className="container mx-auto py-8">
       <div id="invoice-section" className="bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="px-6 py-4 border-b">
-          <h3 className="text-2xl font-semibold text-gray-800">Order Summary</h3>
+          <h3 className="text-2xl font-semibold text-gray-800">Order Summary of {orderId}</h3>
         </div>
         <div className="px-6 py-4">
           <dl>
             <div className="flex justify-between py-2 border-b">
               <dt className="text-sm font-medium text-gray-600">Name</dt>
-              <dd className="text-sm text-gray-900">{formData.firstName}</dd>
+              <dd className="text-sm text-gray-900">{formData.firstName}  {formData.lastName}</dd>
             </div>
             <div className="flex justify-between py-2 border-b">
               <dt className="text-sm font-medium text-gray-600">Email</dt>
