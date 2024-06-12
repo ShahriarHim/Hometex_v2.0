@@ -346,7 +346,7 @@ const Checkout = () => {
     Select Division *
   </label>
   <select
-    name="division"
+    name="Division"
     value={formData.Division}
     onChange={handleChange}
     required
@@ -370,7 +370,7 @@ const Checkout = () => {
     Select District *
   </label>
   <select
-    name="district"
+    name="District"
     value={formData.District}
     onChange={handleChange}
     required
