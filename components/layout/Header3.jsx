@@ -934,7 +934,7 @@ const Header3 = () => {
                   >
                     <li>
                       <a
-                        href="/all-categories/bedding"
+                        href="/bedding"
                         className="text-black hover:text-gray-700 block"
                       >
                         Bedding
@@ -942,7 +942,7 @@ const Header3 = () => {
                     </li>
                     <li>
                       <a
-                        href="/all-categories/livingDecor"
+                        href="/livingDecor"
                         className="text-black hover:text-gray-700 block"
                       >
                         Living Decor
@@ -950,7 +950,7 @@ const Header3 = () => {
                     </li>
                     <li>
                       <a
-                        href="/all-categories/bathSupport"
+                        href="/bathSupport"
                         className="text-black hover:text-gray-700 block"
                       >
                         Bath Support
@@ -958,7 +958,7 @@ const Header3 = () => {
                     </li>
                     <li>
                       <a
-                        href="/Shop"
+                        href="/kitchen_Dining"
                         className="text-black hover:text-gray-700 block"
                       >
                         Kitchen|Dining
@@ -966,7 +966,7 @@ const Header3 = () => {
                     </li>
                     <li>
                       <a
-                        href="/Shop"
+                        href="/homeDecor"
                         className="text-black hover:text-gray-700 block"
                       >
                         Home Decor
