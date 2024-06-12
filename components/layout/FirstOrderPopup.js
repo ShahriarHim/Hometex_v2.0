@@ -35,7 +35,8 @@ const styles = {
     animation: 'fade-in 0.5s ease', // Animation for fade-in effect
   },
   popupContent: {
-    width: '25%',
+    width: '90%', // Adjusted width for mobile view
+    maxWidth: '300px', // Limit maximum width for smaller screens
     backgroundColor: '#FFFFFF',
     border: 'none',
     boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)',
@@ -59,12 +60,12 @@ const styles = {
   },
   title: {
     fontFamily: 'Pacifico, cursive', // Playful font
-    fontSize: '2rem',
+    fontSize: '1.5rem', // Adjusted font size for mobile view
     margin: '0',
     color: '#333333',
   },
   description: {
-    fontSize: '1rem',
+    fontSize: '1rem', // Adjusted font size for mobile view
     color: '#666666',
     margin: '0',
   },
@@ -77,11 +78,11 @@ const styles = {
   yesButton: {
     backgroundColor: '#FF6B6B', // Red color
     color: '#FFFFFF',
-    padding: '1rem 2rem',
+    padding: '0.8rem 1.5rem', // Adjusted padding for mobile view
     borderRadius: '30px',
     border: 'none',
     cursor: 'pointer',
-    fontSize: '1.2rem',
+    fontSize: '1rem', // Adjusted font size for mobile view
     marginBottom: '0.5rem',
     width: '80%',
     boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
@@ -92,11 +93,11 @@ const styles = {
   noButton: {
     backgroundColor: '#FFD166', // Yellow color
     color: '#333333',
-    padding: '1rem 2rem',
+    padding: '0.8rem 1.5rem', // Adjusted padding for mobile view
     borderRadius: '30px',
     border: 'none',
     cursor: 'pointer',
-    fontSize: '1.2rem',
+    fontSize: '1rem', // Adjusted font size for mobile view
     width: '80%',
     boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
     transition: 'transform 0.2s ease',
