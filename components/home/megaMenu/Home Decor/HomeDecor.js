@@ -8,10 +8,10 @@ const HomeDecor = () => {
       imageUrl: "https://m.media-amazon.com/images/I/810MbOBa92L._AC_UF1000,1000_QL80_.jpg", // Replace with your image URL
       title: "Wall Decor",
       listItems: [
-        { name: "Wall Art", path: "/all-categories/Home-Decor/WallArt" },
-        { name: "Wall Clocks", path: "/all-categories/Home-Decor/WallClocks" },
-        { name: "Wall Mirrors", path: "/all-categories/Home-Decor/WallMirrors" },
-        { name: "Wall Shelves", path: "/all-categories/Home-Decor/WallShelves" },
+        { name: "Wall Art", path: "/all-categories/homeDecor/WallArt" },
+        { name: "Wall Clocks", path: "/all-categories/homeDecor/WallClocks" },
+        { name: "Wall Mirrors", path: "/all-categories/homeDecor/WallMirrors" },
+        { name: "Wall Shelves", path: "/all-categories/homeDecor/WallShelves" },
       ],
     },
     {
@@ -19,10 +19,10 @@ const HomeDecor = () => {
       imageUrl: "https://static.athome.com/image/upload/f_auto,q_auto,fl_progressive:steep/v1694533303/webcontent/FallForAll/2023/LP_TestAssets_StoreVsEnviro/FY24_WK32_LP_Test_HomeAccentsInsp-M.png", // Replace with your image URL
       title: "Home Accents",
       listItems: [
-        { name: "Vases", path: "/all-categories/Home-Decor/Vases" },
-        { name: "Candle Holders", path: "/all-categories/Home-Decor/CandleHolders" },
-        { name: "Figurines", path: "/all-categories/Home-Decor/Figurines" },
-        { name: "Bookends", path: "/all-categories/Home-Decor/Bookends" },
+        { name: "Vases", path: "/all-categories/homeDecor/Vases" },
+        { name: "Candle Holders", path: "/all-categories/homeDecor/CandleHolders" },
+        { name: "Figurines", path: "/all-categories/homeDecor/Figurines" },
+        { name: "Bookends", path: "/all-categories/homeDecor/Bookends" },
       ],
     },
     {
@@ -30,10 +30,10 @@ const HomeDecor = () => {
       imageUrl: "https://images.herzindagi.info/image/2020/Sep/HOME-LIGHTS.jpg", // Replace with your image URL
       title: "Lighting",
       listItems: [
-        { name: "Table Lamps", path: "/all-categories/Home-Decor/TableLamps" },
-        { name: "Floor Lamps", path: "/all-categories/Home-Decor/FloorLamps" },
-        { name: "Ceiling Lights", path: "/all-categories/Home-Decor/CeilingLights" },
-        { name: "String Lights", path: "/all-categories/Home-Decor/StringLights" },
+        { name: "Table Lamps", path: "/all-categories/homeDecor/TableLamps" },
+        { name: "Floor Lamps", path: "/all-categories/homeDecor/FloorLamps" },
+        { name: "Ceiling Lights", path: "/all-categories/homeDecor/CeilingLights" },
+        { name: "String Lights", path: "/all-categories/homeDecor/StringLights" },
       ],
     },
   ];
