@@ -15,6 +15,38 @@ const Modal = ({ isOpen, closeModal, products }) => {
     return () => clearInterval(timer);
   }, [saleEndTime]);
 
+  const saveModalState = (state) => {
+    const expiryTime = new Date().getTime() + 5 * 60 * 1000; // 5 minutes from now
+    localStorage.setItem('modalState', JSON.stringify({ isOpen: state, expiryTime }));
+  };
+
+  const getModalState = () => {
+    const savedState = localStorage.getItem('modalState');
+    if (savedState) {
+      const { isOpen, expiryTime } = JSON.parse(savedState);
+      if (new Date().getTime() < expiryTime) {
+        return isOpen;
+      }
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    const savedIsOpen = getModalState();
+    if (savedIsOpen) {
+      closeModal();
+    }
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft(saleEndTime));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    saveModalState(isOpen);
+  }, [isOpen]);
+
   // Close modal on click outside
   useEffect(() => {
     function handleClickOutside(event) {
