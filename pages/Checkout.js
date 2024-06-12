@@ -346,10 +346,10 @@ const Checkout = () => {
     Select Division *
   </label>
   <select
-    name="Division"
+    name="division"
     value={formData.Division}
     onChange={handleChange}
-    required
+    
     className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
   >
     <option value="">Select Division</option>
@@ -370,10 +370,10 @@ const Checkout = () => {
     Select District *
   </label>
   <select
-    name="District"
+    name="district"
     value={formData.District}
     onChange={handleChange}
-    required
+    
     className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
   >
     <option value="">Select District</option>

@@ -11,6 +11,8 @@ const PaymentMethod = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountedTotal, setDiscountedTotal] = useState(0);
+  const [accessToken, setAccessToken] = useState('');
+  const url = 'https://pay.hometexbd.ltd/api/v1.0/pay';
 
   useEffect(() => {
     if (query) {
@@ -18,13 +20,20 @@ const PaymentMethod = () => {
       setCartItems(JSON.parse(query.cartItems || '[]'));
       setTotalPrice(query.totalPrice);
       setDiscountedTotal(query.discountedTotal);
-
-      // console.log("Form Data:", query);
-      // console.log("Cart Items:", JSON.parse(query.cartItems || '[]'));
-      // console.log("Total Price:", query.totalPrice);
-      // console.log("Discounted Total:", query.discountedTotal);
     }
   }, [query]);
+
+  useEffect(() => {
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow"
+    };
+    
+    fetch("http://127.0.0.1:8000/api/get-token", requestOptions)
+      .then((response) => response.text())
+      .then((result) => setAccessToken(result))
+      .catch((error) => console.error(error));
+  },[])
 
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -32,11 +41,53 @@ const PaymentMethod = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
+
     if (paymentMethod) {
-      console.log("Selected payment method: ", paymentMethod);
+    
       if (paymentMethod === "Online Payment") {
-        router.push('https://pay.hometexbd.ltd/process/324061010361217');
+        const dummyData = JSON.stringify({
+          "client_id": "16",
+          "order_id_of_merchant": Math.floor(Math.random() * 100000).toString(),
+          "amount": "1",
+          "currency_of_transaction": "BDT",
+          "buyer_name": "S.M.F.Karim",
+          "buyer_email": "smfkarim.24@gmail.com",
+          "buyer_address": "dhaka",
+          "buyer_contact_number": "01670885658",
+          "order_details": "545646454564",
+          "callback_success_url": "https://hometex.vercel.app/success",
+          "callback_fail_url": "http://gopaysenz.com/invoice/fail.php",
+          "callback_cancel_url": "http://gopaysenz.com/invoice/cancel.php",
+          "expected_response_type": "JSON"
+        });
+      
+        console.log(formData)
+   
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", `Bearer ${accessToken}`);
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: dummyData,
+          redirect: "follow"
+        };
+        
+        fetch(url, requestOptions)
+          .then((response) => response.json())
+          .then(data => {
+            console.log(data)
+            if (data.expected_response) {
+                const newUrl = data.expected_response;
+                // window.location = newUrl;
+                console.log(newUrl)
+            } else {
+                console.log(data.errorMessage);
+                alert(data.errorMessage);
+            }
+        })
+          .catch((error) => console.error(error));
+   
       } else {
         router.push({
           pathname: '/Invoice',
