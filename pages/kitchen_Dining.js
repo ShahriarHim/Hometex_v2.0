@@ -1,5 +1,6 @@
-import { useState } from "react";
+ 
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const sections = [
   {
@@ -28,69 +29,44 @@ const sections = [
 ];
 
 const KitchenDiningPage = () => {
-  const [activeTab, setActiveTab] = useState("kitchen");
   const router = useRouter();
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-
-  const handleGoBack = () => {
-    router.back();
-  };
-
-  return (
-    <div className="max-w-screen-lg mx-auto py-6 px-4">
-      <h1 className="text-2xl font-bold mb-4">Kitchen & Dining</h1>
-      <div className="flex justify-between items-center mb-4">
-        <div>
+    
+    const handleGoBack = () => {
+      router.back();
+    };
+  
+    return (
+      <div className="max-w-screen-lg mx-auto py-6 px-4">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">Living Decor</h1>
           <button
-            className={`px-4 py-2 mr-2 rounded-md ${
-              activeTab === "kitchen" ? "bg-gray-500 text-white" : "bg-gray-200"
-            }`}
-            onClick={() => handleTabClick("kitchen")}
+            onClick={handleGoBack}
+            className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
           >
-            Kitchen
-          </button>
-          <button
-            className={`px-4 py-2 rounded-md ${
-              activeTab === "dining" ? "bg-gray-500 text-white" : "bg-gray-200"
-            }`}
-            onClick={() => handleTabClick("dining")}
-          >
-            Dining
+            Go Back
           </button>
         </div>
-        <button
-          onClick={handleGoBack}
-          className="px-4 py-2 bg-gray-300 rounded-md hover:bg-blue-300"
-        >
-          Go Back
-        </button>
-      </div>
-      <hr className="mb-4 border-t-2 border-gray-300" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {activeTab === "kitchen" &&
-          sections[0].listItems.map((item) => (
-            <div key={item.id} className="flex flex-col items-center">
+        <hr className="mb-4 border-t-2 border-gray-300" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {sections.map((section) => (
+            <div key={section.id} className="flex flex-col items-center">
               <div className="w-40 h-40 bg-gray-200 rounded-full overflow-hidden">
-                <img src={item.imageUrl} alt={item.name} className="object-cover w-full h-full" />
+                <img
+                  src={section.imageUrl}
+                  alt={section.title}
+                  className="object-cover w-full h-full"
+                />
               </div>
-              <h2 className="mt-2 text-center text-lg font-semibold">{item.name}</h2>
+              <h2 className="mt-2 text-center text-lg font-semibold">
+                <Link href={`/kitchen-Dining/${section.title.replace(/\s+/g, '-').toLowerCase()}`}>
+                  {section.title}
+                </Link>
+              </h2>
             </div>
           ))}
-        {activeTab === "dining" &&
-          sections[1].listItems.map((item) => (
-            <div key={item.id} className="flex flex-col items-center">
-              <div className="w-40 h-40 bg-gray-200 rounded-full overflow-hidden">
-                <img src={item.imageUrl} alt={item.name} className="object-cover w-full h-full" />
-              </div>
-              <h2 className="mt-2 text-center text-lg font-semibold">{item.name}</h2>
-            </div>
-          ))}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default KitchenDiningPage;

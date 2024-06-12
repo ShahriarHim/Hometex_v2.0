@@ -141,7 +141,7 @@ const Cart = () => {
                                     <Link href="/cart" className="inline-block px-12 py-2 mx-2 font-medium text-white bg-[#000] hover:bg-[#009688]">
                                         View Cart
                                     </Link>
-                                    <Link href="/checkout" className="inline-block px-12 py-2 mx-2 font-medium text-white bg-[#009688] hover:bg-[#000]">
+                                    <Link href="/Checkout" className="inline-block px-12 py-2 mx-2 font-medium text-white bg-[#009688] hover:bg-[#000]">
                                         Checkout
                                     </Link>
                                 </p>

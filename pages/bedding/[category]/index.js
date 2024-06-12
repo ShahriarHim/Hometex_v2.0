@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-import Link from "next/link";
-import { useRouter } from "next/router";
 
 const sections = [
   {
@@ -55,40 +55,30 @@ const sections = [
   },
 ];
 
-const BeddingPage = () => {
+const CategoryPage = () => {
   const router = useRouter();
-  const handleGoBack = () => {
-    router.back();
-  };
+  const { category } = router.query;
+
+  const section = sections.find(
+    (sec) => sec.title.replace(/\s+/g, '-').toLowerCase() === category
+  );
+
+  if (!section) {
+    return <p>Category not found</p>;
+  }
 
   return (
     <div className="max-w-screen-lg mx-auto py-6 px-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Bedding</h1>
-        <button
-          onClick={handleGoBack}
-          className="px-4 py-2 bg-gray-200 rounded-md hover:bg-blue-300"
-        >
-          Go Back
-        </button>
-      </div>
-      <hr className="mb-4 border-t-2 border-gray-300" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {sections.map((section) => (
-          <div key={section.id} className="flex flex-col items-center">
-            <div className="w-40 h-40 bg-gray-200 rounded-full overflow-hidden">
-              <img src={section.imageUrl} alt={section.title} className="object-cover w-full h-full" />
-            </div>
-            <h2 className="mt-2 text-center text-lg font-semibold">
-              <Link href={`/categories/${section.title.replace(/\s+/g, '-').toLowerCase()}`}>
-                {section.title}
-              </Link>
-            </h2>
-          </div>
+      <h1 className="text-2xl font-bold mb-4">{section.title}</h1>
+      <ul>
+        {section.listItems.map((item, index) => (
+          <li key={index}>
+            <Link href={item.path}>{item.name}</Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
 
-export default BeddingPage;
+export default CategoryPage;

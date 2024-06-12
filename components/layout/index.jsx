@@ -13,21 +13,21 @@ const Layout = ({ children }) => {
     const renderContent = () => {
         if (pathname === '/account/MyAccount') {
             return <MyAccount />;
-        }else if (pathname === '/all-categories/bedding/bed-sheet/king'){
+        } else if (pathname === '/all-categories/bedding/bed-sheet/king') {
             return (
                 <>
-                <AdPromotionSection />
-                <Header4 key="header" />
-                {children}
-                <Footer2 key="footer" />
-            </>
-        );
+                    <AdPromotionSection />
+                    <Header4 key="header" />
+                    <main className="p-4">{children}</main>
+                    <Footer2 key="footer" />
+                </>
+            );
         } else {
             return (
                 <>
                     <AdPromotionSection />
                     <Header3 key="header" />
-                    {children}
+                    <main className="p-4">{children}</main>
                     <Footer2 key="footer" />
                 </>
             );
@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
     };
 
     return (
-        <div className="app__wrapper">
+        <div className="app__wrapper min-h-screen bg-gray-100">
             {renderContent()}
         </div>
     );

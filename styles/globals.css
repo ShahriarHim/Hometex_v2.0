@@ -1,18 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 /* styles/globals.css */
 :root {
-    --primary: #2175f5;
-  }
-  
+  --primary: #750548;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #efefef;
+}
+/* styles/globals.css */
+:root {
+  --primary: #750548;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #efefef;
+}
+
+@media (max-width: 600px) {
   * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-size: calc(1.5px + 10px) !important;
   }
-  
-  body {
-    background-color: #efefef;
-  }
+}
