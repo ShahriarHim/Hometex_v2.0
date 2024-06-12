@@ -17,7 +17,7 @@ import { AiFillSetting } from "react-icons/ai";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import Constants from "@/ults/Constant";
 import ReactPaginate from "react-paginate";
-import { deleteCookie } from "cookies-next";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 const Product = ({ product }) => (
   <div className="relative border rounded-lg p-4 flex flex-col items-center bg-white shadow-sm hover:shadow-md">
@@ -46,6 +46,7 @@ const Product = ({ product }) => (
 const MyAccount = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
+  let auth_name = getCookie("home_text_name");
   useEffect(() => {
     fetch(`${Constants.BASE_URL}/api/products-web`)
       .then((response) => response.json())
@@ -148,7 +149,7 @@ const MyAccount = () => {
             {/* Profile Section */}
             <div className="flex items-center space-x-2 cursor-pointer">
               <MdAccountCircle className="text-xl text-gray-600" />
-              <span className="text-gray-800">John Doe</span>
+              <span className="text-gray-800">{auth_name ? `${auth_name}` : "Guest User"}</span>
               <FaChevronDown className="text-gray-600" />
             </div>
           </div>

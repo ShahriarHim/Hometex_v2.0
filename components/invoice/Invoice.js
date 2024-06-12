@@ -116,7 +116,7 @@ const Invoice = ({ order, lineItems }) => {
     return { subtotal, vat, tax, grandTotal };
   };
 
-  const { subtotal, vat, tax, grandTotal } = calculateTotal();
+  const { vat, tax, grandTotal } = calculateTotal();
 
   return (
     <>
@@ -189,7 +189,7 @@ const Invoice = ({ order, lineItems }) => {
                 <div>৳{tax.toFixed(2)}</div>
               </div>
               <div className="flex justify-between">
-                <div className="label">Sub Total</div>
+                <div className="label">Grand Total</div>
                 <div>৳{grandTotal.toFixed(2)}</div>
               </div>
             </div>

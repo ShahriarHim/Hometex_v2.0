@@ -66,7 +66,7 @@ const Footer2 = () => {
                     <div className="flex justify-center gap-2 md:gap-4 px-6 md:px-0 my-7">
                       <img src="https://imgmedia.lbb.in/media/2022/05/62736afa42d07e2c4a83ea34_1651731194487.jpg" alt="Hometex Gallery" className="w-24 h-24 object-contain" />
                       <img src="https://imgmedia.lbb.in/media/2022/05/62736afa42d07e2c4a83ea34_1651731194487.jpg" alt="Hometex Gallery" className="w-24 h-24 object-contain" />
-                      <img src="https://imgmedia.lbb.in/media/2022/05/62736afa42d07e2c4a83ea34_1651731194487.jpg" alt="Hometex Gallery" className="w-24 h-24 object-contain" />
+                      {/* <img src="https://imgmedia.lbb.in/media/2022/05/62736afa42d07e2c4a83ea34_1651731194487.jpg" alt="Hometex Gallery" className="w-24 h-24 object-contain" /> */}
                       <img src="https://imgmedia.lbb.in/media/2022/05/62736afa42d07e2c4a83ea34_1651731194487.jpg" alt="Hometex Gallery" className="w-24 h-24 object-contain" />
                       <img src="https://imgmedia.lbb.in/media/2022/05/62736afa42d07e2c4a83ea34_1651731194487.jpg" alt="Hometex Gallery" className="w-24 h-24 object-contain" />
                       <img src="https://imgmedia.lbb.in/media/2022/05/62736afa42d07e2c4a83ea34_1651731194487.jpg" alt="Hometex Gallery" className="w-24 h-24 object-contain" />
