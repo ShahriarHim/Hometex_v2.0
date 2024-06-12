@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -76,14 +75,14 @@ const BeddingPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {sections.map((section) => (
           <div key={section.id} className="flex flex-col items-center">
-            <div className="w-40 h-40 bg-gray-200 rounded-full overflow-hidden">
-              <img src={section.imageUrl} alt={section.title} className="object-cover w-full h-full" />
-            </div>
-            <h2 className="mt-2 text-center text-lg font-semibold">
-              <Link href={`/categories/${section.title.replace(/\s+/g, '-').toLowerCase()}`}>
-                {section.title}
-              </Link>
-            </h2>
+            <Link href={`/bedding/${section.title.replace(/\s+/g, '-').toLowerCase()}`} passHref>
+              <div className="flex flex-col items-center cursor-pointer">
+                <div className="w-40 h-40 bg-gray-200 rounded-full overflow-hidden">
+                  <img src={section.imageUrl} alt={section.title} className="object-cover w-full h-full" />
+                </div>
+                <h2 className="mt-2 text-center text-lg font-semibold">{section.title}</h2>
+              </div>
+            </Link>
           </div>
         ))}
       </div>
