@@ -18,6 +18,10 @@ body {
 }
 
 @media (max-width: 600px) {
+  * {
+    /* font-size: calc(2px + 12px) !important; */
+    font-size: calc(2px + 11px) !important;
+    }
   .floating-cart {
     position: fixed;
     top: 50%;
