@@ -860,14 +860,16 @@ const Header3 = () => {
               <FaCommentDots className=""/>
             </button> */}
 
-              <Link
-                href="/"
+              <button
+         
                 className=" inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
                 onClick={handleChatToggle}
               >
 
                 <FaCommentDots className="text-xl" />
-              </Link>
+              </button>
+
+
               {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
             </div>
           
