@@ -107,7 +107,7 @@ const VerticalBlind = () => {
       .then((response) => response.json())
       .then((responseData) => {
         const kingProducts = responseData.data.filter(
-          (product) => product.?.name === ""
+          (product) => product.child_sub_category?.name === ""
         );
         setProducts(kingProducts);
       })
