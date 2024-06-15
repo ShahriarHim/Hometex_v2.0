@@ -297,14 +297,14 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                       </button>
                     </div>
                   </fieldset>
-                  <div className="mt-4">
+                  {/* <div className="mt-4">
                     <button
                       onClick={handleGuestLogin}
                       className="w-full bg-gray-300 hover:bg-gray-400 py-3 text-gray-800 rounded-xl text-md font-semibold"
                     >
                       Continue as Guest
                     </button>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="w-full">
                   <div>

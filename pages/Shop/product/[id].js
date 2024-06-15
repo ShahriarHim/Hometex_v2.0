@@ -109,8 +109,9 @@ const Product = ({ product }) => {
       </div>
       <div className="container mx-auto py-4">
         <FrequentlyBoughtTogether product={product} />
+        
       </div>
-      <div className="container mx-auto py-4">
+      <div className="container mx-auto py-6 ">
         <CustomerSatisfactionBar />
       </div>
       <div className="container mx-auto py-4">
