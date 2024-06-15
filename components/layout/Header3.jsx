@@ -51,6 +51,7 @@ import { useRouter } from "next/router"; // Ensure this is imported
 import CartComponent from "./CartComponent/CartComponent";
 import WishComponent from "./WishComponent/WishComponent";
 import ChatPopup from "../ChatPopup";
+import Menu from "../additional/NevBarSections";
 const Header3 = () => {
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState(0);
@@ -704,60 +705,7 @@ const Header3 = () => {
                 {isMenuOpen && (
                   <div className="md:hidden">
                     <div className="px-2 pt-2 pb-3 sm:px-3">
-                      {/* <Link
-                      href="/"
-                      className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      <FaHome className="text-xl" />
-                    </Link>
-                    <Link
-                      href="/Shop"
-                      className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      Bedding
-                    </Link>
-                    <Link
-                      href="/Shop"
-                      className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      Living Decor
-                    </Link>
-                    <Link
-                      href="/Shop"
-                      className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      Bath Support
-                    </Link>
-                    <Link
-                      href="/Shop"
-                      className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      Kitchen | Dining
-                    </Link>
-                    <Link
-                      href="/"
-                      className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      Home Decor
-                    </Link>
-                    <Link
-                      href="/Contact"
-                      className="text-black-300 hover:text-white hover:bg-black block px-2 py-2 rounded-md text-base font-medium"
-                    >
-                      Contact Us
-                    </Link>
-                    <Link
-                      href="/GetAQuote"
-                      className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      Get a Quote
-                    </Link>
-                    <Link
-                      href="/Stores"
-                      className="text-black-300 hover:text-white hover:bg-black block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      Find A Store
-                    </Link> */}
+                   
                       <div className="relative" ref={cartRef}>
                         <div className="relative">
                           <button
@@ -852,13 +800,7 @@ const Header3 = () => {
                   </div>
                 )}
               </nav>
-              {/* <button
-              className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium"
-              onClick={handleChatToggle}
-            >
-              {/* <FontAwesomeIcon icon={faCommentDots} /> 
-              <FaCommentDots className=""/>
-            </button> */}
+ 
 
               <button
          
@@ -876,130 +818,81 @@ const Header3 = () => {
           {/* menu end */}
         </div>
       </div >
-      <div>
-        <button
-          onClick={toggleMenu}
-          className="md:hidden fixed z-50 flex flex-col items-center justify-center w-12 h-12 bg-transparent border-none cursor-pointer focus:outline-none top-5 right-5"
-        >
-          <div
-            className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${menuOpen ? "rotate-45 translate-y-2.5" : ""
-              }`}
-          ></div>
-          <div
-            className={`block w-8 h-0.5 bg-black my-2 transition-opacity duration-500 ease-in-out ${menuOpen ? "opacity-0" : "opacity-100"
-              }`}
-          ></div>
-          <div
-            className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${menuOpen ? "-rotate-45 -translate-y-2.5" : ""
-              }`}
-          ></div>
-        </button>
-        <div
-          className={`fixed top-0 left-0 w-full h-full bg-white z-40 transform ${menuOpen ? "translate-x-0" : "-translate-x-full"
-            } transition-transform duration-500 ease-in-out`}
-        >
-          <div className="p-5">
-            <img
-              src="/images/hometex-logo.png"
-              alt="Hometex Bangladesh"
-              className="w-24 h-auto"
-            />
+      
+      <div className="relative">
+  <button
+    onClick={toggleMenu}
+    className="md:hidden fixed z-40 flex flex-col items-center justify-center w-12 h-12 bg-white border border-gray-300 rounded-lg shadow-lg cursor-pointer focus:outline-none top-5 right-5"
+    style={{ zIndex: 1000 }} // Inline style for z-index
+ >
+    <div
+      className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${menuOpen ? "rotate-45 translate-y-2.5" : ""
+        }`}
+    ></div>
+    <div
+      className={`block w-8 h-0.5 bg-black my-1 transition-opacity duration-500 ease-in-out ${menuOpen ? "opacity-0" : "opacity-100"
+        }`}
+    ></div>
+    <div
+      className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${menuOpen ? "-rotate-45 -translate-y-2.5" : ""
+        }`
+      }
+    ></div>
+  </button>
+  <div
+    className={`fixed top-0 left-0 w-full h-full bg-white z-40 transform ${menuOpen ? "translate-x-0" : "-translate-x-full"
+      } transition-transform duration-500 ease-in-out shadow-2xl rounded-lg overflow-hidden`}
+  
+  >
+    <div className="p-5 border-b border-gray-200">
+      <img
+        src="/images/hometex-logo.png"
+        alt="Hometex Bangladesh"
+        className="w-24 h-auto"
+      />
+    </div>
+    <nav className="flex-grow overflow-y-auto p-6">
+      <ul className="text-left space-y-8">
+        <li>
+          <a href="/" className="text-2xl text-black hover:text-gray-700 transition-colors duration-300">
+            Home
+          </a>
+        </li>
+        <li className="flex flex-col justify-between items-center">
+          <div className="w-full flex justify-between items-center text-2xl">
+            <Menu />
           </div>
-          <nav className="flex-grow overflow-y-auto px-3">
-            <ul className="text-left">
-              <li className="my-8">
-                <a href="/" className="text-2xl text-black hover:text-gray-700">
-                  Home
-                </a>
-              </li>
-              <li className="my-4 flex flex-col justify-between items-center">
-                <div className="w-full flex justify-between items-center text-2xl">
-                  <button
-                    onClick={() => toggleSubMenu("services")}
-                    className="flex-grow text-left"
-                  >
-                    Categories
-                  </button>
-                  <button
-                    onClick={() => toggleSubMenu("services")}
-                    className="pl-4"
-                  >
-                    <span className="text-3xl">
-                      {subMenuOpen["services"] ? "-" : "+"}
-                    </span>
-                  </button>
-                </div>
-                <div className="w-full flex flex-col">
-                  <ul
-                    className={`text-2xl pl-4 mt-2 ${subMenuOpen["services"] ? "block" : "hidden"
-                      }`}
-                  >
-                    <li>
-                      <a
-                        href="/bedding"
-                        className="text-black hover:text-gray-700 block"
-                      >
-                        Bedding
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/livingDecor"
-                        className="text-black hover:text-gray-700 block"
-                      >
-                        Living Decor
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/bathSupport"
-                        className="text-black hover:text-gray-700 block"
-                      >
-                        Bath Support
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/kitchen_Dining"
-                        className="text-black hover:text-gray-700 block"
-                      >
-                        Kitchen|Dining
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/homeDecor"
-                        className="text-black hover:text-gray-700 block"
-                      >
-                        Home Decor
-                      </a>
-                    </li>
-                    {/* More submenu items can be added here */}
-                  </ul>
-                </div>
-              </li>
+        </li>
+        <li>
+          <a
+            href="/GetAQuote"
+            className="text-2xl text-black hover:text-gray-700 transition-colors duration-300"
+          >
+            Get A Quote
+          </a>
+        </li>
+        <li>
+          <a
+            href="/cart"
+            className="text-2xl text-black hover:text-gray-700 transition-colors duration-300"
+          >
+            Cart
+          </a>
+        </li>
+        <li>
+          <a
+            href="/Contact"
+            className="text-2xl text-black hover:text-gray-700 transition-colors duration-300"
+          >
+            Contact
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
 
-              <li className="my-8">
-                <a
-                  href="/GetAQuote"
-                  className="text-2xl text-black hover:text-gray-700"
-                >
-                  Get A Quote
-                </a>
-              </li>
 
-              <li className="my-8">
-                <a
-                  href="/Contact"
-                  className="text-2xl text-black hover:text-gray-700"
-                >
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
     </>
   );
 };
