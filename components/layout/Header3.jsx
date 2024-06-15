@@ -4,9 +4,6 @@ import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AiTwotoneDelete } from "react-icons/ai";
-import { MdFavorite } from 'react-icons/md';
-import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   FaUser,
@@ -52,6 +49,7 @@ import CartComponent from "./CartComponent/CartComponent";
 import WishComponent from "./WishComponent/WishComponent";
 import ChatPopup from "../ChatPopup";
 import Menu from "../additional/NevBarSections";
+import MenuComponent from "../additional/MenuComponent";
 const Header3 = () => {
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState(0);
@@ -277,6 +275,8 @@ const Header3 = () => {
     // setIsSubmit(true)
     deleteCookie("home_text_token");
     deleteCookie("home_text_name");
+    deleteCookie("home_text_phone");
+    deleteCookie("home_text_email");
     window.location.href = "/";
   };
 
@@ -819,78 +819,11 @@ const Header3 = () => {
         </div>
       </div >
       
-      <div className="relative">
-  <button
-    onClick={toggleMenu}
-    className="md:hidden fixed z-40 flex flex-col items-center justify-center w-12 h-12 bg-white border border-gray-300 rounded-lg shadow-lg cursor-pointer focus:outline-none top-5 right-5"
-    style={{ zIndex: 1000 }} // Inline style for z-index
- >
-    <div
-      className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${menuOpen ? "rotate-45 translate-y-2.5" : ""
-        }`}
-    ></div>
-    <div
-      className={`block w-8 h-0.5 bg-black my-1 transition-opacity duration-500 ease-in-out ${menuOpen ? "opacity-0" : "opacity-100"
-        }`}
-    ></div>
-    <div
-      className={`block w-8 h-0.5 bg-black transform transition duration-500 ease-in-out ${menuOpen ? "-rotate-45 -translate-y-2.5" : ""
-        }`
-      }
-    ></div>
-  </button>
-  <div
-    className={`fixed top-0 left-0 w-full h-full bg-white z-40 transform ${menuOpen ? "translate-x-0" : "-translate-x-full"
-      } transition-transform duration-500 ease-in-out shadow-2xl rounded-lg overflow-hidden`}
-  
-  >
-    <div className="p-5 border-b border-gray-200">
-      <img
-        src="/images/hometex-logo.png"
-        alt="Hometex Bangladesh"
-        className="w-24 h-auto"
-      />
-    </div>
-    <nav className="flex-grow overflow-y-auto p-6">
-      <ul className="text-left space-y-8">
-        <li>
-          <a href="/" className="text-2xl text-black hover:text-gray-700 transition-colors duration-300">
-            Home
-          </a>
-        </li>
-        <li className="flex flex-col justify-between items-center">
-          <div className="w-full flex justify-between items-center text-2xl">
-            <Menu />
-          </div>
-        </li>
-        <li>
-          <a
-            href="/GetAQuote"
-            className="text-2xl text-black hover:text-gray-700 transition-colors duration-300"
-          >
-            Get A Quote
-          </a>
-        </li>
-        <li>
-          <a
-            href="/cart"
-            className="text-2xl text-black hover:text-gray-700 transition-colors duration-300"
-          >
-            Cart
-          </a>
-        </li>
-        <li>
-          <a
-            href="/Contact"
-            className="text-2xl text-black hover:text-gray-700 transition-colors duration-300"
-          >
-            Contact
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</div>
+      <MenuComponent
+  toggleMenu={toggleMenu}
+  menuOpen={menuOpen}
+ 
+/>
 
 
     </>

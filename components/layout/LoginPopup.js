@@ -217,6 +217,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
       <div className="fixed z-50 inset-0 overflow-y-auto">
         <div className="flex items-center justify-center min-h-screen">
           <div className="absolute inset-0 bg-gray-700 opacity-50"></div>
+          
           <div className="relative bg-white rounded-lg mx-4 w-auto lg:w-[800px] flex flex-col overflow-hidden">
             <div className="flex justify-end">
               <button
@@ -412,7 +413,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                               size="large"
                               text="signin_with"
                               logo_alignment="left"
-                              width="100%"
+                              // width="100%"
                             />
                           )}
                         </div>
@@ -465,6 +466,9 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
               <p>Hometex Bangladesh</p>
             </div>
           </div>
+
+
+
         </div>
       </div>
     </GoogleOAuthProvider>
