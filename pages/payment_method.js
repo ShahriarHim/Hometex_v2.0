@@ -88,6 +88,7 @@ const PaymentMethod = () => {
               const newUrl = data.expected_response;
               console.log(newUrl);
               window.location = newUrl;
+              // const success_api = 'https://pay.hometexbd.ltd/api/v1.0/payment-transaction-details'
             } else {
               console.log(data.errorMessage);
               alert(data.errorMessage);
