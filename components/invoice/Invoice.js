@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { CheckCircle } from 'lucide-react';
 
-const SuccessfulPaymentPopup = () => {
+const SuccessfulPaymentPopup = ({ onClose }) => {
   const router = useRouter();
   const [paymentId, setPaymentId] = useState('');
 
@@ -21,7 +21,10 @@ const SuccessfulPaymentPopup = () => {
   };
 
   const handleContinueShopping = () => {
-    router.push('/');
+    if (onClose) {
+      onClose();
+      router.push(`/`);
+    }
   };
 
   return (
@@ -39,13 +42,13 @@ const SuccessfulPaymentPopup = () => {
             We've sent a confirmation email with order details to your registered email address.
           </p>
           <div className="flex flex-col space-y-2">
-            <button 
+            <button
               onClick={handleViewInvoice}
               className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
             >
               View Invoice
             </button>
-            <button 
+            <button
               onClick={handleContinueShopping}
               className="border border-green-500 text-green-700 hover:bg-green-50 font-bold py-2 px-4 rounded"
             >

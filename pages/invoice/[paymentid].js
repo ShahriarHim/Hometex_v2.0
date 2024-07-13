@@ -1,10 +1,9 @@
-// pages/invoice/[paymentId].js
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 const Invoice = () => {
   const router = useRouter();
-  const { paymentId } = router.query;
+  const [orderId, setOrderId] = useState('');
   const [formData, setFormData] = useState({});
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -14,7 +13,15 @@ const Invoice = () => {
   const [finalTotal, setFinalTotal] = useState(0);
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      const id = path.split('/').pop();
+      setOrderId(id);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!router.isReady || !orderId) return;
 
     const storedData = localStorage.getItem('invoiceData');
 
@@ -24,11 +31,11 @@ const Invoice = () => {
       setCartItems(parsedData.cartItems);
       setTotalPrice(parsedData.totalPrice);
       setDiscountedTotal(parsedData.discountedTotal);
-    } else if (paymentId) {
+    } else {
       alert('No order data found. Redirecting to home.');
       router.push('/');
     }
-  }, [router.isReady, paymentId]);
+  }, [router.isReady, orderId]);
 
   useEffect(() => {
     if (cartItems.length > 0) {
@@ -61,7 +68,7 @@ const Invoice = () => {
 
   const handleConfirm = () => {
     const order = {
-      orderId: paymentId,
+      orderId,
       formData,
       cartItems,
       totalPrice,
@@ -82,11 +89,12 @@ const Invoice = () => {
     router.push('/');
   };
 
+
   return (
     <div className="container mx-auto py-8">
       <div id="invoice-section" className="bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="px-6 py-4 border-b">
-          <h3 className="text-2xl font-semibold text-gray-800">Order Summary of {paymentId}</h3>
+          <h3 className="text-2xl font-semibold text-gray-800">Order Summary of {orderId}</h3>
         </div>
         <div className="px-6 py-4">
           <dl>

@@ -32,6 +32,7 @@ import { useRouter } from 'next/router';
 
 const Home = () => {
   const router = useRouter();
+  const [showPopup, setShowPopup] = useState(true);
 
   const [isVisible, setIsVisible] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
@@ -83,6 +84,10 @@ const Home = () => {
     setShowCookiesPopup(false);
   };
 
+  const handleinvoiceClosePopup = () => {
+    setShowPopup(false);
+  };
+
 
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -122,7 +127,8 @@ const Home = () => {
       {/* <NewCustomerSignup /> */}
       {/* <AdPromotionSection/> */}
 
-      {showPaymentSuccessPopup && <SuccessfulPaymentPopup />}
+      {showPopup && <SuccessfulPaymentPopup onClose={handleinvoiceClosePopup} />}
+
 
 
       <MainSlider />
