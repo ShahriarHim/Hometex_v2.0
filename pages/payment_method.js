@@ -25,16 +25,24 @@ const PaymentMethod = () => {
   }, [query]);
 
   useEffect(() => {
-    const requestOptions = {
-      method: "GET",
-      redirect: "follow"
-    };
-        
-    fetch("http://127.0.0.1:8000/api/get-token", requestOptions)
-      .then((response) => response.text())
-      .then((result) => setAccessToken(result))
-      .catch((error) => console.error(error));
-  },[])
+    const storedToken = localStorage.getItem('accessToken');
+    if (storedToken) {
+      setAccessToken(storedToken);
+    } else {
+      const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+      };
+          
+      fetch("http://127.0.0.1:8000/api/get-token", requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+          setAccessToken(result);
+          localStorage.setItem('accessToken', result);
+        })
+        .catch((error) => console.error(error));
+    }
+  }, []);
 
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -42,11 +50,9 @@ const PaymentMethod = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-
-  
+ 
     if (paymentMethod) {
-       const orderId = `${new Date().getTime()}`;
+      const orderId = `${new Date().getTime()}`;
       const invoiceData = {
         formData,
         cartItems,
@@ -63,8 +69,6 @@ const PaymentMethod = () => {
    
 
         const PayAbleAmount = totalPrice < discountedTotal ? totalPrice : discountedTotal;
-   
-
 
         const dummyData = {
           client_id: 3,
@@ -109,11 +113,8 @@ const PaymentMethod = () => {
           .catch((error) => console.error(error));
   
       } else {
-         
-
         router.push({
           pathname: `/invoice/${orderId}`,
-
         });
       }
     } else {
