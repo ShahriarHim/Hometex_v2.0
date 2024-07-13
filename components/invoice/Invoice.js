@@ -1,207 +1,61 @@
-// import React, { useState, useRef, useEffect } from 'react';
-// import { FaFileInvoice, FaTimes } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { CheckCircle } from 'lucide-react';
 
-// const Invoice = ({ order, lineItems }) => {
-//   const [showInvoice, setShowInvoice] = useState(false);
-//   const invoiceRef = useRef(null);
+const SuccessfulPaymentPopup = () => {
+  const router = useRouter();
+  const [paymentId, setPaymentId] = useState('');
 
-//   const toggleInvoice = () => {
-//     setShowInvoice(!showInvoice);
-//   };
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('paymentId');
+    if (id) {
+      setPaymentId(id);
+    }
+  }, []);
 
-//   const handleOutsideClick = (event) => {
-//     if (invoiceRef.current && !invoiceRef.current.contains(event.target)) {
-//       setShowInvoice(false);
-//     }
-//   };
+  const handleViewInvoice = () => {
+    if (paymentId) {
+      router.push(`/invoice/${paymentId}`);
+    }
+  };
 
-//   const handleEscapeKey = (event) => {
-//     if (event.key === 'Escape') {
-//       setShowInvoice(false);
-//     }
-//   };
+  const handleContinueShopping = () => {
+    router.push('/');
+  };
 
-//   useEffect(() => {
-//     document.addEventListener('mousedown', handleOutsideClick);
-//     document.addEventListener('keydown', handleEscapeKey);
-//     return () => {
-//       document.removeEventListener('mousedown', handleOutsideClick);
-//       document.removeEventListener('keydown', handleEscapeKey);
-//     };
-//   }, []);
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+        <div className="border-b border-green-500 p-4 flex items-center">
+          <CheckCircle className="h-6 w-6 text-green-500 mr-2" />
+          <h2 className="text-2xl font-bold text-green-700">Payment Successful!</h2>
+        </div>
+        <div className="p-6 space-y-4">
+          <p className="text-gray-600">
+            Thank you for your purchase. Your order {paymentId} has been confirmed.
+          </p>
+          <p className="text-center text-gray-700">
+            We've sent a confirmation email with order details to your registered email address.
+          </p>
+          <div className="flex flex-col space-y-2">
+            <button 
+              onClick={handleViewInvoice}
+              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+            >
+              View Invoice
+            </button>
+            <button 
+              onClick={handleContinueShopping}
+              className="border border-green-500 text-green-700 hover:bg-green-50 font-bold py-2 px-4 rounded"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-//   const printInvoice = () => {
-//     const invoiceContent = invoiceRef.current.innerHTML;
-//     const printWindow = window.open('', '_blank', 'height=500,width=800');
-//     printWindow.document.open();
-//     printWindow.document.write(`
-//       <html>
-//         <head>
-//           <title>Invoice</title>
-//           <style>
-//             body {
-//               font-family: Arial, sans-serif;
-//               padding: 1rem;
-//             }
-//             .invoice {
-//               max-width: 800px;
-//               margin: 0 auto;
-//               background-color: #fff;
-//               padding: 2rem;
-//               box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-//             }
-//             .invoice-header {
-//               display: flex;
-//               justify-content: space-between;
-//               margin-bottom: 2rem;
-//             }
-//             .invoice-details {
-//               margin-bottom: 2rem;
-//             }
-//             .invoice-table {
-//               width: 100%;
-//               border-collapse: collapse;
-//               margin-bottom: 2rem;
-//             }
-//             .invoice-table td {
-//               padding: 0.5rem 0;
-//               text-align: right;
-//             }
-//             .invoice-table .label {
-//               text-align: left;
-//               padding-right: 1rem;
-//             }
-//             .totals {
-//               width: 100%;
-//               border-top: 1px solid #ddd;
-//               margin-top: 1rem;
-//               padding-top: 1rem;
-//             }
-//             .totals td {
-//               padding: 0.5rem 0;
-//               text-align: right;
-//             }
-//             .totals .label {
-//               text-align: left;
-//               padding-right: 1rem;
-//             }
-//           </style>
-//         </head>
-//         <body>
-//           <div class="invoice">
-//             ${invoiceContent}
-//           </div>
-//           <script>
-//             window.addEventListener('load', function() {
-//               window.print();
-//               window.addEventListener('afterprint', function() {
-//                 window.close();
-//               });
-//             });
-//           </script>
-//         </body>
-//       </html>
-//     `);
-//     printWindow.document.close();
-//   };
-
-//   const calculateTotal = () => {
-//     const subtotal = lineItems.reduce((total, item) => {
-//       const itemPrice = parseFloat(item.price.replace(/[^0-9.-]+/g,""));
-//       return total + item.quantity * (isNaN(itemPrice) ? 0 : itemPrice);
-//     }, 0);
-//     const vat = subtotal * 0.1;
-//     const tax = subtotal * 0.1;
-//     const grandTotal = subtotal + vat + tax;
-//     return { subtotal, vat, tax, grandTotal };
-//   };
-
-//   const { vat, tax, grandTotal } = calculateTotal();
-
-//   return (
-//     <>
-//       <button
-//         className="bg-black-400 hover:bg-orange-300 text-black  py-1 px-1 rounded"
-//         onClick={toggleInvoice}
-//       >
-//         <FaFileInvoice className="inline-block mr-1" /> 
-//         Show Invoice
-//       </button>
-
-//       {showInvoice && (
-//         <div
-//           className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-gray-800 bg-opacity-50"
-//           tabIndex={0}
-//         >
-//           <div
-//             ref={invoiceRef}
-//             className="bg-white shadow-md p-8 max-w-lg mx-auto relative"
-//           >
-//             <button
-//               className="absolute top-2 right-2 text-red-500 hover:text-red-700"
-//               onClick={toggleInvoice}
-//             >
-//               <FaTimes />
-//             </button>
-//             <div className="invoice-header">
-//               <div>
-//                 <h1 className="text-3xl font-bold">Invoice</h1>
-//                 <p className="text-gray-600">123 Main Street, City, Country</p>
-//               </div>
-//               <div>
-//                 <h2 className="text-xl font-semibold">Order #{order.id}</h2>
-//                 <p className="text-gray-600">Date: {order.date}</p>
-//               </div>
-//             </div>
-//             <div className="invoice-details">
-//               <h3 className="text-lg font-semibold mb-2">Customer Details</h3>
-//               <p className="text-gray-600">{order.customer.name}</p>
-//               <p className="text-gray-600">{order.customer.email}</p>
-//               <p className="text-gray-600">{order.customer.address}</p>
-//             </div>
-//             {lineItems.map((item) => {
-//               const itemPrice = parseFloat(item.price.replace(/[^0-9.-]+/g,""));
-//               return (
-//                 <div key={item.id} className="invoice-table">
-//                   <div className="flex justify-between">
-//                     <div className="label"><strong>Product Name:</strong></div>
-//                     <div>{item.name}</div>
-//                   </div>
-//                   <div className="flex justify-between">
-//                     <div className="label"><strong>Quantity:</strong></div>
-//                     <div>{item.quantity} pc</div>
-//                   </div>
-//                   <div className="flex justify-between">
-//                     <div className="label"><strong>Price:</strong></div>
-//                     <div>৳{isNaN(itemPrice) ? '0.00' : itemPrice.toFixed(2)}</div>
-//                   </div>
-//                   <hr />
-//                 </div>
-//               );
-//             })}
-//             <div className="totals">
-//               <div className="flex justify-between">
-//                 <div className="label">VAT (10%)</div>
-//                 <div>৳{vat.toFixed(2)}</div>
-//               </div>
-//               <div className="flex justify-between">
-//                 <div className="label">Tax (10%)</div>
-//                 <div>৳{tax.toFixed(2)}</div>
-//               </div>
-//               <div className="flex justify-between">
-//                 <div className="label">Grand Total</div>
-//                 <div>৳{grandTotal.toFixed(2)}</div>
-//               </div>
-//             </div>
-
-//             <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4" onClick={printInvoice}>
-//               Print
-//             </button>
-//           </div>
-//         </div>
-//       )}
-//     </>
-//   );
-// };
-
-// export default Invoice;
+export default SuccessfulPaymentPopup;

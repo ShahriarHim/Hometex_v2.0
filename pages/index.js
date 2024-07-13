@@ -27,15 +27,29 @@ import AdPromotionSection from "@/components/layout/AdPromotionSection";
 import FirstOrderPopup from "@/components/layout/FirstOrderPopup";
 import CostomerCount from "@/components/newDesigns/Customercount";
 import NewCustomerPopup from "@/components/layout/NewCustomerPopup";
+import SuccessfulPaymentPopup from "@/components/invoice/Invoice";
+import { useRouter } from 'next/router';
 
 const Home = () => {
+  const router = useRouter();
+
   const [isVisible, setIsVisible] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(true);
   const [showCookiesPopup, setShowCookiesPopup] = useState(false);
+  const [showPaymentSuccessPopup, setShowPaymentSuccessPopup] = useState(false);
 
   const [showCashbackPopup, setShowCashbackPopup] = useState(false);
+
+  useEffect(() => {
+    const invoiceData = localStorage.getItem('invoiceData');
+    const paymentId = router.query.paymentId;
+
+    if (invoiceData && paymentId) {
+      setShowPaymentSuccessPopup(true);
+    }
+  }, [router.query]);
 
   useEffect(() => {
     const authToken = getCookie("home_text_token");
@@ -107,6 +121,10 @@ const Home = () => {
       <FirstOrderPopup />
       {/* <NewCustomerSignup /> */}
       {/* <AdPromotionSection/> */}
+
+      {showPaymentSuccessPopup && <SuccessfulPaymentPopup />}
+
+
       <MainSlider />
       <NewCustomerPopup/>
       {isVisible && (
