@@ -1,13 +1,10 @@
+// pages/invoice/[paymentId].js
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { deleteCookie, getCookie, setCookie } from "cookies-next";
-import Link from 'next/link';
-import { AiOutlineLeft, AiFillPrinter, AiFillCheckCircle } from 'react-icons/ai';
 
 const Invoice = () => {
   const router = useRouter();
-  const { query } = router;
-
+  const { paymentId } = router.query;
   const [formData, setFormData] = useState({});
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -17,56 +14,37 @@ const Invoice = () => {
   const [finalTotal, setFinalTotal] = useState(0);
 
   useEffect(() => {
-    if (query) {
-      const {
-        country,
-        city,
-        postcode,
-        Division,
-        District,
-        cartItems,
-        totalPrice,
-        discountedTotal,
-        ...rest
-      } = query;
+    if (!router.isReady) return;
 
-      const address = `${country}, ${postcode}, ${Division}, ${District}`;
+    const storedData = localStorage.getItem('invoiceData');
 
-      setFormData({
-        ...rest,
-        address
-      });
-
-      setCartItems(JSON.parse(cartItems || '[]'));
-      setTotalPrice(totalPrice);
-      setDiscountedTotal(discountedTotal);
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setFormData(parsedData.formData);
+      setCartItems(parsedData.cartItems);
+      setTotalPrice(parsedData.totalPrice);
+      setDiscountedTotal(parsedData.discountedTotal);
+    } else if (paymentId) {
+      alert('No order data found. Redirecting to home.');
+      router.push('/');
     }
-  }, [query]);
+  }, [router.isReady, paymentId]);
 
   useEffect(() => {
-    if (cartItems) {
+    if (cartItems.length > 0) {
       const finalAmount = cartItems.reduce((total, cartItem) => {
-        let str = cartItem.price;
-        if (typeof str === 'string') {
-          str = str.replace(/[,৳]/g, ""); // Remove commas and the currency symbol
-        } else {
-          console.error("Price is not a string:", str);
-          return total;
-        }
-        const amount = parseFloat(str) * cartItem.quantity;
-        return total + amount;
+        let price = typeof cartItem.price === 'string' ? parseFloat(cartItem.price.replace(/[,৳]/g, '')) : cartItem.price;
+        return total + price * cartItem.quantity;
       }, 0);
 
       setTotalPrice(finalAmount);
 
-      // Calculate VAT and tax
       const calculatedVat = finalAmount * 0.1;
       const calculatedTax = finalAmount * 0.1;
       setVat(calculatedVat);
       setTax(calculatedTax);
 
-      // Calculate final total
-      const calculatedFinalTotal = parseFloat(discountedTotal) + 10 + 90 + calculatedVat + calculatedTax; // changed 5 to 90 for Delivery Fee
+      const calculatedFinalTotal = parseFloat(discountedTotal) + 90 + calculatedVat + calculatedTax;
       setFinalTotal(calculatedFinalTotal);
     }
   }, [cartItems, discountedTotal]);
@@ -78,58 +56,43 @@ const Invoice = () => {
     document.body.innerHTML = printContents;
     window.print();
     document.body.innerHTML = originalContents;
-    window.location.reload(); // reload the page to restore the original content
+    window.location.reload();
   };
-  const orderId = `Id#-${new Date().getTime()}`;
-  const handleConfirm = () => {
-    // Generate a unique order ID
 
+  const handleConfirm = () => {
     const order = {
-      orderId,
+      orderId: paymentId,
       formData,
       cartItems,
       totalPrice,
       discountedTotal,
       vat,
       tax,
-      finalTotal
+      finalTotal,
     };
-  
-    // Store the order in local storage
-    const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
+
+    const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
     existingOrders.push(order);
     localStorage.setItem('orders', JSON.stringify(existingOrders));
-  
-    // Clear the cart items and reset states
-    setCartItems([]);
-    setTotalPrice(0);
-    setDiscountedTotal(0);
-    setVat(0);
-    setTax(0);
-    setFinalTotal(0);
-  
-    // Remove cart items from local storage
+
+    localStorage.removeItem('invoiceData');
     localStorage.removeItem('cartItems');
-  
+
     alert('Order confirmed!');
     router.push('/');
-  
-    // Optionally, you can redirect the user to another page
-    // router.push('/order-confirmation');
   };
-  
 
   return (
     <div className="container mx-auto py-8">
       <div id="invoice-section" className="bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="px-6 py-4 border-b">
-          <h3 className="text-2xl font-semibold text-gray-800">Order Summary of {orderId}</h3>
+          <h3 className="text-2xl font-semibold text-gray-800">Order Summary of {paymentId}</h3>
         </div>
         <div className="px-6 py-4">
           <dl>
             <div className="flex justify-between py-2 border-b">
               <dt className="text-sm font-medium text-gray-600">Name</dt>
-              <dd className="text-sm text-gray-900">{formData.firstName}  {formData.lastName}</dd>
+              <dd className="text-sm text-gray-900">{formData.firstName} {formData.lastName}</dd>
             </div>
             <div className="flex justify-between py-2 border-b">
               <dt className="text-sm font-medium text-gray-600">Email</dt>
@@ -204,15 +167,19 @@ const Invoice = () => {
       </div>
       <div className='flex flex-row justify-between px-0 mt-3 gap-10'>
         <div>
-          <Link href="/">
-            <button className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2 '><AiOutlineLeft /> <span className='text-xl'>Continue Shopping</span></button>
-          </Link>
+          <button onClick={() => router.push('/')} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2'>
+            <span className='text-xl'>Continue Shopping</span>
+          </button>
         </div>
         <div>
-          <button onClick={handleConfirm} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2 '>  <AiFillCheckCircle /><span className='text-xl'>Confirm Order</span></button>
+          <button onClick={handleConfirm} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2'>
+            <span className='text-xl'>Confirm Order</span>
+          </button>
         </div>
         <div>
-          <button onClick={handlePrint} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2 '>  <AiFillPrinter /><span className='text-xl'>Print</span></button>
+          <button onClick={handlePrint} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2'>
+            <span className='text-xl'>Print</span>
+          </button>
         </div>
       </div>
     </div>
