@@ -23,7 +23,7 @@ const SuccessfulPaymentPopup = ({ onClose }) => {
   const handleContinueShopping = () => {
     if (onClose) {
       onClose();
-      router.push(`/`);
+      // router.push(`/`);
     }
   };
 

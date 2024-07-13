@@ -40,12 +40,12 @@ const Home = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(true);
   const [showCookiesPopup, setShowCookiesPopup] = useState(false);
   const [showPaymentSuccessPopup, setShowPaymentSuccessPopup] = useState(false);
-
   const [showCashbackPopup, setShowCashbackPopup] = useState(false);
 
   useEffect(() => {
     const invoiceData = localStorage.getItem('invoiceData');
-    const paymentId = router.query.paymentId;
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentId = urlParams.get('paymentId');
 
     if (invoiceData && paymentId) {
       setShowPaymentSuccessPopup(true);
@@ -63,14 +63,12 @@ const Home = () => {
     setShowCashbackPopup(false);
   };
 
-
   useEffect(() => {
     const savedPreferences = localStorage.getItem('cookiePreferences');
     if (!savedPreferences) {
       setShowCookiesPopup(true);
     }
   }, []);
-
 
   const handleScroll = useCallback(() => {
     if (window.pageYOffset > 100) {
@@ -84,10 +82,9 @@ const Home = () => {
     setShowCookiesPopup(false);
   };
 
-  const handleinvoiceClosePopup = () => {
+  const handleClosePopup1 = () => {
     setShowPopup(false);
   };
-
 
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -124,21 +121,16 @@ const Home = () => {
   return (
     <>
       <FirstOrderPopup />
-      {/* <NewCustomerSignup /> */}
-      {/* <AdPromotionSection/> */}
-
-      {showPopup && <SuccessfulPaymentPopup onClose={handleinvoiceClosePopup} />}
-
-
-
+      {showPaymentSuccessPopup && <SuccessfulPaymentPopup onClose={handleClosePopup1} />}
       <MainSlider />
-      <NewCustomerPopup/>
+      <NewCustomerPopup />
+
       {isVisible && (
         <>
           <button
-            className="fixed bottom-5 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600 rounded"
+            className="fixed bottom-5 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
             onClick={handleBackToTop}
-            style={{ zIndex: 51 }}  
+            style={{ zIndex: 51 }}
           >
             <BsFillArrowUpCircleFill size={18} />
           </button>
@@ -146,8 +138,7 @@ const Home = () => {
           <button
             className="fixed bottom-16 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
             onClick={handleChatToggle}
-            style={{ zIndex: 51 }}  
-
+            style={{ zIndex: 51 }}
           >
             <FaWhatsapp size={18} />
           </button>
@@ -156,23 +147,19 @@ const Home = () => {
       {isVisible && (
         <button
           className="fixed bottom-28 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
-          style={{ zIndex: 51 }}  
-
+          style={{ zIndex: 51 }}
+          onClick={() => { /* Add your phone functionality here */ }}
         >
-          <FaPhoneAlt size={18} onClick={() => { /* Add your phone functionality here */ }} />
+          <FaPhoneAlt size={18} />
         </button>
       )}
       {showCashbackPopup && <CashbackPopup onClose={handleCashbackClosePopup} />}
-
-
       {showCookiesPopup && <CookiesPopup onClose={handleClosePopup} />}
-
       {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
 
       <DesignSix />
       <DesignOne />
-      <Suspense fallback={<h1>loading</h1>}>
-
+      <Suspense fallback={<h1>Loading...</h1>}>
         <ProductsTabs products={products} />
         <DesignFifteen />
         <DesignEight />
