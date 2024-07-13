@@ -29,7 +29,7 @@ const PaymentMethod = () => {
       method: "GET",
       redirect: "follow"
     };
-    
+        
     fetch("http://127.0.0.1:8000/api/get-token", requestOptions)
       .then((response) => response.text())
       .then((result) => setAccessToken(result))
@@ -42,15 +42,30 @@ const PaymentMethod = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+
   
     if (paymentMethod) {
+       const orderId = `${new Date().getTime()}`;
+      const invoiceData = {
+        formData,
+        cartItems,
+        totalPrice,
+        discountedTotal
+      };
+  
+      localStorage.setItem('invoiceData', JSON.stringify(invoiceData));
+
       if (paymentMethod === "Online Payment") {
         const buyerName = formData.firstName + ' ' + formData.lastName;
         const buyerContactNumber = formData.phoneNumber;
         const buyer_email = formData.email;
-  
+   
+
         const PayAbleAmount = totalPrice < discountedTotal ? totalPrice : discountedTotal;
-  
+   
+
+
         const dummyData = {
           client_id: 3,
           order_id_of_merchant: orderId,
@@ -61,13 +76,11 @@ const PaymentMethod = () => {
           buyer_address: "dhaka",
           buyer_contact_number: buyerContactNumber,
           order_details: orderId,
-          callback_success_url: "https://hometex.vercel.app/success",
+          callback_success_url: `http://localhost:3000/`,
           callback_fail_url: "http://gopaysenz.com/invoice/fail.php",
           callback_cancel_url: "http://gopaysenz.com/invoice/cancel.php",
           expected_response_type: "JSON"
         };
-  
-        console.log(dummyData);
   
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -97,16 +110,17 @@ const PaymentMethod = () => {
           .catch((error) => console.error(error));
   
       } else {
+         
+
         router.push({
-          pathname: '/Invoice',
-          query: { ...formData, cartItems: JSON.stringify(cartItems), totalPrice, discountedTotal },
+          pathname: `/invoice/${orderId}`,
+
         });
       }
     } else {
       alert("Please select a payment method");
     }
   };
-  
 
   return (
     <div className='px-2 py-2 shadow-lg rounded-full bg-white mt-4'>

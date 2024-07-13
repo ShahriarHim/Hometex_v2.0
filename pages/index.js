@@ -27,15 +27,30 @@ import AdPromotionSection from "@/components/layout/AdPromotionSection";
 import FirstOrderPopup from "@/components/layout/FirstOrderPopup";
 import CostomerCount from "@/components/newDesigns/Customercount";
 import NewCustomerPopup from "@/components/layout/NewCustomerPopup";
+import SuccessfulPaymentPopup from "@/components/invoice/Invoice";
+import { useRouter } from 'next/router';
 
 const Home = () => {
+  const router = useRouter();
+  const [showPopup, setShowPopup] = useState(true);
+
   const [isVisible, setIsVisible] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(true);
   const [showCookiesPopup, setShowCookiesPopup] = useState(false);
+  const [showPaymentSuccessPopup, setShowPaymentSuccessPopup] = useState(false);
 
   const [showCashbackPopup, setShowCashbackPopup] = useState(false);
+
+  useEffect(() => {
+    const invoiceData = localStorage.getItem('invoiceData');
+    const paymentId = router.query.paymentId;
+
+    if (invoiceData && paymentId) {
+      setShowPaymentSuccessPopup(true);
+    }
+  }, [router.query]);
 
   useEffect(() => {
     const authToken = getCookie("home_text_token");
@@ -67,6 +82,10 @@ const Home = () => {
 
   const handleClosePopup = () => {
     setShowCookiesPopup(false);
+  };
+
+  const handleinvoiceClosePopup = () => {
+    setShowPopup(false);
   };
 
 
@@ -107,6 +126,11 @@ const Home = () => {
       <FirstOrderPopup />
       {/* <NewCustomerSignup /> */}
       {/* <AdPromotionSection/> */}
+
+      {showPopup && <SuccessfulPaymentPopup onClose={handleinvoiceClosePopup} />}
+
+
+
       <MainSlider />
       <NewCustomerPopup/>
       {isVisible && (
@@ -114,6 +138,7 @@ const Home = () => {
           <button
             className="fixed bottom-5 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600 rounded"
             onClick={handleBackToTop}
+            style={{ zIndex: 51 }}  
           >
             <BsFillArrowUpCircleFill size={18} />
           </button>
@@ -121,6 +146,8 @@ const Home = () => {
           <button
             className="fixed bottom-16 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
             onClick={handleChatToggle}
+            style={{ zIndex: 51 }}  
+
           >
             <FaWhatsapp size={18} />
           </button>
@@ -129,6 +156,8 @@ const Home = () => {
       {isVisible && (
         <button
           className="fixed bottom-28 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
+          style={{ zIndex: 51 }}  
+
         >
           <FaPhoneAlt size={18} onClick={() => { /* Add your phone functionality here */ }} />
         </button>

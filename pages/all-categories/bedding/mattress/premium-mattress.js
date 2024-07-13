@@ -104,7 +104,7 @@ const PremiumMattress = () => {
       .then((response) => response.json())
       .then((responseData) => {
         const kingProducts = responseData.data.filter(
-          (product) => product.child_sub_category?.name === "King"
+          (product) => product.child_sub_category?.name === "Premium Mattress"
         );
         setProducts(kingProducts);
       })

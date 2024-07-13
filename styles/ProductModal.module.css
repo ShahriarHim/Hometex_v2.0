@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 0 20px; /* Add padding to avoid edge issues on mobile */
 }
 
 .modal {
@@ -270,4 +271,183 @@
 
 .rightArrow {
   right: 325px;
+}
+
+
+@media (max-width: 768px) {
+  .modal {
+    width: 50%;
+    padding: 10px;
+  }
+
+  .card {
+    flex-direction: column;
+    padding: 5px;
+  }
+
+  .description, .details {
+    padding: 1px 0;
+  }
+
+  .shoe {
+    max-width: 100%;
+    max-height: 100px;
+    border-radius: 10px;
+  }
+
+  .descriptionText {
+    max-width: 100%;
+  }
+
+  .productTitle {
+    font-size: 10px;
+    margin-bottom: 5px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .price {
+    font-size: 20px;
+  }
+
+  .subTitle {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  .quantityInput {
+    width: 30px;
+  }
+
+  .addToCart {
+    font-size: 14px;
+    padding: 8px 16px;
+    margin-top: 10px;
+  }
+
+  .leftArrow, .rightArrow {
+    display: none;
+  }
+
+  .colors, .sizes {
+    gap: 5px;
+  }
+
+  .color, .size {
+    width: 25px;
+    height: 25px;
+  }
+
+  .size {
+    width: 50px;
+    height: 30px;
+  }
+
+  .quantityButton {
+    padding: 5px;
+  }
+
+  .checkboxContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .checkboxLabel {
+    margin-left: 5px;
+  }
+
+  .invoice {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .printButton {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  .invoiceButton {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    width: 95%;
+    padding: 5px;
+  }
+
+  .description, .details {
+    padding: 5px 0;
+  }
+
+  .productTitle {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .subTitle {
+    font-size: 14px;
+  }
+
+  .quantityInput {
+    width: 25px;
+  }
+
+  .addToCart {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .colors, .sizes {
+    gap: 5px;
+  }
+
+  .color, .size {
+    width: 20px;
+    height: 20px;
+  }
+
+  .size {
+    width: 40px;
+    height: 25px;
+  }
+
+  .quantityButton {
+    padding: 5px;
+  }
+
+  .checkboxContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .checkboxLabel {
+    margin-left: 5px;
+  }
+
+  .invoice {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .printButton {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  .invoiceButton {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
 }
