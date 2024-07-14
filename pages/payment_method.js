@@ -76,7 +76,7 @@ const PaymentMethod = () => {
           buyer_address: "dhaka",
           buyer_contact_number: buyerContactNumber,
           order_details: orderId,
-          callback_success_url: `http://localhost:3000/`,
+          callback_success_url: `http://https://htbapi.hometexbd.ltd/`,
           callback_fail_url: "http://gopaysenz.com/invoice/fail.php",
           callback_cancel_url: "http://gopaysenz.com/invoice/cancel.php",
           expected_response_type: "JSON"
