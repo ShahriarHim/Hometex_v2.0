@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
+import Constants from "@/ults/Constant";
+
+
 
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -29,8 +32,8 @@ const PaymentMethod = () => {
       method: "GET",
       redirect: "follow"
     };
-        
-    fetch("http://127.0.0.1:8000/api/get-token", requestOptions)
+    
+    fetch(`${Constants.BASE_URL}/api/get-token`, requestOptions)
       .then((response) => response.text())
       .then((result) => setAccessToken(result))
       .catch((error) => console.error(error));
@@ -82,6 +85,7 @@ const PaymentMethod = () => {
           expected_response_type: "JSON"
         };
   
+
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", `Bearer ${accessToken}`);
