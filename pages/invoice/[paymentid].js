@@ -11,6 +11,7 @@ const Invoice = () => {
   const [vat, setVat] = useState(0);
   const [tax, setTax] = useState(0);
   const [finalTotal, setFinalTotal] = useState(0);
+  const storedToken = localStorage.getItem('accessToken');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -84,6 +85,7 @@ const Invoice = () => {
 
     localStorage.removeItem('invoiceData');
     localStorage.removeItem('cartItems');
+    localStorage.removeItem('accessToken');
 
     alert('Order confirmed!');
     router.push('/');
@@ -179,11 +181,11 @@ const Invoice = () => {
             <span className='text-xl'>Continue Shopping</span>
           </button>
         </div>
-        <div>
-          <button onClick={handleConfirm} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2'>
-            <span className='text-xl'>Confirm Order</span>
-          </button>
-        </div>
+        {!storedToken && (
+        <button onClick={handleConfirm} className="bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2">
+          <span className="text-xl">Confirm Order</span>
+        </button>
+      )}
         <div>
           <button onClick={handlePrint} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2'>
             <span className='text-xl'>Print</span>

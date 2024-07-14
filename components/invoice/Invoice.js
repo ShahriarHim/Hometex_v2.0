@@ -4,6 +4,9 @@ import { CheckCircle } from 'lucide-react';
 
 const SuccessfulPaymentPopup = ({ onClose }) => {
   const router = useRouter();
+  const [paymentDetails, setPaymentDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [paymentId, setPaymentId] = useState('');
 
   useEffect(() => {
@@ -14,6 +17,38 @@ const SuccessfulPaymentPopup = ({ onClose }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (paymentId) {
+      fetchPaymentDetails(paymentId);
+    }
+  }, [paymentId]);
+
+  const fetchPaymentDetails = async (paymentTxnId) => {
+    try {
+      const storedData = localStorage.getItem('accessToken');
+
+      const response = await fetch('https://pay.hometexbd.ltd/api/v1.0/payment-transaction-details', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${storedData}`
+        },
+        body: JSON.stringify({ "payment-txnid": paymentTxnId }),
+      });
+      const data = await response.json();
+
+      if (data.status) {
+        setPaymentDetails(data.data);
+      } else {
+        setError('Failed to fetch payment details');
+      }
+    } catch (err) {
+      setError('An error occurred while fetching payment details');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleViewInvoice = () => {
     if (paymentId) {
       router.push(`/invoice/${paymentId}`);
@@ -23,9 +58,16 @@ const SuccessfulPaymentPopup = ({ onClose }) => {
   const handleContinueShopping = () => {
     if (onClose) {
       onClose();
-      // router.push(`/`);
     }
   };
+
+  if (loading) {
+    return <div className="text-center p-4">Loading payment details...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500 p-4">{error}</div>;
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -36,8 +78,16 @@ const SuccessfulPaymentPopup = ({ onClose }) => {
         </div>
         <div className="p-6 space-y-4">
           <p className="text-gray-600">
-            Thank you for your purchase. Your order {paymentId} has been confirmed.
+            Thank you for your purchase. Your order has been confirmed.
           </p>
+          {paymentDetails && (
+            <div className="space-y-2 text-sm">
+              <p><strong>Transaction ID:</strong> {paymentDetails.merchant_txnid}</p>
+              <p><strong>Payment Status:</strong> {paymentDetails.payment_status}</p>
+              <p><strong>Amount:</strong> {paymentDetails.amount} BDT</p>
+              <p><strong>Payment Method:</strong> {paymentDetails.remarks.payment_type}</p>
+            </div>
+          )}
           <p className="text-center text-gray-700">
             We've sent a confirmation email with order details to your registered email address.
           </p>

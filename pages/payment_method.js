@@ -37,6 +37,7 @@ const PaymentMethod = () => {
         redirect: "follow"
       };
           
+
       fetch(`${Constants.BASE_URL}/api/get-token`, requestOptions)
         .then((response) => response.text())
         .then((result) => {
@@ -46,7 +47,7 @@ const PaymentMethod = () => {
         .catch((error) => console.error(error));
     }
   }, []);
->>>>>>> main
+
 
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
