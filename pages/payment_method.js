@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
+import Constants from "@/ults/Constant";
+
+
 
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -34,7 +37,8 @@ const PaymentMethod = () => {
         redirect: "follow"
       };
           
-      fetch("http://127.0.0.1:8000/api/get-token", requestOptions)
+
+      fetch(`${Constants.BASE_URL}/api/get-token`, requestOptions)
         .then((response) => response.text())
         .then((result) => {
           setAccessToken(result);
@@ -43,6 +47,7 @@ const PaymentMethod = () => {
         .catch((error) => console.error(error));
     }
   }, []);
+
 
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -80,12 +85,13 @@ const PaymentMethod = () => {
           buyer_address: "dhaka",
           buyer_contact_number: buyerContactNumber,
           order_details: orderId,
-          callback_success_url: `http://localhost:3000/`,
+          callback_success_url: `http://https://htbapi.hometexbd.ltd/`,
           callback_fail_url: "http://gopaysenz.com/invoice/fail.php",
           callback_cancel_url: "http://gopaysenz.com/invoice/cancel.php",
           expected_response_type: "JSON"
         };
   
+
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", `Bearer ${accessToken}`);
@@ -105,6 +111,7 @@ const PaymentMethod = () => {
               const newUrl = data.expected_response;
               console.log(newUrl);
               window.location = newUrl;
+              // const success_api = 'https://pay.hometexbd.ltd/api/v1.0/payment-transaction-details'
             } else {
               console.log(data.errorMessage);
               alert(data.errorMessage);
