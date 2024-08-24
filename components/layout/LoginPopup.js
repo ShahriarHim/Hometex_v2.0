@@ -38,13 +38,16 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
 
     try {
       const response = await fetchLoginData();
-      const { status, error, token ,name,phone,email} = await response.json();
+      const jsonResponse = await response.json();
+      console.log("Response:", jsonResponse);
 
-      if (status === 400) {
-        handleLoginError(error);
-      } else if (token) {
-        handleSuccessfulLogin(token,name,phone,email);
+      if (jsonResponse.success) {
+        const { token, name, phone, email } = jsonResponse.data[0];
+        handleSuccessfulLogin(token, name, phone, email);
         console.log('Login successful');
+      } else {
+        handleLoginError(jsonResponse.error);
+        console.log('Login failed:', jsonResponse.message);
       }
     } catch (error) {
       console.error('Error logging in:', error);
@@ -71,25 +74,25 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
     });
   };
 
-  const handleGuestLogin = () => {
-    const guestToken = generateGuestToken();
-    setCookie('home_text_token', guestToken, {
-      maxAge: 30 * 24 * 60 * 60,
-      path: '/',
-    });
-    window.location.href = '/';
-    Swal.fire({
-      title: 'Success',
-      text: 'Guest login successful!',
-      icon: 'success',
-      confirmButtonText: 'OK'
-    });
-  };
-  const generateGuestToken = () => {
-    // Generate a random token or use a predefined guest token
-    const guestToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    return guestToken;
-  };
+  // const handleGuestLogin = () => {
+  //   const guestToken = generateGuestToken();
+  //   setCookie('home_text_token', guestToken, {
+  //     maxAge: 30 * 24 * 60 * 60,
+  //     path: '/',
+  //   });
+  //   window.location.href = '/';
+  //   Swal.fire({
+  //     title: 'Success',
+  //     text: 'Guest login successful!',
+  //     icon: 'success',
+  //     confirmButtonText: 'OK'
+  //   });
+  // };
+  // const generateGuestToken = () => {
+  //   // Generate a random token or use a predefined guest token
+  //   const guestToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  //   return guestToken;
+  // };
 
 
   const handleLoginError = (error) => {
@@ -99,7 +102,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
     setSignInErr(err_list);
   };
 
-  const handleSuccessfulLogin = (token,name,phone,email) => {
+  const handleSuccessfulLogin = (token, name, phone, email) => {
     setSignInErr({});
     setCookie('home_text_token', token, {
       maxAge: 30 * 24 * 60 * 60,
