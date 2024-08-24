@@ -66,7 +66,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
       body: JSON.stringify({
         email: signInData.username,
         password: signInData.password,
-        user_type: 2,
+        user_type: 3,
       }),
     });
   };
