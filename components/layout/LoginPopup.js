@@ -73,27 +73,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
       }),
     });
   };
-
-  // const handleGuestLogin = () => {
-  //   const guestToken = generateGuestToken();
-  //   setCookie('home_text_token', guestToken, {
-  //     maxAge: 30 * 24 * 60 * 60,
-  //     path: '/',
-  //   });
-  //   window.location.href = '/';
-  //   Swal.fire({
-  //     title: 'Success',
-  //     text: 'Guest login successful!',
-  //     icon: 'success',
-  //     confirmButtonText: 'OK'
-  //   });
-  // };
-  // const generateGuestToken = () => {
-  //   // Generate a random token or use a predefined guest token
-  //   const guestToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-  //   return guestToken;
-  // };
-
+ 
 
   const handleLoginError = (error) => {
     const err_list = Object.fromEntries(

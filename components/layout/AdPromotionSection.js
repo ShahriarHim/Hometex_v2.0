@@ -90,7 +90,7 @@ const AdPromotionSection = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold mb-1">Free Shipping</h3>
-                  <p className="text-xs text-gray-700">Orders over $100</p>
+                  <p className="text-xs text-gray-700">Orders over ৳100</p>
                 </div>
               </div>
             </Link>

@@ -22,7 +22,7 @@ const DesignTwo = () => {
               </span>{" "}
               <br />
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                (on orders over $40)
+                (on orders over ৳40)
               </span>
             </p>
           </div>
