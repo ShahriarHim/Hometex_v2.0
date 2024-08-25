@@ -46,7 +46,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
         handleSuccessfulLogin(token, name, phone, email);
         console.log('Login successful');
       } else {
-        handleLoginError(jsonResponse.error);
+        setSignInErr(jsonResponse)
         console.log('Login failed:', jsonResponse.message);
       }
     } catch (error) {
@@ -72,14 +72,6 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
         user_type: 3,
       }),
     });
-  };
- 
-
-  const handleLoginError = (error) => {
-    const err_list = Object.fromEntries(
-      Object.entries(error).map(([key, value]) => [key, value[0]])
-    );
-    setSignInErr(err_list);
   };
 
   const handleSuccessfulLogin = (token, name, phone, email) => {
@@ -245,7 +237,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                           className="px-2 py-3 w-full"
                         />
                       </div>
-                      <p className="has_error"> {signInErr?.username} </p>
+                     
                     </div>
                     <div className="field password required pass-input">
                       <div className="control flex items-center border">
@@ -261,8 +253,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                           className="px-2 py-3 w-full"
                         />
                       </div>
-                      <p className="has_error"> {signInErr?.password} </p>
-                    </div>
+                      <p className="has_error" style={{ color: 'red' }}>{`${signInErr?.message || ''}`}</p>                    </div>
 
                     <div className="secondary ft-link-p text-right py-2">
                       <a className="action remind" href="/account/Forgotten">
@@ -281,14 +272,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                       </button>
                     </div>
                   </fieldset>
-                  {/* <div className="mt-4">
-                    <button
-                      onClick={handleGuestLogin}
-                      className="w-full bg-gray-300 hover:bg-gray-400 py-3 text-gray-800 rounded-xl text-md font-semibold"
-                    >
-                      Continue as Guest
-                    </button>
-                  </div> */}
+                  
                 </div>
                 <div className="w-full">
                   <div>
@@ -407,30 +391,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="col-12 text-center">
-                    <div className="loginBox">
-                      <button className="facebook social-btn py-2 w-full text-center border rounded flex items-center justify-center">
-                        <FaFacebook className="text-blue-500 mr-2 w-6 h-6" />
-                        <span className="font-semibold text-lg">
-                          Continue with Facebook
-                        </span>
-                      </button>
-                      <button className="google social-btn py-2 w-full text-center border rounded flex items-center justify-center mt-2">
-                        <FcGoogle className="mr-2 w-6 h-6" />
-                        <span className="font-semibold text-lg">
-                          Continue with Google
-
-                        </span>
-                      </button>
-                      
-                      <button className="apple social-btn py-2 w-full text-center border rounded flex items-center justify-center mt-2">
-                        <FaApple className="mr-2 w-6 h-6" />
-                        <span className="font-semibold text-lg">
-                          Continue with Apple
-                        </span>
-                      </button>
-                    </div>
-                  </div> */}
+                   
                   </div>
                   <p className="text-center">
                     By continuing, you agree to Hometex's{' '}
