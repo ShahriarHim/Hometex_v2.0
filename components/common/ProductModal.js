@@ -144,14 +144,16 @@ const ProductModal = ({ product, onClose }) => {
             <div className={styles.description}>
               <h2 className={styles.productTitle}>{product.name}</h2>
               <div className={styles.descriptionText}>
-                <p className={`${styles.text} ${showFullDescription ? styles.fullText : styles.shortText}`}>
-                  {product.description}
-                </p>
+                <div
+                  className={`${styles.text} ${showFullDescription ? styles.fullText : styles.shortText}`}
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
                 <span onClick={toggleDescription} className={styles.showMore}>
                   {showFullDescription ? 'Show Less' : 'Show More'}
                 </span>
               </div>
             </div>
+
             <div className={styles.center}>
               <h1 className={styles.title}>Product Details</h1>
               <img src={product.primary_photo} alt={product.name} className={styles.shoe} />
