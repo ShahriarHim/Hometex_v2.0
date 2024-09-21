@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
         } else if (pathname === '/all-categories/bedding/bed-sheet/king') {
             return (
                 <>
-                    <AdPromotionSection />
+                    {/* <AdPromotionSection /> */}
                     <ThreeLayer/>
                     <Header4 key="header" />
                     <main className="p-4">{children}</main>
@@ -27,10 +27,10 @@ const Layout = ({ children }) => {
         } else {
             return (
                 <>
-                    <AdPromotionSection />
+                    {/* <AdPromotionSection /> */}
                     <ThreeLayer/>
                     <Header3 key="header" />
-                    <main className="p-4">{children}</main>
+                    <main className="">{children}</main>
                     <Footer2 key="footer" />
                 </>
             );

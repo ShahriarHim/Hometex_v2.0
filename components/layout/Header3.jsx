@@ -364,7 +364,7 @@ const Header3 = () => {
 
   return (
     <>
-      <div className="pt-2 hidden md:block">
+      <div className="pt-2 hidden md:block bg-white">
         <div className="container mx-auto pb-2">
           <div className="flex justify-between items-center">
             <div className="flex items-center px-2">
@@ -441,7 +441,7 @@ const Header3 = () => {
         className="pt-1 hidden md:block sticky top-0 z-20"
         style={{
           background:
-            "radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
+            "#c1c8e4",
         }}
       >
         <div className="container mx-auto px-3">
