@@ -2,15 +2,12 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
 import { useRouter } from 'next/router';
-import { Router, useRouter as useRouterClient } from 'next/router';
 import CartContext from '@/context/CartContext';
 import styles from '@/styles/ProductModal.module.css';
 import Invoice from '../invoice/Invoice';
-import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Link from 'next/link';
-
 
 export async function getServerSideProps(context) {
   let id = context.query.id;
@@ -26,8 +23,6 @@ export async function getServerSideProps(context) {
   };
 }
 
-
-
 const ProductModal = ({ product, onClose }) => {
   const { addItemToCart } = useContext(CartContext);
   const [productQty, setProductQty] = useState(1);
@@ -38,7 +33,6 @@ const ProductModal = ({ product, onClose }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const modalRef = useRef();
   const router = useRouter();
-
 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -85,7 +79,6 @@ const ProductModal = ({ product, onClose }) => {
 
   const toggleInvoice = () => {
     setShowInvoice(!showInvoice);
-
   };
 
   const handleShippingInfoChange = (e) => {
@@ -112,10 +105,7 @@ const ProductModal = ({ product, onClose }) => {
         <button className={styles.closeButton} onClick={onClose}>
           <RiCloseLine size="24" />
         </button>
-
         <button className={styles.printButton} onClick={() => window.print()}>Print</button>
-        {/* <button className={styles.invoiceButton} onClick={toggleInvoice}>Invoice</button> */}
-
         <div className={styles.checkboxContainer}>
           <input
             type="checkbox"
@@ -125,7 +115,6 @@ const ProductModal = ({ product, onClose }) => {
           />
           <label htmlFor="shippingInfo" className={styles.checkboxLabel}>Include delivery and shipping info</label>
         </div>
-
         <Link href='#' onClick={toggleInvoice}>Generate Invoice ⬇</Link>
         {showInvoice && (
           <div className={styles.invoice}>
@@ -150,30 +139,25 @@ const ProductModal = ({ product, onClose }) => {
             />
           </div>
         )}
-        {/* <button className={styles.leftArrow} onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}>
-          <FaArrowLeft size="24" />
-        </button>
-        <button className={styles.rightArrow} onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}>
-          <FaArrowRight size="24" />
-        </button> */}
         <div className={styles.container}>
           <div className={styles.card}>
             <div className={styles.description}>
               <h2 className={styles.productTitle}>{product.name}</h2>
               <div className={styles.descriptionText}>
-                <p className={`${styles.text} ${showFullDescription ? styles.fullText : styles.shortText}`}>
-                  {product.description}
-                </p>
+                <div
+                  className={`${styles.text} ${showFullDescription ? styles.fullText : styles.shortText}`}
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
                 <span onClick={toggleDescription} className={styles.showMore}>
                   {showFullDescription ? 'Show Less' : 'Show More'}
                 </span>
               </div>
             </div>
+
             <div className={styles.center}>
               <h1 className={styles.title}>Product Details</h1>
               <img src={product.primary_photo} alt={product.name} className={styles.shoe} />
               <div className={styles.price}>
-
                 <h1>{product.price}</h1>
               </div>
             </div>
@@ -249,9 +233,6 @@ const ProductModal = ({ product, onClose }) => {
             </div>
           </div>
         </div>
-
-
-
       </div>
     </div>
   );

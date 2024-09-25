@@ -1,7 +1,7 @@
 import CartContext from '@/context/CartContext';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
-import { AiFillPlusCircle, AiOutlineLeft, AiOutlineMinusCircle } from 'react-icons/ai';
+import { AiFillPlusCircle, AiOutlineLeft, AiOutlineMinusCircle, AiOutlineRight } from 'react-icons/ai';
 import { BsXLg } from "react-icons/bs";
 
 
@@ -180,8 +180,19 @@ const CartPage = () => {
                 </div>
 
                 <Link href="/">
-                    <button className='mt-20 flex gap-2 items-center justify-between border rounded-full px-3 py-2 font-bold'><AiOutlineLeft /> <span className='text-xl'>Continue Shopping</span></button>
-                </Link>
+  <div className='flex gap-4 items-center'>
+    <button className='flex gap-2 items-center justify-between border rounded-full px-3 py-2 font-bold'>
+      <AiOutlineLeft /> 
+      <span className='text-xl'>Continue Shopping</span>
+    </button>
+    <Link href="/Checkout">   
+      <button className='flex gap-2 items-center justify-between border rounded-full px-3 py-2 font-bold'>
+      
+        <span className='text-xl'>Continue Checkout</span><AiOutlineRight /> 
+      </button>
+    </Link>
+  </div>
+</Link>
             </div>
             {/* <div className='col-span-3 rounded-xl bg-gray-600 text-white'>
                         <div className='px-5 py-3'>

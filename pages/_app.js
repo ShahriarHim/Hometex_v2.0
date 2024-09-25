@@ -18,8 +18,11 @@ export default function App({ Component, pageProps }) {
   if (isLoading) {
     return (
       <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-white z-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
-        <img src="/images/hometex-logo.png" alt="Logo" className="w-32 h-32" />
+        {/* <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div> */}
+        {/* <img src="/images/hometex-logo.png" alt="Logo" className="w-32 h-32" /> */}
+        <video className="w-32 h-32" autoPlay loop muted>
+          <source src="/videos/loader.webm" type="video/webm" />
+        </video>
       </div>
     );
   }

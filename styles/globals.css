@@ -1,22 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* styles/globals.css */
-:root {
-  --primary: #750548;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
-body {
-  background-color: #efefef;
-}
 /* styles/globals.css */
 :root {
   --primary: #750548;
@@ -35,6 +19,49 @@ body {
 
 @media (max-width: 600px) {
   * {
-    font-size: calc(1.5px + 10px) !important;
+    /* font-size: calc(2px + 12px) !important; */
+    font-size: calc(2px + 11px) !important;
+    }
+  .floating-cart {
+    position: fixed;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    z-index: 50;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .floating-cart .bg-pink-500 {
+    background-color: #ff3366; /* or any other preferred shade of pink */
+  }
+
+  .floating-cart .icon-container {
+    background-color: #1a1a1a;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .floating-cart .text-container {
+    margin-left: 0.5rem;
+    color: white;
+    text-align: left;
+  }
+
+  .floating-cart .text-container .item-count,
+  .floating-cart .text-container .total-price {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .floating-cart .text-container .total-price {
+    color: #ff3366;
   }
 }

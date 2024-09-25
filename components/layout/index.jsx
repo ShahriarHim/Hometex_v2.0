@@ -4,6 +4,7 @@ import Footer2 from "./Footer2";
 import Header3 from "./Header3";
 import Header4 from './Header4';
 import MyAccount from '@/pages/account/MyAccount';
+import ThreeLayer from '../additional/ThreeLayer';
 
 const Layout = ({ children }) => {
     const router = useRouter();
@@ -16,7 +17,8 @@ const Layout = ({ children }) => {
         } else if (pathname === '/all-categories/bedding/bed-sheet/king') {
             return (
                 <>
-                    <AdPromotionSection />
+                    {/* <AdPromotionSection /> */}
+                    <ThreeLayer/>
                     <Header4 key="header" />
                     <main className="p-4">{children}</main>
                     <Footer2 key="footer" />
@@ -25,9 +27,10 @@ const Layout = ({ children }) => {
         } else {
             return (
                 <>
-                    <AdPromotionSection />
+                    {/* <AdPromotionSection /> */}
+                    <ThreeLayer/>
                     <Header3 key="header" />
-                    <main className="p-4">{children}</main>
+                    <main className="">{children}</main>
                     <Footer2 key="footer" />
                 </>
             );
@@ -36,6 +39,7 @@ const Layout = ({ children }) => {
 
     return (
         <div className="app__wrapper min-h-screen bg-gray-100">
+            
             {renderContent()}
         </div>
     );

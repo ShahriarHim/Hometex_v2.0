@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const AdPromotionSection = () => {
   return (
-    <div className="bg-yellow-300 py-2">
+    <div className="bg-blue-200 py-2">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Mobile View */}
         <div className="block sm:hidden text-center">
@@ -90,7 +90,7 @@ const AdPromotionSection = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold mb-1">Free Shipping</h3>
-                  <p className="text-xs text-gray-700">Orders over $100</p>
+                  <p className="text-xs text-gray-700">Orders over ৳100</p>
                 </div>
               </div>
             </Link>

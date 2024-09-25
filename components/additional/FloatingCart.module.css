@@ -1,0 +1,45 @@
+.floating-cart {
+    position: fixed;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    z-index: 50;
+  }
+  
+  .cart-button {
+    background-color: #ff3366; /* or any other preferred shade of pink */
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .cart-button:hover {
+    background-color: #e02d58; /* slightly darker shade for hover effect */
+    transform: translateY(-3px);
+  }
+  
+  .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .item-count, .total-price {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+  
+  .space-x-2 > * + * {
+    margin-left: 0.5rem;
+  }
+  
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
