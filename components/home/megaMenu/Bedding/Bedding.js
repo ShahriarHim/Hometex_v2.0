@@ -1,8 +1,8 @@
- 
 import Link from "next/link";
-import { useState } from "react";
 import { FaCaretDown, FaBed } from "react-icons/fa";
 import { useRouter } from "next/router";
+import AdPromotionSection from "../../../layout/AdPromotionSection";
+
 const sections = [
   {
     id: 1,
@@ -55,31 +55,26 @@ const sections = [
     ],
   },
 ];
+
 const Bedding = () => {
   const router = useRouter();
 
-
-
-  const handleButtonClick = () => {
-    router.push("/bedding");
-  };
-
   return (
-    <>
-      <div className="">
+    <div className="">
       <Link
-          href="/bedding"
-          className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group"
-        >
-          <FaBed className="mr-1 text-xl" />
-          Bedding <FaCaretDown />
-          <div className="w-full absolute pb-6  z-50 top-full left-0 transform rounded-md justify-center items-center p-2 group-hover:flex hidden">
-            <div className="max-w-screen-2xl mx-auto px-3 mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white">
-              {/* Map over sections array */}
+        href="/bedding"
+        className="inline-flex items-center text-black-300 hover:text-white hover:bg-black px-3 py-2 rounded-md text-sm font-medium group"
+      >
+        <FaBed className="mr-1 text-xl" />
+        Bedding <FaCaretDown />
+        <div className="w-full absolute z-50 top-full left-0 transform rounded-md justify-center items-center p-2 group-hover:flex hidden flex-col">
+          <div className="max-w-screen-2xl mx-auto bg-purple-200 p-2 shadow-lg">
+            {/* Grid section for product items */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
               {sections.map((section) => (
                 <div
                   key={section.id}
-                  className="bg-white p-2 relative overflow-hidden transition-all duration-300 shadow-sm"
+                  className="bg-white p-2 relative overflow-hidden rounded-lg transition-all duration-300 shadow-sm"
                 >
                   <div className="flex">
                     <img
@@ -109,22 +104,18 @@ const Bedding = () => {
                       </ul>
                     </div>
                   </div>
-                  {/* Popup Box */}
-                  <div className="hidden absolute top-0 left-0 right-0 bottom-0 bg-white p-4 shadow-lg rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <h2 className="text-lg font-bold mb-2">{section.title}</h2>
-                    <ul>
-                      {section.listItems.map((item, index) => (
-                        <li key={index}>{item.name}</li>
-                      ))}
-                    </ul>
-                  </div>
                 </div>
               ))}
             </div>
+
+            {/* AdPromotionSection full width at the bottom */}
+            <div className="w-full mt-2">
+              <AdPromotionSection />
+            </div>
           </div>
-        </Link>
-      </div>
-    </>
+        </div>
+      </Link>
+    </div>
   );
 };
 

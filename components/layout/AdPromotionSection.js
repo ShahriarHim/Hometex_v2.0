@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const AdPromotionSection = () => {
   return (
-    <div className="bg-blue-200 py-2">
+    <div className="bg-purple-900 rounded-lg py-1">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Mobile View */}
         <div className="block sm:hidden text-center">
@@ -11,10 +11,10 @@ const AdPromotionSection = () => {
         </div>
         
         {/* Desktop View */}
-        <div className="hidden sm:flex flex-col sm:flex-row items-center justify-between space-y-1 sm:space-y-0 sm:space-x-1">
+        <div className="hidden sm:flex flex-col sm:flex-row items-center justify-between space-y-1 sm:space-y-0 sm:space-x-5">
           {/* Ad 1 */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden flex-1">
-            <Link href="/special-offer" className="block p-2 hover:bg-yellow-100 transition-colors duration-300">
+          <div className="bg-blue-400 rounded-lg shadow-md overflow-hidden flex-1">
+            <Link href="/special-offer" className="block p-1 hover:bg-blue-500 transition-colors duration-300">
               <div className="flex items-center">
                 <div className="mr-2">
                   <svg
@@ -33,16 +33,16 @@ const AdPromotionSection = () => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold mb-1">Special Offer</h3>
-                  <p className="text-xs text-gray-700">Get 20% off</p>
+                  <h3 className="text-sm text-red font-semibold mb-1">Special Offer</h3>
+                  <p className="text-xs text-yellow-300">Get 20% off</p>
                 </div>
               </div>
             </Link>
           </div>
 
           {/* Ad 2 */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden flex-1">
-            <Link href="/new-arrivals" className="block p-2 hover:bg-yellow-100 transition-colors duration-300">
+          <div className="bg-blue-400 rounded-lg shadow-md overflow-hidden flex-1">
+            <Link href="/new-arrivals" className="block p-1 hover:bg-blue-500 transition-colors duration-300">
               <div className="flex items-center">
                 <div className="mr-2">
                   <svg
@@ -62,15 +62,15 @@ const AdPromotionSection = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold mb-1">New Arrivals</h3>
-                  <p className="text-xs text-gray-700">Check out latest</p>
+                  <p className="text-xs text-yellow-300">Check out latest</p>
                 </div>
               </div>
             </Link>
           </div>
 
           {/* Ad 3 */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden flex-1">
-            <Link href="/free-shipping" className="block p-2 hover:bg-yellow-100 transition-colors duration-300">
+          <div className="bg-blue-400 rounded-lg shadow-md overflow-hidden flex-1">
+            <Link href="/free-shipping" className="block p-1 hover:bg-blue-500 transition-colors duration-300">
               <div className="flex items-center">
                 <div className="mr-2">
                   <svg
@@ -90,7 +90,7 @@ const AdPromotionSection = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold mb-1">Free Shipping</h3>
-                  <p className="text-xs text-gray-700">Orders over ৳100</p>
+                  <p className="text-xs text-yellow-300">Orders over ৳100</p>
                 </div>
               </div>
             </Link>
