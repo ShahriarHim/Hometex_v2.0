@@ -118,13 +118,25 @@ const HotDealsCarousel = () => {
           </div>
 
           <Swiper
-            modules={[Navigation, Autoplay]}
-            spaceBetween={20}
             slidesPerView={4}
-            loop={true}
-            navigation
-            autoplay={{ delay: 3000 }}
-            className="flex-grow"
+            spaceBetween={20}
+            navigation={false}
+            modules={[Navigation]}
+            className="mySwiper"
+            breakpoints={{
+              320: {
+                slidesPerView: 1,
+              },
+              640: {
+                slidesPerView: 2,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+            }}
           >
             {products.map((product, index) => (
               <SwiperSlide key={index} className="owl2-item active">
