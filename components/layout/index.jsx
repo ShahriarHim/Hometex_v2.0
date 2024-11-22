@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
             return (
                 <>
                     {/* <AdPromotionSection /> */}
-                    <ThreeLayer/>
+                    {/* <ThreeLayer/> */}
                     <Header4 key="header" />
                     <main className="p-4">{children}</main>
                     <Footer2 key="footer" />
@@ -28,17 +28,17 @@ const Layout = ({ children }) => {
             return (
                 <>
                     {/* <AdPromotionSection /> */}
-                    <ThreeLayer/>
-                    <Header3 key="header" />
+                    {/* <ThreeLayer/>
+                    <Header3 key="header" /> */}
                     <main className="">{children}</main>
-                    <Footer2 key="footer" />
+                    {/* <Footer2 key="footer" /> */}
                 </>
             );
         }
     };
 
     return (
-        <div className="app__wrapper min-h-screen bg-gray-100">
+        <div className="app__wrapper min-h-screen">
             
             {renderContent()}
         </div>
