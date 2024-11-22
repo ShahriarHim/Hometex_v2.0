@@ -14,7 +14,7 @@
 }
 
 body {
-  background-color: #efefef;
+  background-color: #ffffff!important;
 }
 
 @media (max-width: 600px) {
