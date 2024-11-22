@@ -60,6 +60,23 @@ const ProductsTabs = ({ products }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [requestProduct, setRequestProduct] = useState(null);
+  const [filteredProducts, setFilteredProducts] = useState({
+    'all': products,
+    'extra-king': [],
+    'king': [],
+    'semi-double': [],
+    'single': []
+  });
+
+  useEffect(() => {
+    setFilteredProducts({
+      'all': products,
+      'extra-king': products?.filter(p => p?.child_sub_category?.name?.toLowerCase() === 'extra-king') || [],
+      'king': products?.filter(p => p?.child_sub_category?.name?.toLowerCase() === 'king') || [],
+      'semi-double': products?.filter(p => p?.child_sub_category?.name?.toLowerCase() === 'semi-double') || [],
+      'single': products?.filter(p => p?.child_sub_category?.name?.toLowerCase() === 'single') || []
+    });
+  }, [products]);
 
   // Function to open modal with product details
   const openModal = (product) => {
@@ -129,10 +146,14 @@ const ProductsTabs = ({ products }) => {
     className: "mySwiper",
   };
 
+  if (!products) {
+    return <div className="text-center py-10">Loading products...</div>;
+  }
+
   return (
     <>
       <div className="max-w-screen-xl mx-auto px-3 mb-10">
-      <Tabs>
+        <Tabs>
           <TabList className="flex flex-wrap justify-center lg:justify-start items-center gap-4 py-2">
             <Tab className="text-gray-500 bg-gray-100 py-2 px-4 hover:text-gray-900 focus:outline-none focus:text-gray-900 focus:bg-gray-100 transition duration-150 ease-in-out rounded-lg shadow-sm lg:w-auto">
               All Products
@@ -151,245 +172,27 @@ const ProductsTabs = ({ products }) => {
             </Tab>
           </TabList>
           <div className="lg:flex-grow">
-            <TabPanel>
-              <Swiper {...params}>
-                {products.length > 0 &&
-                  products.map((product, i) => (
-                    <SwiperSlide key={i}>
-                      <div className="relative w-60 max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 border mt-5 object-fit">
-                        <img
-                          className="p-4 rounded-t-lg object-fit"
-                          src={product.primary_photo}
-                          alt={product.name}
-                          onClick={() => openModal(product)}
+            {Object.entries(filteredProducts).map(([category, items]) => (
+              <TabPanel key={category}>
+                <Swiper {...params}>
+                  {items?.length > 0 ? (
+                    items.map((product) => (
+                      <SwiperSlide key={product.id}>
+                        <ProductCard
+                          product={product}
+                          openModal={openModal}
+                          handleRequestStack={handleRequestStack}
                         />
-                        <div className="absolute top-0 right-0 p-2 opacity-0 hover:opacity-100 transition duration-300 ">
-                          <RiShoppingBasketFill
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                          <MdFavorite
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                          <RiExchangeFill
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                        </div>
-                        <div className="px-5 pb-5">
-                          <ReactStars
-                            count={5}
-                            size={24}
-                            value={5}
-                            edit={false}
-                            activeColor="#ffd700"
-                          />
-                          <Link href={`/Shop/product/${product.id}`}>
-                            <h5 className="text-l font-semibold tracking-tight text-gray-900 dark:text-white">
-                              {product.name}
-                            </h5>
-                            <div className="flex items-center justify-between">
-                              <span className="text-xl font-bold text-red-900 dark:text-white">
-                                Price: TK {product.price}
-                              </span>
-                            </div>
-                          </Link>
-                          <button
-                            className="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
-                            onClick={() => handleRequestStack(product)}
-                          >
-                            Request Stock
-                          </button>
-                        </div>
-                      </div>
-                    </SwiperSlide>
-                  ))}
-              </Swiper>
-            </TabPanel>
-            <TabPanel>
-              <Swiper {...params}>
-                {products
-                  .filter((product) => product?.child_sub_category?.name?.toLowerCase() === "king")
-                  .map((product) => (
-                    <SwiperSlide key={product.id}>
-                      <div className="relative w-60 max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 border mt-5 object-fit">
-                        <img
-                          className="p-4 rounded-t-lg object-fit"
-                          src={product.primary_photo}
-                          alt={product.name}
-                          onClick={() => openModal(product)}
-                        />
-                        <div className="absolute top-0 right-0 p-2 opacity-0 hover:opacity-100 transition duration-300 ">
-                          <RiShoppingBasketFill
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                          <MdFavorite
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                          <RiExchangeFill
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                        </div>
-                        <div className="px-5 pb-5">
-                          <ReactStars
-                            count={5}
-                            size={24}
-                            value={5}
-                            edit={false}
-                            activeColor="#ffd700"
-                          />
-                          <Link href={`/Shop/product/${product.id}`}>
-                            <h5 className="text-l font-semibold tracking-tight text-gray-900 dark:text-white">
-                              {product.name}
-                            </h5>
-                            <div className="flex items-center justify-between">
-                              <span className="text-xl font-bold text-red-900 dark:text-white">
-                                Price: TK {product.price}
-                              </span>
-                            </div>
-                          </Link>
-                          <button
-                            className="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
-                            onClick={() => handleRequestStack(product)}
-                          >
-                            Request Stock
-                          </button>
-                        </div>
-                      </div>
-                    </SwiperSlide>
-                  ))}
-              </Swiper>
-            </TabPanel>
-            <TabPanel>
-              <Swiper {...params}>
-                {products
-                  .filter((product) => product?.child_sub_category?.name?.toLowerCase() === "semi-double")
-                  .map((product) => (
-                    <SwiperSlide key={product.id}>
-                      <div className="relative w-60 max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 border mt-5 object-fit">
-                        <img
-                          className="p-4 rounded-t-lg object-fit"
-                          src={product.primary_photo}
-                          alt={product.name}
-                          onClick={() => openModal(product)}
-                        />
-                        <div className="absolute top-0 right-0 p-2 opacity-0 hover:opacity-100 transition duration-300 ">
-                          <RiShoppingBasketFill
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                          <MdFavorite
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                          <RiExchangeFill
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                        </div>
-                        <div className="px-5 pb-5">
-                          <ReactStars
-                            count={5}
-                            size={24}
-                            value={5}
-                            edit={false}
-                            activeColor="#ffd700"
-                          />
-                          <Link href={`/Shop/product/${product.id}`}>
-                            <h5 className="text-l font-semibold tracking-tight text-gray-900 dark:text-white">
-                              {product.name}
-                            </h5>
-                            <div className="flex items-center justify-between">
-                              <span className="text-xl font-bold text-red-900 dark:text-white">
-                                Price: TK {product.price}
-                              </span>
-                            </div>
-                          </Link>
-                          <button
-                            className="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
-                            onClick={() => handleRequestStack(product)}
-                          >
-                            Request Stock
-                          </button>
-                        </div>
-                      </div>
-                    </SwiperSlide>
-                  ))}
-              </Swiper>
-            </TabPanel>
-            <TabPanel>
-              <Swiper {...params}>
-                {products
-                  .filter((product) => product?.child_sub_category?.name?.toLowerCase() === "single")
-                  .map((product) => (
-                    <SwiperSlide key={product.id}>
-                      <div className="relative w-60 max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 border mt-5 object-fit">
-                        <img
-                          className="p-4 rounded-t-lg object-fit"
-                          src={product.primary_photo}
-                          alt={product.name}
-                          onClick={() => openModal(product)}
-                        />
-                        <div className="absolute top-0 right-0 p-2 opacity-0 hover:opacity-100 transition duration-300 ">
-                          <RiShoppingBasketFill
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                          <MdFavorite
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                          <RiExchangeFill
-                            size={34}
-                            color="#fff"
-                            className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-                          />
-                        </div>
-                        <div className="px-5 pb-5">
-                          <ReactStars
-                            count={5}
-                            size={24}
-                            value={5}
-                            edit={false}
-                            activeColor="#ffd700"
-                          />
-                          <Link href={`/Shop/product/${product.id}`}>
-                            <h5 className="text-l font-semibold tracking-tight text-gray-900 dark:text-white">
-                              {product.name}
-                            </h5>
-                            <div className="flex items-center justify-between">
-                              <span className="text-xl font-bold text-red-900 dark:text-white">
-                                Price: TK {product.price}
-                              </span>
-                            </div>
-                          </Link>
-                          <button
-                            className="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
-                            onClick={() => handleRequestStack(product)}
-                          >
-                            Request Stock
-                          </button>
-                        </div>
-                      </div>
-                    </SwiperSlide>
-                  ))}
-              </Swiper>
-            </TabPanel>
+                      </SwiperSlide>
+                    ))
+                  ) : (
+                    <div className="text-center py-10">
+                      No products available in this category
+                    </div>
+                  )}
+                </Swiper>
+              </TabPanel>
+            ))}
           </div>
         </Tabs>
       </div>
@@ -402,6 +205,61 @@ const ProductsTabs = ({ products }) => {
       )}
       <ProductModal product={selectedProduct} onClose={closeModal} />
     </>
+  );
+};
+
+const ProductCard = ({ product, openModal, handleRequestStack }) => {
+  return (
+    <div className="relative w-60 max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 border mt-5 object-fit">
+      <img
+        className="p-4 rounded-t-lg object-fit"
+        src={product.primary_photo}
+        alt={product.name}
+        onClick={() => openModal(product)}
+      />
+      <div className="absolute top-0 right-0 p-2 opacity-0 hover:opacity-100 transition duration-300 ">
+        <RiShoppingBasketFill
+          size={34}
+          color="#fff"
+          className="bg-[#999] hover:bg-[#009688] m-2 p-2"
+        />
+        <MdFavorite
+          size={34}
+          color="#fff"
+          className="bg-[#999] hover:bg-[#009688] m-2 p-2"
+        />
+        <RiExchangeFill
+          size={34}
+          color="#fff"
+          className="bg-[#999] hover:bg-[#009688] m-2 p-2"
+        />
+      </div>
+      <div className="px-5 pb-5">
+        <ReactStars
+          count={5}
+          size={24}
+          value={5}
+          edit={false}
+          activeColor="#ffd700"
+        />
+        <Link href={`/Shop/product/${product.id}`}>
+          <h5 className="text-l font-semibold tracking-tight text-gray-900 dark:text-white">
+            {product.name}
+          </h5>
+          <div className="flex items-center justify-between">
+            <span className="text-xl font-bold text-red-900 dark:text-white">
+              Price: TK {product.price}
+            </span>
+          </div>
+        </Link>
+        <button
+          className="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
+          onClick={() => handleRequestStack(product)}
+        >
+          Request Stock
+        </button>
+      </div>
+    </div>
   );
 };
 
