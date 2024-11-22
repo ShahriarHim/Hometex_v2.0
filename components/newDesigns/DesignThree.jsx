@@ -121,8 +121,15 @@ const HotDealsCarousel = () => {
             slidesPerView={4}
             spaceBetween={20}
             navigation={false}
-            modules={[Navigation]}
+            modules={[Navigation, Autoplay]}
             className="mySwiper"
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true
+            }}
+            loop={true}
+            speed={1000}
             breakpoints={{
               320: {
                 slidesPerView: 1,
