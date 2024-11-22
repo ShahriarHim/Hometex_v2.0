@@ -1,69 +1,29 @@
-import React, { useRef } from "react";
-import { HiOutlineMailOpen, HiOutlinePlay } from "react-icons/hi";
+import { useRef } from "react"
 
-const DesignTwelve = () => {
-  const videoRef = useRef(null);
-
-  const playVideo = () => {
-    const video = videoRef.current;
-
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-  };
-
+export default function Newsletter() {
   return (
-    <div className="max-w-screen-xl mx-auto p-4 flex flex-col md:flex-row">
-      {/* Left Side - Video */}
-      <div className="w-full md:w-7/10 h-80 md:h-auto relative overflow-hidden mb-4 md:mb-0 p-4">
-        <video
-          ref={videoRef}
-          className="w-full h-full cursor-pointer"
-          loop
-          controls
-        >
-          {/* <source src="videos/vv1.mp4" type="video/mp4" /> */}
-          Your browser does not support the video tag.
-        </video>
-        <div
-          className="w-12 h-12 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer"
-          onClick={playVideo}
-        >
-          <span className="text-5xl text-yellow-400">
-            <HiOutlinePlay />
-          </span>
-        </div>
-      </div>
-
-      {/* Right Side - Newsletter */}
-      <div className="w-full md:w-3/10 p-4">
-        <div className="text-center">
-          <h2 className="text-3xl md:text-4xl py-5 font-bold">Newsletter</h2>
-          <div className="w-10 h-1 bg-yellow-500 mx-auto my-2"></div>
-          <p className="py-5 text-xl md:text-base">
-            You may unsubscribe at any moment. For that purpose, please find our
-            contact info.
-          </p>
-          <div
-            className="text-yellow-600 py-6 text-4xl md:text-6xl"
-            style={{ textAlign: "-webkit-center" }}
-          >
-            <HiOutlineMailOpen />
+    <div className="max-w-screen-xl mx-auto p-4 space-y-8">
+      {/* Newsletter Section */}
+      <div className="bg-purple-800 rounded-lg p-8 text-white shadow-lg transition-transform transform hover:scale-105">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="space-y-2 sm:w-1/2">
+            <h2 className="text-4xl font-extrabold text-center sm:text-left">Join Our Newsletter</h2>
+            <p className="text-purple-200 text-center sm:text-left whitespace-nowrap">
+              Get recommendations, tips, updates, promotions, and more.
+            </p>
           </div>
-          <input
-            type="email"
-            className="w-full border border-gray-300 p-2 mb-4"
-            placeholder="Enter your email"
-          />
-          <button className="w-full bg-yellow-500 text-white py-2 rounded">
-            Subscribe
-          </button>
+          <div className="flex w-full sm:w-auto gap-2">
+            <input
+              type="email"
+              placeholder="Your email address..."
+              className="flex-1 rounded-full px-4 py-3 text-purple-900 placeholder:text-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition duration-200 ease-in-out"
+            />
+            <button className="bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-full font-semibold transition-colors duration-200 ease-in-out shadow-md hover:shadow-lg">
+              SUBSCRIBE
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  );
-};
-
-export default DesignTwelve;
+  )
+}
