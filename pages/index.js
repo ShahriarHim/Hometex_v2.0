@@ -170,7 +170,7 @@ const Home = () => {
         <DesignFour />
         <DesignNine />
         <DesignTwelve />
-        <CostomerCount />
+        {/* <CostomerCount /> */}
         <Prefooter2 />
       </Suspense>
     </>
