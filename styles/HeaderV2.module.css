@@ -44,14 +44,17 @@
 .logo-section {
   position: relative;
   margin-left: 5%;
+
 }
 
 .logo {
+
   font-size: 24px;
   font-weight: bold;
   color: #ff4081; /* Pink */
   cursor: pointer;
 }
+
 
 /* Dropdown */
 .categories-dropdown {
