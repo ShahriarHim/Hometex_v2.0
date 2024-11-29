@@ -11,9 +11,10 @@ const Header = () => {
             <div className={styles["top-bar"]}>
                 <div className={styles["top-left"]}>
                     <span>ENG</span>
-                    <span>$ USD</span>
+                    <span>৳ Taka</span>
                 </div>
                 <div className={styles["top-center"]}>
+
                     Get 20% off today with code <strong>XTORE</strong>. Limited stock!
                 </div>
                 <div className={styles["top-right"]}>
@@ -25,7 +26,13 @@ const Header = () => {
             {/* Main Section with Logo, Search Bar, and Icons */}
             <div className={styles["main-nav"]}>
                 <div className={styles["logo-section"]}>
-                    <div className={styles.logo}>XTORE</div>
+                    <div className={styles.logo}>
+                    <img
+                            src="/images/hometex-logo.png"
+                            alt="HomeTex"
+                            // className={styles["icon-image"]}
+                        />
+                    </div>
                 </div>
 
                 <div className={styles["search-bar"]}>
