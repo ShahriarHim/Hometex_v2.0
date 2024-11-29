@@ -3,6 +3,7 @@ import AdPromotionSection from "./AdPromotionSection";
 import Footer2 from "./Footer2";
 import Header3 from "./Header3";
 import Header4 from './Header4';
+import Header_v2 from './Header_v2';    
 import MyAccount from '@/pages/account/MyAccount';
 import ThreeLayer from '../additional/ThreeLayer';
 
@@ -30,8 +31,9 @@ const Layout = ({ children }) => {
                     {/* <AdPromotionSection /> */}
                     {/* <ThreeLayer/>
                     <Header3 key="header" /> */}
+                    <Header_v2/>
                     <main className="">{children}</main>
-                    {/* <Footer2 key="footer" /> */}
+                    <Footer2 key="footer" />
                 </>
             );
         }
