@@ -4,8 +4,10 @@ import Footer2 from "./Footer2";
 import Header3 from "./Header3";
 import Header4 from './Header4';
 import Header_v2 from './Header_v2';    
+import Header_exp from './Header_exp';
 import MyAccount from '@/pages/account/MyAccount';
 import ThreeLayer from '../additional/ThreeLayer';
+
 
 const Layout = ({ children }) => {
     const router = useRouter();
@@ -29,9 +31,10 @@ const Layout = ({ children }) => {
             return (
                 <>
                     {/* <AdPromotionSection /> */}
-                    {/* <ThreeLayer/>
-                    <Header3 key="header" /> */}
-                    <Header_v2/>
+                    {/* <ThreeLayer/> */}
+                    {/* <Header3 key="header" /> */}
+
+                    <Header_exp key="header" />
                     <main className="">{children}</main>
                     <Footer2 key="footer" />
                 </>
