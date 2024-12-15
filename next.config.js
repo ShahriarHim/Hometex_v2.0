@@ -3,7 +3,11 @@ const nextConfig = {
   reactStrictMode: true,
 }
 
-module.exports = nextConfig;
+// next.config.js
+module.exports = {
+  swcMinify: true,  // Enable SWC minification
+}
+
 
 
 
