@@ -120,10 +120,10 @@ const Home = () => {
 
   return (
     <>
-      <FirstOrderPopup />
+      {/* <FirstOrderPopup /> */}
       {showPaymentSuccessPopup && <SuccessfulPaymentPopup onClose={handleClosePopup1} />}
       <MainSlider />
-      <NewCustomerPopup />
+      {/* <NewCustomerPopup /> */}
 
       {isVisible && (
         <>
@@ -153,7 +153,7 @@ const Home = () => {
           <FaPhoneAlt size={18} />
         </button>
       )}
-      {showCashbackPopup && <CashbackPopup onClose={handleCashbackClosePopup} />}
+      {/* {showCashbackPopup && <CashbackPopup onClose={handleCashbackClosePopup} />} */}
       {showCookiesPopup && <CookiesPopup onClose={handleClosePopup} />}
       {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
 
