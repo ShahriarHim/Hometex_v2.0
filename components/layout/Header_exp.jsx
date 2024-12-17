@@ -15,7 +15,9 @@ import { HiOutlineGift } from 'react-icons/hi';
 const HeaderExp = () => {
     const [categories, setCategories] = useState([]);
     const [location, setLocation] = useState('Location');
+    const [selectedId, setSelectedId] = useState(null);  
     const [showAllCategories, setShowAllCategories] = useState(false);
+
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
         positionOptions: {
             enableHighAccuracy: true,
@@ -34,19 +36,27 @@ const HeaderExp = () => {
     }, [coords]);
 
     // Fetch categories, subcategories, and child categories from the API
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await fetch(`${Constants.BASE_URL}/api/product/menu`);
-                const data = await response.json();
-                setCategories(data); // Assuming the API returns an array of categories
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            }
-        };
+   // Fetch categories from API
+   const fetchCategories = async () => {
+    try {
+        const response = await fetch(`${Constants.BASE_URL}/api/product-menu/horizontal`);
+        const result = await response.json();
+        console.log("Fetched Data:", result.data); // Verify the data structure
+        setCategories(result.data); // Set the fetched categories
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+    }
+};
 
-        fetchCategories();
-    }, []);
+useEffect(() => {
+    fetchCategories();
+}, []);
+
+// Click handler for "All Categories"
+const handleCategoryClick = (id) => {
+    console.log("Clicked Category ID:", id);
+    setSelectedId(id); // Store the clicked category ID
+};
 
     return (
         <>
@@ -68,35 +78,35 @@ const HeaderExp = () => {
                 {/* Middle row with icons */}
                 <div className={`container-fluid ${styles.middleRow}`}>
                     {/* Left section: Categories and Search */}
-                    <div className={styles.leftSection}>
-                        <div className={styles["all-categories"]}>
-                            <button
-                                className={styles["all-categories-btn"]}
-                                onClick={() => setShowAllCategories(!showAllCategories)}
-                            >
-                                <img
-                                    src="/images/icons/icon-menu.png"
-                                    alt="Menu Icon"
-                                    className={styles["categories-icon"]}
-                                />
-                                <span className={styles["categories-text"]}>All Categories</span>
-                                <img
-                                    src="/images/icons/caret-down.png"
-                                    alt="Arrow Icon"
-                                    className={styles["dropdown-arrow"]}
-                                />
-                            </button>
-                            {showAllCategories && (
-                                <div className={styles["all-categories-dropdown"]}>
-                                    <ul>
-                                        <li>Electronics</li>
-                                        <li>Fashion</li>
-                                        <li>Home Appliances</li>
-                                        <li>Books</li>
-                                    </ul>
-                                </div>
-                            )}
+                    
+            <div className={styles.leftSection}>
+                <div className={styles["all-categories"]}>
+                    <button
+                        className={styles["all-categories-btn"]}
+                        onClick={() => setShowAllCategories(!showAllCategories)}
+                    >
+                        <img
+                            src="/images/icons/icon-menu.png"
+                            alt="Menu Icon"
+                            className={styles["categories-icon"]}
+                        />
+                        <span className={styles["categories-text"]}>All Categories</span>
+                        <img
+                            src="/images/icons/caret-down.png"
+                            alt="Arrow Icon"
+                            className={styles["dropdown-arrow"]}
+                        />
+                    </button>
+                    {showAllCategories && (
+                        <div className={styles["all-categories-dropdown"]}>
+                            <ul>
+                                {categories.map(category => (
+                                    <li key={category.id}>{category.name}</li>
+                                ))}
+                            </ul>
                         </div>
+                    )}
+                </div>
 
                         <a href="/search" className={styles.search}>
                             <FaSearch className="h-6 w-6 text-yellow-600"/>
