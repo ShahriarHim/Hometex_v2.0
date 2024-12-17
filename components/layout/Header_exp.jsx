@@ -66,7 +66,8 @@ const HeaderExp = () => {
                     return (
                         <li key={category.id} className={`${styles.menuItem} ${hasSub ? styles.hasSub : ''}`}>
                        
-                            <Link href={`/category/${category.id}`} className={styles.menuLink}>
+                            {/* Update the Link href to point to /products/[id] */}
+                            <Link href={`/products/${category.id}`} className={styles.menuLink}>
                                 {category.name} {hasSub && <FaChevronRight className={styles.subIcon} />}
                             </Link>
  
@@ -75,14 +76,19 @@ const HeaderExp = () => {
                                     <ul className={styles.subMenu}>
                                         {category.sub && category.sub.map((sub) => (
                                             <li key={sub.id} className={styles.subMenuItem}>
-                                                {sub.name}
+                                                {/* Update subcategory links if needed */}
+                                                <Link href={`/products/${sub.id}`}>
+                                                    {sub.name}
+                                                </Link>
 
                                                 {/* Child Subcategories */}
                                                 {sub.child && sub.child.length > 0 && (
                                                     <ul className={styles.childMenu}>
                                                         {sub.child.map((child) => (
                                                             <li key={child.id} className={styles.childItem}>
-                                                                {child.name}
+                                                                <Link href={`/products/${child.id}`}>
+                                                                    {child.name}
+                                                                </Link>
                                                             </li>
                                                         ))}
                                                     </ul>

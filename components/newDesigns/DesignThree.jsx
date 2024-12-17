@@ -5,49 +5,42 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Autoplay } from 'swiper'
 import ProductCard from "../home/ProductsTabs"
 import styles from "../../styles/DesignThree.module.css"
-// Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/autoplay'
 
 const HotDealsCarousel = () => {
-  const products = [
-    {
-      img: "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200",
-      discount: "-8%",
-      name: "Security Camera with Night Vision Full HD",
-      price: "$45.00",
-      originalPrice: "$49.00",
-    },
-    {
-      img: "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200",
-      discount: "-27%",
-      name: "iPhone 15 Pro Max Natural Titan",
-      price: "$72.00",
-      originalPrice: "$98.00",
-    },
-    {
-      img: "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200",
-      discount: "-20%",
-      name: "Hydrating Mineral Sunscreen",
-      price: "$60.00",
-      originalPrice: "$75.00",
-    },
-    {
-      img: "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200",
-      discount: "-9%",
-      name: "Hydrating Camo Concealer",
-      price: "$48.00",
-      originalPrice: "$53.00",
-    },
-    {
-      img: "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200",
-      discount: "-21%",
-      name: "Under Armour Basketball Shoe",
-      price: "$68.00",
-      originalPrice: "$86.00",
-    },
-  ]
+  const placeholderImages = [
+    "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200",
+    "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200",
+    "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200"
+  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('https://htbapi.hometexbd.ltd/api/product/hot');
+        const data = await response.json();
+        
+        const transformedProducts = data.data.map(product => ({
+          img: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
+          discount: product.discount_percent ? `-${product.discount_percent}%` : null,
+          name: product.name,
+          price: `$${product.price.toFixed(2)}`,
+          originalPrice: product.discount_percent ? `$${(product.price / (1 - product.discount_percent / 100)).toFixed(2)}` : `$${product.price.toFixed(2)}`,
+        }));
+
+        setProducts(transformedProducts);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+ 
+
 
   const [timeLeft, setTimeLeft] = useState({
     days: 939,
@@ -202,7 +195,6 @@ const HotDealsCarousel = () => {
               </SwiperSlide>
             ))}
 
-            {/* Add cloned slides for infinite loop */}
             {products.map((product, index) => (
               <SwiperSlide key={`cloned-after-${index}`} className="owl2-item cloned">
                 <ProductCard product={product} />
