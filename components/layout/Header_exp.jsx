@@ -7,8 +7,7 @@ import PreHeader from './PreHeader';
 import Constants from '@/ults/Constant';
 import {
     FaUser, FaHeart, FaHome, FaMapMarkerAlt, FaSearch, FaShoppingCart,
-    FaBriefcase,
-    FaCommentDots,
+    FaBriefcase, FaCommentDots, FaChevronRight
 } from "react-icons/fa";
 import { HiOutlineGift } from 'react-icons/hi';
 
@@ -63,22 +62,21 @@ const HeaderExp = () => {
             <ul className={styles.dropdownMenu}>
                 {categories.map((category) => {
                     const hasSub = (category.sub && category.sub.length > 0) || (category.child && category.child.length > 0);
-    
+
                     return (
                         <li key={category.id} className={`${styles.menuItem} ${hasSub ? styles.hasSub : ''}`}>
-                            {/* Parent Category */}
+                       
                             <Link href={`/category/${category.id}`} className={styles.menuLink}>
-                                {category.name} {hasSub && '>'}
+                                {category.name} {hasSub && <FaChevronRight className={styles.subIcon} />}
                             </Link>
-    
-                            {/* Subcategories shown on the right */}
+ 
                             {hasSub && (
                                 <div className={styles.subMenuContainer}>
                                     <ul className={styles.subMenu}>
                                         {category.sub && category.sub.map((sub) => (
                                             <li key={sub.id} className={styles.subMenuItem}>
                                                 {sub.name}
-    
+
                                                 {/* Child Subcategories */}
                                                 {sub.child && sub.child.length > 0 && (
                                                     <ul className={styles.childMenu}>
@@ -100,7 +98,6 @@ const HeaderExp = () => {
             </ul>
         );
     };
-    
 
     return (
         <>
@@ -125,10 +122,8 @@ const HeaderExp = () => {
                                     className={styles["categories-icon"]}
                                 />
                                 <span className={styles["categories-text"]}>All Categories</span>
-                                <img
-                                    src="/images/icons/caret-down.png"
-                                    alt="Arrow Icon"
-                                    className={styles["dropdown-arrow"]}
+                                <FaChevronRight 
+                                    className={`${styles["dropdown-arrow"]} ${showAllCategories ? styles.rotated : ''}`}
                                 />
                             </button>
                             {(showAllCategories || isDropdownHovered) && (

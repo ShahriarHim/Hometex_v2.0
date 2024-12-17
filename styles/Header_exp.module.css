@@ -280,6 +280,7 @@
   position: relative; /* Ensures child elements are positioned relative to this */
   padding: 10px 15px;
   cursor: pointer;
+  width: 190px;
 }
 
 .menuLink {
