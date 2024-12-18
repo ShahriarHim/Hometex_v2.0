@@ -40,7 +40,7 @@ const HeaderExp = () => {
         try {
             const response = await fetch(`${Constants.BASE_URL}/api/product-menu/horizontal`);
             const result = await response.json();
-            console.log("Fetched Data:", result.data); // Verify the data structure
+            // console.log("Fetched Data:", result.data); // Verify the data structure
             setCategories(result.data); // Set the fetched categories
         } catch (error) {
             console.error("Error fetching categories:", error);
@@ -66,9 +66,11 @@ const HeaderExp = () => {
                     return (
                         <li key={category.id} className={`${styles.menuItem} ${hasSub ? styles.hasSub : ''}`}>
                        
-                            {/* Update the Link href to point to /products/[id] */}
                             <Link href={`/products/${category.id}`} className={styles.menuLink}>
-                                {category.name} {hasSub && <FaChevronRight className={styles.subIcon} />}
+                                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    {category.name}
+                                    {hasSub && <FaChevronRight className={styles.subIcon} />}
+                                </span>
                             </Link>
  
                             {hasSub && (
@@ -76,9 +78,10 @@ const HeaderExp = () => {
                                     <ul className={styles.subMenu}>
                                         {category.sub && category.sub.map((sub) => (
                                             <li key={sub.id} className={styles.subMenuItem}>
-                                                {/* Update subcategory links if needed */}
                                                 <Link href={`/products/${sub.id}`}>
-                                                    {sub.name}
+                                                    <div className={styles.subMenuName}>
+                                                        <strong>{sub.name}</strong>
+                                                    </div>
                                                 </Link>
 
                                                 {/* Child Subcategories */}

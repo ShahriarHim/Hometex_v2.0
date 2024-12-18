@@ -342,3 +342,91 @@
 .childItem:hover {
   background-color: #ececec;
 }
+
+.subMenuContainer {
+    position: absolute;
+    left: 100%;
+    min-width: 500px;
+    background: white;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+.categoryIcon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.newBadge {
+    background: #ff4444;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    margin-left: 8px;
+}
+
+.menuItem {
+    position: relative;
+    width: 250px; /* Adjust main menu item width */
+}
+
+.childIcon {
+    font-size: 0.8rem;
+    margin-left: auto;
+    opacity: 0.6;
+}
+
+.subMenuName {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.subMenu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.subMenuItem {
+    /* For items with children */
+    min-width: calc(50% - 10px); /* 50% width minus half the gap */
+}
+
+/* Special case for items without children */
+.subMenuItem:not(:has(.childMenu)) {
+    min-width: 100%;
+    margin-bottom: 0;
+}
+
+.childMenu {
+    margin-top: 8px;
+}
+
+.childItem {
+    padding: 4px 0;
+}
+
+.subMenuItem > a {
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.subMenuItem > a:hover {
+    transform: translateX(5px); /* Moves text right on hover */
+    color: #5a5ae0; /* Optional: change color on hover */
+}
+
+.childItem > a {
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.childItem > a:hover {
+    transform: translateX(5px); /* Moves text right on hover */
+    color: #5a5ae0; /* Optional: change color on hover */
+}

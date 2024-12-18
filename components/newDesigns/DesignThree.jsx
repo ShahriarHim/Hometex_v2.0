@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Autoplay } from 'swiper'
-import ProductCard from "../home/ProductsTabs"
+import ProductCard from './ProductCard'
 import styles from "../../styles/DesignThree.module.css"
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -25,10 +25,11 @@ const HotDealsCarousel = () => {
         
         const transformedProducts = data.data.map(product => ({
           img: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
-          discount: product.discount_percent ? `-${product.discount_percent}%` : null,
+          discount: product.discount_percent ? product.discount_percent : null,
           name: product.name,
-          price: `$${product.price.toFixed(2)}`,
-          originalPrice: product.discount_percent ? `$${(product.price / (1 - product.discount_percent / 100)).toFixed(2)}` : `$${product.price.toFixed(2)}`,
+          price: product.sell_price.price + product.sell_price.symbol,
+          originalPrice: product.original_price + product.sell_price.symbol,
+          star: product.star || 0,
         }));
 
         setProducts(transformedProducts);
@@ -140,58 +141,7 @@ const HotDealsCarousel = () => {
           >
             {products.map((product, index) => (
               <SwiperSlide key={index} className="owl2-item active">
-<div className={styles['product-item-container']}>
-  <div className={styles['product-image-container']}>
-    {product.discount && (
-      <div className={styles['discount-badge']}>
-        {product.discount}
-      </div>
-    )}
-    
-    <a href="#" title={product.name}>
-      <img
-        src={product.img}
-        alt={product.name}
-        className="img-fluid"
-      />
-    </a>
-    
-    <div className={styles.overlay}>
-      <div className={styles['button-group']}>
-        <button title="Add to Cart">
-          <i className="fas fa-shopping-basket" style={{ fontSize: '16px' }}></i>
-        </button>
-        <button title="Add to Wish List">
-          <i className="fas fa-heart" style={{ fontSize: '16px' }}></i>
-        </button>
-        <button title="Compare">
-          <i className="fas fa-retweet" style={{ fontSize: '16px' }}></i>
-        </button>
-        <button title="Quick View">
-          <i className="fas fa-eye" style={{ fontSize: '16px' }}></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div className="right-block">
-    <div className="caption">
-      <h4><a href="#">{product.name}</a></h4>
-      <div className={styles.rating}>
-        {[1, 2, 3, 4, 5].map((star, index) => (
-          <span key={index} className={styles.star}>
-            <i className={`fas fa-star ${index < (product.rating || 3) ? '' : styles['star-empty']}`}></i>
-          </span>
-        ))}
-      </div>
-      <div className={styles['price-container']}>
-        <span className={styles['price-new']}>{product.price}</span>
-        <span className={styles['price-old']}>{product.originalPrice}</span>
-      </div>
-    </div>
-  </div>
-</div>
-
+                <ProductCard product={product} />
               </SwiperSlide>
             ))}
 
