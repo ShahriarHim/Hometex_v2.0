@@ -39,7 +39,7 @@ const ProductCard = ({ product }) => {
 
       <div className="right-block">
         <div className="caption">
-          <h4><a href="#">{product.name}</a></h4>
+          <h4 style={{ textAlign: 'center' }}><a href="#">{product.name}</a></h4>
           <div className={styles.rating}>
             {[1, 2, 3, 4, 5].map((star, index) => (
               <span key={index} className={styles.star}>

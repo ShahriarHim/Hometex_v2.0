@@ -8,24 +8,22 @@ import styles from "../../styles/DesignThree.module.css"
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/autoplay'
+import Constants from '@/ults/Constant';
 
 const HotDealsCarousel = () => {
-  const placeholderImages = [
-    "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200",
-    "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200",
-    "https://static-01.daraz.com.bd/p/7128ff73c173be97bc8a1a727d2dcc58.jpg?height=200&width=200"
-  ];
+ 
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('https://htbapi.hometexbd.ltd/api/product/hot');
+        const response = await fetch(`${Constants.BASE_URL}/api/product/trending`);
         const data = await response.json();
+        console.log("eg ae  ",data);
         
         const transformedProducts = data.data.map(product => ({
-          img: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
-          discount: product.discount_percent ? product.discount_percent : null,
+          img: product.primary_photo,
+          discount: product.sell_price.discount ? product.sell_price.discount : null,
           name: product.name,
           price: product.sell_price.price + product.sell_price.symbol,
           originalPrice: product.original_price + product.sell_price.symbol,

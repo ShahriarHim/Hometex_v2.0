@@ -10,6 +10,7 @@ import {
     FaBriefcase, FaCommentDots, FaChevronRight
 } from "react-icons/fa";
 import { HiOutlineGift } from 'react-icons/hi';
+import { Sticky } from '../home/Sticky';
 
 const HeaderExp = () => {
     const [categories, setCategories] = useState([]);
@@ -110,7 +111,9 @@ const HeaderExp = () => {
 
     return (
         <>
+
             <PreHeader />
+            <Sticky />
             <header className={styles.headerExp}>
                 {/* Middle row with icons */}
                 <div className={`container-fluid ${styles.middleRow}`}>
