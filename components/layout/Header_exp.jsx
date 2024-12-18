@@ -152,8 +152,10 @@ const HeaderExp = () => {
                     </div>
 
                     {/* Center Logo */}
-                    <div className={styles.centerLogo}>
-                        <img src="/images/hometex-logo.png" alt="Hometex Bangladesh" />
+                    <div className={styles.centerLogo} >
+                        <Link href="/">
+                            <img src="/images/hometex-logo.png" alt="Hometex Bangladesh" />
+                        </Link>
                     </div>
 
                     {/* Right section: Icons */}
