@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import ProductCard from '@/components/newDesigns/ProductCard';
+import ProductGridCard from '@/components/newDesigns/ProductGridCard';
 import Constants from '@/ults/Constant';
+import styles from '../../styles/Gridbox.module.css';  
 
 const ProductPage = () => {
     const router = useRouter();
@@ -134,22 +136,54 @@ const ProductPage = () => {
     }
 
     return (
-        <div style={{ padding: '10px', maxWidth: '200px', margin: '0 auto' }}>
-            {error && <div style={{ color: 'red', marginBottom: '20px' }}>{error}</div>}
-            <div style={{ marginBottom: '20px' }}>
-                <button onClick={() => toggleView('card')}>Card View</button>
-                <button onClick={() => toggleView('photo')}>Photo View</button>
+        <div className="container mx-auto px-4 py-8">
+            {error && (
+                <div className="text-red-500 text-center mb-6">{error}</div>
+            )}
+            
+            {/* View Toggle Buttons */}
+            <div className="flex justify-end mb-6 gap-2">
+                <button 
+                    onClick={() => toggleView('card')}
+                    className={`px-4 py-2 rounded-lg border ${
+                        viewMode === 'card' 
+                            ? 'bg-purple-600 text-white' 
+                            : 'bg-white text-gray-700'
+                    }`}
+                >
+                    Card View
+                </button>
+                <button 
+                    onClick={() => toggleView('photo')}
+                    className={`px-4 py-2 rounded-lg border ${
+                        viewMode === 'photo' 
+                            ? 'bg-purple-600 text-white' 
+                            : 'bg-white text-gray-700'
+                    }`}
+                >
+                    Grid View
+                </button>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
+            {/* Products Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 {viewMode === 'card' && products.map((product, index) => (
-                    <div key={index} style={{ flex: '1 1 calc(25% - 20px)', boxSizing: 'border-box' }}>
+                    <div key={index}>
                         <ProductCard product={product} />
                     </div>
                 ))}
                 {viewMode === 'photo' && products.map((product, index) => (
-                    <div key={index} style={{ flex: '1 1 calc(25% - 20px)', boxSizing: 'border-box' }}>
-                        <img src={product.img} alt={product.name} style={{ width: '100%' }} />
+                    <div key={index}>
+                        <ProductGridCard 
+                            product={{
+                                ...product,
+                                image: product.img,
+                                id: index,
+                                rating: 4,
+                                price: product.price.replace(/[^\d.]/g, ''), // Remove currency symbol
+                                originalPrice: product.originalPrice.replace(/[^\d.]/g, ''), // Remove currency symbol
+                            }} 
+                        />
                     </div>
                 ))}
             </div>
