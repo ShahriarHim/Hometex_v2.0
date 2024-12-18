@@ -66,20 +66,19 @@ const HeaderExp = () => {
 
                     return (
                         <li key={category.id} className={`${styles.menuItem} ${hasSub ? styles.hasSub : ''}`}>
-                       
-                            <Link href={`/products/${category.id}`} className={styles.menuLink}>
+                            <Link href={`/products/${category.name.toLowerCase()}`} className={styles.menuLink}>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                     {category.name}
                                     {hasSub && <FaChevronRight className={styles.subIcon} />}
                                 </span>
                             </Link>
- 
+
                             {hasSub && (
                                 <div className={styles.subMenuContainer}>
                                     <ul className={styles.subMenu}>
                                         {category.sub && category.sub.map((sub) => (
                                             <li key={sub.id} className={styles.subMenuItem}>
-                                                <Link href={`/products/${sub.id}`}>
+                                                <Link href={`/products/${category.name.toLowerCase()}/${sub.name.toLowerCase()}`}>
                                                     <div className={styles.subMenuName}>
                                                         <strong>{sub.name}</strong>
                                                     </div>
@@ -90,7 +89,7 @@ const HeaderExp = () => {
                                                     <ul className={styles.childMenu}>
                                                         {sub.child.map((child) => (
                                                             <li key={child.id} className={styles.childItem}>
-                                                                <Link href={`/products/${child.id}`}>
+                                                                <Link href={`/products/${category.name.toLowerCase()}/${sub.name.toLowerCase()}/${child.name.toLowerCase()}`}>
                                                                     {child.name}
                                                                 </Link>
                                                             </li>
