@@ -18,6 +18,8 @@ const HeaderExp = () => {
     const [selectedId, setSelectedId] = useState(null);  
     const [showAllCategories, setShowAllCategories] = useState(false);
     const [isDropdownHovered, setIsDropdownHovered] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [dropdownTimeout, setDropdownTimeout] = useState(null);
 
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
         positionOptions: {
@@ -108,6 +110,35 @@ const HeaderExp = () => {
         );
     };
 
+    // Add hover and delay methods
+    const handleMouseEnter = () => {
+        // Clear any existing timeout
+        if (dropdownTimeout) {
+            clearTimeout(dropdownTimeout);
+        }
+        
+        // Delay showing dropdown to prevent accidental triggers
+        const timeout = setTimeout(() => {
+            setIsDropdownOpen(true);
+        }, 100);  // 100ms delay
+        
+        setDropdownTimeout(timeout);
+    };
+
+    const handleMouseLeave = () => {
+        // Clear any existing timeout
+        if (dropdownTimeout) {
+            clearTimeout(dropdownTimeout);
+        }
+        
+        // Delay hiding dropdown
+        const timeout = setTimeout(() => {
+            setIsDropdownOpen(false);
+        }, 200);  // 200ms delay for smoother interaction
+        
+        setDropdownTimeout(timeout);
+    };
+
     return (
         <>
 
@@ -120,8 +151,8 @@ const HeaderExp = () => {
                     <div className={styles.leftSection}>
                         <div 
                             className={styles["all-categories"]}
-                            onMouseEnter={() => setIsDropdownHovered(true)}
-                            onMouseLeave={() => setIsDropdownHovered(false)}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         >
                             <button
                                 className={styles["all-categories-btn"]}
@@ -134,11 +165,15 @@ const HeaderExp = () => {
                                 />
                                 <span className={styles["categories-text"]}>All Categories</span>
                                 <FaChevronRight 
-                                    className={`${styles["dropdown-arrow"]} ${showAllCategories ? styles.rotated : ''}`}
+                                    className={`${styles["dropdown-arrow"]} ${(showAllCategories || isDropdownOpen) ? styles.rotated : ''}`}
                                 />
                             </button>
-                            {(showAllCategories || isDropdownHovered) && (
-                                <div className={styles["all-categories-dropdown"]}>
+                            {(showAllCategories || isDropdownOpen) && (
+                                <div 
+                                    className={styles["all-categories-dropdown"]}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
                                     {renderCategories(categories)}
                                 </div>
                             )}

@@ -243,6 +243,10 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for dropdown */
     padding: 10px;
     z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
   }
   
   .all-categories-dropdown ul {
@@ -296,137 +300,241 @@
 
 /* Submenu Container - Shown on Right */
 .subMenuContainer {
-  position: absolute;
-  top: 0;
-  left: 100%; /* Show submenu on the right */
-  width: 250px;
-  background: #fff;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  display: none; /* Hidden until hover */
-  z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 100%; /* Show submenu on the right */
+    width: auto; /* Auto width */
+    max-width: 600px; /* Maximum width */
+    min-width: 250px; /* Minimum width */
+    max-height: 500px; /* Maximum height */
+    background: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    display: none;
+    z-index: 1000;
+    overflow: auto; /* Allow scrolling if content is too long */
+    padding: 15px; /* Add some padding */
 }
 
 .menuItem:hover > .subMenuContainer {
-  display: block; /* Show submenu on hover */
+    display: block; /* Show submenu on hover */
 }
 
 /* Submenu Items */
 .subMenu {
-  list-style: none;
-  padding: 10px;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #f9f9fc;
+    display: grid;
+    grid-template-columns: minmax(auto, 250px); /* Dynamic first column width */
+    gap: 0;
+    width: 100%; /* Full width of container */
 }
 
 .subMenuItem {
-  position: relative;
-  padding: 8px 12px;
-  cursor: pointer;
+    position: relative;
+    width: 100%; /* Full width within grid */
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f5;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+/* When there are many items, add a second column */
+.subMenu:has(.subMenuItem:nth-child(n+6)) {
+    grid-template-columns: minmax(auto, 250px) minmax(auto, 250px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .subMenuContainer {
+        width: auto;
+        max-width: 400px;
+    }
+
+    .subMenu {
+        grid-template-columns: 1fr;
+    }
+    
+    .subMenuItem {
+        grid-column: span 1;
+    }
+}
+
+.subMenuItem:last-child {
+    border-bottom: none; /* Remove border from last item */
 }
 
 .subMenuItem:hover {
-  background-color: #f9f9f9;
-}
-
-/* Child Menu - Further Submenus */
-.childMenu {
-  list-style: none;
-  padding-left: 15px; /* Indent for hierarchy */
-}
-
-.childItem {
-  padding: 6px 10px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.childItem:hover {
-  background-color: #ececec;
-}
-
-.subMenuContainer {
-    position: absolute;
-    left: 100%;
-    min-width: 500px;
-    background: white;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    z-index: 1000;
-}
-
-.categoryIcon {
-    width: 20px;
-    height: 20px;
-    margin-right: 8px;
-}
-
-.newBadge {
-    background: #ff4444;
-    color: white;
-    padding: 2px 6px;
-    border-radius: 10px;
-    font-size: 0.7rem;
-    margin-left: 8px;
-}
-
-.menuItem {
-    position: relative;
-    width: 250px; /* Adjust main menu item width */
-}
-
-.childIcon {
-    font-size: 0.8rem;
-    margin-left: auto;
-    opacity: 0.6;
+    background-color: #f0f4ff; /* Softer hover effect */
+    transform: translateX(5px); /* Slight movement on hover */
 }
 
 .subMenuName {
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    font-weight: 600;
+    color: #2a2a72;
+    transition: color 0.3s ease;
 }
 
-.subMenu {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
+.subMenuItem:hover .subMenuName {
+    color: #5a5ae0;
 }
 
-.subMenuItem {
-    /* For items with children */
-    min-width: calc(50% - 10px); /* 50% width minus half the gap */
-}
-
-/* Special case for items without children */
-.subMenuItem:not(:has(.childMenu)) {
-    min-width: 100%;
-    margin-bottom: 0;
-}
-
+/* Child Menu - Further Submenus */
 .childMenu {
-    margin-top: 8px;
+    width: 100%;
+    margin-top: 10px;
+    border-top: 1px solid #f0f0f5;
+    padding-top: 10px;
 }
 
 .childItem {
-    padding: 4px 0;
+    width: 100%;
+    padding: 8px 0;
+    font-size: 0.9em;
+    color: #666;
 }
 
-.subMenuItem > a {
+.childItem a {
     display: block;
-    transition: transform 0.2s ease;
+    text-decoration: none;
+    color: #555;
+    transition: all 0.3s ease;
 }
 
-.subMenuItem > a:hover {
-    transform: translateX(5px); /* Moves text right on hover */
-    color: #5a5ae0; /* Optional: change color on hover */
+.childItem:hover {
+    transform: translateX(5px);
 }
 
-.childItem > a {
+.childItem:hover a {
+    color: #5a5ae0;
+}
+
+/* Add some visual hierarchy */
+.menuItem {
+    position: relative;
+    width: 250px;
+    transition: background-color 0.3s ease;
+}
+
+.menuItem:hover {
+    background-color: #f6f6ff;
+}
+
+/* Hover indicator */
+.menuItem::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.menuItem:hover::after {
+    background-color: #5a5ae0;
+}
+
+/* Submenu Trigger Icon */
+.subIcon {
+    color: #aaa;
+    transition: color 0.3s ease;
+    margin-left: 10px;
+}
+
+.menuItem:hover .subIcon {
+    color: #5a5ae0;
+}
+
+.all-categories-dropdown {
+    position: absolute;
+    top: 100%; /* Positioned below the button */
+    left: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for dropdown */
+    padding: 10px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+.all-categories-btn .dropdown-arrow {
+    transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.rotated {
+    transform: rotate(90deg);
+}
+
+/* When dropdown is open */
+.all-categories-dropdown:hover,
+.all-categories:hover .all-categories-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.menuItem {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menuLink {
+    transition: color 0.3s ease;
+}
+
+/* If there are many submenu items, create a scrollable container */
+.subMenuContainer {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Scrollbar styling for webkit browsers */
+.subMenuContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.subMenuContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.subMenuContainer::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.subMenuContainer::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive column adjustment */
+@media (max-width: 1200px) {
+    .subMenuContainer {
+        width: 400px;
+    }
+    
+    .subMenuItem {
+        width: 100%;
+    }
+}
+
+/* Ensure nested menus have full width */
+.subMenuItem .subMenuContainer {
+    position: static;
     display: block;
-    transition: transform 0.2s ease;
-}
-
-.childItem > a:hover {
-    transform: translateX(5px); /* Moves text right on hover */
-    color: #5a5ae0; /* Optional: change color on hover */
+    width: 100%;
+    box-shadow: none;
+    margin-top: 10px;
 }
