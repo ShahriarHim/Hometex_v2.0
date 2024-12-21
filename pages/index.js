@@ -125,7 +125,7 @@ const Home = () => {
       <MainSlider />
       {/* <NewCustomerPopup /> */}
 
-      {isVisible && (
+      {/* {isVisible && (
         <>
           <button
             className="fixed bottom-5 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
@@ -148,11 +148,11 @@ const Home = () => {
         <button
           className="fixed bottom-28 right-4 px-4 py-4 bg-green-500 text-white rounded-full shadow-md transition duration-300 hover:bg-green-600"
           style={{ zIndex: 51 }}
-          onClick={() => { /* Add your phone functionality here */ }}
+         
         >
           <FaPhoneAlt size={18} />
         </button>
-      )}
+      )} */}
       {/* {showCashbackPopup && <CashbackPopup onClose={handleCashbackClosePopup} />} */}
       {showCookiesPopup && <CookiesPopup onClose={handleClosePopup} />}
       {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
