@@ -20,16 +20,32 @@ export const Sticky = () => {
     <div>
         {/* Sticky */}
         <div id="so-groups" className="fixed right-0 top-1/2 transform -translate-y-1/2 flex flex-col z-50 hidden md:block">
-                <Categories />
-                
-                <User />
-                <Search />
-                <RecentView />
-                <a onClick={handleClick} className="sticky-recent bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 h-12 cursor-pointer flex justify-center items-center border border-white transition-all duration-300" data-target="popup" data-popup="#popup-recent">
-                    <span className="text-xl"><FaArrowUp /></span>
-                </a>
-                <Cart />
-
+                <div className="group relative" title="Categories">
+                    <div className="tooltip">Categories</div>
+                    <Categories />
+                </div>
+                <div className="group relative" title="Account">
+                    <div className="tooltip">Account</div>
+                    <User />
+                </div>
+                <div className="group relative" title="Search">
+                    <div className="tooltip">Search</div>
+                    <Search />
+                </div>
+                <div className="group relative" title="Recently Viewed">
+                    <div className="tooltip">Recently Viewed</div>
+                    <RecentView />
+                </div>
+                <div className="group relative" title="Back to Top">
+                    <div className="tooltip">Back to Top</div>
+                    <a onClick={handleClick} className="sticky-recent bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 h-12 cursor-pointer flex justify-center items-center border border-white transition-all duration-300">
+                        <span className="text-xl"><FaArrowUp /></span>
+                    </a>
+                </div>
+                <div className="group relative" title="Shopping Cart">
+                    <div className="tooltip">Shopping Cart</div>
+                    <Cart />
+                </div>
             </div>
          
 

@@ -162,16 +162,17 @@ const Home = () => {
       <Suspense fallback={<h1>Loading...</h1>}>
         <ProductsTabs products={products} />
         <DesignFifteen />
-        <DesignEight />
+        {/* <DesignEight /> */}
         <DesignThree />
-        <DesignFive />
+        {/* <DesignFive /> */}
         <DesignSeven />
         <DesignEleven />
         <DesignFour />
         <DesignNine />
-        <DesignTwelve />
+       
         {/* <CostomerCount /> */}
         <Prefooter2 />
+        <DesignTwelve />
       </Suspense>
     </>
   );

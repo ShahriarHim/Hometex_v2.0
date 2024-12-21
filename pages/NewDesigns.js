@@ -27,7 +27,7 @@ const NewDesigns = () => {
     <DesignFive />
     <DesignSeven />
     <DesignSix />
-    <DesignEight />
+    {/* <DesignEight /> */}
     <DesignNine />
     <DesignEleven />
     <DewsignTen />

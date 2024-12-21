@@ -7,7 +7,7 @@ import PreHeader from './PreHeader';
 import Constants from '@/ults/Constant';
 import {
     FaUser, FaHeart, FaHome, FaMapMarkerAlt, FaSearch, FaShoppingCart,
-    FaBriefcase, FaCommentDots, FaChevronRight
+    FaBriefcase, FaCommentDots, FaCaretRight
 } from "react-icons/fa";
 import { HiOutlineGift } from 'react-icons/hi';
 import { Sticky } from '../home/Sticky';
@@ -71,7 +71,7 @@ const HeaderExp = () => {
                             <Link href={`/products/${category.name.toLowerCase()}`} className={styles.menuLink}>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                     {category.name}
-                                    {hasSub && <FaChevronRight className={styles.subIcon} />}
+                                    {hasSub && <FaCaretRight className={styles.subIcon} />}
                                 </span>
                             </Link>
 
@@ -164,7 +164,7 @@ const HeaderExp = () => {
                                     className={styles["categories-icon"]}
                                 />
                                 <span className={styles["categories-text"]}>All Categories</span>
-                                <FaChevronRight 
+                                <FaCaretRight 
                                     className={`${styles["dropdown-arrow"]} ${(showAllCategories || isDropdownOpen) ? styles.rotated : ''}`}
                                 />
                             </button>

@@ -10,23 +10,27 @@
 .product-item-container {
   position: relative;
   overflow: hidden;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: none;
+  border-radius: 16px;
   height: 100%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s ease;
   background-color: white;
+  padding-bottom: 15px;
 }
 
 .product-item-container:hover {
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 .product-image-container {
   position: relative;
   padding-top: 100%;
   overflow: hidden;
-  border-radius: 8px 8px 0 0;
+  border-radius: 16px;
+  margin: 12px;
+  background-color: #f8f9fa;
 }
 
 .product-image-container img {
@@ -72,9 +76,9 @@
 }
 
 .button-group button {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   background: white;
   border: none;
   display: flex;
@@ -85,7 +89,7 @@
   color: #333;
   opacity: 0;
   transform: translateX(20px);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .button-group button i {
@@ -169,54 +173,43 @@
 
 .discount-badge {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 12px;
+  left: 12px;
   background: #ff0066;
   color: white;
-  padding: 8px 12px;
-  border-radius: 0 0 12px 0;
-  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
   font-size: 0.875rem;
   z-index: 2;
-  box-shadow: 0 3px 10px rgba(255, 0, 102, 0.3);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 0, 102, 0.25);
 }
 
 .discount-badge::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: -10px;
-  width: 10px;
-  height: 100%;
-  background: linear-gradient(to right bottom, #ff0066, transparent);
-}
-
-.product-image-container:hover .discount-badge {
-  opacity: 0;
-  transform: translateY(-20px);
-  pointer-events: none;
+  display: none;
 }
 
 .price-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
-  margin-top: 10px;
-  padding: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-top: 12px;
+  padding: 8px;
+  background: linear-gradient(to right, rgba(255,0,102,0.05), transparent);
+  border-radius: 8px;
 }
 
 .price-new {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: #ff0066;
+  letter-spacing: -0.5px;
 }
 
 .price-old {
   font-size: 1rem;
-  color: #999;
+  color: #aab;
   text-decoration: line-through;
 }
 
@@ -244,6 +237,7 @@
   border-radius: 1px;
   background-image: linear-gradient(white, white), linear-gradient(to right, #ff0066, #8A2BE2);
   background-origin: border-box;
+  border-radius: 20px; 
   background-clip: content-box, border-box;
 }
 
