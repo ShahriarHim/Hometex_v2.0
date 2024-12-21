@@ -18,14 +18,33 @@ const FloatingBar = () => {
     const [recentlyViewed, setRecentlyViewed] = useState([]);
     const [wishlist, setWishlist] = useState([]);
     const [isChatVisible, setIsChatVisible] = useState(false);
-
+    const [showBar, setShowBar] = useState(false); // State to manage visibility based on scroll
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
     const handleChatToggle = () => {
         setIsChatVisible(prevState => !prevState);
     };
+
+    const handleScroll = () => {
+        // If scrolled down by more than 200px, show the bar, otherwise hide it
+        if (window.scrollY > 200) {
+            setShowBar(true);
+        } else {
+            setShowBar(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     const buttonData = [
         {
             icon: <FaListUl />,
@@ -43,7 +62,6 @@ const FloatingBar = () => {
             icon: <FaMapMarkerAlt />,
             tooltip: (
                 <div className="popup-content"><span>{isGeolocationAvailable && isGeolocationEnabled ? location : 'Location'}</span></div>
-
             ),
             onClick: null,
             className: 'floating-btn-middle',
@@ -94,9 +112,8 @@ const FloatingBar = () => {
             ),
         },
         {
-
             icon: <FaWhatsapp />,
-            tooltip: 'Back to Top',
+            tooltip: 'Chat with us',
             onClick: { handleChatToggle },
             className: 'floating-btn-last',
         },
@@ -109,14 +126,13 @@ const FloatingBar = () => {
     ];
 
     return (
-        <div className="floating-bar">
+        <div className={`floating-bar ${showBar ? 'visible' : ''}`}>
             {/* Add to Cart */}
             <div className="cart-container">
                 <button className="floating-btn-cart green-btn">
                     <FaShoppingCart />
                     <span className="cart-text">Buy Now</span>
                 </button>
-
             </div>
 
             {/* Grouped Buttons */}
@@ -151,113 +167,123 @@ const FloatingBar = () => {
             </div>
 
             <style jsx>{`
-        .floating-bar {
-          position: fixed;
-          right: 20px;
-          top: 50%;
-          transform: translateY(-50%);
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
-          z-index: 1000;
-        }
+                .floating-bar {
+                    position: fixed;
+                    right: 20px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                    z-index: 1000;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: opacity 0.5s, transform 0.5s ease-out;
+                }
 
-        .cart-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-        .button-container {
-          background: #333;
-          border-radius: 50px;
-          padding: 5px;
-          gap: 5px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
+                .floating-bar.visible {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(-50%) translateX(0);
+                }
 
-        .floating-btn-cart {
-          width: 60px;
-          height: 60px;
-          background: #333;
-          color: white;
-          border: none;
-          border-radius: 10%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          position: relative;
-        }
+                .cart-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
 
-        .cart-text {
-          color: white;
-          font-size: 12px;
-          margin-top: 5px;
-        }
+                .button-container {
+                    background: #333;
+                    border-radius: 50px;
+                    padding: 5px;
+                    gap: 5px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
 
-        .floating-btn {
-          width: 50px;
-          height: 50px;
-          background: transparent;
-          color: white;
-          border: none;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          position: relative;
-          transition: all 0.3s ease;
-        }
+                .floating-btn-cart {
+                    width: 60px;
+                    height: 60px;
+                    background: #333;
+                    color: white;
+                    border: none;
+                    border-radius: 10%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    position: relative;
+                }
 
-        .floating-btn:hover {
-          background: #28a745;
-          border-radius: 50%;
-          color: white;
-        }
+                .cart-text {
+                    color: white;
+                    font-size: 12px;
+                    margin-top: 5px;
+                }
 
-        .floating-btn-first {
-          border-radius: 25px 25px 0 0;
-        }
+                .floating-btn {
+                    width: 50px;
+                    height: 50px;
+                    background: transparent;
+                    color: white;
+                    border: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    position: relative;
+                    transition: all 0.3s ease;
+                }
 
-        .floating-btn-middle {
-          border-radius: 0;
-        }
+                .floating-btn:hover {
+                    background: #28a745;
+                    border-radius: 50%;
+                    color: white;
+                }
 
-        .floating-btn-last {
-          border-radius: 0 0 25px 25px;
-        }
+                .floating-btn-first {
+                    border-radius: 25px 25px 0 0;
+                }
 
-        .green-btn {
-          background: #28a745;
-        }
+                .floating-btn-middle {
+                    border-radius: 0;
+                }
 
-        .tooltip {
-          display: block;
-          position: absolute;
-          top: 50%;
-          left: -110%;
-          transform: translateY(-50%);
-          background: #333;
-          color: white;
-          padding: 5px 10px;
-          border-radius: 5px;
-          white-space: nowrap;
-        }
+                .floating-btn-last {
+                    border-radius: 0 0 25px 25px;
+                }
 
-        .floating-btn:hover .tooltip {
-          display: block;
-        }
+                .green-btn {
+                    background: #28a745;
+                }
 
-        .popup-content {
-          padding: 15px;
-          background: white;
-          border-radius: 5px;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-      `}</style>
+                .tooltip {
+                    display: block;
+                    position: absolute;
+                    top: 50%;
+                    left: -110%;
+                    transform: translateY(-50%);
+                    background: #333;
+                    color: white;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    white-space: nowrap;
+                }
+
+                .floating-btn:hover .tooltip {
+                    display: block;
+                }
+
+                .popup-content {
+                    padding: 15px;
+                    background: white;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                }
+            `}</style>
         </div>
     );
 };
