@@ -55,8 +55,8 @@ const FloatingBar = () => {
         {
             icon: <FaPhoneAlt />,
             tooltip: 'Customer Service',
-            onClick: () => (window.location.href = '/Contact'),
-            className: 'floating-btn-middle',
+            onClick: handleChatToggle,
+          
         },
         {
             icon: <FaMapMarkerAlt />,
@@ -114,7 +114,7 @@ const FloatingBar = () => {
         {
             icon: <FaWhatsapp />,
             tooltip: 'Chat with us',
-            onClick: { handleChatToggle },
+            onClick: handleChatToggle, // Corrected this line
             className: 'floating-btn-last',
         },
         {
@@ -126,165 +126,171 @@ const FloatingBar = () => {
     ];
 
     return (
-        <div className={`floating-bar ${showBar ? 'visible' : ''}`}>
-            {/* Add to Cart */}
-            <div className="cart-container">
-                <button className="floating-btn-cart green-btn">
-                    <FaShoppingCart />
-                    <span className="cart-text">Buy Now</span>
-                </button>
-            </div>
-
-            {/* Grouped Buttons */}
-            <div className="grouped-buttons">
-                <div className="button-container">
-                    {buttonData.map((button, index) =>
-                        button.popupContent ? (
-                            <Popup
-                                key={index}
-                                trigger={
-                                    <button className={`floating-btn ${button.className}`}>
-                                        {button.icon}
-                                        <span className="tooltip">{button.tooltip}</span>
-                                    </button>
-                                }
-                                position="left center"
-                            >
-                                {button.popupContent}
-                            </Popup>
-                        ) : (
-                            <button
-                                key={index}
-                                className={`floating-btn ${button.className}`}
-                                onClick={button.onClick}
-                            >
-                                {button.icon}
-                                <span className="tooltip">{button.tooltip}</span>
-                            </button>
-                        )
-                    )}
+        <>
+            <div className={`floating-bar ${showBar ? 'visible' : ''}`}>
+                {/* Add to Cart */}
+                <div className="cart-container">
+                    <button className="floating-btn-cart green-btn">
+                        <FaShoppingCart />
+                        <span className="cart-text">Buy Now</span>
+                    </button>
                 </div>
+
+                {/* Grouped Buttons */}
+                <div className="grouped-buttons">
+                    <div className="button-container">
+                        {buttonData.map((button, index) =>
+                            button.popupContent ? (
+                                <Popup
+                                    key={index}
+                                    trigger={
+                                        <button className={`floating-btn ${button.className}`}>
+                                            {button.icon}
+                                            <span className="tooltip">{button.tooltip}</span>
+                                        </button>
+                                    }
+                                    position="left center"
+                                >
+                                    {button.popupContent}
+                                </Popup>
+                            ) : (
+                                <button
+                                    key={index}
+                                    className={`floating-btn ${button.className}`}
+                                    onClick={button.onClick}
+                                >
+                                    {button.icon}
+                                    <span className="tooltip">{button.tooltip}</span>
+                                </button>
+                            )
+                        )}
+                    </div>
+                </div>
+
+                <style jsx>{`
+                    .floating-bar {
+                        position: fixed;
+                        right: 20px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        display: flex;
+                        flex-direction: column;
+                        gap: 15px;
+                        z-index: 1000;
+                        opacity: 0;
+                        visibility: hidden;
+                        transition: opacity 0.5s, transform 0.5s ease-out;
+                    }
+
+                    .floating-bar.visible {
+                        opacity: 1;
+                        visibility: visible;
+                        transform: translateY(-50%) translateX(0);
+                    }
+
+                    .cart-container {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    }
+
+                    .button-container {
+                        background: #333;
+                        border-radius: 50px;
+                        padding: 5px;
+                        gap: 5px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    }
+
+                    .floating-btn-cart {
+                        width: 60px;
+                        height: 60px;
+                        background: #333;
+                        color: white;
+                        border: none;
+                        border-radius: 10%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        position: relative;
+                    }
+
+                    .cart-text {
+                        color: white;
+                        font-size: 12px;
+                        margin-top: 5px;
+                    }
+
+                    .floating-btn {
+                        width: 50px;
+                        height: 50px;
+                        background: transparent;
+                        color: white;
+                        border: none;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        position: relative;
+                        transition: all 0.3s ease;
+                    }
+
+                    .floating-btn:hover {
+                        background: #28a745;
+                        border-radius: 50%;
+                        color: white;
+                    }
+
+                    .floating-btn-first {
+                        border-radius: 25px 25px 0 0;
+                    }
+
+                    .floating-btn-middle {
+                        border-radius: 0;
+                    }
+
+                    .floating-btn-last {
+                        border-radius: 0 0 25px 25px;
+                    }
+
+                    .green-btn {
+                        background: #28a745;
+                    }
+
+                    .tooltip {
+                        display: block;
+                        position: absolute;
+                        top: 50%;
+                        left: -110%;
+                        transform: translateY(-50%);
+                        background: #333;
+                        color: white;
+                        padding: 5px 10px;
+                        border-radius: 5px;
+                        white-space: nowrap;
+                        opacity: 0;
+                        transition: opacity 0.3s;
+                    }
+
+                    .floating-btn:hover .tooltip {
+                        opacity: 1;
+                    }
+
+                    .popup-content {
+                        padding: 15px;
+                        background: white;
+                        border-radius: 5px;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                    }
+                `}</style>
             </div>
-
-            <style jsx>{`
-                .floating-bar {
-                    position: fixed;
-                    right: 20px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    display: flex;
-                    flex-direction: column;
-                    gap: 15px;
-                    z-index: 1000;
-                    opacity: 0;
-                    visibility: hidden;
-                    transition: opacity 0.5s, transform 0.5s ease-out;
-                }
-
-                .floating-bar.visible {
-                    opacity: 1;
-                    visibility: visible;
-                    transform: translateY(-50%) translateX(0);
-                }
-
-                .cart-container {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                }
-
-                .button-container {
-                    background: #333;
-                    border-radius: 50px;
-                    padding: 5px;
-                    gap: 5px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                }
-
-                .floating-btn-cart {
-                    width: 60px;
-                    height: 60px;
-                    background: #333;
-                    color: white;
-                    border: none;
-                    border-radius: 10%;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-                    position: relative;
-                }
-
-                .cart-text {
-                    color: white;
-                    font-size: 12px;
-                    margin-top: 5px;
-                }
-
-                .floating-btn {
-                    width: 50px;
-                    height: 50px;
-                    background: transparent;
-                    color: white;
-                    border: none;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-                    position: relative;
-                    transition: all 0.3s ease;
-                }
-
-                .floating-btn:hover {
-                    background: #28a745;
-                    border-radius: 50%;
-                    color: white;
-                }
-
-                .floating-btn-first {
-                    border-radius: 25px 25px 0 0;
-                }
-
-                .floating-btn-middle {
-                    border-radius: 0;
-                }
-
-                .floating-btn-last {
-                    border-radius: 0 0 25px 25px;
-                }
-
-                .green-btn {
-                    background: #28a745;
-                }
-
-                .tooltip {
-                    display: block;
-                    position: absolute;
-                    top: 50%;
-                    left: -110%;
-                    transform: translateY(-50%);
-                    background: #333;
-                    color: white;
-                    padding: 5px 10px;
-                    border-radius: 5px;
-                    white-space: nowrap;
-                }
-
-                .floating-btn:hover .tooltip {
-                    display: block;
-                }
-
-                .popup-content {
-                    padding: 15px;
-                    background: white;
-                    border-radius: 5px;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                }
-            `}</style>
-        </div>
+ 
+            {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
+        </>
     );
 };
 
