@@ -25,7 +25,7 @@ export const Sticky = () => {
                     <Categories />
                 </div>
                 <div className="group relative" title="Account">
-                    <div className="tooltip">Account</div>
+                    <div className="tooltip">Customer Service</div>
                     <User />
                 </div>
                 <div className="group relative" title="Search">

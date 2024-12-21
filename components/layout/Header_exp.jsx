@@ -10,7 +10,8 @@ import {
     FaBriefcase, FaCommentDots, FaCaretRight
 } from "react-icons/fa";
 import { HiOutlineGift } from 'react-icons/hi';
-import { Sticky } from '../home/Sticky';
+// import { Sticky } from '../home/Sticky';
+import FloatingBar from '../FloatingBar';
 
 const HeaderExp = () => {
     const [categories, setCategories] = useState([]);
@@ -143,7 +144,7 @@ const HeaderExp = () => {
         <>
 
             <PreHeader />
-            <Sticky />
+            <FloatingBar />
             <header className={styles.headerExp}>
                 {/* Middle row with icons */}
                 <div className={`container-fluid ${styles.middleRow}`}>
