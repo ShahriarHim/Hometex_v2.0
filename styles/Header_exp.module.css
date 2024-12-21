@@ -1,13 +1,16 @@
 /* HeaderExp.module.css */
 
 .headerExp {
-    font-family: Arial, sans-serif;
-    background: #FFFAFA;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+  background: #FFFAFA;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  margin-bottom: 10px;
+  position: sticky; 
+  top: 0; 
+  z-index: 1000; 
+}
 
-  }
   
   .topLinks {
     display: flex;
