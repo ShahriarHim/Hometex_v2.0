@@ -147,7 +147,7 @@ const HeaderExp = () => {
             <FloatingBar />
             <header className={styles.headerExp}>
                 {/* Middle row with icons */}
-                <div className={`container-fluid ${styles.middleRow}`}>
+                <div className={`container-fluid ${styles.middleRow}`} style={{ zIndex: "10" }}>
                     {/* Left section: Categories and Search */}
                     <div className={styles.leftSection}>
                         <div 

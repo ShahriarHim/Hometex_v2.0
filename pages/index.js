@@ -23,10 +23,10 @@ import ChatPopup from "@/components/ChatPopup";
 import CashbackPopup from "@/components/CashbackPopup";
 import CookiesPopup from "@/components/CookiesPopup";
 import { getCookie } from "@/ults/cookies";
-import AdPromotionSection from "@/components/layout/AdPromotionSection";
-import FirstOrderPopup from "@/components/layout/FirstOrderPopup";
-import CostomerCount from "@/components/newDesigns/Customercount";
-import NewCustomerPopup from "@/components/layout/NewCustomerPopup";
+// import AdPromotionSection from "@/components/layout/AdPromotionSection";
+// import FirstOrderPopup from "@/components/layout/FirstOrderPopup";
+// import CostomerCount from "@/components/newDesigns/Customercount";
+// import NewCustomerPopup from "@/components/layout/NewCustomerPopup";
 import SuccessfulPaymentPopup from "@/components/invoice/Invoice";
 import { useRouter } from 'next/router';
 
