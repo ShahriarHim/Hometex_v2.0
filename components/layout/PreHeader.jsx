@@ -118,7 +118,7 @@ const PreHeader = () => {
                     </div>
 
                     {/* Right Section (10% width) with Absolute positioning */}
-                    <div className="flex items-center  px-2 w-[10%]">
+                    <div className="flex items-center  px-2 w-[10%] ">
                         {/* Order Tracking */}
 
 
