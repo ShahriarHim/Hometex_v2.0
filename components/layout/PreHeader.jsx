@@ -123,20 +123,26 @@ const PreHeader = () => {
 
 
                         {/* My Cart */}
-                        <div className="absolute  bg-black text-white px-3 py-5 flex items-center cursor-pointer hover:text-yellow-500">
+                        <div className="absolute bg-black text-white px-3 py-5 flex items-center cursor-pointer hover:text-yellow-500 z-[150]">
                             <HiShoppingCart
                                 className="mr-2 text-pink-500"
                                 style={{ width: "22px", height: "22px" }}
                             />
                             My Cart
-                            <div
-                                className="absolute bottom-0 left-0 right-0 h-2 bg-repeat-x"
-                                style={{
-                                    backgroundImage:
-                                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpolygon points='0,10 5,0 10,10' style='fill:%23ffffff;'/%3E%3C/svg%3E\")",
-                                    backgroundSize: "auto 100%",
-                                }}
-                            ></div>
+                            <div className="absolute bottom-[-8px] left-0 right-0 h-2 overflow-hidden z-[140]">
+                                <div className="flex justify-center">
+                                    {[...Array(12)].map((_, i) => (
+                                        <div
+                                            key={i}
+                                            className="w-3 h-3 transform rotate-45 bg-black mx-[0.5px]"
+                                            style={{
+                                                clipPath: 'polygon(50% 100%, 0 0, 100% 0)',
+                                                marginTop: '-4px'
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

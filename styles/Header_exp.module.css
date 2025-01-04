@@ -8,7 +8,7 @@
   margin-bottom: 10px;
   position: sticky; 
   top: 0; 
-  z-index: 1000; 
+  z-index: 40;
 }
 
   
@@ -34,6 +34,7 @@
     align-items: center; /* Vertically align items */
     padding: 5px 0;
     position: relative;
+    z-index: 30;
 }
 
 .leftSection,
@@ -245,7 +246,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for dropdown */
     padding: 10px;
-    z-index: 1000;
+    z-index: 35;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
@@ -314,7 +315,7 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     display: none;
-    z-index: 1000;
+    z-index: 36;
     overflow: auto; /* Allow scrolling if content is too long */
     padding: 15px; /* Add some padding */
 }
@@ -466,7 +467,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for dropdown */
     padding: 10px;
-    z-index: 1000;
+    z-index: 35;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
@@ -540,4 +541,10 @@
     width: 100%;
     box-shadow: none;
     margin-top: 10px;
+}
+
+/* Add this new style for the entire header container */
+.headerContainer {
+    position: relative;
+    z-index: 40;
 }
