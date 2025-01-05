@@ -28,7 +28,7 @@ const PreHeader = () => {
     };
 
     return (
-        <div className="pt-2 hidden md:block bg-[#ffcf37]">
+        <div className="pt-2 hidden md:block bg-[#d4ed30]">
             <div className="container mx-auto pb-2">
                 <div className="flex justify-between items-center">
                     {/* Left Section (90% width) */}
@@ -37,21 +37,21 @@ const PreHeader = () => {
                         <div className="flex items-center gap-3 px-2 relative">
                             {/* My Account Dropdown */}
                             <div
-                                className="relative cursor-pointer flex items-center hover:text-blue-500"
+                                className="relative cursor-pointer flex items-center hover:text-blue-500 text-sm"
                                 onClick={toggleDropdown}
                             >
                                 <HiOutlineUser
                                     className="mr-1 text-pink-500"
-                                    style={{ width: "22px", height: "22px" }}
+                                    style={{ width: "18px", height: "18px" }}
                                 />
-                                <span>My Account</span>
+                                <span className="text-sm">My Account</span>
                                 <HiOutlineChevronDown
                                     className="ml-1"
-                                    style={{ width: "18px", height: "18px" }}
+                                    style={{ width: "14px", height: "14px" }}
                                 />
                                 {isDropdownOpen && (
                                     <div
-                                        className="absolute top-8 left-0 bg-white text-black rounded-md shadow-lg z-10 w-40"
+                                        className="absolute top-8 left-0 bg-white text-black rounded-md shadow-lg z-50 w-40"
                                     >
                                         <ul className="p-2">
                                             <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
@@ -74,21 +74,21 @@ const PreHeader = () => {
                             {/* Corporate Inquiries */}
                             <Link
                                 href="/corporate-enquires"
-                                className="flex items-center hover:text-blue-500"
+                                className="flex items-center hover:text-blue-500 text-sm"
                             >
                                 <HiOutlineMail
                                     className="mr-1 text-pink-500"
-                                    style={{ width: "22px", height: "22px" }}
+                                    style={{ width: "18px", height: "18px" }}
                                 />{" "}
-                                Corporate Inquiries
+                                <span className="text-sm">Corporate Inquiries</span>
                             </Link>
                             <Link href="/orderDash"
-                                className="flex items-center hover:text-blue-500">
+                                className="flex items-center hover:text-blue-500 text-sm">
                                 <HiOutlineTicket
                                     className="mr-1 text-pink-500"
-                                    style={{ width: "22px", height: "22px" }}
+                                    style={{ width: "18px", height: "18px" }}
                                 />{" "}
-                                Order Tracking
+                                <span className="text-sm">Order Tracking</span>
 
                             </Link>
                         </div>

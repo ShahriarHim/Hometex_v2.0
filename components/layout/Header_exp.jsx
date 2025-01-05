@@ -200,7 +200,7 @@ const HeaderExp = () => {
                             <span>Find a Store</span>
                         </Link>
                         <Link href="/wishlist" className={styles.iconLink}>
-                            <HiOutlineGift className="h-6 w-6 text-yellow-600"/>
+                            <HiOutlineGift className="h-6 w-6 text-yellow-600 font-bold"/>
                             <span>Gift Someone</span>
                         </Link>
                         <Link href="/daily-deals" className={styles.iconLink}>
