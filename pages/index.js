@@ -22,6 +22,7 @@ import ProductsTabs from "@/components/home/ProductsTabs";
 import ChatPopup from "@/components/ChatPopup";
 import CashbackPopup from "@/components/CashbackPopup";
 import CookiesPopup from "@/components/CookiesPopup";
+import NewArrivals from "@/components/home/NewArrivals";
 import { getCookie } from "@/ults/cookies";
 // import AdPromotionSection from "@/components/layout/AdPromotionSection";
 // import FirstOrderPopup from "@/components/layout/FirstOrderPopup";
