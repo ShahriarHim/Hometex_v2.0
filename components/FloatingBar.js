@@ -30,7 +30,7 @@ const FloatingBar = () => {
 
     const handleScroll = () => {
         // If scrolled down by more than 200px, show the bar, otherwise hide it
-        if (window.scrollY > 200) {
+        if (window.scrollY > 250) {
             setShowBar(true);
         } else {
             setShowBar(false);
@@ -55,7 +55,8 @@ const FloatingBar = () => {
         {
             icon: <FaPhoneAlt />,
             tooltip: 'Customer Service',
-            onClick: handleChatToggle,
+            onClick: () => (window.location.href = '/Contact'),
+            className: 'floating-btn-middle',
           
         },
         {
@@ -170,8 +171,8 @@ const FloatingBar = () => {
                 <style jsx>{`
                     .floating-bar {
                         position: fixed;
-                        right: 20px;
-                        top: 50%;
+                        right: 10px;
+                        top: 55%;
                         transform: translateY(-50%);
                         display: flex;
                         flex-direction: column;
@@ -231,6 +232,7 @@ const FloatingBar = () => {
                         background: transparent;
                         color: white;
                         border: none;
+                        padding: 1px;
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -243,6 +245,12 @@ const FloatingBar = () => {
                         background: rgba(40, 167, 69, 0.8);
                         border-radius: 50%;
                         color: white;
+                    }
+                    .floating-btn-cart:hover {
+                        background:#333;
+                        border-radius: 50%;
+                        color: yellow;
+                        transition: all 0.3s ease;
                     }
 
                     .floating-btn-first {

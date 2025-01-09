@@ -119,7 +119,7 @@ const PreHeader = () => {
                     </div>
 
                     {/* Right Section (10% width) with Absolute positioning */}
-                    <div className="flex items-center  px-2 w-[10%]">
+                    <div className="flex items-center  px-2 w-[10%] ">
                         {/* Order Tracking */}
 
 
@@ -135,10 +135,10 @@ const PreHeader = () => {
                                     {[...Array(12)].map((_, i) => (
                                         <div
                                             key={i}
-                                            className="w-3 h-3 transform rotate-45 bg-black mx-[0.5px]"
+                                            className="w-6 h-3 bg-black mx-[0.5px]"
                                             style={{
                                                 clipPath: 'polygon(50% 100%, 0 0, 100% 0)',
-                                                marginTop: '-4px'
+                                                marginTop: '-2px'
                                             }}
                                         />
                                     ))}

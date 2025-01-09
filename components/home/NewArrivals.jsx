@@ -13,7 +13,7 @@ import { CiStar } from "react-icons/ci";
 import { RiShoppingBasketFill, RiExchangeFill } from "react-icons/ri";
 import Link from "next/link";
 
-function NewArrivales({ products }) {
+function NewArrivals({ products }) {
   const params = {
     slidesPerView: 2,
     spaceBetween: 30,
@@ -119,4 +119,4 @@ function NewArrivales({ products }) {
   );
 }
 
-export default NewArrivales;
+export default NewArrivals;
