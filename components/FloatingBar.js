@@ -176,7 +176,7 @@ const FloatingBar = () => {
                         transform: translateY(-50%);
                         display: flex;
                         flex-direction: column;
-                        gap: 15px;
+                        gap: 10px;
                         z-index: 1000;
                         opacity: 0;
                         visibility: hidden;
@@ -196,19 +196,19 @@ const FloatingBar = () => {
                     }
 
                     .button-container {
-                        background: #333;
-                        border-radius: 50px;
-                        padding: 5px;
-                        gap: 5px;
+                        background: rgba(51, 51, 51, 0.8);
+                        border-radius: 40px;
+                        padding: 3px;
+                        gap: 3px;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                     }
 
                     .floating-btn-cart {
-                        width: 60px;
-                        height: 60px;
-                        background: #333;
+                        width: 45px;
+                        height: 45px;
+                        background: rgba(51, 51, 51, 0.8);
                         color: white;
                         border: none;
                         border-radius: 10%;
@@ -222,8 +222,8 @@ const FloatingBar = () => {
 
                     .cart-text {
                         color: white;
-                        font-size: 12px;
-                        margin-top: 5px;
+                        font-size: 10px;
+                        margin-top: 3px;
                     }
 
                     .floating-btn {
@@ -242,7 +242,7 @@ const FloatingBar = () => {
                     }
 
                     .floating-btn:hover {
-                        background: #28a745;
+                        background: rgba(40, 167, 69, 0.8);
                         border-radius: 50%;
                         color: white;
                     }
@@ -266,7 +266,7 @@ const FloatingBar = () => {
                     }
 
                     .green-btn {
-                        background: #28a745;
+                        background: rgba(40, 167, 69, 0.8);
                     }
 
                     .tooltip {
@@ -275,13 +275,14 @@ const FloatingBar = () => {
                         top: 50%;
                         left: -110%;
                         transform: translateY(-50%);
-                        background: #333;
+                        background: rgba(51, 51, 51, 0.9);
                         color: white;
-                        padding: 5px 10px;
+                        padding: 4px 8px;
                         border-radius: 5px;
                         white-space: nowrap;
                         opacity: 0;
                         transition: opacity 0.3s;
+                        font-size: 12px;
                     }
 
                     .floating-btn:hover .tooltip {
@@ -289,7 +290,7 @@ const FloatingBar = () => {
                     }
 
                     .popup-content {
-                        padding: 15px;
+                        padding: 12px;
                         background: white;
                         border-radius: 5px;
                         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

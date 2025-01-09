@@ -1,0 +1,171 @@
+/* Popup Overlay */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  
+    background: rgba(177, 214, 9, 0.9); /* Light background for the popup */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    
+    /* Make sure popup is on top of everything */
+    z-index: 9999;
+  
+    /* Slide Down Animation */
+    animation: slideDown 0.4s ease-out forwards;
+  }
+  
+  /* Popup Container */
+  .popupContent {
+    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%); /* Gradient background */
+    width: 100%;
+    max-width: 900px;
+    margin-top: 50px; /* So it's not stuck at the very top */
+    padding: 20px 30px;
+    border-radius: 16px; /* More rounded corners */
+    position: relative;
+    
+    /* Example shadow */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+  }
+  
+  /* Close Button */
+  .closeButton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    
+    background: transparent;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px;
+    transition: transform 0.2s; /* Smooth transition */
+  }
+  
+  .closeButton:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+  }
+  
+  /* Title (What Are You Looking For?) */
+  .title {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 600; /* Bold title */
+  }
+  
+  /* Search Row */
+  .searchRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Category <select> dropdown */
+  .categorySelect {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  /* Search Input */
+  .searchInput {
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  /* Search Button */
+  .searchButton {
+    padding: 8px 16px;
+    background: #007bff; /* Bootstrap primary color */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px; /* Rounded corners */
+    transition: background 0.3s; /* Smooth transition */
+  }
+  
+  .searchButton:hover {
+    background: #0056b3; /* Darker shade on hover */
+  }
+  
+  /* Trending Searches Container */
+  .trendingSearches {
+    margin-bottom: 2rem;
+  }
+  
+  .trendingSearches h3 {
+    margin: 0 0 0.5rem 0;
+    font-weight: normal;
+  }
+  
+  .tags span {
+    display: inline-block;
+    background: #f0f0f0;
+    padding: 6px 10px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  /* Popular Title */
+  .popularTitle {
+    margin: 0 0 1.5rem 0;
+    font-size: 20px;
+    text-align: center;
+  }
+  
+  /* Categories Grid */
+  .categoryGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 20px;
+    justify-items: center;
+  }
+  
+  /* Single Category Card */
+  .categoryCard {
+    text-align: center;
+    transition: transform 0.2s; /* Smooth transition */
+  }
+  
+  .categoryCard:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+  
+  .categoryCard img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+  }
+  
+  .categoryLabel {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  
+  .productCount {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  /* Slide Down Keyframes */
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  

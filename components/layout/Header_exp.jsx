@@ -12,6 +12,7 @@ import {
 import { HiOutlineGift } from 'react-icons/hi';
 // import { Sticky } from '../home/Sticky';
 import FloatingBar from '../FloatingBar';
+import SearchPopup from './SearchPopup'; // Import the new popup component
 
 const HeaderExp = () => {
     const [categories, setCategories] = useState([]);
@@ -21,6 +22,7 @@ const HeaderExp = () => {
     const [isDropdownHovered, setIsDropdownHovered] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [dropdownTimeout, setDropdownTimeout] = useState(null);
+    const [showPopup, setShowPopup] = useState(false);
 
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
         positionOptions: {
@@ -140,9 +142,17 @@ const HeaderExp = () => {
         setDropdownTimeout(timeout);
     };
 
+    const handleSearchClick = () => {
+        setShowPopup(true);
+    };
+
+    const closePopup = () => {
+        setShowPopup(false);
+    };
+
     return (
         <>
-
+            {showPopup && <SearchPopup onClose={closePopup} />}
             <PreHeader />
             <FloatingBar />
             <header className={styles.headerExp}>
@@ -180,7 +190,7 @@ const HeaderExp = () => {
                             )}
                         </div>
 
-                        <Link href="/search" className={styles.search}>
+                        <Link href="#" className={styles.search} onClick={handleSearchClick}>
                             <FaSearch className="h-6 w-6 text-yellow-600"/>
                             <span>Search</span>
                         </Link>
@@ -200,7 +210,7 @@ const HeaderExp = () => {
                             <span>Find a Store</span>
                         </Link>
                         <Link href="/wishlist" className={styles.iconLink}>
-                            <HiOutlineGift className="h-6 w-6 text-yellow-600"/>
+                            <HiOutlineGift className="h-6 w-6 text-yellow-600 font-bold"/>
                             <span>Gift Someone</span>
                         </Link>
                         <Link href="/daily-deals" className={styles.iconLink}>

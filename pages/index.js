@@ -30,6 +30,7 @@ import { getCookie } from "@/ults/cookies";
 // import NewCustomerPopup from "@/components/layout/NewCustomerPopup";
 import SuccessfulPaymentPopup from "@/components/invoice/Invoice";
 import { useRouter } from 'next/router';
+import HoverImageOverlay from "@/components/newDesigns/NewDeal";
 
 const Home = () => {
   const router = useRouter();
@@ -170,6 +171,7 @@ const Home = () => {
         <DesignEleven />
         <DesignFour />
         <DesignNine />
+        <HoverImageOverlay/>
        
         {/* <CostomerCount /> */}
         <Prefooter2 />

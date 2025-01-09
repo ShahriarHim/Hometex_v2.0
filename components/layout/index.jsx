@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
                     {/* <ThreeLayer/> */}
                     <Header4 key="header" />
                     <main className="p-4">{children}</main>
-                    <Footer2 key="footer" />
+                    {/* <Footer2 key="footer" /> */}
                 </>
             );
         } else {
