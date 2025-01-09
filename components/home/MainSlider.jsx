@@ -4,6 +4,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Autoplay, Pagination, EffectFade } from "swiper";
+import Constants from "@/ults/Constant";
 
 const MainSlider = () => {
   const [sliders, setSliders] = useState([]);
@@ -11,7 +12,7 @@ const MainSlider = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://htbapi.hometexbd.ltd/api/banner/slider')
+    fetch(`${Constants.BASE_URL}/api/banner/slider`)
       .then(res => res.json())
       .then(data => {
         setSliders(data.data);
