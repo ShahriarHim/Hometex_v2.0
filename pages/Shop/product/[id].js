@@ -15,8 +15,10 @@ export async function getServerSideProps(context) {
   const res = await fetch(
     `${Constants.BASE_URL}/api/products-details-web/` + id
   );
-  const product = await res.json();
+  const product_data = await res.json();
 
+  const product = product_data?.data;
+  // console.log(product_data);
   return {
     props: {
       product,
@@ -25,6 +27,7 @@ export async function getServerSideProps(context) {
 }
 
 const Product = ({ product }) => {
+  console.log(product);
   const router = useRouter();
   const [iswhileModalOpen, setIswhileModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(
@@ -41,6 +44,7 @@ const Product = ({ product }) => {
   };
 
   useEffect(() => {
+    
     let recentitems = localStorage.getItem("recentview")
       ? JSON.parse(localStorage.getItem("recentview"))
       : [];

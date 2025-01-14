@@ -190,7 +190,7 @@ const ProductDetails = ({ product, router }) => {
                 </div>
               </div>
               <p>{product.sub_category?.name} Size</p>
-              {product.product_attributes.length > 0 && (
+              {/* {product.product_attributes.length > 0 && (
                 <select
                   className="border w-full p-2 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline-gray"
                   onChange={(e) => handleAttributeChange(e.target.value)}
@@ -205,7 +205,7 @@ const ProductDetails = ({ product, router }) => {
                     </option>
                   ))}
                 </select>
-              )}
+              )} */}
             </div>
             <div className="flex flex-auto mt-2 text-sm">
               {product.stock < 5 && (
