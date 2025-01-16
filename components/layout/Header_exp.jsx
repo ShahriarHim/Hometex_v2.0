@@ -12,7 +12,7 @@ import {
 import { HiOutlineGift } from 'react-icons/hi';
 // import { Sticky } from '../home/Sticky';
 import FloatingBar from '../FloatingBar';
-import SearchPopup from './SearchPopup'; // Import the new popup component
+//import SearchPopup from './SearchPopup'; // Import the new popup component
 
 const HeaderExp = () => {
     const [categories, setCategories] = useState([]);
@@ -44,9 +44,10 @@ const HeaderExp = () => {
     // Fetch categories from API
     const fetchCategories = async () => {
         try {
+            mode: 'no-cors';
             const response = await fetch(`${Constants.BASE_URL}/api/product-menu/horizontal`);
             const result = await response.json();
-            // console.log("Fetched Data:", result.data); // Verify the data structure
+            console.log("Fetched Data:", result.data); // Verify the data structure
             setCategories(result.data); // Set the fetched categories
         } catch (error) {
             console.error("Error fetching categories:", error);
