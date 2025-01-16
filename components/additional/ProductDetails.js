@@ -163,7 +163,7 @@ const ProductDetails = ({ product, router }) => {
             <div className="flex flex-auto mt-2 text-sm">
               {" "}
               <p className="bg-purple-200 py-2 px-4 rounded-xl mt-2 flex flex-row gap-2 items-center">
-                <span className="font-bold bg-purple-400 p-2 rounded-full">
+                <span className="font-bold bg-purple-400 p-2 rounded-md">
                   No#12 Best Seller{" "}
                 </span>{" "}
                 in all over Bangladesh
@@ -569,55 +569,6 @@ const ProductDetails = ({ product, router }) => {
 
             <div className="my-2 pb-2 flex items-center ">
               <button className="text-xl font-bold">Find in Store</button>
-            </div>
-            <div className="relative">
-              <div className="text-lg font-semibold mb-4">
-                Have a Question in Mind?
-              </div>
-              <div className="flex gap-2">
-                <button
-                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded"
-                >
-                  Call Now
-                </button>
-                <button
-                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded"
-                >
-                  Chat Us
-                </button>
-              </div>
-            </div>
-            <TimeReminderBox />
-            
-
-
-         
-
-
-            <div className="flex flex-col items-center border p-4 rounded-lg md:flex-row md:items-start">
-
-
-              <div className="md:w-2/3">
-                <h1 className="text-2xl font-bold mb-2">Free in-Store Pickup</h1>
-
-                <div className="flex items-center mb-2">
-
-                  <span className="font-semibold text-gray-800">Please enter a location to check store availability</span>
-
-
-                </div>
-                <div className="border-b pb-2 ">
-                  <Link href="/Stores" className="bg-black text-white rounded-3xl px-2 py-1">
-                    Check nearby stores
-                  </Link>
-                </div>
-
-              </div>
-            </div>
-            <div className="border-b pb-2 text-center">
-              <Link href="/Stores" className="bg-black text-white rounded-3xl px-10 py-2">
-                Store Locations
-              </Link>
             </div>
 
           </div>

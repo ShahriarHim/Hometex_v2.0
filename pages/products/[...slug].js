@@ -38,9 +38,9 @@ const ProductPage = () => {
         const timeoutId = setTimeout(() => {
             if (isLoading) {
                 setLoadingTimeout(true);
-                setError('Loading took too long. Please check your connection.');
+                setIsLoading(false);
             }
-        }, 5000);
+        }, 3000);
 
         const fetchProductsAndValidatePath = async () => {
             if (!productName) {
