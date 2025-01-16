@@ -6,7 +6,7 @@
     right: 0;
     bottom: 0;
   
-    background: rgba(177, 214, 9, 0.9); /* Light background for the popup */
+    background: rgba(238, 241, 225, 0.9); /* Light background for the popup */
     display: flex;
     justify-content: center;
     align-items: flex-start;
