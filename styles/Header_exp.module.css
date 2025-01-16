@@ -194,9 +194,7 @@
 
   .all-categories {
     position: relative;
-    /* margin-left: 5%;
-    margin-right: 25px; */
-    max-width: 300px; /* Adjust width as needed */
+    max-width: 300px; /* Existing width */
   }
   .all-categories-btn {
     display: flex;
@@ -240,11 +238,13 @@
   
   .all-categories-dropdown {
     position: absolute;
-    top: 100%; /* Positioned below the button */
+    top: 100%; 
     left: 0;
+    width: 100%; /* Match the width of the parent container */
+    max-width: 300px; /* Ensure it doesn't exceed the parent's max-width */
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for dropdown */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 10px;
     z-index: 35;
     opacity: 0;
@@ -257,12 +257,15 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    width: 100%; /* Ensure the list takes full width */
   }
   
   .all-categories-dropdown li {
     padding: 8px 12px;
     cursor: pointer;
-    color: #2a2a72; /* Text color */
+    color: #2a2a72;
+    width: 100%; /* Ensure list items take full width */
+    box-sizing: border-box; /* Include padding in width calculation */
   }
   
   .all-categories-dropdown li:hover {
@@ -383,6 +386,7 @@
     font-weight: 600;
     color: #2a2a72;
     transition: color 0.3s ease;
+    gap: 15px; /* Increase gap to push '>' further from text */
 }
 
 .subMenuItem:hover .subMenuName {
@@ -452,7 +456,7 @@
 .subIcon {
     color: #aaa;
     transition: color 0.3s ease;
-    margin-left: 10px;
+    margin-left: 15px; /* Increase margin to create more space */
 }
 
 .menuItem:hover .subIcon {
@@ -547,4 +551,60 @@
 .headerContainer {
     position: relative;
     z-index: 40;
+}
+
+.categoryImage {
+    border-radius: 4px; /* Optional: adds rounded corners */
+}
+
+/* Add styles for category images */
+.menuItem .categoryImage,
+.subMenuItem .categoryImage {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+.subMenuName {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between image, text, and icon */
+}
+
+.subMenuItem {
+    display: flex;
+    align-items: center;
+}
+
+/* Adjust submenu item layout to accommodate images */
+.subMenuItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.subMenuName {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.subIcon {
+    margin-left: auto; /* Push the icon to the right */
+}
+
+/* Child menu image styles */
+.childMenu .childItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.childItem .categoryImage {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 4px;
 }
