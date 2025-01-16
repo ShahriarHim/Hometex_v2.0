@@ -43,7 +43,8 @@ module.exports = {
         slideInFromRight: 'slideInFromRight 0.8s ease-out',
         fadeIn: 'fadeIn 0.5s ease-in',
         scaleUp: 'scaleUp 0.5s ease-out',
-        slideInFromBottom: 'slideInFromBottom 0.8s ease-out'
+        slideInFromBottom: 'slideInFromBottom 0.8s ease-out',
+        'fade-in': 'fadeIn 0.5s ease-out',
       },
     },
   },

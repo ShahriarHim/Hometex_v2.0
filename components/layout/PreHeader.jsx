@@ -19,17 +19,7 @@ const PreHeader = () => {
         setVisitUsText(newVisitUsText);
     };
 
-    // State for dropdown visibility
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-    // Toggle dropdown visibility
-    const handleMouseEnter = () => {
-        setIsDropdownOpen(true);
-    };
-
-    const handleMouseLeave = () => {
-        setIsDropdownOpen(false);
-    };
+    const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
 
     return (
         <div className="pt-2 hidden md:block bg-[#d4ed30]">
@@ -38,41 +28,71 @@ const PreHeader = () => {
                     {/* Left Section (90% width) */}
                     <div className="flex items-center gap-3 px-2 w-[90%]">
                         {/* My Account Dropdown and Corporate Inquiries */}
-                        <div className="flex items-center gap-3 px-2 relative"
-                             onMouseEnter={handleMouseEnter}
-                             onMouseLeave={handleMouseLeave}>
+                        <div className="flex items-center gap-3 px-2">
                             {/* My Account Dropdown */}
-                            <div className="relative cursor-pointer flex items-center hover:text-blue-500 text-sm">
-                                <HiOutlineUser
-                                    className="mr-1 text-pink-500"
-                                    style={{ width: "18px", height: "18px" }}
-                                />
-                                <span className="text-sm">My Account</span>
-                                <HiOutlineChevronDown
-                                    className="ml-1"
-                                    style={{ width: "14px", height: "14px" }}
-                                />
-                                {isDropdownOpen && (
-                                    <div className="absolute top-8 left-0 bg-white text-black rounded-md shadow-lg z-50 w-40">
+                            <div 
+                                className="relative group cursor-pointer flex items-center hover:text-blue-500 text-sm"
+                            >
+                                <div 
+                                    onMouseEnter={() => setIsAccountDropdownOpen(true)}
+                                    className="flex items-center"
+                                >
+                                    <HiOutlineUser
+                                        className="mr-1 text-pink-500"
+                                        style={{ width: "18px", height: "18px" }}
+                                    />
+                                    <span className="text-sm">My Account</span>
+                                    <HiOutlineChevronDown
+                                        className="ml-1"
+                                        style={{ width: "14px", height: "14px" }}
+                                    />
+                                </div>
+                                
+                                {isAccountDropdownOpen && (
+                                    <div 
+                                        className="absolute top-full left-0 bg-white text-black rounded-md shadow-lg z-50 w-40 mt-2"
+                                        onMouseEnter={() => setIsAccountDropdownOpen(true)}
+                                        onMouseLeave={() => setIsAccountDropdownOpen(false)}
+                                    >
                                         <ul className="p-2">
                                             <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                                                Sign Up / Login
+                                                <Link 
+                                                    href="/auth/signup"
+                                                    className="block w-full h-full"
+                                                >
+                                                    Sign Up / Login
+                                                </Link>
                                             </li>
                                             <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                                                My Rewards
+                                                <Link 
+                                                    href="/my-rewards"
+                                                    className="block w-full h-full"
+                                                >
+                                                    My Rewards
+                                                </Link>
                                             </li>
                                             <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                                                Language
+                                                <Link 
+                                                    href="/language"
+                                                    className="block w-full h-full"
+                                                >
+                                                    Language
+                                                </Link>
                                             </li>
                                             <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                                                Currency
+                                                <Link 
+                                                    href="/currency"
+                                                    className="block w-full h-full"
+                                                >
+                                                    Currency
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
                                 )}
                             </div>
 
-                            {/* Corporate Inquiries */}
+                            {/* Corporate Inquiries - Standard Link */}
                             <Link
                                 href="/corporate-enquires"
                                 className="flex items-center hover:text-blue-500 text-sm"
@@ -83,14 +103,17 @@ const PreHeader = () => {
                                 />{" "}
                                 <span className="text-sm">Corporate Inquiries</span>
                             </Link>
-                            <Link href="/orderDash"
-                                className="flex items-center hover:text-blue-500 text-sm">
+
+                            {/* Order Tracking - Standard Link */}
+                            <Link 
+                                href="/orderDash"
+                                className="flex items-center hover:text-blue-500 text-sm"
+                            >
                                 <HiOutlineTicket
                                     className="mr-1 text-pink-500"
                                     style={{ width: "18px", height: "18px" }}
                                 />{" "}
                                 <span className="text-sm">Order Tracking</span>
-
                             </Link>
                         </div>
 
