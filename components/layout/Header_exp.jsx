@@ -12,7 +12,7 @@ import {
 import { HiOutlineGift } from 'react-icons/hi';
 // import { Sticky } from '../home/Sticky';
 import FloatingBar from '../FloatingBar';
-//import SearchPopup from './SearchPopup'; // Import the new popup component
+import SearchPopup from './SearchPopup'; // Import the new popup component
 
 const HeaderExp = () => {
     const [categories, setCategories] = useState([]);
@@ -73,7 +73,20 @@ const HeaderExp = () => {
                     return (
                         <li key={category.id} className={`${styles.menuItem} ${hasSub ? styles.hasSub : ''}`}>
                             <Link href={`/products/${category.name.toLowerCase()}`} className={styles.menuLink}>
-                                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    {category.image && (
+                                        <img 
+                                            src={category.image} 
+                                            alt={category.name} 
+                                            className={styles.categoryImage} 
+                                            style={{ 
+                                                width: '30px', 
+                                                height: '30px', 
+                                                objectFit: 'cover',
+                                                marginRight: '5px' 
+                                            }}
+                                        />
+                                    )}
                                     {category.name}
                                     {hasSub && <FaCaretRight className={styles.subIcon} />}
                                 </span>
