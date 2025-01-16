@@ -171,7 +171,7 @@ const FloatingBar = () => {
                 <style jsx>{`
                     .floating-bar {
                         position: fixed;
-                        right: 10px;
+                        right: 5px;
                         top: 55%;
                         transform: translateY(-50%);
                         display: flex;
