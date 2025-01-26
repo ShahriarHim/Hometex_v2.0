@@ -1,8 +1,17 @@
-import React from "react";
+
+import React, { useEffect, useState } from "react";
 import styles from '../../styles/SearchPopup.module.css'; // Create a CSS module for styling
 // Or "../../styles/SearchPopup.module.css"
+import Constants from '@/ults/Constant';
 
 const SearchPopup = ({ onClose }) => {
+  const [products, setProducts] = useState([]); // State to hold fetched products
+
+  // Call fetchProducts when the component mounts
+  useEffect(() => {
+    fetchProducts(); // Call the function to fetch products
+  }, []); // Empty dependency array means it runs once on mount
+
   // Example categories
   const categories = [
     {
@@ -48,6 +57,40 @@ const SearchPopup = ({ onClose }) => {
     // Check if the click is outside the popup content
     if (e.target === e.currentTarget) {
       onClose(); // Close the popup
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      // const response = await fetch(`${Constants.BASE_URL}/api/products-web`);
+      // const response = await fetch(`${Constants.BASE_URL}/api/products-web/`, {
+      //   method: 'GET',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   mode: 'no-cors',  
+      // });
+
+      const response = await fetch(  
+        Constants.BASE_URL+'/api/products-web',{
+          method: 'GET',
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+       
+          headers: {            
+            "Content-Type": "application/json",
+            },  
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      console.log(result);
+      setProducts(result.data); 
+    } catch (error) {
+      console.error("Error fetching products:", error);
     }
   };
 
