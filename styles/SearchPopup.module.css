@@ -6,7 +6,7 @@
     right: 0;
     bottom: 0;
   
-    background: rgba(238, 241, 225, 0.9); /* Light background for the popup */
+    background: rgba(255, 255, 255, 0.95);
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -16,137 +16,197 @@
   
     /* Slide Down Animation */
     animation: slideDown 0.4s ease-out forwards;
+    overflow: hidden; /* Prevent body scroll */
   }
   
   /* Popup Container */
   .popupContent {
-    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%); /* Gradient background */
+    background: #ffffff;
     width: 100%;
-    max-width: 900px;
-    margin-top: 50px; /* So it's not stuck at the very top */
-    padding: 20px 30px;
-    border-radius: 16px; /* More rounded corners */
+    max-width: 1200px;
+    height: 90vh;
+    margin: 0;
+    padding: 40px;
     position: relative;
-    
-    /* Example shadow */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+    display: flex;
+    flex-direction: column;
   }
   
   /* Close Button */
   .closeButton {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 20px;
+    right: 20px;
     
     background: transparent;
     border: none;
-    font-size: 32px;
+    font-size: 28px;
     cursor: pointer;
-    font-weight: bold;
-    padding: 10px;
-    transition: transform 0.2s; /* Smooth transition */
+    color: #666;
+    padding: 8px;
+    transition: all 0.2s ease;
   }
   
   .closeButton:hover {
-    transform: scale(1.1); /* Slightly enlarge on hover */
+    color: #000;
+    transform: rotate(90deg);
   }
   
   /* Title (What Are You Looking For?) */
   .title {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    font-size: 24px;
+    margin: 0 0 1.5rem;
+    font-size: 28px;
     text-align: center;
-    font-weight: 600; /* Bold title */
+    font-weight: 600;
+    color: #222;
   }
   
   /* Search Row */
   .searchRow {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 1rem;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 1.2rem;
+    background: white;
+    border: 1px solid #ddd;
+    position: relative;
   }
   
-  /* Category <select> dropdown */
+  /* Category Select */
   .categorySelect {
-    padding: 8px;
+    width: 200px;
+    padding: 15px 20px;
     font-size: 14px;
+    border: none;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-right: 1px solid #ddd;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    padding-right: 30px;
+  }
+  
+  .categorySelect:hover {
+    background: #f8f9fa;
   }
   
   /* Search Input */
   .searchInput {
     flex-grow: 1;
-    padding: 8px;
+    padding: 15px 20px;
     font-size: 14px;
+    border: none;
+    background: white;
+    color: #333;
+  }
+  
+  .searchInput::placeholder {
+    color: #999;
+  }
+  
+  .searchInput:focus {
+    outline: none;
+    background: white;
   }
   
   /* Search Button */
   .searchButton {
-    padding: 8px 16px;
-    background: #007bff; /* Bootstrap primary color */
+    min-width: 120px;
+    padding: 15px 20px;
+    background: #000;
     color: #fff;
     border: none;
     cursor: pointer;
-    border-radius: 4px; /* Rounded corners */
-    transition: background 0.3s; /* Smooth transition */
+    font-weight: 500;
+    transition: all 0.2s ease;
   }
   
   .searchButton:hover {
-    background: #0056b3; /* Darker shade on hover */
+    background: #222;
   }
   
-  /* Trending Searches Container */
+  /* Update Trending Searches Container */
   .trendingSearches {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
   
   .trendingSearches h3 {
-    margin: 0 0 0.5rem 0;
-    font-weight: normal;
+    font-size: 13px;
+    color: #777;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .tags {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
   
   .tags span {
-    display: inline-block;
-    background: #f0f0f0;
-    padding: 6px 10px;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    border-radius: 4px;
+    padding: 5px 15px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    color: #666;
     cursor: pointer;
-    font-size: 14px;
+    white-space: nowrap;
   }
   
   /* Popular Title */
   .popularTitle {
-    margin: 0 0 1.5rem 0;
-    font-size: 20px;
-    text-align: center;
+    font-size: 24px;
+    margin: 0 0 1.5rem;
+    color: #222;
+    font-weight: 600;
   }
   
   /* Categories Grid */
   .categoryGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-template-columns: repeat(6, 1fr);
     gap: 20px;
-    justify-items: center;
   }
   
   /* Single Category Card */
   .categoryCard {
-    text-align: center;
-    transition: transform 0.2s; /* Smooth transition */
+    padding: 8px;
+    border-radius: 12px;
+    background: white;
+    transition: all 0.3s ease;
+    box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.05),
+      0 1px 2px rgba(0, 0, 0, 0.1);
   }
   
   .categoryCard:hover {
-    transform: scale(1.05); /* Slightly enlarge on hover */
+    transform: translateY(-3px);
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.1),
+      0 1px 3px rgba(0, 0, 0, 0.15);
   }
   
-  .categoryCard img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin-bottom: 0.5rem;
+  .productImage {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .categoryCard:hover .productImage {
+    transform: scale(1.02);
   }
   
   .categoryLabel {
@@ -159,13 +219,191 @@
     color: #888;
   }
   
+  .productName {
+    font-size: 13px;
+    font-weight: 500;
+    margin: 8px 0 4px;
+    color: #333;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+  }
+  
+  .productPrice {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e94560;
+    text-align: center;
+    margin-top: 4px;
+  }
+  
   /* Slide Down Keyframes */
   @keyframes slideDown {
     0% {
-      transform: translateY(-100%);
+      transform: translateY(100%);
     }
     100% {
       transform: translateY(0);
     }
   }
+  
+  /* Update loading container styles */
+  .loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #333;
+  }
+  
+  /* New formal spinner style */
+  .spinner {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f3f3f3;
+    border-radius: 50%;
+    border-top-color: #007bff;
+    border-right-color: #007bff;
+    animation: spin 0.8s ease-in-out infinite;
+    margin-bottom: 12px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Bottom loader styles */
+  .bottomLoader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to top, rgba(255,255,255,1) 50%, rgba(255,255,255,0.8) 100%);
+  }
+  
+  .bottomLoader .spinner {
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    border-width: 2px;
+  }
+  
+  /* Loading text style */
+  .loadingContainer p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Update products section for better scroll experience */
+  .productsSection {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0 0 40px;
+  }
+  
+  .productsSection::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Make the products section responsive */
+  @media (max-width: 1200px) {
+    .categoryGrid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .popupContent {
+      padding: 30px 20px;
+    }
+
+    .categoryGrid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .categorySelect {
+      width: 150px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .popupContent {
+      padding: 20px 15px;
+      height: 95vh;
+    }
+
+    .searchRow {
+      flex-direction: column;
+      background: white;
+      border: 1px solid #ddd;
+    }
+
+    .categorySelect,
+    .searchInput {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .searchButton {
+      width: 100%;
+      border: none;
+    }
+
+    .categoryGrid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .trendingSearches {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+  
+  /* Update existing load more button styles */
+  .loadMoreBtn {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 28px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    min-width: 120px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+  }
+  
+  .loadMoreBtn:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+  }
+  
+  /* Update layout structure */
+  .searchSection {
+    flex-shrink: 0; /* Prevent search area from shrinking */
+  }
+  
   

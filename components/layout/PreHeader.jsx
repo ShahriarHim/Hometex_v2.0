@@ -55,34 +55,34 @@ const PreHeader = () => {
                                         onMouseLeave={() => setIsAccountDropdownOpen(false)}
                                     >
                                         <ul className="p-2">
-                                            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                                            <li className="px-2 py-1 hover:bg-gray-200 cursor-pointer">
                                                 <Link 
                                                     href="/auth/signup"
-                                                    className="block w-full h-full"
+                                                    className="block w-full h-full text-center"
                                                 >
                                                     Sign Up / Login
                                                 </Link>
                                             </li>
-                                            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                                            <li className="px-2 py-1 hover:bg-gray-200 cursor-pointer">
                                                 <Link 
                                                     href="/my-rewards"
-                                                    className="block w-full h-full"
+                                                    className="block w-full h-full text-center"
                                                 >
                                                     My Rewards
                                                 </Link>
                                             </li>
-                                            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                                            <li className="px-2 py-1 hover:bg-gray-200 cursor-pointer">
                                                 <Link 
                                                     href="/language"
-                                                    className="block w-full h-full"
+                                                    className="block w-full h-full text-center"
                                                 >
                                                     Language
                                                 </Link>
                                             </li>
-                                            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                                            <li className="px-2 py-1 hover:bg-gray-200 cursor-pointer">
                                                 <Link 
                                                     href="/currency"
-                                                    className="block w-full h-full"
+                                                    className="block w-full h-full text-center"
                                                 >
                                                     Currency
                                                 </Link>
@@ -102,18 +102,6 @@ const PreHeader = () => {
                                     style={{ width: "18px", height: "18px" }}
                                 />{" "}
                                 <span className="text-sm">Corporate Inquiries</span>
-                            </Link>
-
-                            {/* Order Tracking - Standard Link */}
-                            <Link 
-                                href="/orderDash"
-                                className="flex items-center hover:text-blue-500 text-sm"
-                            >
-                                <HiOutlineTicket
-                                    className="mr-1 text-pink-500"
-                                    style={{ width: "18px", height: "18px" }}
-                                />{" "}
-                                <span className="text-sm">Order Tracking</span>
                             </Link>
                         </div>
 
@@ -136,18 +124,24 @@ const PreHeader = () => {
                                 <DynamicText onTextChange={handleTextChange} />
                             </div>
                         </div>
-
-
-
                     </div>
 
                     {/* Right Section (10% width) with Absolute positioning */}
-                    <div className="flex items-center  px-2 w-[10%] ">
+                    <div className="flex items-center justify-end gap-3 px-2 w-[10%]">
                         {/* Order Tracking */}
-
+                        <Link 
+                            href="/orderDash"
+                            className="flex items-center hover:text-blue-500 text-sm mr-20 whitespace-nowrap"
+                        >
+                            <HiOutlineTicket
+                                className="mr-1 text-pink-500"
+                                style={{ width: "18px", height: "18px" }}
+                            />
+                            <span className="text-sm">Order Tracking</span>
+                        </Link>
 
                         {/* My Cart */}
-                        <div className="absolute bg-black text-white px-3 py-5 flex items-center cursor-pointer hover:text-yellow-500 z-[150]">
+                        <div className="absolute right-2 bg-black text-white px-3 py-5 flex items-center cursor-pointer hover:text-yellow-500 z-[150]">
                             <HiShoppingCart
                                 className="mr-2 text-pink-500"
                                 style={{ width: "22px", height: "22px" }}

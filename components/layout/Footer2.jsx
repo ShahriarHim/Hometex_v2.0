@@ -114,7 +114,7 @@ const Footer2 = () => {
             <div className="flex flex-wrap justify-between items-center">
               {/* Payment Methods */}
               <div className="flex items-center space-x-2">
-                <span className="text-sm mr-3">Payment Methods:</span>
+                <span className="text-sm mr-3">We Accept:</span>
                 <img src="https://cdn-icons-png.flaticon.com/512/349/349221.png" alt="Visa" className="h-8" />
                 <img src="https://cdn-icons-png.flaticon.com/512/349/349228.png" alt="Mastercard" className="h-8" />
                 <img src="https://cdn-icons-png.flaticon.com/512/349/349230.png" alt="Discover" className="h-8" />
@@ -123,7 +123,7 @@ const Footer2 = () => {
 
               {/* Copyright */}
               <div className="text-sm text-gray-500">
-                Powered By <span className="text-pink-500">OpenCart</span> Your Store © {currentYear}
+               Copyright <span className="text-pink-500">{currentYear}</span> Hometex Bangladesh Manufactory. All rights reserved. 
               </div>
             </div>
           </div>

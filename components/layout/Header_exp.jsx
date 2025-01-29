@@ -169,9 +169,8 @@ const HeaderExp = () => {
             {showPopup && <SearchPopup onClose={closePopup} />}
             <PreHeader />
             <FloatingBar />
-            <header className={styles.headerExp}>
-                {/* Middle row with icons */}
-                <div className={`container-fluid ${styles.middleRow}`} style={{ zIndex: "10" }}>
+            <header className={`${styles.headerExp} bg-white`} style={{ margin: 0, padding: 0 }}>
+                <div className={`container-fluid ${styles.middleRow}`} style={{ zIndex: "10", marginBottom: 0, paddingBottom: 0 }}>
                     {/* Left section: Categories and Search */}
                     <div className={styles.leftSection}>
                         <div 

@@ -104,35 +104,23 @@ const ProductsTabs = ({ products }) => {
 
   const params = {
     slidesPerView: 4,
-    spaceBetween: 30,
+    spaceBetween: 16,
     breakpoints: {
       0: {
         slidesPerView: 1,
-        spaceBetween: 30,
+        spaceBetween: 12,
       },
-      400: {
-        slidesPerView: 1,
-        spaceBetween: 30,
-      },
-      639: {
-        slidesPerView: 1,
-        spaceBetween: 30,
-      },
-      865: {
+      640: {
         slidesPerView: 2,
-        spaceBetween: 30,
+        spaceBetween: 16,
       },
-      1000: {
-        slidesPerView: 4,
-        spaceBetween: 30,
+      868: {
+        slidesPerView: 3,
+        spaceBetween: 16,
       },
-      1500: {
+      1024: {
         slidesPerView: 4,
-        spaceBetween: 30,
-      },
-      1700: {
-        slidesPerView: 4,
-        spaceBetween: 30,
+        spaceBetween: 16,
       },
     },
     freeMode: true,
@@ -209,55 +197,128 @@ const ProductsTabs = ({ products }) => {
 };
 
 const ProductCard = ({ product, openModal, handleRequestStack }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  const originalPrice = parseFloat(product.original_price);
+  const sellPrice = parseFloat(product.sell_price?.price);
+  const discount = originalPrice && sellPrice ? 
+    Math.round(((originalPrice - sellPrice) / originalPrice) * 100) : 0;
+
   return (
-    <div className="relative w-60 max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 border mt-5 object-fit">
-      <img
-        className="p-4 rounded-t-lg object-fit"
-        src={product.primary_photo}
-        alt={product.name}
-        onClick={() => openModal(product)}
-      />
-      <div className="absolute top-0 right-0 p-2 opacity-0 hover:opacity-100 transition duration-300 ">
-        <RiShoppingBasketFill
-          size={34}
-          color="#fff"
-          className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-        />
-        <MdFavorite
-          size={34}
-          color="#fff"
-          className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-        />
-        <RiExchangeFill
-          size={34}
-          color="#fff"
-          className="bg-[#999] hover:bg-[#009688] m-2 p-2"
-        />
+    <div 
+      className="relative w-full max-w-sm bg-white rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-gray-100 group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Badges Container */}
+      <div className="absolute top-2 left-2 z-20 flex flex-col gap-0.5">
+        {discount > 0 && (
+          <span className="bg-red-500 text-white text-xs font-medium px-2 py-0.5 rounded-md transform transition-transform duration-300 hover:scale-105">
+            -{discount}%
+          </span>
+        )}
+        {product.isNew === 1 && (
+          <span className="bg-green-500 text-white text-xs font-medium px-2 py-0.5 rounded-md transform transition-transform duration-300 hover:scale-105">
+            New
+          </span>
+        )}
+        {product.isTrending === 1 && (
+          <span className="bg-blue-500 text-white text-xs font-medium px-2 py-0.5 rounded-md transform transition-transform duration-300 hover:scale-105">
+            Trending
+          </span>
+        )}
       </div>
-      <div className="px-5 pb-5">
+
+      {/* Product Image Container */}
+      <div 
+        className="relative aspect-square overflow-hidden rounded-t-lg cursor-pointer group"
+        onClick={() => openModal(product)}
+      >
+        <img
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          src={product.primary_photo}
+          alt={product.name}
+        />
+        
+        {/* Hover Overlay - Updated for right to left animation */}
+        <div 
+          className="absolute inset-0 bg-black/20 translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"
+          style={{
+            background: 'linear-gradient(to left, rgba(0,0,0,0.3), rgba(0,0,0,0.1), rgba(0,0,0,0))'
+          }}
+        />
+        
+        {/* Quick Action Buttons */}
+        <div className={`absolute right-2 top-2 flex flex-col gap-1 transition-all duration-300 ${
+          isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+        }`}>
+          <button className="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all duration-200 hover:scale-110 hover:shadow-md">
+            <MdFavorite size={16} className="text-gray-600 hover:text-red-500 transition-colors" />
+          </button>
+          {product.stock > 0 && (
+            <button className="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all duration-200 hover:scale-110 hover:shadow-md">
+              <RiShoppingBasketFill size={16} className="text-gray-600 hover:text-blue-500 transition-colors" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Product Details */}
+      <div className="p-3">
+        {/* Product Name and Stock Status */}
+        <div className="flex items-start justify-between gap-2 mb-1.5">
+          <Link href={`/Shop/product/${product.id}`} className="flex-1">
+            <h5 className="text-sm font-medium text-gray-900 hover:text-gray-700 line-clamp-2 leading-tight">
+              {product.name}
+            </h5>
+          </Link>
+          <span className={`text-xs px-1.5 py-0.5 rounded-full whitespace-nowrap ${
+            product.stock > 0
+              ? 'bg-green-50 text-green-600'
+              : 'bg-red-50 text-red-600'
+          }`}>
+            {product.stock > 0 ? `${product.stock} left` : 'Out of Stock'}
+          </span>
+        </div>
+
+        {/* Rating */}
+        <div className="flex items-center gap-1 mb-2">
         <ReactStars
           count={5}
-          size={24}
-          value={5}
+            size={16}
+            value={Number(product.star) || 0}
+            isHalf={true}
           edit={false}
-          activeColor="#ffd700"
-        />
-        <Link href={`/Shop/product/${product.id}`}>
-          <h5 className="text-l font-semibold tracking-tight text-gray-900 dark:text-white">
-            {product.name}
-          </h5>
+            activeColor="#FBBF24"
+            color="#E5E7EB"
+          />
+          <span className="text-xs text-gray-500">({product.star || 0})</span>
+        </div>
+
+        {/* Price and Action */}
           <div className="flex items-center justify-between">
-            <span className="text-xl font-bold text-red-900 dark:text-white">
-              Price: TK {product.price}
+          <div className="flex flex-col">
+            <span className="text-base font-semibold text-gray-900">
+              {product.sell_price?.symbol} {product.sell_price?.price.toLocaleString()}
             </span>
+            {discount > 0 && (
+              <span className="text-xs text-gray-500 line-through">
+                {product.sell_price?.symbol} {product.original_price.toLocaleString()}
+              </span>
+            )}
           </div>
-        </Link>
+          
         <button
-          className="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
-          onClick={() => handleRequestStack(product)}
-        >
-          Request Stock
+            className={`py-1.5 px-3 rounded-full text-xs font-medium transition-all duration-200 transform hover:scale-105 ${
+              product.stock > 0
+                ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/25'
+                : 'bg-orange-500 text-white hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/25'
+            }`}
+            onClick={() => product.stock > 0 ? null : handleRequestStack(product)}
+          >
+            {product.stock > 0 ? 'Add to Cart' : 'Request Stock'}
         </button>
+        </div>
       </div>
     </div>
   );

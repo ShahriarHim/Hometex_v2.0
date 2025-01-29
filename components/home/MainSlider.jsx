@@ -30,8 +30,8 @@ const MainSlider = () => {
 
   if (isLoading) {
     return (
-      <div className="relative overflow-hidden bg-gray-100">
-        <div className="max-w-[1400px] mx-auto my-8 bg-white rounded-lg shadow-lg h-[500px] animate-pulse flex items-center justify-center">
+      <div className="relative overflow-hidden">
+        <div className="max-w-[1400px] mx-auto bg-white rounded-lg shadow-lg h-[500px] animate-pulse flex items-center justify-center">
           <div className="text-gray-400">Loading...</div>
         </div>
       </div>
@@ -43,8 +43,8 @@ const MainSlider = () => {
   }
 
   return (
-    <div className="relative overflow-hidden bg-gray-100">
-      <div className="max-w-[1400px] mx-auto my-8 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <div className="relative overflow-hidden">
+      <div className="max-w-[1400px] mx-auto bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
         <Swiper
           spaceBetween={0}
           effect={"fade"}

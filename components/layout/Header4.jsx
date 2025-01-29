@@ -45,7 +45,7 @@ import LivingDecor from "../home/megaMenu/Living/LivingDecor";
 import HomeDecor from "../home/megaMenu/Home Decor/HomeDecor";
 import { DynamicText, textOptions } from "./DynamicText";
 import Modal from "./Modal";
-import SearchBarPopup from "./searchPopup";
+// import SearchBarPopup from "./searchPopup";
 import LoginPopup from "./LoginPopup";
 import { useRouter } from "next/router"; // Ensure this is imported
 import CartComponent from "./CartComponent/CartComponent";
