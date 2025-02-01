@@ -105,3 +105,43 @@ body {
     border-style: solid;
     border-color: transparent transparent transparent rgb(151, 214, 177);
 }
+
+@keyframes pieceSlideIn {
+  0% {
+    transform: translateX(100%) scale(0.99);
+    opacity: 0;
+    filter: brightness(1.1);
+  }
+  40% {
+    transform: translateX(-0.5%);
+    opacity: 1;
+    filter: brightness(1.05);
+  }
+  60% {
+    transform: translateX(0) scale(1);
+    filter: brightness(1.02);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+.animate-pieceSlideIn {
+  animation: pieceSlideIn 1.2s cubic-bezier(0.2, 0.6, 0.35, 1) forwards;
+}
+
+/* Add a new animation for the hover effect */
+@keyframes subtleFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-1px) scale(1.005);
+  }
+}
+
+.group:hover .animate-pieceSlideIn {
+  animation: subtleFloat 4s ease-in-out infinite;
+}

@@ -170,13 +170,14 @@ const HeaderExp = () => {
             <PreHeader />
             <FloatingBar />
             <header className={`${styles.headerExp} bg-white`} style={{ margin: 0, padding: 0 }}>
-                <div className={`container-fluid ${styles.middleRow}`} style={{ zIndex: "10", marginBottom: 0, paddingBottom: 0 }}>
+                <div className={`container-fluid ${styles.middleRow}`} style={{ zIndex: "150", marginBottom: 0, paddingBottom: 0 }}>
                     {/* Left section: Categories and Search */}
-                    <div className={styles.leftSection}>
+                    <div className={styles.leftSection} style={{ flex: '1', maxWidth: '25%', paddingLeft: '1rem' }}>
                         <div 
                             className={styles["all-categories"]}
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
+                            style={{ marginRight: '1.5rem' }}
                         >
                             <button
                                 className={styles["all-categories-btn"]}
@@ -203,21 +204,31 @@ const HeaderExp = () => {
                             )}
                         </div>
 
-                        <Link href="#" className={styles.search} onClick={handleSearchClick}>
+                        <Link href="#" className={styles.search} onClick={handleSearchClick} style={{ marginLeft: '-1.5rem' }}>
                             <FaSearch className="h-6 w-6 text-yellow-600"/>
                             <span>Search</span>
                         </Link>
                     </div>
 
                     {/* Center Logo */}
-                    <div className={styles.centerLogo} >
+                    <div className={styles.centerLogo} style={{ flex: '1', display: 'flex', justifyContent: 'center' }}>
                         <Link href="/">
-                            <img src="/images/hometex-logo.png" alt="Hometex Bangladesh" />
+                            <img 
+                                src="/images/hometex-logo.png" 
+                                alt="Hometex Bangladesh" 
+                                style={{ height: '55px', width: 'auto' }} 
+                            />
                         </Link>
                     </div>
 
                     {/* Right section: Icons */}
-                    <div className={styles.rightSection}>
+                    <div className={styles.rightSection} style={{ 
+                        flex: '1', 
+                        maxWidth: '45%', 
+                        justifyContent: 'flex-end', 
+                        gap: '2rem', 
+                        paddingRight: '2rem' 
+                    }}>
                         <Link href="/account" className={styles.iconLink}>
                             <FaMapMarkerAlt className="h-6 w-6 text-yellow-600"/>
                             <span>Find a Store</span>
