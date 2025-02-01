@@ -70,7 +70,7 @@
 
 .leftSection .search:hover {
   color: #5a5ae0; /* Change icon and text color on hover */
-  transform: scale(1.1); /* Slight enlargement */
+  transform: scale(1.0); /* Slight enlargement */
 }
 .leftSection .search:hover {
   background: rgba(90, 90, 224, 0.1); /* Add subtle background highlight */

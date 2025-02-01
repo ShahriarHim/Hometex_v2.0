@@ -9,18 +9,22 @@ import {
     HiOutlineChevronDown,
 } from "react-icons/hi";
 import Link from "next/link";
+import LoginPopup from "./LoginPopup";
 
 const PreHeader = () => {
     const [visitUsText, setVisitUsText] = useState(
         textOptions ? textOptions[0].visitUs : ""
     );
-
+    const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
     const handleTextChange = (newVisitUsText) => {
         setVisitUsText(newVisitUsText);
     };
 
-    const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
+    const [showLoginPopup, setShowLoginPopup] = useState(false);
 
+    const toggleLoginPopup = () => {
+        setShowLoginPopup(!showLoginPopup);
+    };
     return (
         <div className="pt-2 hidden md:block bg-[#d4ed30]">
             <div className="container mx-auto pb-2">
@@ -30,10 +34,10 @@ const PreHeader = () => {
                         {/* My Account Dropdown and Corporate Inquiries */}
                         <div className="flex items-center gap-3 px-2">
                             {/* My Account Dropdown */}
-                            <div 
+                            <div
                                 className="relative group cursor-pointer flex items-center hover:text-blue-500 text-sm"
                             >
-                                <div 
+                                <div
                                     onMouseEnter={() => setIsAccountDropdownOpen(true)}
                                     className="flex items-center"
                                 >
@@ -47,24 +51,29 @@ const PreHeader = () => {
                                         style={{ width: "14px", height: "14px" }}
                                     />
                                 </div>
-                                
+
                                 {isAccountDropdownOpen && (
-                                    <div 
+                                    <div
                                         className="absolute top-full left-0 bg-white text-black rounded-md shadow-lg z-50 w-40 mt-2"
                                         onMouseEnter={() => setIsAccountDropdownOpen(true)}
                                         onMouseLeave={() => setIsAccountDropdownOpen(false)}
                                     >
                                         <ul className="p-2">
                                             <li className="px-2 py-1 hover:bg-gray-200 cursor-pointer">
-                                                <Link 
-                                                    href="/auth/signup"
+                                                {/* <Link
+                                                    href="#"
                                                     className="block w-full h-full text-center"
                                                 >
                                                     Sign Up / Login
-                                                </Link>
+                                                </Link> */}
+                                                <button
+                                                    onClick={toggleLoginPopup}
+                                                    className="block w-full h-full text-center"
+                                               >signup</button>     
+                                                
                                             </li>
                                             <li className="px-2 py-1 hover:bg-gray-200 cursor-pointer">
-                                                <Link 
+                                                <Link
                                                     href="/my-rewards"
                                                     className="block w-full h-full text-center"
                                                 >
@@ -72,7 +81,7 @@ const PreHeader = () => {
                                                 </Link>
                                             </li>
                                             <li className="px-2 py-1 hover:bg-gray-200 cursor-pointer">
-                                                <Link 
+                                                <Link
                                                     href="/language"
                                                     className="block w-full h-full text-center"
                                                 >
@@ -80,7 +89,7 @@ const PreHeader = () => {
                                                 </Link>
                                             </li>
                                             <li className="px-2 py-1 hover:bg-gray-200 cursor-pointer">
-                                                <Link 
+                                                <Link
                                                     href="/currency"
                                                     className="block w-full h-full text-center"
                                                 >
@@ -125,11 +134,13 @@ const PreHeader = () => {
                             </div>
                         </div>
                     </div>
-
+                    <div>
+                        {showLoginPopup && <LoginPopup showPopup={showLoginPopup} togglePopup={toggleLoginPopup} />}
+                    </div>
                     {/* Right Section (10% width) with Absolute positioning */}
                     <div className="flex items-center justify-end gap-3 px-2 w-[10%]">
                         {/* Order Tracking */}
-                        <Link 
+                        <Link
                             href="/orderDash"
                             className="flex items-center hover:text-blue-500 text-sm mr-20 whitespace-nowrap"
                         >
