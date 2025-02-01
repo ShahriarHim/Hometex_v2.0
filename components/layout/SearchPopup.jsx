@@ -2,14 +2,76 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from '../../styles/SearchPopup.module.css'; // Create a CSS module for styling
 // Or "../../styles/SearchPopup.module.css"
 import Constants from '@/ults/Constant';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const SearchPopup = ({ onClose }) => {
+  const [categories, setCategories] = useState([]); // New state for categories
   const [products, setProducts] = useState([]); // State to hold fetched products
   const [visibleProducts, setVisibleProducts] = useState(8); // Number of products to show initially
   const [isLoading, setIsLoading] = useState(true); // Add loading state
   const [isLoadingMore, setIsLoadingMore] = useState(false); // New state for bottom loading
   const [searchTerm, setSearchTerm] = useState(''); // Add search term state
   const productsRef = useRef(null); // Reference for scroll container
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12; // Show 12 categories per page
+  const router = useRouter();
+
+  // Calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCategories = categories.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(categories.length / itemsPerPage);
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Replace handleCategoryClick with this version
+  const handleCategoryClick = async (categoryName) => {
+    const popupElement = document.querySelector(`.${styles.popup}`);
+    popupElement.classList.add(styles.slideUp);
+    
+    // Wait for animation to complete before navigation
+    setTimeout(() => {
+      onClose(); // Close the popup first
+      router.push(`/products/${categoryName.toLowerCase()}`);
+    }, 300);
+  };
+
+  // Replace initial fetchProducts with fetchCategories
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  // Fetch categories function
+  const fetchCategories = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(
+        `${Constants.BASE_URL}/api/product-menu/horizontal`,
+        {
+          method: 'GET',
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      setCategories(result.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Call fetchProducts when the component mounts
   useEffect(() => {
@@ -81,7 +143,7 @@ const SearchPopup = ({ onClose }) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const result = await response.json();
-      console.log("mamamiaaaaaaaaaaaaaa",result);
+     
       setProducts(result.data); 
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -151,10 +213,9 @@ const SearchPopup = ({ onClose }) => {
           <div className={styles.searchRow}>
             <select className={styles.categorySelect}>
               <option>All categories</option>
-              <option>Category 1</option>
-              <option>Category 2</option>
-              <option>Category 3</option>
-              {/* ... Add more categories as needed */}
+              {categories.map(cat => (
+                <option key={cat.id}>{cat.name}</option>
+              ))}
             </select>
             <input
               type="text"
@@ -183,34 +244,87 @@ const SearchPopup = ({ onClose }) => {
           </div>
         </div>
 
-        {/* Products Section */}
+        {/* Products/Categories Section */}
         <div className={styles.productsSection} ref={productsRef}>
-          <h2 className={styles.popularTitle}>Popular Products</h2>
-          
-          {isLoading ? (
-            <div className={styles.loadingContainer}>
-              <div className={styles.spinner}></div>
-              <p>Loading Products...</p>
-            </div>
-          ) : (
+          {!searchTerm ? (
+            // Show categories when not searching
             <>
-              <div className={styles.categoryGrid}>
-                {products.slice(0, visibleProducts).map((product) => (
-                  <div key={product.id} className={styles.categoryCard}>
-                    <img 
-                      src={product.primary_photo} 
-                      alt={product.name}
-                      className={styles.productImage}
-                    />
-                    <p className={styles.productName}>{product.name}</p>
-                    <p className={styles.productPrice}>{product.price}</p>
-                  </div>
-                ))}
-              </div>
-              {isLoadingMore && visibleProducts < products.length && (
-                <div className={styles.bottomLoader}>
+              <h2 className={styles.popularTitle}>Browse Categories</h2>
+              {isLoading ? (
+                <div className={styles.loadingContainer}>
                   <div className={styles.spinner}></div>
+                  <p>Loading Categories...</p>
                 </div>
+              ) : (
+                <>
+                  <div className={styles.categoryGrid}>
+                    {currentCategories.map((category) => (
+                      <div 
+                        key={category.id}
+                        className={styles.categoryCard}
+                        onClick={() => handleCategoryClick(category.name)}
+                      >
+                        <div className={styles.imageWrapper}>
+                          <img 
+                            src={category.image} 
+                            alt={category.name}
+                            className={styles.categoryImage}
+                          />
+                        </div>
+                        <p className={styles.categoryName}>{category.name}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className={styles.pagination}>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => handlePageChange(page)}
+                          className={`${styles.pageButton} ${
+                            currentPage === page ? styles.activePage : ''
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </>
+          ) : (
+            // Show products when searching
+            <>
+              <h2 className={styles.popularTitle}>Search Results</h2>
+              {isLoading ? (
+                <div className={styles.loadingContainer}>
+                  <div className={styles.spinner}></div>
+                  <p>Loading Products...</p>
+                </div>
+              ) : (
+                <>
+                  <div className={styles.categoryGrid}>
+                    {products.slice(0, visibleProducts).map((product) => (
+                      <div key={product.id} className={styles.categoryCard}>
+                        <img 
+                          src={product.primary_photo} 
+                          alt={product.name}
+                          className={styles.productImage}
+                        />
+                        <p className={styles.productName}>{product.name}</p>
+                        <p className={styles.productPrice}>{product.price}</p>
+                      </div>
+                    ))}
+                  </div>
+                  {isLoadingMore && visibleProducts < products.length && (
+                    <div className={styles.bottomLoader}>
+                      <div className={styles.spinner}></div>
+                    </div>
+                  )}
+                </>
               )}
             </>
           )}

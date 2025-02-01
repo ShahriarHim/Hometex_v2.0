@@ -67,20 +67,49 @@ const MainSlider = () => {
             <SwiperSlide key={`${index}-${activeIndex}`}>
               <div className="relative h-[500px]">
                 <div className="absolute inset-0 flex items-stretch">
-                  {/* Left Section - Only render if left content exists */}
+                  {/* Left Section */}
                   {slide.left && Object.keys(slide.left).length > 0 && (
-                    <div className={`${!slide.right ? 'w-1/3' : 'w-1/4'} relative overflow-hidden ${!slide.right ? 'rounded-l-lg' : ''} group`}
+                    <div className={`${!slide.right ? 'w-1/3' : 'w-1/4'} relative overflow-hidden ${!slide.right ? 'rounded-l-lg' : ''} group p-3`}
                          style={{ backgroundColor: slide.left.background_color }}>
+                      {/* Decorative columns */}
+                      <div className="absolute inset-0 w-full h-full">
+                        <div className="absolute inset-0 flex justify-between px-4 opacity-30">
+                          {[...Array(3)].map((_, i) => (
+                            <div key={i} className="w-px h-full bg-white/50" />
+                          ))}
+                        </div>
+                      </div>
                       {slide.left.image && (
-                        <div className="absolute inset-0 transform translate-x-full animate-slideInFromRight"
-                             style={{animationDelay: '0.3s', animationFillMode: 'forwards'}}>
-                          <img 
-                            src={slide.left.image} 
-                            alt={slide.left.text || "Slide Image"}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            loading="lazy"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-r from-[#5ADAEF]/20 to-transparent" />
+                        <div className="absolute inset-3 rounded-lg overflow-hidden">
+                          {/* Image pieces container */}
+                          <div className="relative w-full h-full">
+                            {[...Array(12)].map((_, index) => (
+                              <div
+                                key={index}
+                                className="absolute w-full overflow-hidden transform translate-x-full animate-pieceSlideIn"
+                                style={{
+                                  top: `${index * (100 / 12)}%`,
+                                  height: `${100 / 12}%`,
+                                  animationDelay: `${0.1 + index * 0.05}s`,
+                                  animationFillMode: 'forwards',
+                                  zIndex: index
+                                }}
+                              >
+                                <img 
+                                  src={slide.left.image} 
+                                  alt={slide.left.text || "Slide Image"}
+                                  className="absolute w-full h-[1200%] object-cover transition-transform duration-700 group-hover:scale-105"
+                                  style={{
+                                    top: `${index * -100}%`,
+                                    transform: `scale(1.01)` // Reduced scale to minimize seams
+                                  }}
+                                  loading="lazy"
+                                />
+                              </div>
+                            ))}
+                            {/* Smooth transition overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5" />
+                          </div>
                         </div>
                       )}
                     </div>
@@ -119,20 +148,49 @@ const MainSlider = () => {
                     </div>
                   </div>
 
-                  {/* Right Section - Only render if right content exists */}
+                  {/* Right Section */}
                   {slide.right && Object.keys(slide.right).length > 0 && (
-                    <div className={`${!slide.left ? 'w-1/3' : 'w-1/4'} relative overflow-hidden ${!slide.left ? 'rounded-r-lg' : ''} group`}
+                    <div className={`${!slide.left ? 'w-1/3' : 'w-1/4'} relative overflow-hidden ${!slide.left ? 'rounded-r-lg' : ''} group p-3`}
                          style={{ backgroundColor: slide.right.background_color }}>
+                      {/* Decorative columns */}
+                      <div className="absolute inset-0 w-full h-full">
+                        <div className="absolute inset-0 flex justify-between px-4 opacity-30">
+                          {[...Array(3)].map((_, i) => (
+                            <div key={i} className="w-px h-full bg-white/50" />
+                          ))}
+                        </div>
+                      </div>
                       {slide.right.image && (
-                        <div className="absolute inset-0 transform translate-x-full animate-slideInFromRight"
-                             style={{animationDelay: '0.4s', animationFillMode: 'forwards'}}>
-                          <img 
-                            src={slide.right.image} 
-                            alt={slide.right.text || "Slide Image"}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            loading="lazy"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-l from-[#F3E616]/20 to-transparent" />
+                        <div className="absolute inset-3 rounded-lg overflow-hidden">
+                          {/* Image pieces container */}
+                          <div className="relative w-full h-full">
+                            {[...Array(12)].map((_, index) => (
+                              <div
+                                key={index}
+                                className="absolute w-full overflow-hidden transform translate-x-full animate-pieceSlideIn"
+                                style={{
+                                  top: `${index * (100 / 12)}%`,
+                                  height: `${100 / 12}%`,
+                                  animationDelay: `${0.1 + index * 0.05}s`,
+                                  animationFillMode: 'forwards',
+                                  zIndex: index
+                                }}
+                              >
+                                <img 
+                                  src={slide.right.image} 
+                                  alt={slide.right.text || "Slide Image"}
+                                  className="absolute w-full h-[1200%] object-cover transition-transform duration-700 group-hover:scale-105"
+                                  style={{
+                                    top: `${index * -100}%`,
+                                    transform: `scale(1.01)` // Reduced scale to minimize seams
+                                  }}
+                                  loading="lazy"
+                                />
+                              </div>
+                            ))}
+                            {/* Smooth transition overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5" />
+                          </div>
                         </div>
                       )}
                     </div>
