@@ -9,6 +9,7 @@ import { CiStar } from "react-icons/ci";
 import { FaDownload, FaStar } from "react-icons/fa";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
+
 const ProductDetails = ({ product, router }) => {
   const [product_qty, setProductQty] = useState(1);
   const [showBusinessOnly, setShowBusinessOnly] = useState(false);
@@ -137,9 +138,9 @@ const ProductDetails = ({ product, router }) => {
       <p className="text-sm pb-2">
         {product?.sub_category?.name} : {product?.child_sub_category?.name}
       </p>
-     //! Review Block
+      {/* Review Block */}
       <div className="flex flex-col md:flex-row gap-2 my-2 mx-2">
-        {/* Review Block 1 */}
+        {/* Section 1 */}
         <div className="bg-green-600 rounded-full px-3 py-1.5 flex items-center justify-center space-x-1.5">
           <div className="flex items-baseline space-x-0.5">
             <span className="text-white font-bold text-sm">4.1</span>
@@ -149,7 +150,7 @@ const ProductDetails = ({ product, router }) => {
           <span className="text-white font-medium text-xs">202 Reviews</span>
         </div>
 
-        {/* Review Block 2 */}
+        {/* section 2 */}
         <div className="bg-green-600 rounded-full px-3 py-1.5 flex items-center justify-center space-x-1.5">
           <div className="flex items-baseline space-x-0.5">
             <span className="text-white font-bold text-sm">4.1</span>
@@ -159,7 +160,7 @@ const ProductDetails = ({ product, router }) => {
           <span className="text-white font-medium text-xs">202 Reviews</span>
         </div>
       </div>
-      //! Price Block
+      {/* Price block */}
       <div className="flex flex-auto justify-between items-center">
         {/* Current Price */}
         <p className="text-lg font-semibold text-pink-600">
@@ -188,20 +189,39 @@ const ProductDetails = ({ product, router }) => {
       <div className="flex flex-col md:flex-row gap-2 my-4 mx-2">
         {/* Savings Percentage - Reverse Parallelogram */}
         {(product?.previous_price || product?.price) && (
-          <div className="relative bg-purple-600 text-white py-1.5 px-3 rounded-lg 
-            transform skew-x-12 hover:skew-x-0 transition-all duration-200">
-            <div className="skew-x-12 flex items-center space-x-1.5">
-              <span className="text-sm font-extrabold">
-                {Math.round(
-                  ((product?.previous_price || product.price * 1.2 - product.price) /
-                    (product?.previous_price || product.price * 1.2)) * 100
-                )}%
-              </span>
-              <div className="h-3 w-[0.25px] bg-white/30 mx-0.5"></div>
-              <span className="font-bold text-xs">OFF</span>
-            </div>
+          <div
+            style={{
+              width: "100px",
+              height: "30px",
+              borderRadius: "0px 80px 10px 80px",
+              backgroundColor: "#4527A0",
+              transform: "rotate(0deg)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
+              fontWeight: "bold",
+            }}
+          >
+            <span className="text-sm font-extrabold">
+              {Math.round(
+                ((product?.previous_price || product.price * 1.2 - product.price) /
+                  (product?.previous_price || product.price * 1.2)) * 100
+              )}
+              %
+            </span>
+            <div
+              style={{
+                height: "12px",
+                width: "0.25px",
+                backgroundColor: "rgba(255, 255, 255, 0.3)",
+                margin: "0 4px",
+              }}
+            ></div>
+            <span className="font-bold text-xs">OFF</span>
           </div>
         )}
+
 
         {/* Stock Quantity */}
         <div className="border border-purple-600 text-purple-600 py-1.5 px-3 rounded-lg 
@@ -303,15 +323,44 @@ const ProductDetails = ({ product, router }) => {
           </Tab>
         ))}
       </TabList>
-
-      <div className="flex flex-auto text-sm">
-        <div className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium">
-          Estimated delivery between <strong>{points}</strong> days.
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
+        <span style={{ fontWeight: "bold" }}>Fabric Options</span>
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          {["Cotton", "Silk", "Linen", "Denim", "Wool"].map((fabric, index) => (
+            <label
+              key={index}
+              style={{
+                cursor: "pointer",
+                border: "2px solid transparent",
+                padding: "5px",
+                borderRadius: "10px",
+              }}
+            >
+              <input
+                type="radio"
+                name="fabric"
+                value={fabric.toLowerCase()}
+                style={{ display: "none" }}
+              />
+              <img
+                src={`https://via.placeholder.com/50?text=${fabric}`}
+                alt={fabric}
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "100px",
+                  border: "2px solid #ddd",
+                }}
+              />
+            </label>
+          ))}
         </div>
       </div>
 
 
-      <div className="flex flex-wrap pt-2 gap-2 items-center mb-2">
+
+
+      <div className="flex flex-wrap pt-2 gap-2 items-center mb-10">
         {/* Quantity Selector */}
         <div className="flex items-center border border-gray-300 rounded-lg h-9">
           <button
@@ -321,14 +370,14 @@ const ProductDetails = ({ product, router }) => {
             -
           </button>
           <input
-      type="number"
-      className="w-14 text-sm text-center bg-transparent focus:outline-none border-0"
-      min="1"
-      max="100"
-      value={product_qty}
-      disabled
-      readOnly
-    />
+            type="number"
+            className="w-14 text-sm text-center bg-transparent focus:outline-none border-0"
+            min="1"
+            max="100"
+            value={product_qty}
+            disabled
+            readOnly
+          />
           <button
             className="px-2.5 py-1 text-lg text-gray-700 hover:bg-gray-100 focus:outline-none h-full flex items-center"
             onClick={handleIncrement}
@@ -354,30 +403,23 @@ const ProductDetails = ({ product, router }) => {
         </button>
 
         {/* Wishlist Button */}
-        <button
+        {/* <button
           onClick={(e) => attToWishList(product.id)}
           className="p-1.5 border border-pink-600 text-pink-600 rounded-lg hover:bg-pink-50 focus:outline-none h-9 w-9 flex items-center justify-center flex-shrink-0"
         >
           <MdFavorite className="text-lg" />
-        </button>
+        </button> */}
       </div>
-      <div className="col-span-12 flex justify-between">
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}
-        // disabled={parseInt(router.query.id) === 64} // Disable the "Previous" button for the first product
-        >
-          Previous
-        </button>
 
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}
-        // disabled={parseInt(router.query.id) === 65} // Disable the "Next" button for the last product
-        >
-          Next
-        </button>
+
+      <div className="flex flex-auto text-sm mb-20">
+        <div className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium">
+          Estimated delivery between <strong>{points}</strong> days.
+        </div>
       </div>
+
+
+
       <div className="my-2 py-2 flex items-center border-b border-t">
         <button
           className="text-xl font-bold"
@@ -656,6 +698,65 @@ const ProductDetails = ({ product, router }) => {
 
       <div className="my-2 pb-2 flex items-center ">
         <button className="text-xl font-bold">Find in Store</button>
+      </div>
+      <div className="container mx-auto py-4">
+        {/* New Row Section with Full-Width Layout */}
+        <div className="grid grid-cols-1 gap-4">
+          {/* Have a Question in Mind Section - Full Width */}
+          <div className="bg-gray-100 rounded-lg  p-4 w-full">
+            <div className="text-lg font-semibold mb-4 text-center">
+              Have a Question in Mind?
+            </div>
+            <div className="flex gap-2 justify-center">
+              <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded">
+                Call Now
+              </button>
+              <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded">
+                Chat Us
+              </button>
+            </div>
+          </div>
+
+          {/* Time Reminder Box - Full Width Below */}
+          <div className="bg-transparent rounded-lg  p-4 flex items-center justify-center w-full">
+            <TimeReminderBox />
+          </div>
+
+
+
+
+          {/* Free In-Store Pickup Section */}
+          {/* <div className="bg-gray-100 rounded-lg shadow-md p-2">
+              <h1 className="text-2xl font-bold mb-2 text-center">Free in-Store Pickup</h1>
+              <div className="text-center mb-4">
+                <span className="font-semibold text-gray-800">
+                  Please enter a location to check store availability
+                </span>
+              </div>
+              <div className="text-center">
+                <Link href="/Stores" className="bg-black text-white rounded-3xl px-4 py-2 inline-block">
+                  Check nearby stores
+                </Link>
+              </div>
+            </div> */}
+        </div>
+      </div>
+      <div className="col-span-12 flex justify-between mb-5">
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}
+        // disabled={parseInt(router.query.id) === 64} // Disable the "Previous" button for the first product
+        >
+          Previous
+        </button>
+
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}
+        // disabled={parseInt(router.query.id) === 65} // Disable the "Next" button for the last product
+        >
+          Next
+        </button>
       </div>
 
     </div>

@@ -17,13 +17,13 @@ export async function getServerSideProps(context) {
   try {
     let id = context.query.id;
     const res = await fetch(
-    `${Constants.BASE_URL}/api/products-details-web/` + id
+      `${Constants.BASE_URL}/api/products-details-web/` + id
     );
-    
+
     if (!res.ok) {
       throw new Error('Failed to fetch product');
     }
-    
+
     const product_data = await res.json();
     return {
       props: {
@@ -138,7 +138,8 @@ const Product = ({ product }) => {
           </div>
 
           {/* Main Product Image Section */}
-          <div className="col-span-7 justify-start items-start bg-transparent rounded-lg shadow-lg m-2 p-4">
+          <div className="col-span-7 justify-start items-start bg-transparent rounded-lg  m-2 p-4">
+            {/* Product Image */}
             <img
               alt="Primary Product Image"
               src={`${image_URL}/${selectedImage || product.primary_photo?.photo}`}
@@ -149,7 +150,36 @@ const Product = ({ product }) => {
                 margin: "0",
               }}
             />
+
+            {/* Social Sharing Section */}
+            <div className="flex items-center justify-center shadow-md gap-3 mt-40 p-5">
+              {/* Share Icon (Centered) */}
+              <span className="text-gray-600 text-lg flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 12v4m0 0h4m-4 0h16m-8-8V4m0 0h4m-4 0H4m16 8v4m0 0h-4m4 0h-8" />
+                </svg>
+              </span>
+
+              {/* Social Icons */}
+              <a href={`https://api.whatsapp.com/send?text=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp" className="w-10 h-10 hover:opacity-80" />
+              </a>
+
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook" className="w-10 h-10 hover:opacity-80" />
+              </a>
+
+              <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124021.png" alt="Twitter" className="w-10 h-10 hover:opacity-80" />
+              </a>
+
+              <a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124061.png" alt="Pinterest" className="w-10 h-10 hover:opacity-80" />
+              </a>
+            </div>
           </div>
+
+
 
 
           {/* Product Details Section */}
@@ -180,45 +210,6 @@ const Product = ({ product }) => {
         </div>
 
 
-        <div className="container mx-auto py-4">
-          {/* New Row Section with Equal Portions */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Time Reminder Box */}
-            <div className="bg-gray-100 rounded-lg shadow-md p-4 flex items-center justify-center">
-              <TimeReminderBox />
-            </div>
-
-            {/* Have a Question in Mind Section */}
-            <div className="bg-gray-100 rounded-lg shadow-md p-2">
-              <div className="text-lg font-semibold mb-4 text-center">
-                Have a Question in Mind?
-              </div>
-              <div className="flex gap-2 justify-center">
-                <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded">
-                  Call Now
-                </button>
-                <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded">
-                  Chat Us
-                </button>
-              </div>
-            </div>
-
-            {/* Free In-Store Pickup Section */}
-            <div className="bg-gray-100 rounded-lg shadow-md p-2">
-              <h1 className="text-2xl font-bold mb-2 text-center">Free in-Store Pickup</h1>
-              <div className="text-center mb-4">
-                <span className="font-semibold text-gray-800">
-                  Please enter a location to check store availability
-                </span>
-              </div>
-              <div className="text-center">
-                <Link href="/Stores" className="bg-black text-white rounded-3xl px-4 py-2 inline-block">
-                  Check nearby stores
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Additional Sections */}
