@@ -52,9 +52,9 @@ const PreHeader = () => {
                                     <div className="absolute top-full left-0 bg-white text-black rounded-md shadow-lg z-50 w-48 mt-2">
                                         <ul className="py-2">
                                             <li className="hover:bg-gray-100">
-                                                <Link href="/auth/signup" className="block px-4 py-2 text-sm">
+                                                {/* <Link href="/auth/signup" className="block px-4 py-2 text-sm">
                                                     Sign Up / Login
-                                                </Link> */}
+                                                </Link>  */}
                                                 <button
                                                     onClick={toggleLoginPopup}
                                                     className="block w-full h-full text-center"
