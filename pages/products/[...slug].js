@@ -135,9 +135,10 @@ const ProductPage = () => {
 
                 // Transform products
                 const transformedProducts = productData.data.map(product => {
-                    const categorySlug = product.category?.name?.toLowerCase() || '';
-                    const subCategorySlug = product.sub_category?.name?.toLowerCase() || '';
-                    const productSlug = product.child_sub_category?.name?.toLowerCase() || '';
+                    // Generate slugs and ensure they're not empty
+                    const categorySlug = product.category?.name?.toLowerCase() || 'uncategorized';
+                    const subCategorySlug = product.sub_category?.name?.toLowerCase() || 'general';
+                    const productSlug = product.child_sub_category?.name?.toLowerCase() || 'item';
                     const encodedId = encodeProductId(product.id);
 
                     return {
