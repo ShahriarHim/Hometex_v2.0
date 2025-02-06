@@ -17,7 +17,7 @@ import SearchPopup from './SearchPopup'; // Import the new popup component
 const HeaderExp = () => {
     const [categories, setCategories] = useState([]);
     const [location, setLocation] = useState('Location');
-    const [selectedId, setSelectedId] = useState(null);  
+    const [selectedId, setSelectedId] = useState(null);
     const [showAllCategories, setShowAllCategories] = useState(false);
     const [isDropdownHovered, setIsDropdownHovered] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -75,15 +75,15 @@ const HeaderExp = () => {
                             <Link href={`/products/${category.name.toLowerCase()}`} className={styles.menuLink}>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     {category.image && (
-                                        <img 
-                                            src={category.image} 
-                                            alt={category.name} 
-                                            className={styles.categoryImage} 
-                                            style={{ 
-                                                width: '30px', 
-                                                height: '30px', 
+                                        <img
+                                            src={category.image}
+                                            alt={category.name}
+                                            className={styles.categoryImage}
+                                            style={{
+                                                width: '30px',
+                                                height: '30px',
                                                 objectFit: 'cover',
-                                                marginRight: '5px' 
+                                                marginRight: '5px'
                                             }}
                                         />
                                     )}
@@ -95,7 +95,7 @@ const HeaderExp = () => {
                             {hasSub && (
                                 <div className={styles.subMenuContainer}>
                                     <ul className={styles.subMenu}>
-                                        {category.sub && category.sub.map((sub) => (
+                                        {category.sub?.map((sub) => (
                                             <li key={sub.id} className={styles.subMenuItem}>
                                                 <Link href={`/products/${category.name.toLowerCase()}/${sub.name.toLowerCase()}`}>
                                                     <div className={styles.subMenuName}>
@@ -103,7 +103,7 @@ const HeaderExp = () => {
                                                     </div>
                                                 </Link>
 
-                                                {/* Child Subcategories */}
+                                                {/* Display child categories under their respective parent */}
                                                 {sub.child && sub.child.length > 0 && (
                                                     <ul className={styles.childMenu}>
                                                         {sub.child.map((child) => (
@@ -118,6 +118,7 @@ const HeaderExp = () => {
                                             </li>
                                         ))}
                                     </ul>
+
                                 </div>
                             )}
                         </li>
@@ -133,12 +134,12 @@ const HeaderExp = () => {
         if (dropdownTimeout) {
             clearTimeout(dropdownTimeout);
         }
-        
+
         // Delay showing dropdown to prevent accidental triggers
         const timeout = setTimeout(() => {
             setIsDropdownOpen(true);
         }, 100);  // 100ms delay
-        
+
         setDropdownTimeout(timeout);
     };
 
@@ -147,12 +148,12 @@ const HeaderExp = () => {
         if (dropdownTimeout) {
             clearTimeout(dropdownTimeout);
         }
-        
+
         // Delay hiding dropdown
         const timeout = setTimeout(() => {
             setIsDropdownOpen(false);
         }, 200);  // 200ms delay for smoother interaction
-        
+
         setDropdownTimeout(timeout);
     };
 
@@ -170,9 +171,9 @@ const HeaderExp = () => {
             <PreHeader />
             <FloatingBar />
             <header className={`${styles.headerExp} bg-white`} style={{ margin: 0, padding: 0 }}>
-                <div className={`container mx-auto ${styles.middleRow}`} style={{ 
-                    zIndex: "150", 
-                    marginBottom: 0, 
+                <div className={`container mx-auto ${styles.middleRow}`} style={{
+                    zIndex: "150",
+                    marginBottom: 0,
                     paddingBottom: 0,
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -180,14 +181,14 @@ const HeaderExp = () => {
                     padding: '0 0.5rem'  // Matches PreHeader padding
                 }}>
                     {/* Left section: Categories and Search */}
-                    <div className={styles.leftSection} style={{ 
+                    <div className={styles.leftSection} style={{
                         flex: '0 0 25%',  // Match PreHeader's left section width
                         display: 'flex',
                         alignItems: 'center',
                         gap: '1rem',
                         paddingLeft: '1rem'
                     }}>
-                        <div 
+                        <div
                             className={styles["all-categories"]}
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
@@ -202,12 +203,12 @@ const HeaderExp = () => {
                                     className={styles["categories-icon"]}
                                 />
                                 <span className={styles["categories-text"]}>All Categories</span>
-                                <FaCaretRight 
+                                <FaCaretRight
                                     className={`${styles["dropdown-arrow"]} ${(showAllCategories || isDropdownOpen) ? styles.rotated : ''}`}
                                 />
                             </button>
                             {(showAllCategories || isDropdownOpen) && (
-                                <div 
+                                <div
                                     className={styles["all-categories-dropdown"]}
                                     onMouseEnter={handleMouseEnter}
                                     onMouseLeave={handleMouseLeave}
@@ -218,29 +219,29 @@ const HeaderExp = () => {
                         </div>
 
                         <Link href="#" className={styles.search} onClick={handleSearchClick}>
-                            <FaSearch className="h-6 w-6 text-yellow-600"/>
+                            <FaSearch className="h-6 w-6 text-yellow-600" />
                             <span>Search</span>
                         </Link>
                     </div>
 
                     {/* Center Logo */}
-                    <div className={styles.centerLogo} style={{ 
+                    <div className={styles.centerLogo} style={{
                         flex: '1',  // Takes remaining space like PreHeader
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
                         <Link href="/">
-                            <img 
-                                src="/images/hometex-logo.png" 
-                                alt="Hometex Bangladesh" 
-                                style={{ height: '65px', width: 'auto' }} 
+                            <img
+                                src="/images/hometex-logo.png"
+                                alt="Hometex Bangladesh"
+                                style={{ height: '65px', width: 'auto' }}
                             />
                         </Link>
                     </div>
 
                     {/* Right section: Icons */}
-                    <div className={styles.rightSection} style={{ 
+                    <div className={styles.rightSection} style={{
                         flex: '0 0 10%',  // Match PreHeader's right section width
                         display: 'flex',
                         justifyContent: 'flex-end',
@@ -249,19 +250,19 @@ const HeaderExp = () => {
                         paddingRight: '0.5rem'
                     }}>
                         <Link href="/account" className={styles.iconLink}>
-                            <FaMapMarkerAlt className="h-6 w-6 text-yellow-600"/>
+                            <FaMapMarkerAlt className="h-6 w-6 text-yellow-600" />
                             <span>Find a Store</span>
                         </Link>
                         <Link href="/wishlist" className={styles.iconLink}>
-                            <HiOutlineGift className="h-6 w-6 text-yellow-600 font-bold"/>
+                            <HiOutlineGift className="h-6 w-6 text-yellow-600 font-bold" />
                             <span>Gift Someone</span>
                         </Link>
                         <Link href="/daily-deals" className={styles.iconLink}>
-                            <FaBriefcase className="h-6 w-6 text-yellow-600"/>
+                            <FaBriefcase className="h-6 w-6 text-yellow-600" />
                             <span>Daily Deals</span>
                         </Link>
                         <Link href="/messages" className={styles.iconLink}>
-                            <FaCommentDots className="h-6 w-6 text-yellow-600"/>
+                            <FaCommentDots className="h-6 w-6 text-yellow-600" />
                             <span>Message</span>
                         </Link>
                     </div>

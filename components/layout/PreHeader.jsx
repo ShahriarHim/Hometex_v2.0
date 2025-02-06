@@ -49,7 +49,7 @@ const PreHeader = () => {
                                 />
                                 
                                 {isAccountDropdownOpen && (
-                                    <div className="absolute top-full left-0 bg-white text-black rounded-md shadow-lg z-50 w-48 mt-2">
+                                    <div className="absolute top-full left-0 bg-white text-black rounded-md shadow-lg z-50 w-48 mt-1">
                                         <ul className="py-2">
                                             <li className="hover:bg-gray-100">
                                                 {/* <Link href="/auth/signup" className="block px-4 py-2 text-sm">
@@ -57,7 +57,7 @@ const PreHeader = () => {
                                                 </Link>  */}
                                                 <button
                                                     onClick={toggleLoginPopup}
-                                                    className="block w-full h-full text-center"
+                                                    className="block px-4 py-2 text-sm"
                                                >signup</button>     
                                                 
                                             </li>
@@ -96,7 +96,7 @@ const PreHeader = () => {
                     </div>
 
                     {/* Center Section - Dynamic Text */}
-                    <div className="flex items-center justify-center flex-1">
+                    <div className="flex items-center justify-center">
                         <div className="flex items-center space-x-4">
                             <span className="px-3 py-1 text-xs text-white font-medium
                                 bg-gradient-to-r from-purple-500 to-pink-500
