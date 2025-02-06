@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef,useContext } from "react";
 import { DynamicText, textOptions } from "./DynamicText";
 import {
     HiOutlineGift,
@@ -10,6 +10,8 @@ import {
 } from "react-icons/hi";
 import Link from "next/link";
 import LoginPopup from "./LoginPopup";
+import CartComponent from "@/components/layout/CartComponent/CartComponent";
+import CartContext from "@/context/CartContext";
 
 const PreHeader = () => {
     const [visitUsText, setVisitUsText] = useState(
@@ -21,10 +23,49 @@ const PreHeader = () => {
     };
 
     const [showLoginPopup, setShowLoginPopup] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const cartRef = useRef(null);
+    const { cart, deleteItemFromCart } = useContext(CartContext);
+    const cartItems = cart?.cartItems;
+    const [totalPrice, setTotalPrice] = useState(0);
+    const cartContainerRef = useRef(null);
+
+    useEffect(() => {
+        if (cartItems) {
+            const finalAmount = cartItems.reduce((total, cartItem) => {
+                let priceStr = cartItem.price;
+                priceStr = typeof priceStr !== 'string' ? String(priceStr) : priceStr;
+                priceStr = priceStr.replace(/[,]/g, ""); 
+                const amount = parseInt(priceStr, 10) * cartItem.quantity;
+                return total + amount;
+            }, 0);
+            setTotalPrice(finalAmount);
+        }
+    }, [cartItems]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (cartContainerRef.current && 
+                !cartContainerRef.current.contains(event.target) && 
+                isCartOpen) {
+                setIsCartOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isCartOpen]);
 
     const toggleLoginPopup = () => {
         setShowLoginPopup(!showLoginPopup);
     };
+
+    const handleCartClick = () => {
+        setIsCartOpen(prevState => !prevState);
+    };
+
     return (
         <div className="pt-1 hidden md:block bg-[#d4ed30]">
             <div className="container mx-auto pb-1">
@@ -131,32 +172,50 @@ const PreHeader = () => {
                             <span className="text-xs">Order Tracking</span>
                         </Link>
 
-                        {/* My Cart */}
-                        <div className="relative bg-black text-white px-4 py-4 -mt-1 flex items-center 
-                            cursor-pointer hover:text-yellow-500 transition-colors duration-200 z-[160] mr-2"
-                        >
-                            <HiShoppingCart
-                                className="mr-2 text-pink-500"
-                                style={{ width: "16px", height: "16px" }}
-                            />
-                            <span className="text-xs whitespace-nowrap">My Cart</span>
-                            {/* Triangle decorations */}
-                            <div className="absolute bottom-[-12px] left-0 right-0 h-3 overflow-visible z-[155]">
-                                <div className="flex justify-center">
-                                    {[...Array(12)].map((_, i) => (
-                                        <div
-                                            key={i}
-                                            className="w-2.5 h-3 bg-black"
-                                            style={{
-                                                clipPath: 'polygon(50% 100%, 0 0, 100% 0)',
-                                                marginTop: '-1px',
-                                                marginLeft: '0.5px',
-                                                marginRight: '0.5px'
-                                            }}
-                                        />
-                                    ))}
+                        {/* Wrap both cart button and popup in a container with ref */}
+                        <div ref={cartContainerRef}>
+                            {/* My Cart Button */}
+                            <div 
+                                className="relative bg-black text-white px-4 py-4 -mt-1 flex items-center 
+                                    cursor-pointer hover:text-yellow-500 transition-colors duration-200 z-[160] mr-2"
+                                onClick={handleCartClick}
+                            >
+                                <HiShoppingCart
+                                    className="mr-2 text-pink-500"
+                                    style={{ width: "16px", height: "16px" }}
+                                />
+                                <span className="text-xs whitespace-nowrap">My Cart</span>
+                                {/* Triangle decorations */}
+                                <div className="absolute bottom-[-12px] left-0 right-0 h-3 overflow-visible z-[155]">
+                                    <div className="flex justify-center">
+                                        {[...Array(12)].map((_, i) => (
+                                            <div
+                                                key={i}
+                                                className="w-2.5 h-3 bg-black"
+                                                style={{
+                                                    clipPath: 'polygon(50% 100%, 0 0, 100% 0)',
+                                                    marginTop: '-1px',
+                                                    marginLeft: '0.5px',
+                                                    marginRight: '0.5px'
+                                                }}
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
+
+                            {/* Cart Component */}
+                            {isCartOpen && (
+                                <CartComponent
+                                    cartRef={cartRef}
+                                    handleCartClick={handleCartClick}
+                                    cartItems={cartItems}
+                                    isOpen={isCartOpen}
+                                    cart={{ cartItems }}
+                                    deleteItemFromCart={deleteItemFromCart}
+                                    totalPrice={totalPrice}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

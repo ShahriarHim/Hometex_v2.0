@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ReactStars from "react-rating-stars-component";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -15,6 +15,7 @@ import "swiper/css/pagination";
 import { FreeMode, Autoplay } from "swiper";
 import Link from "next/link";
 import ProductModal from "../common/ProductModal";
+import CartContext from "@/context/CartContext";
 
 const RequestStackModal = ({ product, onClose, onSubmit }) => {
   const [mobileNumber, setMobileNumber] = useState("");
@@ -197,12 +198,47 @@ const ProductsTabs = ({ products }) => {
 };
 
 const ProductCard = ({ product, openModal, handleRequestStack }) => {
+  const { addItemToCart } = useContext(CartContext);
   const [isHovered, setIsHovered] = useState(false);
   
   const originalPrice = parseFloat(product.original_price);
   const sellPrice = parseFloat(product.sell_price?.price);
   const discount = originalPrice && sellPrice ? 
     Math.round(((originalPrice - sellPrice) / originalPrice) * 100) : 0;
+
+  const handleAddToCart = () => {
+    const item = {
+      product_id: product.id,
+      name: product.name,
+      price: product.sell_price?.price,
+      image: product.primary_photo,
+      quantity: 1
+    };
+    
+    addItemToCart(item);
+    
+    // Show custom popup
+    const popup = document.createElement('div');
+    popup.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-[9999] animate-slide-in-right';
+    popup.innerHTML = `
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span>Added to cart!</span>
+      </div>
+    `;
+    
+    document.body.appendChild(popup);
+
+    // Remove popup after 2 seconds
+    setTimeout(() => {
+      popup.classList.add('animate-slide-out-right');
+      setTimeout(() => {
+        document.body.removeChild(popup);
+      }, 300);
+    }, 2000);
+  };
 
   return (
     <div 
@@ -314,7 +350,7 @@ const ProductCard = ({ product, openModal, handleRequestStack }) => {
                 ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/25'
                 : 'bg-orange-500 text-white hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/25'
             }`}
-            onClick={() => product.stock > 0 ? null : handleRequestStack(product)}
+            onClick={() => product.stock > 0 ? handleAddToCart() : handleRequestStack(product)}
           >
             {product.stock > 0 ? 'Add to Cart' : 'Request Stock'}
         </button>
