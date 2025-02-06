@@ -94,6 +94,7 @@
   font-size: 1.2rem; /* Increase icon size */
   text-align: center;
   transition: all 0.4s ease; /* Smooth transition for hover effects */
+  gap: 0.1rem; /* Adjusted gap between icon and text */
 }
 
 .rightSection a span {
