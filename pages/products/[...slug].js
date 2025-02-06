@@ -4,6 +4,7 @@ import ProductCard from '@/components/newDesigns/ProductCard';
 import ProductGridCard from '@/components/newDesigns/ProductGridCard';
 import Constants from '@/ults/Constant';
 import styles from '../../styles/Gridbox.module.css';
+import Link from 'next/link';
 
 // Add a loading spinner component
 const LoadingSpinner = () => (
@@ -11,6 +12,12 @@ const LoadingSpinner = () => (
         <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-purple-500"></div>
     </div>
 );
+
+// Add this function at the top of your file
+function encodeProductId(id) {
+  // Convert to string, add a salt and encode
+  return encodeURIComponent(Buffer.from(`prod-${id}-salt`).toString('base64'));
+}
 
 const ProductPage = () => {
     const router = useRouter();
@@ -127,14 +134,25 @@ const ProductPage = () => {
                 }
 
                 // Transform products
-                const transformedProducts = productData.data.map(product => ({
-                    id: product.id,
-                    img: product.primary_photo,
-                    discount: product.discount_percent ? product.discount_percent : null,
-                    name: product.name,
-                    price: product.sell_price.price + product.sell_price.symbol,
-                    originalPrice: product.original_price + product.sell_price.symbol,
-                }));
+                const transformedProducts = productData.data.map(product => {
+                    const categorySlug = product.category?.name?.toLowerCase() || '';
+                    const subCategorySlug = product.sub_category?.name?.toLowerCase() || '';
+                    const productSlug = product.child_sub_category?.name?.toLowerCase() || '';
+                    const encodedId = encodeProductId(product.id);
+
+                    return {
+                        id: product.id,
+                        encoded_id: encodedId,
+                        img: product.primary_photo,
+                        discount: product.discount_percent ? product.discount_percent : null,
+                        name: product.name,
+                        price: product.sell_price.price + product.sell_price.symbol,
+                        originalPrice: product.original_price + product.sell_price.symbol,
+                        category_slug: categorySlug,
+                        subcategory_slug: subCategorySlug,
+                        product_slug: productSlug,
+                    };
+                });
 
                 setProducts(transformedProducts);
                 setError(null);
@@ -204,16 +222,19 @@ const ProductPage = () => {
                 {viewMode === 'card' && products.map((product, index) => (
                     <div 
                         key={index} 
-                        onClick={() => router.push(`/shop/product/${product.id}`)}
                         className="cursor-pointer transform transition-transform duration-300 hover:scale-105"
                     >
-                        <ProductCard product={product} />
+                        <Link 
+                            href={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`}
+                            as={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`}
+                        >
+                            <ProductCard product={product} />
+                        </Link>
                     </div>
                 ))}
                 {viewMode === 'photo' && products.map((product, index) => (
                     <div 
                         key={index} 
-                        onClick={() => router.push(`/shop/product/${product.id}`)}
                         className="cursor-pointer transform transition-transform duration-300 hover:scale-105"
                     >
                         <ProductGridCard 
