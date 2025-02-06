@@ -170,14 +170,27 @@ const HeaderExp = () => {
             <PreHeader />
             <FloatingBar />
             <header className={`${styles.headerExp} bg-white`} style={{ margin: 0, padding: 0 }}>
-                <div className={`container-fluid ${styles.middleRow}`} style={{ zIndex: "150", marginBottom: 0, paddingBottom: 0 }}>
+                <div className={`container mx-auto ${styles.middleRow}`} style={{ 
+                    zIndex: "150", 
+                    marginBottom: 0, 
+                    paddingBottom: 0,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '0 0.5rem'  // Matches PreHeader padding
+                }}>
                     {/* Left section: Categories and Search */}
-                    <div className={styles.leftSection} style={{ flex: '1', maxWidth: '25%', paddingLeft: '1rem' }}>
+                    <div className={styles.leftSection} style={{ 
+                        flex: '0 0 25%',  // Match PreHeader's left section width
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                        paddingLeft: '1rem'
+                    }}>
                         <div 
                             className={styles["all-categories"]}
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
-                            style={{ marginRight: '1.5rem' }}
                         >
                             <button
                                 className={styles["all-categories-btn"]}
@@ -204,30 +217,36 @@ const HeaderExp = () => {
                             )}
                         </div>
 
-                        <Link href="#" className={styles.search} onClick={handleSearchClick} style={{ marginLeft: '-1.5rem' }}>
+                        <Link href="#" className={styles.search} onClick={handleSearchClick}>
                             <FaSearch className="h-6 w-6 text-yellow-600"/>
                             <span>Search</span>
                         </Link>
                     </div>
 
                     {/* Center Logo */}
-                    <div className={styles.centerLogo} style={{ flex: '1', display: 'flex', justifyContent: 'center' }}>
+                    <div className={styles.centerLogo} style={{ 
+                        flex: '1',  // Takes remaining space like PreHeader
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
                         <Link href="/">
                             <img 
                                 src="/images/hometex-logo.png" 
                                 alt="Hometex Bangladesh" 
-                                style={{ height: '55px', width: 'auto' }} 
+                                style={{ height: '65px', width: 'auto' }} 
                             />
                         </Link>
                     </div>
 
                     {/* Right section: Icons */}
                     <div className={styles.rightSection} style={{ 
-                        flex: '1', 
-                        maxWidth: '45%', 
-                        justifyContent: 'flex-end', 
-                        gap: '2rem', 
-                        paddingRight: '2rem' 
+                        flex: '0 0 10%',  // Match PreHeader's right section width
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        gap: '1.5rem',
+                        paddingRight: '0.5rem'
                     }}>
                         <Link href="/account" className={styles.iconLink}>
                             <FaMapMarkerAlt className="h-6 w-6 text-yellow-600"/>
