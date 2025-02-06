@@ -13,12 +13,6 @@ const LoadingSpinner = () => (
     </div>
 );
 
-// Add this function at the top of your file
-function encodeProductId(id) {
-  // Convert to string, add a salt and encode
-  return encodeURIComponent(Buffer.from(`prod-${id}-salt`).toString('base64'));
-}
-
 const ProductPage = () => {
     const router = useRouter();
     const { slug } = router.query;
@@ -135,20 +129,19 @@ const ProductPage = () => {
 
                 // Transform products
                 const transformedProducts = productData.data.map(product => {
-                    // Generate slugs and ensure they're not empty
-                    const categorySlug = product.category?.name?.toLowerCase() || 'uncategorized';
-                    const subCategorySlug = product.sub_category?.name?.toLowerCase() || 'general';
-                    const productSlug = product.child_sub_category?.name?.toLowerCase() || 'item';
-                    const encodedId = encodeProductId(product.id);
+                    // Generate slugs from category names using spaces instead of hyphens
+                    const categorySlug = product.category?.name?.toLowerCase() || '';
+                    const subCategorySlug = product.sub_category?.name?.toLowerCase() || '';
+                    const productSlug = product.child_sub_category?.name?.toLowerCase() || '';
 
                     return {
                         id: product.id,
-                        encoded_id: encodedId,
                         img: product.primary_photo,
                         discount: product.discount_percent ? product.discount_percent : null,
                         name: product.name,
                         price: product.sell_price.price + product.sell_price.symbol,
                         originalPrice: product.original_price + product.sell_price.symbol,
+                        // Use the space-preserved slugs
                         category_slug: categorySlug,
                         subcategory_slug: subCategorySlug,
                         product_slug: productSlug,
@@ -226,8 +219,8 @@ const ProductPage = () => {
                         className="cursor-pointer transform transition-transform duration-300 hover:scale-105"
                     >
                         <Link 
-                            href={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`}
-                            as={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`}
+                            href={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.id}`}
+                            as={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.id}`}
                         >
                             <ProductCard product={product} />
                         </Link>

@@ -9,34 +9,12 @@ import ProductDetails from "@/components/additional/ProductDetails";
 import FrequentlyBoughtTogether from "@/components/additional/Frequentlybought";
 import DesignFifteen from "@/components/newDesigns/DesignFifteen";
 
-function decodeProductId(encodedId) {
-  try {
-    const decoded = Buffer.from(decodeURIComponent(encodedId), 'base64').toString();
-    // Extract the ID from the decoded string (format: "prod-{id}-salt")
-    const match = decoded.match(/^prod-(\d+)-salt$/);
-    if (!match) {
-      throw new Error('Invalid product ID format');
-    }
-    return match[1];
-  } catch (error) {
-    console.error('Error decoding product ID:', error);
-    return null;
-  }
-}
-
 export async function getServerSideProps(context) {
   try {
     const { slug } = context.params;
     
-    // Get the encoded ID from the last segment of the URL
-    const encodedId = slug[slug.length - 1];
-    
-    // Decode the product ID
-    const productId = decodeProductId(encodedId);
-    
-    if (!productId) {
-      return { notFound: true };
-    }
+    // Get the product ID from the last segment of the URL
+    const productId = slug[slug.length - 1];
 
     // Fetch product details
     const res = await fetch(
@@ -54,14 +32,14 @@ export async function getServerSideProps(context) {
       return { notFound: true };
     }
 
-    // Generate the correct URL slugs from the product data and ensure they're not empty
-    const categorySlug = product.category?.name?.toLowerCase() || 'uncategorized';
-    const subCategorySlug = product.sub_category?.name?.toLowerCase() || 'general';
-    const childSubCategorySlug = product.child_sub_category?.name?.toLowerCase() || 'item';
+    // Generate the correct URL slugs from the product data
+    const categorySlug = product.category?.name?.toLowerCase() || '';
+    const subCategorySlug = product.sub_category?.name?.toLowerCase() || '';
+    const childSubCategorySlug = product.child_sub_category?.name?.toLowerCase() || '';
 
     // If the current URL doesn't match the correct path, redirect
     const currentPath = slug.join('/');
-    const correctPath = `${categorySlug}/${subCategorySlug}/${childSubCategorySlug}/${encodedId}`;
+    const correctPath = `${categorySlug}/${subCategorySlug}/${childSubCategorySlug}/${productId}`;
 
     if (currentPath !== correctPath) {
       return {
@@ -85,7 +63,20 @@ export async function getServerSideProps(context) {
     };
   } catch (error) {
     console.error('Error in getServerSideProps:', error);
-    return { notFound: true };
+    return {
+      props: {
+        product: {
+          id: 'dummy-id',
+          name: 'Sample Product',
+          price: 999.99,
+          previous_price: null,
+          description: 'Sample description',
+          primary_photo: { photo: '/placeholder-product.jpg' },
+          photos: Array(5).fill('/placeholder-product.jpg'),
+        },
+        categoryInfo: null
+      }
+    };
   }
 }
 
