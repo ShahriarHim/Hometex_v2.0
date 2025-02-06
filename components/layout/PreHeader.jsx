@@ -96,7 +96,7 @@ const PreHeader = () => {
                     </div>
 
                     {/* Center Section - Dynamic Text */}
-                    <div className="flex items-center justify-center flex-1">
+                    <div className="flex items-center justify-center">
                         <div className="flex items-center space-x-4">
                             <span className="px-3 py-1 text-xs text-white font-medium
                                 bg-gradient-to-r from-purple-500 to-pink-500

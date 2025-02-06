@@ -328,8 +328,8 @@
     top: 0;
     left: 100%; /* Show submenu on the right */
     width: auto; /* Auto width */
-    max-width: 600px; /* Maximum width */
-    min-width: 250px; /* Minimum width */
+    max-width: 900px; /* Maximum width */
+    min-width: 500px; /* Minimum width */
     max-height: 500px; /* Maximum height */
     background: #fff;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
@@ -346,24 +346,40 @@
 
 /* Submenu Items */
 .subMenu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    background: #f9f9fc;
     display: grid;
-    grid-template-columns: minmax(auto, 250px); /* Dynamic first column width */
-    gap: 0;
-    width: 100%; /* Full width of container */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic columns */
+    gap: 20px; /* Space between columns */
+    padding: 10px;
+    background: #f9f9fc;
+    width: 100%;
+    max-width: 600px; /* Maximum width for submenu */
+}
+.subMenuItem {
+    display: flex;
+    flex-direction: column; /* Stack parent and child categories */
+    align-items: flex-start;
+    padding: 10px;
+    border-bottom: none; /* Remove border for cleaner look */
+}
+.subMenuItem > a {
+    font-weight: bold;
+    color: #2a2a72; /* Make the main category name prominent */
+    text-decoration: none;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #5a5ae0; /* Add underline to main category */
+    width: 100%;
+}
+/* When there are many items, force 3 columns */
+@media (max-width: 768px) {
+    .subMenu {
+        grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
+    }
 }
 
-.subMenuItem {
-    position: relative;
-    width: 100%; /* Full width within grid */
-    padding: 12px 15px;
-    cursor: pointer;
-    border-bottom: 1px solid #f0f0f5;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
+@media (max-width: 480px) {
+    .subMenu {
+        grid-template-columns: 1fr; /* Single column for small screens */
+    }
 }
 
 /* When there are many items, add a second column */
@@ -411,7 +427,7 @@
 }
 
 /* Child Menu - Further Submenus */
-.childMenu {
+/* .childMenu {
     width: 100%;
     margin-top: 10px;
     border-top: 1px solid #f0f0f5;
@@ -438,8 +454,26 @@
 
 .childItem:hover a {
     color: #5a5ae0;
+} */
+.childMenu {
+    padding-top: 5px;
+    margin-left: 10px; /* Indent children */
+    display: flex;
+    flex-direction: column; /* Stack child items */
+    gap: 5px;
 }
 
+.childItem a {
+    color: #555;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.childItem:hover {
+    transform: translateX(5px);
+}
+.childItem a:hover {
+    color: #5a5ae0; /* Highlight on hover */
+}
 /* Add some visual hierarchy */
 .menuItem {
     position: relative;
