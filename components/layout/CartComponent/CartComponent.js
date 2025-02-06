@@ -4,6 +4,7 @@ import { HiShoppingCart } from 'react-icons/hi';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import Link from 'next/link';
 import { FaShoppingBasket, FaShoppingCart } from 'react-icons/fa';
+import { redirect } from 'next/dist/server/api-utils';
 
 const CartComponent = ({
   cartRef,
@@ -18,7 +19,7 @@ const CartComponent = ({
    // Function to handle checkout
    const handleCheckoutClick = () => {
     // Call the handleCheckout function
-    handleCheckout();
+    redirect('/Checkout');
     // Close the cart popup
     handleCartClick();
   };

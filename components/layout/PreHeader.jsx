@@ -9,18 +9,22 @@ import {
     HiOutlineChevronDown,
 } from "react-icons/hi";
 import Link from "next/link";
+import LoginPopup from "./LoginPopup";
 
 const PreHeader = () => {
     const [visitUsText, setVisitUsText] = useState(
         textOptions ? textOptions[0].visitUs : ""
     );
-
+    const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
     const handleTextChange = (newVisitUsText) => {
         setVisitUsText(newVisitUsText);
     };
 
-    const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
+    const [showLoginPopup, setShowLoginPopup] = useState(false);
 
+    const toggleLoginPopup = () => {
+        setShowLoginPopup(!showLoginPopup);
+    };
     return (
         <div className="pt-1 hidden md:block bg-[#d4ed30]">
             <div className="container mx-auto pb-1">
@@ -48,9 +52,14 @@ const PreHeader = () => {
                                     <div className="absolute top-full left-0 bg-white text-black rounded-md shadow-lg z-50 w-48 mt-2">
                                         <ul className="py-2">
                                             <li className="hover:bg-gray-100">
-                                                <Link href="/auth/signup" className="block px-4 py-2 text-sm">
+                                                {/* <Link href="/auth/signup" className="block px-4 py-2 text-sm">
                                                     Sign Up / Login
-                                                </Link>
+                                                </Link>  */}
+                                                <button
+                                                    onClick={toggleLoginPopup}
+                                                    className="block w-full h-full text-center"
+                                               >signup</button>     
+                                                
                                             </li>
                                             <li className="hover:bg-gray-100">
                                                 <Link href="/my-rewards" className="block px-4 py-2 text-sm">
@@ -105,11 +114,13 @@ const PreHeader = () => {
                             </div>
                         </div>
                     </div>
-
-                    {/* Right Section */}
-                    <div className="flex items-center w-1/4 justify-end -mr-4">
+                    <div>
+                        {showLoginPopup && <LoginPopup showPopup={showLoginPopup} togglePopup={toggleLoginPopup} />}
+                    </div>
+                    {/* Right Section (10% width) with Absolute positioning */}
+                    <div className="flex items-center justify-end gap-3 px-2 w-[10%]">
                         {/* Order Tracking */}
-                        <Link 
+                        <Link
                             href="/orderDash"
                             className="flex items-center hover:text-blue-500 whitespace-nowrap mr-8"
                         >

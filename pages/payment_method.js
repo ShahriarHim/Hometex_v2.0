@@ -16,7 +16,7 @@ const PaymentMethod = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountedTotal, setDiscountedTotal] = useState(0);
   const [accessToken, setAccessToken] = useState('');
-  const url = 'https://pay.hometexbd.ltd/api/v1.0/pay';
+  const url = 'https://payment.hometex.store/api/v1.0/pay';
 
   useEffect(() => {
     if (query) {
@@ -28,27 +28,42 @@ const PaymentMethod = () => {
   }, [query]);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('accessToken');
-    if (storedToken) {
-      setAccessToken(storedToken);
-    } else {
+    // const storedToken = localStorage.getItem('accessToken');
+    // if (storedToken) {
+    //   setAccessToken(storedToken);
+    // } else {
+    //   const requestOptions = {
+    //     method: "GET",
+    //     redirect: "follow"
+    //   };
       const requestOptions = {
         method: "GET",
         redirect: "follow"
       };
-          
-
       fetch(`${Constants.BASE_URL}/api/get-token`, requestOptions)
         .then((response) => response.text())
         .then((result) => {
           setAccessToken(result);
+          console.log(result);
           localStorage.setItem('accessToken', result);
         })
         .catch((error) => console.error(error));
-    }
-  }, []);
+        
+    }, []);
+  // useEffect(() => {
+  //   const requestOptions = {
+  //     method: "GET",
+  //     redirect: "follow"
+  //   };
+    
+  //   fetch("https://htbapi.hometexbd.ltd/api/get-token", requestOptions)
+  //     .then((response) => response.text())
+  //     .then((result) => console.log(result))
+  //     // setAccessToken(result);
+  //     // .catch((error) => console.error(error));
+  // });
 
-
+console.log(accessToken);
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
   };
@@ -64,7 +79,7 @@ const PaymentMethod = () => {
         totalPrice,
         discountedTotal
       };
-  
+
       localStorage.setItem('invoiceData', JSON.stringify(invoiceData));
 
       if (paymentMethod === "Online Payment") {
@@ -76,20 +91,29 @@ const PaymentMethod = () => {
         const PayAbleAmount = totalPrice < discountedTotal ? totalPrice : discountedTotal;
 
         const dummyData = {
-          client_id: 3,
-          order_id_of_merchant: orderId,
-          amount: PayAbleAmount,
-          currency_of_transaction: "BDT",
-          buyer_name: buyerName,
-          buyer_email: buyer_email,
-          buyer_address: "dhaka",
-          buyer_contact_number: buyerContactNumber,
-          order_details: orderId,
-          callback_success_url: `http://https://htbapi.hometexbd.ltd/`,
-          callback_fail_url: "http://gopaysenz.com/invoice/fail.php",
-          callback_cancel_url: "http://gopaysenz.com/invoice/cancel.php",
-          expected_response_type: "JSON"
-        };
+          "client_id" : "3",
+          "amount" : "1",
+          "currency_of_transaction" : "BDT",
+          "order_id_of_merchant" : "test- 06",
+          "order_details" : "Payment Id: 123457",
+          "buyer_name": "S.M.F.Karim",
+          "buyer_email" : "smfkarim.24@gmail.com",
+          "buyer_address" : "dhaka",
+          "buyer_contact_number" : "01670885658",
+          "callback_success_url" : "http://localhost:3000/success",
+          "callback_fail_url" : "http://gopaysenz.com/invoice/fail.php",
+          "callback_cancel_url" : "http://localhost:3000/cancel",
+          "expected_response_type" : "JSON",
+          "cus_city" : "",
+          "cus_state" : "",
+          "cus_postcode" : "",
+          "cus_country" : "",
+          "currency" : "BDT",
+          "custom_1" : "",
+          "custom_2" : "",
+          "custom_3" : "",
+          "custom_4":""
+      };
   
 
         const myHeaders = new Headers();
@@ -111,7 +135,7 @@ const PaymentMethod = () => {
               const newUrl = data.expected_response;
               console.log(newUrl);
               window.location = newUrl;
-              // const success_api = 'https://pay.hometexbd.ltd/api/v1.0/payment-transaction-details'
+              const success_api = 'https://payment.hometex.store/api/v1.0/payment-transaction-details'
             } else {
               console.log(data.errorMessage);
               alert(data.errorMessage);
