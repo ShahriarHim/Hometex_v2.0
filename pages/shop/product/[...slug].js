@@ -54,10 +54,10 @@ export async function getServerSideProps(context) {
       return { notFound: true };
     }
 
-    // Generate the correct URL slugs from the product data
-    const categorySlug = product.category?.name?.toLowerCase() || '';
-    const subCategorySlug = product.sub_category?.name?.toLowerCase() || '';
-    const childSubCategorySlug = product.child_sub_category?.name?.toLowerCase() || '';
+    // Generate the correct URL slugs from the product data and ensure they're not empty
+    const categorySlug = product.category?.name?.toLowerCase() || 'uncategorized';
+    const subCategorySlug = product.sub_category?.name?.toLowerCase() || 'general';
+    const childSubCategorySlug = product.child_sub_category?.name?.toLowerCase() || 'item';
 
     // If the current URL doesn't match the correct path, redirect
     const currentPath = slug.join('/');
