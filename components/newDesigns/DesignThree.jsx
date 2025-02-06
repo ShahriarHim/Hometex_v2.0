@@ -156,3 +156,4 @@ const HotDealsCarousel = () => {
 }
 
 export default HotDealsCarousel
+ 
