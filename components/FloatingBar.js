@@ -15,6 +15,7 @@ import ChatPopup from "@/components/ChatPopup";
 import CartComponent from "@/components/layout/CartComponent/CartComponent";
 import WishComponent from "@/components/layout/WishComponent/WishComponent";
 import CartContext from "@/context/CartContext";
+import WishListContext from "@/context/WishListContext";
 
 const FloatingBar = () => {
     const { location, isGeolocationAvailable, isGeolocationEnabled } = useGeolocation();
@@ -28,6 +29,8 @@ const FloatingBar = () => {
     const cartRef = useRef(null);
     const wishRef = useRef(null);
     const { cart, deleteItemFromCart } = useContext(CartContext);
+    const { wlist, deleteItemFromWishlist } = useContext(WishListContext);
+
     const cartItems = cart?.cartItems;
     const [totalPrice, setTotalPrice] = useState(0);
 
@@ -166,13 +169,15 @@ const FloatingBar = () => {
             {/* Wishlist Component */}
             {isWishOpen && (
                 <WishComponent
-                    wishItems={wishlist}
-                    updateWishItems={setWishlist}
-                    removeFromWishlist={() => {}}
-                    isWishOpen={isWishOpen}
-                    handleWishClick={handleWishClick}
-                    wishRef={wishRef}
-                />
+    wishRef={wishRef}
+    handleWishClick={handleWishClick}
+    wlistItems={wlist}   // ✅ Corrected: Pass wlist directly
+    isOpen={isWishOpen}
+    wlist={wlist}   // ✅ Corrected: wlist is an array, not an object
+    deleteItemFromWishlist={deleteItemFromWishlist}
+/>
+
+            
             )}
 
             {/* Chat Popup */}
