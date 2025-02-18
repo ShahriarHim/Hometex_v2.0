@@ -12,6 +12,7 @@ import Link from "next/link";
 import LoginPopup from "./LoginPopup";
 import CartComponent from "@/components/layout/CartComponent/CartComponent";
 import CartContext from "@/context/CartContext";
+import { deleteCookie, getCookie } from "cookies-next";
 
 const PreHeader = () => {
     const [visitUsText, setVisitUsText] = useState(
@@ -29,6 +30,10 @@ const PreHeader = () => {
     const cartItems = cart?.cartItems;
     const [totalPrice, setTotalPrice] = useState(0);
     const cartContainerRef = useRef(null);
+    const [selectedCurrency, setSelectedCurrency] = useState('USD');
+    const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userName, setUserName] = useState('');
 
     useEffect(() => {
         if (cartItems) {
@@ -58,12 +63,33 @@ const PreHeader = () => {
         };
     }, [isCartOpen]);
 
+    useEffect(() => {
+        // Load saved currency from localStorage on component mount
+        const savedCurrency = localStorage.getItem('selectedCurrency');
+        if (savedCurrency) {
+            setSelectedCurrency(savedCurrency);
+        }
+        let auth_name = getCookie("home_text_name");
+
+        if (auth_name) {
+            setIsLoggedIn(true);
+            setUserName(auth_name);
+            console.log("egr",auth_name);
+        }
+    }, []);
+
     const toggleLoginPopup = () => {
         setShowLoginPopup(!showLoginPopup);
     };
 
     const handleCartClick = () => {
         setIsCartOpen(prevState => !prevState);
+    };
+
+    const handleCurrencyChange = (currency) => {
+        setSelectedCurrency(currency);
+        localStorage.setItem('selectedCurrency', currency);
+        setIsCurrencyDropdownOpen(false);
     };
 
     return (
@@ -92,15 +118,48 @@ const PreHeader = () => {
                                 {isAccountDropdownOpen && (
                                     <div className="absolute top-full left-0 bg-white text-black rounded-md shadow-lg z-50 w-48 mt-1">
                                         <ul className="py-2">
+                                            {/* Sign In/User Name Option */}
                                             <li className="hover:bg-gray-100">
-                                                {/* <Link href="/auth/signup" className="block px-4 py-2 text-sm">
-                                                    Sign Up / Login
-                                                </Link>  */}
-                                                <button
-                                                    onClick={toggleLoginPopup}
-                                                    className="block px-4 py-2 text-sm"
-                                               >signup</button>     
-                                                
+                                                {isLoggedIn ? (
+                                                    <Link href="/account/MyAccount" className="block px-4 py-2 text-sm">
+                                                        {userName}
+                                                    </Link>
+                                                ) : (
+                                                    <button
+                                                        onClick={toggleLoginPopup}
+                                                        className="block w-full text-left px-4 py-2 text-sm"
+                                                    >
+                                                        Sign Up / Login
+                                                    </button>
+                                                )}
+                                            </li>
+
+                                            {/* Currency Dropdown */}
+                                            <li className="hover:bg-gray-100 relative"
+                                                onMouseEnter={() => setIsCurrencyDropdownOpen(true)}
+                                                onMouseLeave={() => setIsCurrencyDropdownOpen(false)}>
+                                                <div className="block px-4 py-2 text-sm cursor-pointer flex justify-between items-center">
+                                                    <span>Currency</span>
+                                                    <span className="font-medium">{selectedCurrency}</span>
+                                                    {isCurrencyDropdownOpen && (
+                                                        <div className="absolute left-full top-0 bg-white shadow-lg rounded-md w-32">
+                                                            <ul className="py-2">
+                                                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                                                    onClick={() => handleCurrencyChange('USD')}>
+                                                                    USD
+                                                                </li>
+                                                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                                                    onClick={() => handleCurrencyChange('GBP')}>
+                                                                    GBP
+                                                                </li>
+                                                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                                                    onClick={() => handleCurrencyChange('BDT')}>
+                                                                    BDT
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </li>
                                             <li className="hover:bg-gray-100">
                                                 <Link href="/my-rewards" className="block px-4 py-2 text-sm">
@@ -110,11 +169,6 @@ const PreHeader = () => {
                                             <li className="hover:bg-gray-100">
                                                 <Link href="/language" className="block px-4 py-2 text-sm">
                                                     Language
-                                                </Link>
-                                            </li>
-                                            <li className="hover:bg-gray-100">
-                                                <Link href="/currency" className="block px-4 py-2 text-sm">
-                                                    Currency
                                                 </Link>
                                             </li>
                                         </ul>

@@ -4,7 +4,7 @@ import { HiShoppingCart } from 'react-icons/hi';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import Link from 'next/link';
 // import { FaShoppingBasket, FaShoppingCart } from 'react-icons/fa';
-import { redirect } from 'next/dist/server/api-utils';
+import { useRouter } from 'next/router';
 
 const CartComponent = ({
   cartRef,
@@ -16,6 +16,8 @@ const CartComponent = ({
   totalPrice,
   handleCheckout
 }) => {
+  const router = useRouter();
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (cartRef.current && !cartRef.current.contains(event.target) && isOpen) {
@@ -31,8 +33,8 @@ const CartComponent = ({
 
    // Function to handle checkout
    const handleCheckoutClick = () => {
-    // Call the handleCheckout function
-    redirect('/Checkout');
+    // Use router.push instead of redirect
+    router.push('/Checkout');
     // Close the cart popup
     handleCartClick();
   };

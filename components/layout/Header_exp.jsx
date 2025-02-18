@@ -13,6 +13,7 @@ import { HiOutlineGift } from 'react-icons/hi';
 // import { Sticky } from '../home/Sticky';
 import FloatingBar from '../FloatingBar';
 import SearchPopup from './SearchPopup'; // Import the new popup component
+import Modal from './Modal';  // Add this import at the top
 
 const HeaderExp = () => {
     const [categories, setCategories] = useState([]);
@@ -23,6 +24,63 @@ const HeaderExp = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [dropdownTimeout, setDropdownTimeout] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Add this sample data for the modal
+const sampleProducts = [
+    // Example product data; you would fetch this from your backend or service
+    {
+      name: "Product 1",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/rosario-thu-nov-2-2023-650-pm-87312.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 2",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/burbot-thu-nov-2-2023-744-pm-57895.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 3",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/beboon-thu-nov-2-2023-758-pm-30205.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 4",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/brownie-thu-nov-2-2023-808-pm-85665.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 5",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    {
+      name: "Product 6",
+      image:
+        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/mogra-thu-nov-2-2023-835-pm-92146.jpeg",
+      price: "20.00",
+      originalPrice: "40.00",
+      discount: "50",
+    },
+    // Add more product objects here
+  ];
+
+
 
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
         positionOptions: {
@@ -165,9 +223,24 @@ const HeaderExp = () => {
         setShowPopup(false);
     };
 
+    // Add this handler for daily deals click
+    const handleDailyDealsClick = (e) => {
+        e.preventDefault(); // Prevent default link behavior
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <>
             {showPopup && <SearchPopup onClose={closePopup} />}
+            <Modal 
+                isOpen={isModalOpen} 
+                closeModal={closeModal} 
+                products={sampleProducts}
+            />
             <PreHeader />
             <FloatingBar />
             <header className={`${styles.headerExp} bg-white`} style={{ margin: 0, padding: 0 }}>
@@ -178,15 +251,15 @@ const HeaderExp = () => {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    padding: '0 0.5rem'  // Matches PreHeader padding
+                    padding: '0'  // Remove the padding here
                 }}>
                     {/* Left section: Categories and Search */}
                     <div className={styles.leftSection} style={{
-                        flex: '0 0 25%',  // Match PreHeader's left section width
+                        flex: '0 0 25%',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '1rem',
-                        paddingLeft: '1rem'
+                        paddingLeft: '0'  // Remove left padding to move items more left
                     }}>
                         <div
                             className={styles["all-categories"]}
@@ -226,7 +299,7 @@ const HeaderExp = () => {
 
                     {/* Center Logo */}
                     <div className={styles.centerLogo} style={{
-                        flex: '1',  // Takes remaining space like PreHeader
+                        flex: '1',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center'
@@ -242,22 +315,22 @@ const HeaderExp = () => {
 
                     {/* Right section: Icons */}
                     <div className={styles.rightSection} style={{
-                        flex: '0 0 10%',  // Match PreHeader's right section width
+                        flex: '0 0 25%',  // Increase flex basis to give more space
                         display: 'flex',
                         justifyContent: 'flex-end',
                         alignItems: 'center',
                         gap: '1.5rem',
-                        paddingRight: '0.5rem'
+                        paddingRight: '0'  // Remove right padding to allow items to move more right
                     }}>
                         <Link href="/account" className={styles.iconLink}>
                             <FaMapMarkerAlt className="h-6 w-6 text-yellow-600" />
                             <span>Find a Store</span>
                         </Link>
-                        <Link href="/wishlist" className={styles.iconLink}>
+                        <Link href="/Giftsomeone" className={styles.iconLink}>
                             <HiOutlineGift className="h-6 w-6 text-yellow-600 font-bold" />
                             <span>Gift Someone</span>
                         </Link>
-                        <Link href="/daily-deals" className={styles.iconLink}>
+                        <Link href="/daily-deals" className={styles.iconLink} onClick={handleDailyDealsClick}>
                             <FaBriefcase className="h-6 w-6 text-yellow-600" />
                             <span>Daily Deals</span>
                         </Link>

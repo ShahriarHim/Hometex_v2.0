@@ -61,21 +61,19 @@ const CartPage = () => {
     useEffect(() => {
         if (cartItems) {
             const finalAmount = cartItems.reduce((total, cartItem) => {
-                let str = cartItem.price;
-                // Check if price is a string before calling replace
-                if (typeof str === 'string') {
-                    str = str.replace(/[,]/g, "");
-                } else {
-                    console.error("Price is not a string:", str);
-                    return total; // Skip this item and continue with the next one
+                let price = cartItem.price;
+                // Convert price to number if it's a string
+                if (typeof price === 'string') {
+                    // Remove 'TK ' prefix and any commas
+                    price = price.replace(/^TK\s+/, '').replace(/,/g, '');
                 }
-                const amount = parseInt(str) * cartItem.quantity;
-                return total + amount;
+                const amount = parseFloat(price) * cartItem.quantity;
+                return isNaN(amount) ? total : total + amount;
             }, 0);
             
-          setTotalPrice(finalAmount);
+            setTotalPrice(finalAmount);
         }
-      }, [cartItems]);
+    }, [cartItems]);
 
     useEffect(() => {
         setTimeout(() => {
@@ -98,7 +96,7 @@ const CartPage = () => {
             <div className='container mx-auto py-10'>
                 <div className="grid grid-cols-12 gap-4 justify-between">
                     <div className='col-span-8'>
-                        <h1 className='text-3xl font-bold mb-2'>Shopping Cart.</h1>
+                        <h1 className='text-3xl font-bold mb-2'>Shopping Cart:</h1>
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200 shadow-md rounded-lg overflow-hidden">
                                 <thead className="bg-gray-50">
@@ -171,7 +169,7 @@ const CartPage = () => {
                                     <tr>
                                         <td colSpan={3}></td>
                                         <td className='text-xl font-bold text-center pt-3'>Total</td>
-                                        <td className='text-xl font-bold pt-3' > TK {totalPrice}</td>
+                                        <td className='text-xl font-bold pt-3'>TK {totalPrice.toLocaleString()}</td>
                                     </tr>
                                 </tbody>
                             </table>
