@@ -322,7 +322,7 @@ const sampleProducts = [
                         gap: '1.5rem',
                         paddingRight: '0'  // Remove right padding to allow items to move more right
                     }}>
-                        <Link href="/account" className={styles.iconLink}>
+                        <Link href="/Stores" className={styles.iconLink}>
                             <FaMapMarkerAlt className="h-6 w-6 text-yellow-600" />
                             <span>Find a Store</span>
                         </Link>
