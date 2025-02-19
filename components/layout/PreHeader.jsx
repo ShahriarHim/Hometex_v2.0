@@ -12,6 +12,7 @@ import Link from "next/link";
 import LoginPopup from "./LoginPopup";
 import CartComponent from "@/components/layout/CartComponent/CartComponent";
 import CartContext from "@/context/CartContext";
+import { deleteCookie, getCookie } from "cookies-next";
 
 const PreHeader = () => {
     const [visitUsText, setVisitUsText] = useState(
@@ -29,6 +30,27 @@ const PreHeader = () => {
     const cartItems = cart?.cartItems;
     const [totalPrice, setTotalPrice] = useState(0);
     const cartContainerRef = useRef(null);
+    const [selectedCurrency, setSelectedCurrency] = useState('USD');
+    const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userName, setUserName] = useState('');
+
+    // Add timeout ref to handle delay
+    const dropdownTimeoutRef = useRef(null);
+
+    // Modify the dropdown open/close handlers with delay
+    const handleDropdownEnter = () => {
+        if (dropdownTimeoutRef.current) {
+            clearTimeout(dropdownTimeoutRef.current);
+        }
+        setIsAccountDropdownOpen(true);
+    };
+
+    const handleDropdownLeave = () => {
+        dropdownTimeoutRef.current = setTimeout(() => {
+            setIsAccountDropdownOpen(false);
+        }, 300); // 300ms delay before closing
+    };
 
     useEffect(() => {
         if (cartItems) {
@@ -58,12 +80,44 @@ const PreHeader = () => {
         };
     }, [isCartOpen]);
 
+    useEffect(() => {
+        // Load saved currency from localStorage on component mount
+        const savedCurrency = localStorage.getItem('selectedCurrency');
+        if (savedCurrency) {
+            setSelectedCurrency(savedCurrency);
+        }
+        let auth_name = getCookie("home_text_name");
+
+        if (auth_name) {
+            setIsLoggedIn(true);
+            setUserName(auth_name);
+            console.log("egr",auth_name);
+        }
+    }, []);
+    const signOutSubmitHandler = async (e) => {
+        e.preventDefault();
+        // setIsSubmit(true)
+        deleteCookie("home_text_token");
+        deleteCookie("home_text_name");
+        deleteCookie("home_text_phone");
+        deleteCookie("home_text_email");
+        window.location.href = "/";
+    };
+
+
     const toggleLoginPopup = () => {
         setShowLoginPopup(!showLoginPopup);
     };
 
     const handleCartClick = () => {
         setIsCartOpen(prevState => !prevState);
+    };
+
+    const handleCurrencyChange = (currency) => {
+        setSelectedCurrency(currency);
+        localStorage.setItem('selectedCurrency', currency);
+        setIsCurrencyDropdownOpen(false);
+        setIsAccountDropdownOpen(false);
     };
 
     return (
@@ -73,11 +127,13 @@ const PreHeader = () => {
                     {/* Left Section - Account & Corporate */}
                     <div className="flex items-center space-x-8 w-1/4 -ml-4">
                         {/* My Account Dropdown */}
-                        <div className="relative">
+                        <div 
+                            className="relative"
+                            onMouseEnter={handleDropdownEnter}
+                            onMouseLeave={handleDropdownLeave}
+                        >
                             <div 
                                 className="flex items-center cursor-pointer hover:text-blue-500 pl-4"
-                                onMouseEnter={() => setIsAccountDropdownOpen(true)}
-                                onMouseLeave={() => setIsAccountDropdownOpen(false)}
                             >
                                 <HiOutlineUser
                                     className="mr-1 text-pink-500"
@@ -88,39 +144,89 @@ const PreHeader = () => {
                                     className="ml-1"
                                     style={{ width: "12px", height: "12px" }}
                                 />
-                                
-                                {isAccountDropdownOpen && (
-                                    <div className="absolute top-full left-0 bg-white text-black rounded-md shadow-lg z-50 w-48 mt-1">
-                                        <ul className="py-2">
-                                            <li className="hover:bg-gray-100">
-                                                {/* <Link href="/auth/signup" className="block px-4 py-2 text-sm">
-                                                    Sign Up / Login
-                                                </Link>  */}
+                            </div>
+                            
+                            {isAccountDropdownOpen && (
+                                <div className="absolute top-full left-0 bg-white text-black rounded-lg shadow-2xl z-50 w-48 mt-1 
+                                    transform transition-all duration-200 ease-out opacity-100 scale-100
+                                    border border-gray-100">
+                                    <div className="absolute -top-2 left-4 w-4 h-4 bg-white transform rotate-45 border-l border-t border-gray-100"></div>
+                                    <ul className="py-1 relative bg-white rounded-lg text-sm">
+                                        {/* Sign In/User Name Option */}
+                                        <li className="group">
+                                            {isLoggedIn ? (
+                                                <>
+                                                    <Link href="/account/MyAccount" 
+                                                        className="block px-4 py-1.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 
+                                                            transition-all duration-200">
+                                                        <div className="font-medium text-sm">{userName}</div>
+                                                        <div className="text-xs text-gray-500">View account</div>
+                                                    </Link>
+                                                    <button
+                                                        onClick={signOutSubmitHandler}
+                                                        className="block w-full text-left px-4 py-1.5 text-gray-700 
+                                                            hover:text-red-600 hover:bg-red-50 transition-all duration-200"
+                                                    >
+                                                        Sign Out
+                                                    </button>
+                                                </>
+                                            ) : (
                                                 <button
                                                     onClick={toggleLoginPopup}
-                                                    className="block px-4 py-2 text-sm"
-                                               >signup</button>     
-                                                
-                                            </li>
-                                            <li className="hover:bg-gray-100">
-                                                <Link href="/my-rewards" className="block px-4 py-2 text-sm">
-                                                    My Rewards
-                                                </Link>
-                                            </li>
-                                            <li className="hover:bg-gray-100">
-                                                <Link href="/language" className="block px-4 py-2 text-sm">
-                                                    Language
-                                                </Link>
-                                            </li>
-                                            <li className="hover:bg-gray-100">
-                                                <Link href="/currency" className="block px-4 py-2 text-sm">
-                                                    Currency
-                                                </Link>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
+                                                    className="block w-full text-left px-4 py-1.5 text-gray-700 
+                                                        hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
+                                                >
+                                                    Sign Up / Login
+                                                </button>
+                                            )}
+                                        </li>
+
+                                        <div className="border-t border-gray-100"></div>
+
+                                        {/* Currency Dropdown */}
+                                        <li className="relative group"
+                                            onMouseEnter={() => setIsCurrencyDropdownOpen(true)}
+                                            onMouseLeave={() => setIsCurrencyDropdownOpen(false)}>
+                                            <div className="px-4 py-1.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 
+                                                cursor-pointer flex justify-between items-center transition-all duration-200">
+                                                <span>Currency</span>
+                                                <span className="font-medium">{selectedCurrency}</span>
+                                                {isCurrencyDropdownOpen && (
+                                                    <div className="absolute left-full top-0 bg-white shadow-xl rounded-lg w-28 -mr-1 
+                                                        transform translate-x-2 border border-gray-100">
+                                                        <div className="absolute -left-2 top-3 w-4 h-4 bg-white transform rotate-45 border-l border-t border-gray-100"></div>
+                                                        <ul className="py-1 relative bg-white rounded-lg">
+                                                            {['USD', 'GBP', 'BDT'].map((currency) => (
+                                                                <li key={currency}
+                                                                    className="px-3 py-1.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 
+                                                                        cursor-pointer transition-all duration-200"
+                                                                    onClick={() => handleCurrencyChange(currency)}>
+                                                                    {currency}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </li>
+
+                                        <li className="group">
+                                            <Link href="/my-rewards" 
+                                                className="block px-4 py-1.5 text-gray-700 hover:text-blue-600 
+                                                    hover:bg-blue-50 transition-all duration-200">
+                                                My Rewards
+                                            </Link>
+                                        </li>
+                                        <li className="group">
+                                            <Link href="/language" 
+                                                className="block px-4 py-1.5 text-gray-700 hover:text-blue-600 
+                                                    hover:bg-blue-50 transition-all duration-200">
+                                                Language
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </div>
+                            )}
                         </div>
 
                         {/* Corporate Inquiries */}
