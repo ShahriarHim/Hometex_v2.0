@@ -69,6 +69,9 @@ const ProductsTabs = ({ products }) => {
     'single': []
   });
 
+  const [swiper, setSwiper] = useState(null);
+  const [isSliderHovered, setIsSliderHovered] = useState(false);
+
   useEffect(() => {
     setFilteredProducts({
       'all': products,
@@ -133,7 +136,20 @@ const ProductsTabs = ({ products }) => {
     },
     modules: [Autoplay, FreeMode],
     className: "mySwiper",
+    onSwiper: (swiperInstance) => {
+      setSwiper(swiperInstance);
+    },
   };
+
+  useEffect(() => {
+    if (swiper && swiper.autoplay) {
+      if (isSliderHovered) {
+        swiper.autoplay.stop();
+      } else {
+        swiper.autoplay.start();
+      }
+    }
+  }, [isSliderHovered, swiper]);
 
   if (!products) {
     return <div className="text-center py-10">Loading products...</div>;
@@ -163,23 +179,28 @@ const ProductsTabs = ({ products }) => {
           <div className="lg:flex-grow">
             {Object.entries(filteredProducts).map(([category, items]) => (
               <TabPanel key={category}>
-                <Swiper {...params}>
-                  {items?.length > 0 ? (
-                    items.map((product) => (
-                      <SwiperSlide key={product.id}>
-                        <ProductCard
-                          product={product}
-                          openModal={openModal}
-                          handleRequestStack={handleRequestStack}
-                        />
-                      </SwiperSlide>
-                    ))
-                  ) : (
-                    <div className="text-center py-10">
-                      No products available in this category
-                    </div>
-                  )}
-                </Swiper>
+                <div
+                  onMouseEnter={() => setIsSliderHovered(true)}
+                  onMouseLeave={() => setIsSliderHovered(false)}
+                >
+                  <Swiper {...params}>
+                    {items?.length > 0 ? (
+                      items.map((product) => (
+                        <SwiperSlide key={product.id}>
+                          <ProductCard
+                            product={product}
+                            openModal={openModal}
+                            handleRequestStack={handleRequestStack}
+                          />
+                        </SwiperSlide>
+                      ))
+                    ) : (
+                      <div className="text-center py-10">
+                        No products available in this category
+                      </div>
+                    )}
+                  </Swiper>
+                </div>
               </TabPanel>
             ))}
           </div>
