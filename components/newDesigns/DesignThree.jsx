@@ -11,14 +11,13 @@ import 'swiper/css/autoplay'
 import Constants from '@/ults/Constant';
 
 const HotDealsCarousel = () => {
+ 
   const [products, setProducts] = useState([]);
-  const [swiper, setSwiper] = useState(null);
-  const [isSliderHovered, setIsSliderHovered] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${Constants.BASE_URL}/api/product/trending`);
+        const response = await fetch(`${Constants.BASE_URL}/api/product-hot/trending`);
         const data = await response.json();
         console.log("eg ae  ",data);
         
@@ -80,16 +79,6 @@ const HotDealsCarousel = () => {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    if (swiper && swiper.autoplay) {
-      if (isSliderHovered) {
-        swiper.autoplay.stop();
-      } else {
-        swiper.autoplay.start();
-      }
-    }
-  }, [isSliderHovered, swiper]);
-
   return (
     <div className={styles['hot-deals-container']}>
       <div className={styles['hot-deals-box']}>
@@ -120,53 +109,46 @@ const HotDealsCarousel = () => {
             <div className="text-sm">SECONDS</div>
           </div>
 
-          <div
-            onMouseEnter={() => setIsSliderHovered(true)}
-            onMouseLeave={() => setIsSliderHovered(false)}
+          <Swiper
+            slidesPerView={4}
+            spaceBetween={20}
+            navigation={false}
+            modules={[Navigation, Autoplay]}
+            className="mySwiper"
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true
+            }}
+            loop={true}
+            speed={1000}
+            breakpoints={{
+              320: {
+                slidesPerView: 1,
+              },
+              640: {
+                slidesPerView: 2,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+            }}
           >
-            <Swiper
-              slidesPerView={4}
-              spaceBetween={20}
-              navigation={false}
-              modules={[Navigation, Autoplay]}
-              className="mySwiper"
-              autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-              }}
-              loop={true}
-              speed={1000}
-              onSwiper={(swiperInstance) => {
-                setSwiper(swiperInstance);
-              }}
-              breakpoints={{
-                320: {
-                  slidesPerView: 1,
-                },
-                640: {
-                  slidesPerView: 2,
-                },
-                768: {
-                  slidesPerView: 3,
-                },
-                1024: {
-                  slidesPerView: 4,
-                },
-              }}
-            >
-              {products.map((product, index) => (
-                <SwiperSlide key={index} className="owl2-item active">
-                  <ProductCard product={product} />
-                </SwiperSlide>
-              ))}
+            {products.map((product, index) => (
+              <SwiperSlide key={index} className="owl2-item active">
+                <ProductCard product={product} />
+              </SwiperSlide>
+            ))}
 
-              {products.map((product, index) => (
-                <SwiperSlide key={`cloned-after-${index}`} className="owl2-item cloned">
-                  <ProductCard product={product} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+            {products.map((product, index) => (
+              <SwiperSlide key={`cloned-after-${index}`} className="owl2-item cloned">
+                <ProductCard product={product} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
     </div>
