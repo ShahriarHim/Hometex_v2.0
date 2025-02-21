@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from '@/components/newDesigns/ProductCard';
 import ProductGridCard from '@/components/newDesigns/ProductGridCard';
 import Constants from '@/ults/Constant';
-import styles from '../../styles/Gridbox.module.css';
+import FilterProducts from './FilterProducts';
 import Link from 'next/link';
 
 // Loading Spinner Component
@@ -25,6 +25,18 @@ const ProductPage = () => {
     const [error, setError] = useState(null);
     const [categoryPath, setCategoryPath] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+
+    // Filter states
+    const [filters, setFilters] = useState({
+        subcategory: [],
+        color: [],
+        priceRange: [0, 1000],
+        size: [],
+    });
+
+    const [categories, setCategories] = useState([]);
+    const [colors, setColors] = useState(['Red', 'Blue', 'Green']);
+    const [sizes, setSizes] = useState(['Small', 'Medium', 'Large']);
 
     // Pagination States
     const [currentPage, setCurrentPage] = useState(1);
@@ -55,13 +67,6 @@ const ProductPage = () => {
                                 if (sub.name.toLowerCase() === productName.toLowerCase()) {
                                     return { id: sub.id, path: `${category.name.toLowerCase()}/${sub.name.toLowerCase()}` };
                                 }
-                                if (sub.child) {
-                                    for (let child of sub.child) {
-                                        if (child.name.toLowerCase() === productName.toLowerCase()) {
-                                            return { id: child.id, path: `${category.name.toLowerCase()}/${sub.name.toLowerCase()}/${child.name.toLowerCase()}` };
-                                        }
-                                    }
-                                }
                             }
                         }
                     }
@@ -90,7 +95,6 @@ const ProductPage = () => {
                 }
 
                 const transformedProducts = productData.data.map(product => {
-                    // Generate slugs and ensure they're not empty
                     const categorySlug = product.category?.name?.toLowerCase() || 'uncategorized';
                     const subCategorySlug = product.sub_category?.name?.toLowerCase() || 'general';
                     const productSlug = product.child_sub_category?.name?.toLowerCase() || 'item';
@@ -126,15 +130,50 @@ const ProductPage = () => {
         }
     }, [productName, fullPath, router]);
 
-    const toggleView = (mode) => {
-        setViewMode(mode);
+    const toggleFilter = (filterType, value) => {
+        setFilters((prevFilters) => {
+            const currentFilters = prevFilters[filterType];
+            const newFilters = currentFilters.includes(value)
+                ? currentFilters.filter((item) => item !== value)
+                : [...currentFilters, value];
+
+            return {
+                ...prevFilters,
+                [filterType]: newFilters,
+            };
+        });
     };
+
+    const handlePriceChange = (newPriceRange) => {
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            priceRange: newPriceRange,
+        }));
+    };
+
+    const clearFilters = () => {
+        setFilters({
+            subcategory: [],
+            color: [],
+            priceRange: [0, 1000],
+            size: [],
+        });
+    };
+
+    const filteredProducts = products.filter((product) => {
+        const matchesSubcategory = filters.subcategory.length === 0 || filters.subcategory.includes(product.subcategory_slug);
+        const matchesColor = filters.color.length === 0 || filters.color.includes(product.color);
+        const matchesPrice = product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1];
+        const matchesSize = filters.size.length === 0 || filters.size.includes(product.size);
+
+        return matchesSubcategory && matchesColor && matchesPrice && matchesSize;
+    });
 
     // Pagination Logic
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-    const totalPages = Math.ceil(products.length / productsPerPage);
+    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -147,77 +186,36 @@ const ProductPage = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="flex justify-end mb-6 gap-2">
-                <button
-                    onClick={() => toggleView('card')}
-                    className={`px-4 py-2 rounded-lg border ${viewMode === 'card' ? 'bg-purple-600 text-white' : 'bg-white text-gray-700 hover:bg-purple-100'}`}
-                >
-                    Card View
-                </button>
-                <button
-                    onClick={() => toggleView('photo')}
-                    className={`px-4 py-2 rounded-lg border ${viewMode === 'photo' ? 'bg-purple-600 text-white' : 'bg-white text-gray-700 hover:bg-purple-100'}`}
-                >
-                    Grid View
-                </button>
+        <div className="container mx-auto px-4 py-8 flex gap-8">
+            {/* Filter Card */}
+            <div className="w-1/4">
+                <FilterProducts
+                    filters={filters}
+                    toggleFilter={toggleFilter}
+                    handlePriceChange={handlePriceChange}
+                    clearFilters={clearFilters}
+                    categories={categories}
+                    colors={colors}
+                    sizes={sizes}
+                />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                {currentProducts.map((product, index) => (
-                    <div key={index} className="cursor-pointer transform transition-transform duration-300 hover:scale-105">
-                        <Link href={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`}>
-                            {viewMode === 'card' ? <ProductCard product={product} /> : <ProductGridCard product={product} />}
-                        </Link>
-                    </div>
-                ))}
+            {/* Product List */}
+            <div className="w-3/4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    {currentProducts.map((product, index) => (
+                        <div key={index} className="cursor-pointer transform transition-transform duration-300 hover:scale-105">
+                            <Link href={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`}>
+                                {viewMode === 'card' ? <ProductCard product={product} /> : <ProductGridCard product={product} />}
+                            </Link>
+                        </div>
+                    ))}
+                </div>
+                {/* Pagination Logic */}
+                <div className="flex justify-center mt-8 space-x-2">
+                    {/* Pagination buttons */}
+                </div>
             </div>
-
-            {/* DataTables Style Pagination */}
-            <div className="flex justify-center mt-8 space-x-2">
-                {/* Previous Button */}
-                <button
-                    onClick={() => paginate(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 rounded border bg-gray-200"
-                >
-                    Prev
-                </button>
-
-                {/* Dynamic Page Numbers - Show Only 3 Pages */}
-                {(() => {
-                    let startPage = Math.max(1, currentPage - 1);
-                    let endPage = Math.min(totalPages, startPage + 2);
-
-                    if (endPage - startPage < 2) {
-                        startPage = Math.max(1, endPage - 2);
-                    }
-
-                    return [...Array(endPage - startPage + 1).keys()].map((_, index) => {
-                        const pageNumber = startPage + index;
-                        return (
-                            <button
-                                key={pageNumber}
-                                onClick={() => paginate(pageNumber)}
-                                className={`px-4 py-2 rounded border ${currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-blue-300'
-                                    }`}
-                            >
-                                {pageNumber}
-                            </button>
-                        );
-                    });
-                })()}
-
-                {/* Next Button */}
-                <button
-                    onClick={() => paginate(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="px-4 py-2 rounded border bg-gray-200"
-                >
-                    Next
-                </button>
-            </div>
-
         </div>
     );
 };
