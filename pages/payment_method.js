@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import Constants from "@/ults/Constant";
 
-
+import { getCookie } from "cookies-next";
 
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -17,6 +17,7 @@ const PaymentMethod = () => {
   const [discountedTotal, setDiscountedTotal] = useState(0);
   const [accessToken, setAccessToken] = useState('');
   const url = 'https://payment.hometex.store/api/v1.0/pay';
+  let auth_token = decodeURIComponent(getCookie("home_text_token"));
 
   useEffect(() => {
     if (query) {
@@ -28,40 +29,28 @@ const PaymentMethod = () => {
   }, [query]);
 
   useEffect(() => {
-    // const storedToken = localStorage.getItem('accessToken');
-    // if (storedToken) {
-    //   setAccessToken(storedToken);
-    // } else {
-    //   const requestOptions = {
-    //     method: "GET",
-    //     redirect: "follow"
-    //   };
-      const requestOptions = {
-        method: "GET",
-        redirect: "follow"
-      };
-      fetch(`${Constants.BASE_URL}/api/get-token`, requestOptions)
-        .then((response) => response.text())
-        .then((result) => {
-          setAccessToken(result);
-          console.log(result);
-          localStorage.setItem('accessToken', result);
-        })
-        .catch((error) => console.error(error));
-        
-    }, []);
-  // useEffect(() => {
-  //   const requestOptions = {
-  //     method: "GET",
-  //     redirect: "follow"
-  //   };
-    
-  //   fetch("https://htbapi.hometexbd.ltd/api/get-token", requestOptions)
-  //     .then((response) => response.text())
-  //     .then((result) => console.log(result))
-  //     // setAccessToken(result);
-  //     // .catch((error) => console.error(error));
-  // });
+    console.log('Fetching token with auth_token:', auth_token);
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow",
+      headers: {
+        'Authorization': `Bearer ${auth_token}`
+      }
+    };
+    fetch(`${Constants.BASE_URL}/api/get-token`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log('Received accessToken:', result);
+        if (result.data && result.data.token) {
+          const token = result.data.token;
+          setAccessToken(token);
+          localStorage.setItem('accessToken', token);
+        } else {
+          console.error('Token not found in response:', result);
+        }
+      })
+      .catch((error) => console.error(error));
+  }, [auth_token]);
 
 console.log(accessToken);
   const handleChange = (e) => {
@@ -118,7 +107,7 @@ console.log(accessToken);
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", `Bearer ${accessToken}`);
+        myHeaders.append("Authorization", `Bearer ${decodeURIComponent(accessToken)}`);
         
         const requestOptions = {
           method: "POST",
