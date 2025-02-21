@@ -9,10 +9,11 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/autoplay'
 import Constants from '@/ults/Constant';
+import { setCookie, getCookie } from 'cookies-next';
 
 const HotDealsCarousel = () => {
- 
   const [products, setProducts] = useState([]);
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -42,7 +43,7 @@ const HotDealsCarousel = () => {
 
 
   const [timeLeft, setTimeLeft] = useState({
-    days: 939,
+    days: 2,
     hours: 7,
     minutes: 11,
     seconds: 51
@@ -79,6 +80,43 @@ const HotDealsCarousel = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const handleProductClick = (product) => {
+    // Get existing recently viewed products
+    let recentlyViewed = getCookie('recentlyViewed');
+    recentlyViewed = recentlyViewed ? JSON.parse(recentlyViewed) : [];
+
+    // Add current product if not already in list
+    const productInfo = {
+      id: product.id,
+      name: product.name,
+      image: product.img // Note: using img instead of primary_photo based on your data structure
+    };
+
+    // Remove if product already exists (to move it to front)
+    recentlyViewed = recentlyViewed.filter(item => item.id !== product.id);
+    
+    // Add to front of array
+    recentlyViewed.unshift(productInfo);
+    
+    // Keep only last 10 items
+    recentlyViewed = recentlyViewed.slice(0, 10);
+
+    // Save back to cookie
+    setCookie('recentlyViewed', JSON.stringify(recentlyViewed), {
+      maxAge: 30 * 24 * 60 * 60 // 30 days
+    });
+  };
+
+  const handleProductHover = (isHovering) => {
+    if (swiperInstance) {
+      if (isHovering) {
+        swiperInstance.autoplay.stop();
+      } else {
+        swiperInstance.autoplay.start();
+      }
+    }
+  };
+
   return (
     <div className={styles['hot-deals-container']}>
       <div className={styles['hot-deals-box']}>
@@ -110,6 +148,7 @@ const HotDealsCarousel = () => {
           </div>
 
           <Swiper
+            onSwiper={setSwiperInstance}
             slidesPerView={4}
             spaceBetween={20}
             navigation={false}
@@ -118,7 +157,6 @@ const HotDealsCarousel = () => {
             autoplay={{
               delay: 2500,
               disableOnInteraction: false,
-              pauseOnMouseEnter: true
             }}
             loop={true}
             speed={1000}
@@ -138,13 +176,25 @@ const HotDealsCarousel = () => {
             }}
           >
             {products.map((product, index) => (
-              <SwiperSlide key={index} className="owl2-item active">
+              <SwiperSlide 
+                key={index} 
+                className="owl2-item active" 
+                onClick={() => handleProductClick(product)}
+                onMouseEnter={() => handleProductHover(true)}
+                onMouseLeave={() => handleProductHover(false)}
+              >
                 <ProductCard product={product} />
               </SwiperSlide>
             ))}
 
             {products.map((product, index) => (
-              <SwiperSlide key={`cloned-after-${index}`} className="owl2-item cloned">
+              <SwiperSlide 
+                key={`cloned-after-${index}`} 
+                className="owl2-item cloned"
+                onClick={() => handleProductClick(product)}
+                onMouseEnter={() => handleProductHover(true)}
+                onMouseLeave={() => handleProductHover(false)}
+              >
                 <ProductCard product={product} />
               </SwiperSlide>
             ))}

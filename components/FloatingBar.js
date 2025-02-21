@@ -18,6 +18,7 @@ import CartContext from "@/context/CartContext";
 import Link from 'next/link';
 import Constants from '@/ults/Constant';
 import WishListContext from "@/context/WishListContext";
+import { getCookie } from 'cookies-next';
 
 const FloatingBar = () => {
     const { location, isGeolocationAvailable, isGeolocationEnabled } = useGeolocation();
@@ -30,6 +31,7 @@ const FloatingBar = () => {
     const [categories, setCategories] = useState([]);
     const [showCategoriesPopup, setShowCategoriesPopup] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState(null);
+    const [showRecentlyViewed, setShowRecentlyViewed] = useState(false);
 
     const cartRef = useRef(null);
     const wishRef = useRef(null);
@@ -105,6 +107,10 @@ const FloatingBar = () => {
         }
     }, [categories]);
 
+    const handleRecentlyViewedClick = () => {
+        setShowRecentlyViewed(true);
+    };
+
     const buttonData = [
         {
             icon: <FaListUl />,
@@ -137,7 +143,7 @@ const FloatingBar = () => {
         {
             icon: <FaEye />,
             tooltip: 'Recently Viewed',
-            onClick: null,
+            onClick: handleRecentlyViewedClick,
             className: 'floating-btn-middle',
         },
         {
@@ -158,8 +164,6 @@ const FloatingBar = () => {
                         {/* <span className="cart-text">Buy Now</span> */}
                     </button>
                 </div>
-
-
 
                 {/* Grouped Buttons */}
                 <div className="grouped-buttons">
@@ -297,6 +301,79 @@ const FloatingBar = () => {
                                     )}
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Add Recently Viewed Popup */}
+            {showRecentlyViewed && (
+                <div className="fixed inset-0 flex items-center justify-center z-[1100]">
+                    <div 
+                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        onClick={() => setShowRecentlyViewed(false)}
+                    ></div>
+                    <div className="bg-white rounded-2xl p-6 max-w-4xl w-full mx-4 relative z-10 shadow-2xl transform transition-all">
+                        <div className="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 className="text-2xl font-bold text-gray-800">Recently Viewed</h3>
+                                <p className="text-gray-500 text-sm mt-1">Your browsing history</p>
+                            </div>
+                            <button 
+                                onClick={() => setShowRecentlyViewed(false)}
+                                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+                            >
+                                <span className="text-2xl text-gray-500">&times;</span>
+                            </button>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-[60vh] overflow-y-auto px-1 custom-scrollbar">
+                            {(() => {
+                                const recentlyViewed = getCookie('recentlyViewed');
+                                const products = recentlyViewed ? JSON.parse(recentlyViewed) : [];
+                                
+                                return products.length > 0 ? (
+                                    products.map((product, index) => (
+                                        <Link 
+                                            href={`/shop/product/${product.id}`}
+                                            key={`${product.id}-${index}`}
+                                            className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                                            onClick={() => setShowRecentlyViewed(false)}
+                                        >
+                                            <div className="aspect-square overflow-hidden relative">
+                                                <img 
+                                                    src={product.image} 
+                                                    alt={product.name}
+                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                            </div>
+                                            <div className="p-4">
+                                                <p className="text-sm font-medium text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors mb-2">
+                                                    {product.name}
+                                                </p>
+                                                {product.price && (
+                                                    <p className="text-sm font-semibold text-green-600">
+                                                        ₹{product.price}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <div className="col-span-full flex flex-col items-center justify-center py-12 text-gray-500">
+                                        <FaEye className="w-16 h-16 mb-4 opacity-20" />
+                                        <p className="text-xl font-medium mb-2">No recently viewed products</p>
+                                        <p className="text-sm text-gray-400">Start browsing our collection to see your history here</p>
+                                        <Link 
+                                            href="/shop"
+                                            className="mt-4 px-6 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors"
+                                            onClick={() => setShowRecentlyViewed(false)}
+                                        >
+                                            Browse Products
+                                        </Link>
+                                    </div>
+                                );
+                            })()}
                         </div>
                     </div>
                 </div>
@@ -722,6 +799,28 @@ const FloatingBar = () => {
 
                 .whatsapp-btn:hover {
                     background-color: #128c7e;
+                }
+
+                .custom-scrollbar {
+                    scrollbar-width: thin;
+                    scrollbar-color: rgba(40, 167, 69, 0.5) transparent;
+                }
+
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 6px;
+                }
+
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background-color: rgba(40, 167, 69, 0.5);
+                    border-radius: 20px;
+                }
+
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                    background-color: rgba(40, 167, 69, 0.7);
                 }
             `}</style>
         </>
