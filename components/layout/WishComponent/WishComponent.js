@@ -3,13 +3,19 @@ import { MdFavorite } from 'react-icons/md';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
-import { FaHeart} from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
 
 
-const WishComponent = (props) => {
-  const { wishRef, handleWishClick, wishItems, isWishOpen, removeFromWishlist } = props;
-  const [redirect, setRedirect] = useState(false); // State to handle redirection
-
+const WishComponent = ({
+  wishRef,
+  handleWishClick,
+  wlistItems,
+  isOpen,
+  wlist,
+  deleteItemFromWishlist,
+  totalPrice,
+  handleCheckout
+}) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wishRef.current && !wishRef.current.contains(event.target) && isWishOpen) {
@@ -21,15 +27,15 @@ const WishComponent = (props) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isWishOpen, handleWishClick]);
+  }, [isOpen, handleWishClick]);
 
   const removeFromWishlistHandler = (productId) => {
     console.log('Removing from wishlist:', productId);
     removeFromWishlist(productId);
   };
 
-   // Function to handle "View Wishlist" button click
-   const handleViewWishlistClick = () => {
+  // Function to handle "View Wishlist" button click
+  const handleViewWishlistClick = () => {
     // Close the wishlist component
     handleWishClick();
     // Set redirect state to true to redirect to the wishlist page
@@ -38,20 +44,20 @@ const WishComponent = (props) => {
 
 
   // Redirect to the wishlist page
-  if (redirect) {
-    return <Link href="/wishlist" />;
-  }
+  // if (redirect) {
+  //   return <Link href="/wishlist" />;
+  // }
 
   return (
     <div className="relative z-[9999]">
-      {isWishOpen && (
+      {isOpen && (
         <>
           {/* Solid overlay instead of transparent */}
-          <div 
+          <div
             className="fixed inset-0 bg-gray-900 opacity-50 transition-opacity duration-300"
             onClick={handleWishClick}
           />
-          
+
           {/* Wishlist Panel */}
           <div className="fixed inset-y-0 right-0 w-96 z-[9999] shadow-2xl bg-gradient-to-b from-gray-700 to-gray-900 text-white overflow-hidden
             animate-slide-in transform transition-all duration-300 ease-out">
@@ -72,10 +78,10 @@ const WishComponent = (props) => {
                 </svg>
               </button>
             </div>
-            <div className="overflow-y-auto max-h-60" style={{ maxHeight: 'calc(100vh - 200px)' }}>
+            {/* <div className="overflow-y-auto max-h-60" style={{ maxHeight: 'calc(100vh - 200px)' }}>
               <table className="w-full">
                 <tbody>
-                  {wishItems?.map((wishItem) => (
+                  {wlistItems?.map((wishItem) => (
                     <tr key={wishItem.id} className="border-b border-gray-600">
                       <td className="py-4 pl-4">
                         <img
@@ -98,10 +104,40 @@ const WishComponent = (props) => {
                   ))}
                 </tbody>
               </table>
+            </div> */}
+            <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
+              <table className="w-full">
+              <tbody>
+    {Array.isArray(wlist) && wlist.length > 0 ? (
+        wlist.map((wlistItem, index) => (
+            <tr key={wlistItem.product_id} className="border-b border-gray-600 animate-fade-in-up">
+                <td className="py-4 pl-4">
+                    <img src={wlistItem.image} alt={wlistItem.name} className="w-20 h-20 object-cover rounded-lg shadow-md" />
+                </td>
+                <td className="px-2 py-4">{wlistItem.name}</td>
+                <td className="px-2 py-4">{wlistItem.quantity}</td>
+                <td className="px-2 py-4">BDT {wlistItem.price}</td>
+                <td className="px-2 py-4">
+                    <button className="text-red-400 hover:text-red-600"
+                        onClick={() => deleteItemFromWishlist(wlistItem.product_id)}>
+                        <AiTwotoneDelete size={24} />
+                    </button>
+                </td>
+            </tr>
+        ))
+    ) : (
+        <tr>
+            <td colSpan="5" className="text-center py-4">Your wishlist is empty.</td>
+        </tr>
+    )}
+</tbody>
+
+
+              </table>
             </div>
             <div className="absolute bottom-0 left-0 right-0 flex justify-end space-x-4 p-4 bg-gray-800">
               <Link href="/account/Wishlist">
-                <button onClick={handleViewWishlistClick}  className="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors duration-200">
+                <button onClick={handleViewWishlistClick} className="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors duration-200">
                   View Wishlist
                 </button>
               </Link>

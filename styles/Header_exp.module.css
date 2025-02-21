@@ -38,14 +38,14 @@
 .leftSection {
     display: flex;
     align-items: center;
-    margin-left: -1rem;  /* Pull left section more to the left */
+    margin-left: 1.5rem;  /* Pull left section more to the left */
 }
 
 .rightSection {
     display: flex;
     align-items: center;
     gap: 2rem;  /* Increased gap between items */
-    margin-right: -1rem;  /* Pull right section more to the right */
+    margin-right: 1.5rem;  /* Pull right section more to the right */
 }
 
 .centerLogo {
@@ -208,9 +208,10 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: transparent;
+    /* padding: 0.5rem 1rem; */
+    background:#9b7b1072;
     border: none;
+    border-radius: 10px;
     cursor: pointer;
 }
 
@@ -239,7 +240,7 @@
 }
 
 .all-categories-btn:hover {
-    background-color: #9b7b1072; /* Slightly darker hover effect */
+    background-color: #9b7b1040; /* Slightly darker hover effect */
 }
 
 .categories-icon {

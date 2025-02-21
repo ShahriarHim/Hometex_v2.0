@@ -8,6 +8,7 @@ import PriceDropNotificationButton from "./PriceDropNoti";
 import ProductDetails from "@/components/additional/ProductDetails";
 import FrequentlyBoughtTogether from "@/components/additional/Frequentlybought";
 import DesignFifteen from "@/components/newDesigns/DesignFifteen";
+import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 function decodeProductId(encodedId) {
   try {
@@ -27,13 +28,13 @@ function decodeProductId(encodedId) {
 export async function getServerSideProps(context) {
   try {
     const { slug } = context.params;
-    
+
     // Get the encoded ID from the last segment of the URL
     const encodedId = slug[slug.length - 1];
-    
+
     // Decode the product ID
     const productId = decodeProductId(encodedId);
-    
+
     if (!productId) {
       return { notFound: true };
     }
@@ -138,11 +139,11 @@ const ProductPage = ({ product, categoryInfo }) => {
           {/* Thumbnail Section */}
           <div className="col-span-2 lg:flex flex-col items-center hidden lg:block px-4 py-2">
             <button
-              className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mb-2"
+              className="w-full h-8 bg-black text-white flex items-center justify-center mt-2"
               onClick={handlePrevious}
               disabled={product.photos?.length <= 3}
             >
-              ↑
+              <FaCaretUp  />
             </button>
             <div className="space-y-2 overflow-hidden">
               {renderedPhotos.map((photo, index) => (
@@ -156,12 +157,13 @@ const ProductPage = ({ product, categoryInfo }) => {
               ))}
             </div>
             <button
-              className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mt-2"
+              className="w-full h-8 bg-black text-white flex items-center justify-center mt-2"
               onClick={handleNext}
               disabled={product.photos?.length <= 3}
             >
-              ↓
+              <FaCaretDown />
             </button>
+
           </div>
 
           {/* Main Product Image Section */}
@@ -176,6 +178,32 @@ const ProductPage = ({ product, categoryInfo }) => {
                 margin: "0",
               }}
             />
+                        {/* Social Sharing Section */}
+                        <div className="flex items-center justify-center shadow-md gap-3 mt-40 p-5">
+              {/* Share Icon (Centered) */}
+              <span className="text-gray-600 text-lg flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 12v4m0 0h4m-4 0h16m-8-8V4m0 0h4m-4 0H4m16 8v4m0 0h-4m4 0h-8" />
+                </svg>
+              </span>
+
+              {/* Social Icons */}
+              <a href={`https://api.whatsapp.com/send?text=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp" className="w-10 h-10 hover:opacity-80" />
+              </a>
+
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook" className="w-10 h-10 hover:opacity-80" />
+              </a>
+
+              <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124021.png" alt="Twitter" className="w-10 h-10 hover:opacity-80" />
+              </a>
+
+              <a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124061.png" alt="Pinterest" className="w-10 h-10 hover:opacity-80" />
+              </a>
+            </div>
           </div>
 
           {/* Product Details Section */}

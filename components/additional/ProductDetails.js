@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import CartContext from "@/context/CartContext";
+import WishListContext from "@/context/WishListContext";
 import Link from 'next/link'; // Import Link from Next.js
 import { MdFavorite } from 'react-icons/md'; // Import MdFavorite from react-icons/md
 import DisclaimerModal from '@/pages/DisclaimerModal'; // Import DisclaimerModal component
@@ -18,6 +19,7 @@ const ProductDetails = ({ product, router }) => {
   const [isDelivaryModalOpen, setIsDelivaryModalOpen] = useState(false);
   const [selectedAttribute, setSelectedAttribute] = useState(null);
   const { addItemToCart } = useContext(CartContext);
+  const { addItemToWishlist } = useContext(WishListContext);
   const [selectedSize, setSelectedSize] = useState('all');
   const handleSizeSelection = (size) => setSelectedSize(size);
   const points = 109;
@@ -104,16 +106,39 @@ const ProductDetails = ({ product, router }) => {
     });
   };
 
-  const attToWishList = (productId) => {
-    let user_token = getCookie("home_text_token");
-    if (typeof user_token == "undefined") {
-      alert("Please Login");
-      return false;
-    } else {
-      addRemoveWishList({
-        product_id: productId,
-      });
-    }
+  const addToWishlistHandler = () => {
+
+    setShowDisclaimerModal(true); // Show the disclaimer modal when "Add to Cart" is clicked
+
+    const cleanPrice = (priceInput) => {
+      // Ensure priceInput is treated as a string if it's not null or undefined
+      const priceString = priceInput !== null && priceInput !== undefined ? String(priceInput) : '0';
+      // Remove any character that is not a digit or a decimal point, then convert to a number
+      const numericValue = Number(priceString.replace(/[^\d.]/g, ''));
+      return numericValue;
+    };
+
+    // Clean the individual price and calculate & clean the total price.
+    const cleanedPrice = cleanPrice(product.price);
+    const cleanedTotalPrice = cleanPrice(getPrice() * product_qty);
+
+    addItemToWishlist({
+      product_id: product.id,
+      name: product.name,
+      category: product.category.id,
+      categoryName: product.category.name,
+      sub_category: product.sub_category.id,
+      sub_categoryName: product.sub_category.name,
+      child_sub_category: product.child_sub_category.id,
+      child_sub_categoryName: product.child_sub_category.name,
+      price: cleanedPrice, // Use the cleaned price
+      image: product.primary_photo,
+      in_stock: product.stock,
+      supplier_id: product.supplier_id,
+      quantity: product_qty,
+      sku: product.sku,
+      total_price: cleanedTotalPrice, // Use the cleaned and calculated total price
+    });
   };
 
 

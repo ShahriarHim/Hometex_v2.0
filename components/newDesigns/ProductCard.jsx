@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import styles from "../../styles/DesignThree.module.css";
 import CartContext from "@/context/CartContext";
+import WishListContext from '@/context/WishListContext';
 import { setCookie, getCookie, deleteCookie } from "cookies-next";
 const ProductCard = ({ product }) => {
   const { addItemToCart } = useContext(CartContext);
+  const { addItemToWishlist } = useContext(WishListContext);
 
   const handleAddToCart = () => {
     const item = {
@@ -13,9 +15,9 @@ const ProductCard = ({ product }) => {
       image: product.img,
       quantity: 1
     };
-    
+
     addItemToCart(item);
-    
+
     // Show custom popup
     // const popup = document.createElement('div');
     // popup.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-[9999] animate-slide-in-right';
@@ -27,30 +29,40 @@ const ProductCard = ({ product }) => {
     //     <span>Added to cart!</span>
     //   </div>
     // `;
-    
+
     // document.body.appendChild(popup);
 
     // Remove popup after 2 seconds
-  //   setTimeout(() => {
-  //     popup.classList.add('animate-slide-out-right');
-  //     setTimeout(() => {
-  //       document.body.removeChild(popup);
-  //     }, 300);
-  //   }, 2000);
+    //   setTimeout(() => {
+    //     popup.classList.add('animate-slide-out-right');
+    //     setTimeout(() => {
+    //       document.body.removeChild(popup);
+    //     }, 300);
+    //   }, 2000);
   };
 
-  const attToWishList = (productId) => {
-    let user_token = getCookie("home_text_token");
-    if (typeof user_token == "undefined") {
-      alert("Please Login");
-      return false;
-    } else {
-      addRemoveWishList({
-        product_id: productId,
-      });
-    }
-  };
+  // const attToWishList = (productId) => {
+  //   let user_token = getCookie("home_text_token");
+  //   if (typeof user_token == "undefined") {
+  //     alert("Please Login");
+  //     return false;
+  //   } else {
+  //     addRemoveWishList({
+  //       product_id: productId,
+  //     });
+  //   }
+  // };
+  const handleAddToWishlist = () => {
+    const item = {
+      product_id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.img,
+      quantity: 1
+    };
 
+    addItemToWishlist(item);
+  };
 
   return (
     <div className={styles['product-item-container']}>
@@ -60,7 +72,7 @@ const ProductCard = ({ product }) => {
             {product.discount}
           </div>
         )}
-        
+
         <a href="#" title={product.name}>
           <img
             src={product.img}
@@ -68,18 +80,18 @@ const ProductCard = ({ product }) => {
             className="img-fluid"
           />
         </a>
-        
+
         <div className={styles.overlay}>
           <div className={styles['button-group']}>
-            <button 
+            <button
               title="Add to Cart"
               onClick={handleAddToCart}
             >
               <i className="fas fa-shopping-basket" style={{ fontSize: '16px' }}></i>
             </button>
-            <button title="Add to Wish List"
-             onClick={attToWishList}
-             
+            <button
+              title="Add to Wish List"
+              onClick={handleAddToWishlist}
             >
               <i className="fas fa-heart" style={{ fontSize: '16px' }}></i>
             </button>

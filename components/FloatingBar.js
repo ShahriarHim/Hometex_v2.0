@@ -17,6 +17,7 @@ import WishComponent from "@/components/layout/WishComponent/WishComponent";
 import CartContext from "@/context/CartContext";
 import Link from 'next/link';
 import Constants from '@/ults/Constant';
+import WishListContext from "@/context/WishListContext";
 
 const FloatingBar = () => {
     const { location, isGeolocationAvailable, isGeolocationEnabled } = useGeolocation();
@@ -33,6 +34,8 @@ const FloatingBar = () => {
     const cartRef = useRef(null);
     const wishRef = useRef(null);
     const { cart, deleteItemFromCart } = useContext(CartContext);
+    const { wlist, deleteItemFromWishlist } = useContext(WishListContext);
+
     const cartItems = cart?.cartItems;
     const [totalPrice, setTotalPrice] = useState(0);
 
@@ -64,7 +67,7 @@ const FloatingBar = () => {
             const finalAmount = cartItems.reduce((total, cartItem) => {
                 let priceStr = cartItem.price;
                 priceStr = typeof priceStr !== 'string' ? String(priceStr) : priceStr;
-                priceStr = priceStr.replace(/[,]/g, ""); 
+                priceStr = priceStr.replace(/[,]/g, "");
                 const amount = parseInt(priceStr, 10) * cartItem.quantity;
                 return total + amount;
             }, 0);
@@ -138,12 +141,6 @@ const FloatingBar = () => {
             className: 'floating-btn-middle',
         },
         {
-            icon: <FaWhatsapp />,
-            tooltip: 'Chat with us',
-            onClick: handleChatToggle,
-            className: 'floating-btn-last',
-        },
-        {
             icon: <FaArrowUp />,
             tooltip: 'Back to Top',
             onClick: scrollToTop,
@@ -157,10 +154,12 @@ const FloatingBar = () => {
                 {/* Add to Cart Button */}
                 <div className="cart-container">
                     <button className="floating-btn-cart green-btn" onClick={handleCartClick}>
-                        <FaShoppingCart />
-                        <span className="cart-text">Buy Now</span>
+                        <FaShoppingCart style={{ fontSize: '20px' }} />
+                        {/* <span className="cart-text">Buy Now</span> */}
                     </button>
                 </div>
+
+
 
                 {/* Grouped Buttons */}
                 <div className="grouped-buttons">
@@ -172,6 +171,14 @@ const FloatingBar = () => {
                             </button>
                         ))}
                     </div>
+                </div>
+
+                {/* WhatsApp Button - Moved below grouped buttons */}
+                <div className="whatsapp-container">
+                    <button className="floating-btn whatsapp-btn" onClick={handleChatToggle}>
+                        <FaWhatsapp style={{ fontSize: '20px' }} />
+                        <span className="tooltip">Chat with us</span>
+                    </button>
                 </div>
             </div>
 
@@ -191,12 +198,12 @@ const FloatingBar = () => {
             {/* Wishlist Component */}
             {isWishOpen && (
                 <WishComponent
-                    wishItems={wishlist}
-                    updateWishItems={setWishlist}
-                    removeFromWishlist={() => {}}
-                    isWishOpen={isWishOpen}
-                    handleWishClick={handleWishClick}
                     wishRef={wishRef}
+                    handleWishClick={handleWishClick}
+                    wlistItems={wlist}   // ✅ Corrected: Pass wlist directly
+                    isOpen={isWishOpen}
+                    wlist={wlist}   // ✅ Corrected: wlist is an array, not an object
+                    deleteItemFromWishlist={deleteItemFromWishlist}
                 />
             )}
 
@@ -322,6 +329,12 @@ const FloatingBar = () => {
                     align-items: center;
                 }
 
+                .whatsapp-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
                 .button-container {
                     background: rgba(51, 51, 51, 0.8);
                     border-radius: 40px;
@@ -336,15 +349,22 @@ const FloatingBar = () => {
                     width: 45px;
                     height: 45px;
                     background: rgba(51, 51, 51, 0.8);
-                    color: white;
+                    color: yellow;
                     border: none;
                     border-radius: 10%;
                     display: flex;
-                    flex-direction: column;
+                    flex-direction: column; /* Stack the icon and text vertically */
                     align-items: center;
                     justify-content: center;
                     cursor: pointer;
                     position: relative;
+                    text-align: center; /* Ensure text is centered */
+                    padding: 5px; /* Padding for spacing between icon and text */
+                }
+                .floating-btn-cart .cart-text {
+                    margin-top: 5px; /* Space between icon and text */
+                    font-size: 12px; /* Optional: Adjust text size if needed */
+                    color: white;
                 }
 
                 .floating-btn {
@@ -685,6 +705,23 @@ const FloatingBar = () => {
                     background: rgba(255, 255, 255, 0.2);
                     transform: rotate(90deg);
                     border-color: white;
+                }
+
+                .whatsapp-btn {
+                    background-color: #25d366;
+                    color: white;
+                    border-radius: 50%;
+                    width: 45px;
+                    height: 45px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    position: relative;
+                }
+
+                .whatsapp-btn:hover {
+                    background-color: #128c7e;
                 }
             `}</style>
         </>

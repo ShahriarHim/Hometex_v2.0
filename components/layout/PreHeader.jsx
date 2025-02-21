@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef,useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { DynamicText, textOptions } from "./DynamicText";
 import {
     HiOutlineGift,
@@ -91,19 +91,17 @@ const PreHeader = () => {
         if (auth_name) {
             setIsLoggedIn(true);
             setUserName(auth_name);
-            console.log("egr",auth_name);
         }
     }, []);
+
     const signOutSubmitHandler = async (e) => {
         e.preventDefault();
-        // setIsSubmit(true)
         deleteCookie("home_text_token");
         deleteCookie("home_text_name");
         deleteCookie("home_text_phone");
         deleteCookie("home_text_email");
         window.location.href = "/";
     };
-
 
     const toggleLoginPopup = () => {
         setShowLoginPopup(!showLoginPopup);
@@ -122,10 +120,10 @@ const PreHeader = () => {
 
     return (
         <div className="pt-1 hidden md:block bg-[#d4ed30]">
-            <div className="container mx-auto pb-1">
-                <div className="flex justify-between items-center px-2">
+            <div className="container pb-1 w-full mx-auto">
+                <div className="flex justify-between items-center">
                     {/* Left Section - Account & Corporate */}
-                    <div className="flex items-center space-x-8 w-1/4 -ml-4">
+                    <div className="flex items-center space-x-8 ml-2 w-1/4">
                         {/* My Account Dropdown */}
                         <div 
                             className="relative"
@@ -147,25 +145,21 @@ const PreHeader = () => {
                             </div>
                             
                             {isAccountDropdownOpen && (
-                                <div className="absolute top-full left-0 bg-white text-black rounded-lg shadow-2xl z-50 w-48 mt-1 
-                                    transform transition-all duration-200 ease-out opacity-100 scale-100
-                                    border border-gray-100">
+                                <div className="absolute top-full left-0 bg-white text-black rounded-lg shadow-2xl z-50 w-48 mt-1">
                                     <div className="absolute -top-2 left-4 w-4 h-4 bg-white transform rotate-45 border-l border-t border-gray-100"></div>
                                     <ul className="py-1 relative bg-white rounded-lg text-sm">
-                                        {/* Sign In/User Name Option */}
                                         <li className="group">
                                             {isLoggedIn ? (
                                                 <>
                                                     <Link href="/account/MyAccount" 
-                                                        className="block px-4 py-1.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 
-                                                            transition-all duration-200">
+                                                        className="block px-4 py-1.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50">
                                                         <div className="font-medium text-sm">{userName}</div>
                                                         <div className="text-xs text-gray-500">View account</div>
                                                     </Link>
                                                     <button
                                                         onClick={signOutSubmitHandler}
                                                         className="block w-full text-left px-4 py-1.5 text-gray-700 
-                                                            hover:text-red-600 hover:bg-red-50 transition-all duration-200"
+                                                            hover:text-red-600 hover:bg-red-50"
                                                     >
                                                         Sign Out
                                                     </button>
@@ -174,7 +168,7 @@ const PreHeader = () => {
                                                 <button
                                                     onClick={toggleLoginPopup}
                                                     className="block w-full text-left px-4 py-1.5 text-gray-700 
-                                                        hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
+                                                        hover:text-blue-600 hover:bg-blue-50"
                                                 >
                                                     Sign Up / Login
                                                 </button>
@@ -186,9 +180,9 @@ const PreHeader = () => {
                                         {/* Currency Dropdown */}
                                         <li className="relative group"
                                             onMouseEnter={() => setIsCurrencyDropdownOpen(true)}
-                                            onMouseLeave={() => setIsCurrencyDropdownOpen(false)}>
+                                            onMouseLeave={() => setIsCurrencyDropdownOpen(false)} >
                                             <div className="px-4 py-1.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 
-                                                cursor-pointer flex justify-between items-center transition-all duration-200">
+                                                cursor-pointer flex justify-between items-center">
                                                 <span>Currency</span>
                                                 <span className="font-medium">{selectedCurrency}</span>
                                                 {isCurrencyDropdownOpen && (
@@ -199,7 +193,7 @@ const PreHeader = () => {
                                                             {['USD', 'GBP', 'BDT'].map((currency) => (
                                                                 <li key={currency}
                                                                     className="px-3 py-1.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 
-                                                                        cursor-pointer transition-all duration-200"
+                                                                        cursor-pointer"
                                                                     onClick={() => handleCurrencyChange(currency)}>
                                                                     {currency}
                                                                 </li>
@@ -212,15 +206,13 @@ const PreHeader = () => {
 
                                         <li className="group">
                                             <Link href="/my-rewards" 
-                                                className="block px-4 py-1.5 text-gray-700 hover:text-blue-600 
-                                                    hover:bg-blue-50 transition-all duration-200">
+                                                className="block px-4 py-1.5 text-gray-700 hover:text-blue-600">
                                                 My Rewards
                                             </Link>
                                         </li>
                                         <li className="group">
                                             <Link href="/language" 
-                                                className="block px-4 py-1.5 text-gray-700 hover:text-blue-600 
-                                                    hover:bg-blue-50 transition-all duration-200">
+                                                className="block px-4 py-1.5 text-gray-700 hover:text-blue-600">
                                                 Language
                                             </Link>
                                         </li>
@@ -243,68 +235,35 @@ const PreHeader = () => {
                     </div>
 
                     {/* Center Section - Dynamic Text */}
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center mx-auto w-auto">
                         <div className="flex items-center space-x-4">
-                            <span className="px-3 py-1 text-xs text-white font-medium
-                                bg-gradient-to-r from-purple-500 to-pink-500
-                                hover:from-pink-500 hover:to-purple-500
-                                rounded-lg shadow-md transition-all duration-300 ease-in-out"
-                            >
+                            <span className="px-3 py-1 text-xs text-white font-medium bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 rounded-lg shadow-md transition-all duration-300 ease-in-out">
                                 {visitUsText}
                             </span>
-                            <div className="text-base font-semibold text-transparent bg-clip-text 
-                                bg-gradient-to-r from-green-400 to-blue-500
-                                hover:from-blue-500 hover:to-green-400
-                                transition-all duration-300 ease-in-out"
-                            >
+                            <div className="text-base font-semibold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 hover:from-blue-500 hover:to-green-400 transition-all duration-300 ease-in-out">
                                 <DynamicText onTextChange={handleTextChange} />
                             </div>
                         </div>
                     </div>
-                    <div>
-                        {showLoginPopup && <LoginPopup showPopup={showLoginPopup} togglePopup={toggleLoginPopup} />}
-                    </div>
-                    {/* Right Section (10% width) with Absolute positioning */}
-                    <div className="flex items-center justify-end gap-3 px-2 w-[10%]">
+
+                    {/* Right Section - Cart & Order Tracking */}
+                    <div className="flex items-center justify-end gap-3 mr-2 w-1/4">
                         {/* Order Tracking */}
-                        <Link
-                            href="/orderDash"
-                            className="flex items-center hover:text-blue-500 whitespace-nowrap mr-8"
-                        >
-                            <HiOutlineTicket
-                                className="mr-1 text-pink-500"
-                                style={{ width: "16px", height: "16px" }}
-                            />
+                        <Link href="/orderDash" className="flex items-center hover:text-blue-500 whitespace-nowrap mr-8">
+                            <HiOutlineTicket className="mr-1 text-pink-500" style={{ width: "16px", height: "16px" }} />
                             <span className="text-xs">Order Tracking</span>
                         </Link>
 
-                        {/* Wrap both cart button and popup in a container with ref */}
+                        {/* Cart Button and Popup */}
                         <div ref={cartContainerRef}>
-                            {/* My Cart Button */}
-                            <div 
-                                className="relative bg-black text-white px-4 py-4 -mt-1 flex items-center 
-                                    cursor-pointer hover:text-yellow-500 transition-colors duration-200 z-[160] mr-2"
-                                onClick={handleCartClick}
-                            >
-                                <HiShoppingCart
-                                    className="mr-2 text-pink-500"
-                                    style={{ width: "16px", height: "16px" }}
-                                />
+                            <div className="relative bg-black text-white px-4 py-4 -mt-1 flex items-center cursor-pointer hover:text-yellow-500 transition-colors duration-200 z-[160] mr-2" onClick={handleCartClick}>
+                                <HiShoppingCart className="mr-2 text-pink-500" style={{ width: "16px", height: "16px" }} />
                                 <span className="text-xs whitespace-nowrap">My Cart</span>
                                 {/* Triangle decorations */}
                                 <div className="absolute bottom-[-12px] left-0 right-0 h-3 overflow-visible z-[155]">
                                     <div className="flex justify-center">
                                         {[...Array(12)].map((_, i) => (
-                                            <div
-                                                key={i}
-                                                className="w-2.5 h-3 bg-black"
-                                                style={{
-                                                    clipPath: 'polygon(50% 100%, 0 0, 100% 0)',
-                                                    marginTop: '-1px',
-                                                    marginLeft: '0.5px',
-                                                    marginRight: '0.5px'
-                                                }}
-                                            />
+                                            <div key={i} className="w-2.5 h-3 bg-black" style={{ clipPath: 'polygon(50% 100%, 0 0, 100% 0)', marginTop: '-1px', marginLeft: '0.5px', marginRight: '0.5px' }} />
                                         ))}
                                     </div>
                                 </div>
@@ -331,14 +290,3 @@ const PreHeader = () => {
 };
 
 export default PreHeader;
-
-{/* Shipping (Commented Out) */ }
-{/* 
-                        <div className="flex items-center hover:text-blue-500 cursor-pointer">
-                            <FaShippingFast
-                                className="mr-2 text-pink-500"
-                                style={{ width: "22px", height: "22px" }}
-                            />{" "}
-                            Shipping
-                        </div> 
-                        */}
