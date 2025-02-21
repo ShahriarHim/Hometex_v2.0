@@ -16,6 +16,7 @@ import { FreeMode, Autoplay } from "swiper";
 import Link from "next/link";
 import ProductModal from "../common/ProductModal";
 import CartContext from "@/context/CartContext";
+import { setCookie, getCookie } from 'cookies-next';
 
 const RequestStackModal = ({ product, onClose, onSubmit }) => {
   const [mobileNumber, setMobileNumber] = useState("");
@@ -261,6 +262,35 @@ const ProductCard = ({ product, openModal, handleRequestStack }) => {
     }, 2000);
   };
 
+  const handleProductClick = () => {
+    // Get existing recently viewed products
+    let recentlyViewed = getCookie('recentlyViewed');
+    recentlyViewed = recentlyViewed ? JSON.parse(recentlyViewed) : [];
+
+    // Add current product if not already in list
+    const productInfo = {
+      id: product.id,
+      name: product.name,
+      image: product.primary_photo
+    };
+
+    // Remove if product already exists (to move it to front)
+    recentlyViewed = recentlyViewed.filter(item => item.id !== product.id);
+    
+    // Add to front of array
+    recentlyViewed.unshift(productInfo);
+    
+    // Keep only last 10 items
+    recentlyViewed = recentlyViewed.slice(0, 10);
+
+    // Save back to cookie
+    setCookie('recentlyViewed', JSON.stringify(recentlyViewed), {
+      maxAge: 30 * 24 * 60 * 60 // 30 days
+    });
+
+    openModal(product);
+  };
+
   return (
     <div 
       className="relative w-full max-w-sm bg-white rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-gray-100 group"
@@ -289,7 +319,7 @@ const ProductCard = ({ product, openModal, handleRequestStack }) => {
       {/* Product Image Container */}
       <div 
         className="relative aspect-square overflow-hidden rounded-t-lg cursor-pointer group"
-        onClick={() => openModal(product)}
+        onClick={handleProductClick}
       >
         <img
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
