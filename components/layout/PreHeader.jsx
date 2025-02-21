@@ -285,6 +285,7 @@ const PreHeader = () => {
                     </div>
                 </div>
             </div>
+            {showLoginPopup && <LoginPopup showPopup={showLoginPopup} togglePopup={toggleLoginPopup} />}
         </div>
     );
 };
