@@ -33,7 +33,7 @@ export async function getServerSideProps(context) {
 const Orderlist = ({ order,user_token}) => {
 
   let my_order = order?.order;
- console.log(my_order)
+//  console.log(my_order)
 
     return (
         <>

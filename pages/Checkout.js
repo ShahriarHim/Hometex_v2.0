@@ -70,8 +70,8 @@ const Checkout = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
-        console.log("Latitude: ", latitude);
-        console.log("Longitude: ", longitude);
+        // console.log("Latitude: ", latitude);
+        // console.log("Longitude: ", longitude);
         setFormData(prevFormData => ({ ...prevFormData, postcode: "12345" }));
       }, (error) => {
         console.error("Error getting location: ", error);

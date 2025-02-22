@@ -30,7 +30,7 @@ const WishComponent = ({
   }, [isOpen, handleWishClick]);
 
   const removeFromWishlistHandler = (productId) => {
-    console.log('Removing from wishlist:', productId);
+    // console.log('Removing from wishlist:', productId);
     removeFromWishlist(productId);
   };
 

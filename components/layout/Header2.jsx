@@ -165,7 +165,7 @@ const Header2 = () => {
   const handleSearchClick = () => {
     // Perform the search based on the input value
     const inputValue = document.getElementById("searchInput").value;
-    console.log(`Searching for: ${inputValue}`);
+    // console.log(`Searching for: ${inputValue}`);
     // Add your logic to navigate or display search results here
   };
 

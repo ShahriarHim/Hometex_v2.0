@@ -111,7 +111,7 @@ const Home = () => {
           throw new Error("Failed to fetch products");
         }
         const responseData = await response.json();
-        console.log("responseData", responseData);
+        // console.log("responseData", responseData);
         setProducts(responseData.data);
       } catch (error) {
         console.error(error);

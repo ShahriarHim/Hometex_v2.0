@@ -7,7 +7,7 @@ import PreHeader from './PreHeader';
 import Constants from '@/ults/Constant';
 import {
     FaUser, FaHeart, FaHome, FaMapMarkerAlt, FaSearch, FaShoppingCart,
-    FaBriefcase, FaCommentDots, FaCaretRight
+    FaBriefcase, FaCommentDots, FaCaretRight, FaGift
 } from "react-icons/fa";
 import { HiOutlineGift } from 'react-icons/hi';
 // import { Sticky } from '../home/Sticky';
@@ -25,60 +25,6 @@ const HeaderExp = () => {
     const [dropdownTimeout, setDropdownTimeout] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    // Add this sample data for the modal
-const sampleProducts = [
-    // Example product data; you would fetch this from your backend or service
-    {
-      name: "Product 1",
-      image:
-        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/rosario-thu-nov-2-2023-650-pm-87312.jpeg",
-      price: "20.00",
-      originalPrice: "40.00",
-      discount: "50",
-    },
-    {
-      name: "Product 2",
-      image:
-        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/burbot-thu-nov-2-2023-744-pm-57895.jpeg",
-      price: "20.00",
-      originalPrice: "40.00",
-      discount: "50",
-    },
-    {
-      name: "Product 3",
-      image:
-        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/beboon-thu-nov-2-2023-758-pm-30205.jpeg",
-      price: "20.00",
-      originalPrice: "40.00",
-      discount: "50",
-    },
-    {
-      name: "Product 4",
-      image:
-        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/brownie-thu-nov-2-2023-808-pm-85665.jpeg",
-      price: "20.00",
-      originalPrice: "40.00",
-      discount: "50",
-    },
-    {
-      name: "Product 5",
-      image:
-        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg",
-      price: "20.00",
-      originalPrice: "40.00",
-      discount: "50",
-    },
-    {
-      name: "Product 6",
-      image:
-        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/mogra-thu-nov-2-2023-835-pm-92146.jpeg",
-      price: "20.00",
-      originalPrice: "40.00",
-      discount: "50",
-    },
-    // Add more product objects here
-  ];
 
 
 
@@ -105,7 +51,7 @@ const sampleProducts = [
             mode: 'no-cors';
             const response = await fetch(`${Constants.BASE_URL}/api/product-menu/horizontal`);
             const result = await response.json();
-            console.log("Fetched Data:", result.data); // Verify the data structure
+            // console.log("Fetched Data:", result.data); // Verify the data structure
             setCategories(result.data); // Set the fetched categories
         } catch (error) {
             console.error("Error fetching categories:", error);
@@ -118,7 +64,7 @@ const sampleProducts = [
 
     // Click handler for "All Categories"
     const handleCategoryClick = (id) => {
-        console.log("Clicked Category ID:", id);
+        // console.log("Clicked Category ID:", id);
         setSelectedId(id); // Store the clicked category ID
     };
 
@@ -239,7 +185,7 @@ const sampleProducts = [
             <Modal 
                 isOpen={isModalOpen} 
                 closeModal={closeModal} 
-                products={sampleProducts}
+                // products={sampleProducts}
             />
             <PreHeader />
             <FloatingBar />
@@ -292,7 +238,7 @@ const sampleProducts = [
                         </div>
 
                         <Link href="#" className={styles.search} onClick={handleSearchClick}>
-                            <FaSearch className="h-6 w-6 text-yellow-600" />
+                            <FaSearch className="h-5 w-5 text-yellow-600" />
                             <span>Search</span>
                         </Link>
                     </div>
@@ -323,19 +269,20 @@ const sampleProducts = [
                         paddingRight: '0'  // Remove right padding to allow items to move more right
                     }}>
                         <Link href="/Stores" className={styles.iconLink}>
-                            <FaMapMarkerAlt className="h-6 w-6 text-yellow-600" />
+                            <FaMapMarkerAlt className="h-5 w-5 text-yellow-600" />
                             <span>Find a Store</span>
                         </Link>
                         <Link href="/Giftsomeone" className={styles.iconLink}>
-                            <HiOutlineGift className="h-6 w-6 text-yellow-600 font-bold" />
+                            {/* <HiOutlineGift className="h-6 w-6 text-yellow-600 font-bold" /> */}
+                            <FaGift icon="fa-solid fa-gift" className="h-5 w-5 text-yellow-600 font-bold"/>
                             <span>Gift Someone</span>
                         </Link>
                         <Link href="/daily-deals" className={styles.iconLink} onClick={handleDailyDealsClick}>
-                            <FaBriefcase className="h-6 w-6 text-yellow-600" />
+                            <FaBriefcase className="h-5 w-5 text-yellow-600" />
                             <span>Daily Deals</span>
                         </Link>
                         <Link href="/messages" className={styles.iconLink}>
-                            <FaCommentDots className="h-6 w-6 text-yellow-600" />
+                            <FaCommentDots className="h-5 w-5 text-yellow-600" />
                             <span>Message</span>
                         </Link>
                     </div>
