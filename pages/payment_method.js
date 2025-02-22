@@ -80,11 +80,11 @@ const PaymentMethod = () => {
         const PayAbleAmount = totalPrice < discountedTotal ? totalPrice : discountedTotal;
 
         const dummyData = {
-          "client_id" : "3",
+          "client_id" : "5",
           "amount" : "1",
           "currency_of_transaction" : "BDT",
           "order_id_of_merchant" : "test- 06",
-          "order_details" : "Payment Id: 123457",
+          "order_details" : "Payment Id: 123458",
           "buyer_name": "S.M.F.Karim",
           "buyer_email" : "smfkarim.24@gmail.com",
           "buyer_address" : "dhaka",
