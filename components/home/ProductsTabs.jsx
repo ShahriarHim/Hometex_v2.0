@@ -298,28 +298,37 @@ const ProductCard = ({ product, openModal, handleRequestStack }) => {
     e.stopPropagation();
     console.log("Clicked wishlist for product:", product);
     
-    const result = addToWishlist(product);
+    const item = {
+      product_id: product.id,
+      name: product.name,
+      price: product.sell_price?.price,
+      image: product.primary_photo,
+      quantity: 1,
+      stock: product.stock || 0
+    };
+    
+    const result = addToWishlist(item);
     console.log("Wishlist operation result:", result);
     
     const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-        }
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
     });
 
     Toast.fire({
-        icon: result.success ? 'success' : 'error',
-        title: result.message,
-        customClass: {
-            popup: 'colored-toast',
-            title: 'text-sm font-medium'
-        }
+      icon: result.success ? 'success' : 'error',
+      title: result.message,
+      customClass: {
+        popup: 'colored-toast',
+        title: 'text-sm font-medium'
+      }
     });
   };
 

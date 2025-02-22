@@ -31,7 +31,7 @@ export const WishListProvider = ({ children }) => {
         try {
             console.log("Adding product to wishlist:", product);
             
-            if (!product?.id) {
+            if (!product?.product_id) {
                 console.error("Invalid product data:", product);
                 return {
                     success: false,
@@ -41,12 +41,12 @@ export const WishListProvider = ({ children }) => {
             }
 
             const newItem = {
-                product_id: product.id,
+                product_id: product.product_id,
                 name: product.name,
-                price: product.sell_price?.price,
-                image: product.primary_photo,
-                quantity: 1,
-                stock: product.stock,
+                price: product.price,
+                image: product.image,
+                quantity: product.quantity || 1,
+                stock: product.stock || 0,
                 added_at: new Date().toISOString()
             };
 

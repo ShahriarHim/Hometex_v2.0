@@ -5,6 +5,8 @@ import { BsXLg } from "react-icons/bs";
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import LoginPopUp from '@/components/layout/LoginPopup';
 
 const Checkout = () => {
     const { cart, addItemToCart, deleteItemFromCart } = useContext(CartContext);
@@ -19,8 +21,10 @@ const Checkout = () => {
     //     console.log(cartItems)
     //     console.log("Form Data: ", formData);
     //   }, [formData]);
-
+    let auth_token = getCookie("home_text_token");
     const [discountedTotal, setDiscountedTotal] = useState(null);
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
     const increaseQty = (cartItem) => {
         const newQty = parseInt(cartItem?.quantity) + 1;
@@ -92,6 +96,10 @@ const Checkout = () => {
     };
 
     const handleNext = () => {
+        if (!auth_token) {
+            setShowConfirmationModal(true);
+            return;
+        }
         router.push({
             pathname: '/payment_method',
             query: {
@@ -101,6 +109,42 @@ const Checkout = () => {
                 discountedTotal: discountedTotal || totalPrice,
             },
         });
+    };
+
+    const handleConfirmation = () => {
+        setShowConfirmationModal(false);
+        setShowLoginModal(true);
+    };
+
+    const toggleLoginPopup = () => {
+        setShowLoginModal(!showLoginModal);
+    };
+
+    const renderConfirmationModal = () => {
+        if (!showConfirmationModal) return null;
+
+        return (
+            <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
+                    <h2 className="text-xl font-semibold mb-4">Oops!</h2>
+                    <p className="mb-4">We need your information for payment. Please login to continue.</p>
+                    <div className="flex justify-end gap-2">
+                        <button 
+                            onClick={() => setShowConfirmationModal(false)} 
+                            className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            onClick={handleConfirmation}
+                            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                        >
+                            Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
     };
 
     return (
@@ -195,6 +239,8 @@ const Checkout = () => {
                     </div>
                 </div>
             </div>
+            {renderConfirmationModal()}
+            {showLoginModal && <LoginPopUp showPopup={showLoginModal} togglePopup={toggleLoginPopup} />}
         </>
     );
 };
