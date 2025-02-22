@@ -8,6 +8,8 @@
   margin-bottom: 10px;
   position: sticky; 
   top: 0; 
+  padding-top: 15px;
+  padding-bottom: 10px;
   z-index: 40;
 }
 
@@ -52,6 +54,9 @@
     /* position: relative; */
     flex: 1; /* Center section will take up remaining space */
     text-align: center; /* Align logo in the center */
+    padding-top: 10px; /* Add padding to center logo */
+    padding-bottom: 5px; /* Add padding to center logo */
+
 }
 
 .centerLogo img {
@@ -61,14 +66,14 @@
     transition: transform 0.3s ease;
 }
 
-.centerLogo img:hover {
-    transform: scale(1.05);
-}
+/* .centerLogo img:hover {
+    transform: scale(0.9);
+} */
 
 .leftSection .search {
   display: flex;
   align-items: center;
-  gap: 10px; /* Space between icon and text */
+  gap: 5px; /* Space between icon and text */
   text-decoration: none;
   color: #000;
   font-size: 1.2rem; /* Increase icon size */
@@ -76,8 +81,8 @@
 }
 
 .leftSection .search:hover {
-  color: #5a5ae0; /* Change icon and text color on hover */
-  transform: scale(1.0); /* Slight enlargement */
+  /* color: #5a5ae0; Change icon and text color on hover */
+  transform: scale(0.9); /* Slight enlargement */
 }
 .leftSection .search:hover {
   background: rgba(90, 90, 224, 0.1); /* Add subtle background highlight */
@@ -91,6 +96,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
   font-size: 1.2rem; /* Increase icon size */
   text-align: center;
   transition: all 0.4s ease; /* Smooth transition for hover effects */
@@ -98,13 +105,13 @@
 }
 
 .rightSection a span {
-  margin-top: 8px; /* Space between icon and text */
-  font-size: 0.9rem; /* Adjust font size of the label */
+  margin-top: 5px; /* Space between icon and text */
+  font-size: 0.8rem; /* Adjust font size of the label */
 }
 
 .rightSection a:hover {
-  color: #5a5ae0; /* Change text and icon color on hover */
-  transform: scale(1.0); /* Slightly enlarge the icon */
+  /* color: #5a5ae0; Change text and icon color on hover */
+  transform: scale(0.9); /* Slightly enlarge the icon */
 }
 
 /* .rightSection a:hover span {
@@ -427,35 +434,6 @@
     color: #5a5ae0;
 }
 
-/* Child Menu - Further Submenus */
-/* .childMenu {
-    width: 100%;
-    margin-top: 10px;
-    border-top: 1px solid #f0f0f5;
-    padding-top: 10px;
-}
-
-.childItem {
-    width: 100%;
-    padding: 8px 0;
-    font-size: 0.9em;
-    color: #666;
-}
-
-.childItem a {
-    display: block;
-    text-decoration: none;
-    color: #555;
-    transition: all 0.3s ease;
-}
-
-.childItem:hover {
-    transform: translateX(5px);
-}
-
-.childItem:hover a {
-    color: #5a5ae0;
-} */
 .childMenu {
     padding-top: 5px;
     margin-left: 10px; /* Indent children */

@@ -90,7 +90,7 @@ const BasinMat = () => {
     }
   };
   const openModal = (product) => {
-    console.log(product)
+    // console.log(product)
     setSelectedProduct(product);
   };
   const closeModal = () => {

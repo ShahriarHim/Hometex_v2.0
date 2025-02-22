@@ -29,7 +29,7 @@ const PaymentMethod = () => {
   }, [query]);
 
   useEffect(() => {
-    console.log('Fetching token with auth_token:', auth_token);
+    // console.log('Fetching token with auth_token:', auth_token);
     const requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -40,7 +40,7 @@ const PaymentMethod = () => {
     fetch(`${Constants.BASE_URL}/api/get-token`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log('Received accessToken:', result);
+        // console.log('Received accessToken:', result);
         if (result.data && result.data.token) {
           const token = result.data.token;
           setAccessToken(token);
@@ -52,7 +52,7 @@ const PaymentMethod = () => {
       .catch((error) => console.error(error));
   }, [auth_token]);
 
-console.log(accessToken);
+// console.log(accessToken);
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
   };
@@ -80,11 +80,11 @@ console.log(accessToken);
         const PayAbleAmount = totalPrice < discountedTotal ? totalPrice : discountedTotal;
 
         const dummyData = {
-          "client_id" : "3",
+          "client_id" : "5",
           "amount" : "1",
           "currency_of_transaction" : "BDT",
           "order_id_of_merchant" : "test- 06",
-          "order_details" : "Payment Id: 123457",
+          "order_details" : "Payment Id: 123458",
           "buyer_name": "S.M.F.Karim",
           "buyer_email" : "smfkarim.24@gmail.com",
           "buyer_address" : "dhaka",
@@ -119,10 +119,10 @@ console.log(accessToken);
         fetch(url, requestOptions)
           .then((response) => response.json())
           .then(data => {
-            console.log(data);
+            // console.log(data);
             if (data.expected_response) {
               const newUrl = data.expected_response;
-              console.log(newUrl);
+              // console.log(newUrl);
               window.location = newUrl;
               const success_api = 'https://payment.hometex.store/api/v1.0/payment-transaction-details'
             } else {

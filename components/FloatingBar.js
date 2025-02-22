@@ -281,16 +281,16 @@ const FloatingBar = () => {
                                                             <span className="subcategory-name">{sub.name}</span>
                                                             {sub.child && sub.child.length > 0 && (
                                                                 <div className="child-categories">
-                                                                    {sub.child.slice(0, 3).map((child) => (
+                                                                    {sub.child.map((child) => (
                                                                         <span key={child.id} className="child-category">
                                                                             {child.name}
                                                                         </span>
                                                                     ))}
-                                                                    {sub.child.length > 3 && (
+                                                                    {/* {sub.child.length > 3 && (
                                                                         <span className="more-indicator">
                                                                             +{sub.child.length - 3} more
                                                                         </span>
-                                                                    )}
+                                                                    )} */}
                                                                 </div>
                                                             )}
                                                         </Link>
@@ -521,7 +521,7 @@ const FloatingBar = () => {
                 }
 
                 .popup-header {
-                    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                    background: linear-gradient(to right, #d4ed30, #a8c423);
                     padding: 1.5rem;
                     color: white;
                     text-align: center;
@@ -587,7 +587,7 @@ const FloatingBar = () => {
                 }
 
                 .category-item.hovered {
-                    border-color: #28a745;
+                    border-color: #a8c423;
                     box-shadow: 0 4px 20px rgba(40, 167, 69, 0.15);
                     background: linear-gradient(to right, white, #f8f9fa);
                 }
@@ -606,19 +606,20 @@ const FloatingBar = () => {
                 }
 
                 .category-icon {
-                    width: 36px;
-                    height: 36px;
+                    width: 40px;
+                    height: 40px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     background: #f8f9fa;
                     border-radius: 8px;
-                    padding: 6px;
+                    padding: 2px;
+                    margin-left: 5px;
                     transition: all 0.3s ease;
                 }
 
                 .category-item.hovered .category-icon {
-                    background: #28a745;
+                    background: #a8c423;
                     transform: scale(1.05);
                 }
 
@@ -634,14 +635,15 @@ const FloatingBar = () => {
                     font-weight: 600;
                     font-size: 0.95rem;
                     color: #2c3e50;
-                    margin-bottom: 4px;
+                    margin-top: 2px;
                     display: block;
                 }
 
                 .subcategory-count {
-                    font-size: 0.75rem;
-                    color: #28a745;
+                    font-size: 0.8rem;
+                    color: #708507;
                     font-weight: 500;
+                    margin-bottom: 10px;
                 }
 
                 .subcategories-panel {
@@ -658,7 +660,7 @@ const FloatingBar = () => {
                 }
 
                 .subcategories-content h3 {
-                    color: #28a745;
+                    color: #a8c423;
                     margin-bottom: 1.5rem;
                     font-size: 1.2rem;
                     font-weight: 600;
@@ -674,7 +676,7 @@ const FloatingBar = () => {
                     left: 0;
                     width: 100px;
                     height: 2px;
-                    background: #28a745;
+                    background: #a8c423;
                 }
 
                 .subcategories-grid {
@@ -691,7 +693,7 @@ const FloatingBar = () => {
                     border: 1px solid #eee;
                     position: relative;
                     overflow: hidden;
-                    max-width: 180px;
+                    max-width: 220px;
                 }
 
                 .subcategory-card::before {
@@ -701,7 +703,7 @@ const FloatingBar = () => {
                     left: 0;
                     right: 0;
                     height: 3px;
-                    background: linear-gradient(to right, #28a745, #20c997);
+                    background: linear-gradient(to right, #d4ed30, #a8c423);
                     opacity: 0;
                     transition: all 0.3s ease;
                 }
@@ -729,6 +731,7 @@ const FloatingBar = () => {
                     font-size: 0.95rem;
                     color: #2c3e50;
                     display: block;
+                    padding: 0.5rem 0.5rem;
                     margin-bottom: 0.6rem;
                 }
 
@@ -736,6 +739,7 @@ const FloatingBar = () => {
                     display: flex;
                     flex-wrap: wrap;
                     gap: 0.4rem;
+                    padding: 0.5rem;
                 }
 
                 .child-category {
@@ -745,15 +749,18 @@ const FloatingBar = () => {
                     padding: 0.25rem 0.6rem;
                     border-radius: 12px;
                 }
-
+                
                 .subcategory-card:hover .child-category {
                     background: rgba(40, 167, 69, 0.1);
-                    color: #28a745;
+                    color:#708507;
                 }
 
+                .subcategory-card:hover .child-category:hover {
+                    color: black;
+                }
                 .more-indicator {
                     font-size: 0.8rem;
-                    color: #28a745;
+                    color: #a8c423;
                     font-weight: 500;
                     margin-top: 0.5rem;
                     display: inline-block;

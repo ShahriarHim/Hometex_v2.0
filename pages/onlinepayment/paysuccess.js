@@ -6,13 +6,13 @@ export async function getServerSideProps(context) {
    
     let request = context
    
-    console.log(request.headers)
-    console.log(request)
+    // console.log(request.headers)
+    // console.log(request)
 
     const { method, body, headers } = context;
-  console.log(`Request method: ${method}`);
-  console.log(`Request headers: ${JSON.stringify(headers)}`);
-  console.log(`Request body: ${JSON.stringify(body)}`);
+//   console.log(`Request method: ${method}`);
+//   console.log(`Request headers: ${JSON.stringify(headers)}`);
+//   console.log(`Request body: ${JSON.stringify(body)}`);
  
 
 
@@ -27,7 +27,7 @@ export async function getServerSideProps(context) {
 const Paysuccess = ({  }) => {
 
     const router = useRouter()
-    console.log(router)
+    // console.log(router)
 
     return (
         <>

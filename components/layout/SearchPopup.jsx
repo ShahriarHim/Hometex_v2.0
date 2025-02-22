@@ -236,10 +236,10 @@ const SearchPopup = ({ onClose }) => {
           <div className={styles.trendingSearches}>
             <h3>TRENDING SEARCHES:</h3>
             <div className={styles.tags}>
-              <span>Shirt</span>
-              <span>Shoes</span>
-              <span>Cap</span>
-              <span>Skirt</span>
+              <span>Bed Sheet</span>
+              <span>Pillow Cover</span>
+              <span>Bed Cover</span>
+              <span>cushion</span>
             </div>
           </div>
         </div>
