@@ -1,19 +1,12 @@
 import AccountRight from '@/components/layout/AccountRight'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { AiFillHome, AiFillCaretRight } from 'react-icons/ai'
+import WishListContext from '@/context/WishListContext'
 
 const Wishlist = () => {
-    const [items, setItems] = useState([
-        { id: 1, name: 'Item 1', price: 10 },
-        { id: 2, name: 'Item 2', price: 20 },
-        { id: 3, name: 'Item 3', price: 30 },
-      ]);
-    
-      const handleRemoveItem = (id) => {
-        const updatedItems = items.filter((item) => item.id !== id);
-        setItems(updatedItems);
-      };
+    const { wishlist, removeFromWishlist } = useContext(WishListContext);
+
     return (
         <>
             <div className="max-w-screen-xl mx-auto px-3 mb-10">
@@ -34,20 +27,27 @@ const Wishlist = () => {
                             {/* personal Details */}
                             <div className="max-w-md mx-auto bg-white shadow-lg p-8 mt-10">
                                 <h2 className="text-2xl font-semibold text-gray-800 mb-6">Wishlist</h2>
-                                {items.length > 0 ? (
+                                {wishlist.length > 0 ? (
                                     <ul>
-                                        {items.map((item) => (
+                                        {wishlist.map((item) => (
                                             <li
-                                                key={item.id}
+                                                key={item.product_id}
                                                 className="flex justify-between items-center py-2 border-b"
                                             >
-                                                <div>
-                                                    <h3 className="text-gray-800 font-semibold">{item.name}</h3>
-                                                    <p className="text-gray-600">${item.price}</p>
+                                                <div className="flex items-center gap-4">
+                                                    <img 
+                                                        src={item.image} 
+                                                        alt={item.name} 
+                                                        className="w-16 h-16 object-cover rounded"
+                                                    />
+                                                    <div>
+                                                        <h3 className="text-gray-800 font-semibold">{item.name}</h3>
+                                                        <p className="text-gray-600">BDT {item.price}</p>
+                                                    </div>
                                                 </div>
                                                 <button
                                                     className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
-                                                    onClick={() => handleRemoveItem(item.id)}
+                                                    onClick={() => removeFromWishlist(item.product_id)}
                                                 >
                                                     Remove
                                                 </button>

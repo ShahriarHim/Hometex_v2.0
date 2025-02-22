@@ -145,3 +145,19 @@ body {
 .group:hover .animate-pieceSlideIn {
   animation: subtleFloat 4s ease-in-out infinite;
 }
+
+.colored-toast.swal2-icon-success {
+    background-color: #a5dc86 !important;
+}
+
+.colored-toast.swal2-icon-error {
+    background-color: #f27474 !important;
+}
+
+.colored-toast {
+    background-color: white !important;
+}
+
+.colored-toast .swal2-title {
+    color: white;
+}

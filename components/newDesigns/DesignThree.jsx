@@ -20,14 +20,19 @@ const HotDealsCarousel = () => {
       try {
         const response = await fetch(`${Constants.BASE_URL}/api/product-hot/trending`);
         const data = await response.json();
-        console.log("eg ae  ",data);
+
         
         const transformedProducts = data.data.map(product => ({
+          id: product.id,
           img: product.primary_photo,
+          primary_photo: product.primary_photo,
           discount: product.sell_price.discount ? product.sell_price.discount : null,
           name: product.name,
-          price: product.sell_price.price + product.sell_price.symbol,
+          price: product.sell_price.price,
+          sell_price: product.sell_price,
+          displayPrice: product.sell_price.price + product.sell_price.symbol,
           originalPrice: product.original_price + product.sell_price.symbol,
+          stock: product.stock || 0,
           star: product.star || 0,
         }));
 

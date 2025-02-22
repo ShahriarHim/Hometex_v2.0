@@ -92,12 +92,19 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
       maxAge: 30 * 24 * 60 * 60,
       path: '/',
     });
-    window.location.href = '/';
+
+    // Show success message
     Swal.fire({
       title: 'Success',
       text: 'Login successful!',
       icon: 'success',
       confirmButtonText: 'OK'
+    }).then(() => {
+      // Close the login popup
+      togglePopup();
+      
+      // Refresh the current page instead of redirecting to home
+      window.location.reload();
     });
   };
 

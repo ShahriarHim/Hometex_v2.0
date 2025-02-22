@@ -48,7 +48,6 @@ import { useRouter } from "next/router"; // Ensure this is imported
 import CartComponent from "./CartComponent/CartComponent";
 import WishComponent from "./WishComponent/WishComponent";
 import ChatPopup from "../ChatPopup";
-import Menu from "../additional/NevBarSections";
 import MenuComponent from "../additional/MenuComponent";
 const Header3 = () => {
   const router = useRouter();

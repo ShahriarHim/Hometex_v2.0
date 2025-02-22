@@ -3,7 +3,7 @@ import ReactStars from "react-rating-stars-component";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { MdFavorite } from "react-icons/md";
-import { CiStar } from "react-icons/ci";
+
 import { RiShoppingBasketFill, RiExchangeFill } from "react-icons/ri";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -17,6 +17,8 @@ import Link from "next/link";
 import ProductModal from "../common/ProductModal";
 import CartContext from "@/context/CartContext";
 import { setCookie, getCookie } from 'cookies-next';
+import WishListContext from "@/context/WishListContext";
+import Swal from "sweetalert2";
 
 const RequestStackModal = ({ product, onClose, onSubmit }) => {
   const [mobileNumber, setMobileNumber] = useState("");
@@ -221,6 +223,7 @@ const ProductsTabs = ({ products }) => {
 
 const ProductCard = ({ product, openModal, handleRequestStack }) => {
   const { addItemToCart } = useContext(CartContext);
+  const { addToWishlist, isInWishlist } = useContext(WishListContext);
   const [isHovered, setIsHovered] = useState(false);
   
   const originalPrice = parseFloat(product.original_price);
@@ -291,6 +294,44 @@ const ProductCard = ({ product, openModal, handleRequestStack }) => {
     openModal(product);
   };
 
+  const handleWishlistClick = (e) => {
+    e.stopPropagation();
+    console.log("Clicked wishlist for product:", product);
+    
+    const item = {
+      product_id: product.id,
+      name: product.name,
+      price: product.sell_price?.price,
+      image: product.primary_photo,
+      quantity: 1,
+      stock: product.stock || 0
+    };
+    
+    const result = addToWishlist(item);
+    console.log("Wishlist operation result:", result);
+    
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
+
+    Toast.fire({
+      icon: result.success ? 'success' : 'error',
+      title: result.message,
+      customClass: {
+        popup: 'colored-toast',
+        title: 'text-sm font-medium'
+      }
+    });
+  };
+
   return (
     <div 
       className="relative w-full max-w-sm bg-white rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-gray-100 group"
@@ -339,11 +380,27 @@ const ProductCard = ({ product, openModal, handleRequestStack }) => {
         <div className={`absolute right-2 top-2 flex flex-col gap-1 transition-all duration-300 ${
           isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
         }`}>
-          <button className="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all duration-200 hover:scale-110 hover:shadow-md">
-            <MdFavorite size={16} className="text-gray-600 hover:text-red-500 transition-colors" />
+          <button 
+            onClick={handleWishlistClick}
+            className="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all duration-200 hover:scale-110 hover:shadow-md"
+          >
+            <MdFavorite 
+              size={16} 
+              className={`transition-colors ${
+                isInWishlist(product.id) 
+                  ? 'text-red-500' 
+                  : 'text-gray-600 hover:text-red-500'
+              }`} 
+            />
           </button>
           {product.stock > 0 && (
-            <button className="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all duration-200 hover:scale-110 hover:shadow-md">
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart();
+              }} 
+              className="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all duration-200 hover:scale-110 hover:shadow-md"
+            >
               <RiShoppingBasketFill size={16} className="text-gray-600 hover:text-blue-500 transition-colors" />
             </button>
           )}
