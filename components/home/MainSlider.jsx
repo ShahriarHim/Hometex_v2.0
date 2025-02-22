@@ -5,6 +5,7 @@ import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Autoplay, Pagination, EffectFade } from "swiper";
 import Constants from "@/ults/Constant";
+import LoadingSpinner from "../common/Spinner";
 
 const MainSlider = () => {
   const [sliders, setSliders] = useState([]);
@@ -13,13 +14,13 @@ const MainSlider = () => {
 
   useEffect(() => {
     fetch(`${Constants.BASE_URL}/api/banner/slider`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setSliders(data.data);
         setIsLoading(false);
       })
-      .catch(err => {
-        console.error('Error fetching sliders:', err);
+      .catch((err) => {
+        console.error("Error fetching sliders:", err);
         setIsLoading(false);
       });
   }, []);
@@ -31,8 +32,8 @@ const MainSlider = () => {
   if (isLoading) {
     return (
       <div className="relative overflow-hidden">
-        <div className="max-w-[1400px] mx-auto bg-white rounded-lg shadow-lg h-[500px] animate-pulse flex items-center justify-center">
-          <div className="text-gray-400">Loading...</div>
+        <div className="max-w-[1400px] mx-auto bg-white rounded-lg shadow-lg h-[500px] flex items-center justify-center">
+          <LoadingSpinner />
         </div>
       </div>
     );
@@ -44,7 +45,7 @@ const MainSlider = () => {
 
   return (
     <div className="relative overflow-hidden">
-      <div className="max-w-[1400px] mx-auto bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <div className="max-w-[1400px] mx-auto bg-white rounded-lg transition-shadow duration-300">
         <Swiper
           spaceBetween={0}
           effect={"fade"}
@@ -52,7 +53,7 @@ const MainSlider = () => {
           loop={true}
           pagination={{
             clickable: true,
-            bulletClass: 'swiper-pagination-bullet !bg-black',
+            bulletClass: "swiper-pagination-bullet !bg-black",
           }}
           autoplay={{
             delay: 3000,
@@ -65,142 +66,145 @@ const MainSlider = () => {
         >
           {sliders.map((slide, index) => (
             <SwiperSlide key={`${index}-${activeIndex}`}>
-              <div className="relative h-[500px]">
-                <div className="absolute inset-0 flex items-stretch">
-                  {/* Left Section */}
-                  {slide.left && Object.keys(slide.left).length > 0 && (
-                    <div className={`${!slide.right ? 'w-1/3' : 'w-1/4'} relative overflow-hidden ${!slide.right ? 'rounded-l-lg' : ''} group p-3`}
-                         style={{ backgroundColor: slide.left.background_color }}>
-                      {/* Decorative columns */}
-                      <div className="absolute inset-0 w-full h-full">
-                        <div className="absolute inset-0 flex justify-between px-4 opacity-30">
-                          {[...Array(3)].map((_, i) => (
-                            <div key={i} className="w-px h-full bg-white/50" />
-                          ))}
-                        </div>
-                      </div>
-                      {slide.left.image && (
-                        <div className="absolute inset-3 rounded-lg overflow-hidden">
-                          {/* Image pieces container */}
-                          <div className="relative w-full h-full">
-                            {[...Array(12)].map((_, index) => (
-                              <div
-                                key={index}
-                                className="absolute w-full overflow-hidden transform translate-x-full animate-pieceSlideIn"
-                                style={{
-                                  top: `${index * (100 / 12)}%`,
-                                  height: `${100 / 12}%`,
-                                  animationDelay: `${0.1 + index * 0.05}s`,
-                                  animationFillMode: 'forwards',
-                                  zIndex: index
-                                }}
-                              >
-                                <img 
-                                  src={slide.left.image} 
-                                  alt={slide.left.text || "Slide Image"}
-                                  className="absolute w-full h-[1200%] object-cover transition-transform duration-700 group-hover:scale-105"
-                                  style={{
-                                    top: `${index * -100}%`,
-                                    transform: `scale(1.01)` // Reduced scale to minimize seams
-                                  }}
-                                  loading="lazy"
-                                />
-                              </div>
-                            ))}
-                            {/* Smooth transition overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5" />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Middle Section - Adjust width based on presence of side sections */}
-                  <div className={`flex items-center justify-center bg-white overflow-hidden
-                    ${!slide.left && !slide.right ? 'w-full rounded-lg' : 
-                      (!slide.left || !slide.right) ? 'flex-[2]' : 'flex-1'}`}>
-                    <div className="text-center z-10 px-4 max-w-3xl mx-auto">
-                      {slide.meddle.Header && (
-                        <h3 className="text-red-600 text-6xl font-bold mb-6 transform translate-x-full animate-slideInFromRight tracking-wider drop-shadow-sm"
-                            style={{animationDelay: '0.5s', animationFillMode: 'forwards'}}>
-                          {slide.meddle.Header}
-                        </h3>
-                      )}
-                      <h2 className="text-gray-900 text-5xl font-bold mb-8 transform translate-x-full animate-slideInFromRight"
-                          style={{animationDelay: '0.6s', animationFillMode: 'forwards'}}>
-                        {slide.meddle.title}
-                      </h2>
-                      {slide.meddle.description && (
-                        <p className="text-gray-600 text-lg mb-10 transform translate-x-full animate-slideInFromRight"
-                           style={{animationDelay: '0.7s', animationFillMode: 'forwards'}}>
-                          {slide.meddle.description}
-                        </p>
-                      )}
-                      <a 
-                        href={slide.button_Link}
-                        className="bg-black text-white px-8 py-3 text-lg font-medium inline-block 
-                                 hover:bg-gray-800 transition-all duration-300 transform translate-x-full 
-                                 animate-slideInFromRight rounded hover:scale-105 hover:shadow-lg"
-                        style={{animationDelay: '0.8s', animationFillMode: 'forwards'}}
-                      >
-                        {slide.button_text}
-                      </a>
-                    </div>
+              <div className="relative h-[500px] flex">
+                {/* Left Section */}
+                {slide.left && (
+                  <div className="flex h-full w-[25%] gap-[15px]">
+                    {[
+                      {
+                        opacity: "opacity-100",
+                        width: "w-[40%]",
+                        delay: "delay-100",
+                      },
+                      {
+                        opacity: "opacity-80",
+                        width: "w-[15%]",
+                        delay: "delay-200",
+                      },
+                      {
+                        opacity: "opacity-60",
+                        width: "w-[10%]",
+                        delay: "delay-300",
+                      },
+                      {
+                        opacity: "opacity-40",
+                        width: "w-[5%]",
+                        delay: "delay-400",
+                      },
+                      {
+                        opacity: "opacity-20",
+                        width: "w-[5%]",
+                        delay: "delay-500",
+                      },
+                    ].map((style, idx) => (
+                      <div
+                        key={idx}
+                        className={`${style.opacity} ${style.width} h-full animate-fadeInColumn ${style.delay}`}
+                        style={{ backgroundColor: slide.left.background_color }}
+                      />
+                    ))}
                   </div>
+                )}
 
-                  {/* Right Section */}
-                  {slide.right && Object.keys(slide.right).length > 0 && (
-                    <div className={`${!slide.left ? 'w-1/3' : 'w-1/4'} relative overflow-hidden ${!slide.left ? 'rounded-r-lg' : ''} group p-3`}
-                         style={{ backgroundColor: slide.right.background_color }}>
-                      {/* Decorative columns */}
-                      <div className="absolute inset-0 w-full h-full">
-                        <div className="absolute inset-0 flex justify-between px-4 opacity-30">
-                          {[...Array(3)].map((_, i) => (
-                            <div key={i} className="w-px h-full bg-white/50" />
-                          ))}
-                        </div>
-                      </div>
-                      {slide.right.image && (
-                        <div className="absolute inset-3 rounded-lg overflow-hidden">
-                          {/* Image pieces container */}
-                          <div className="relative w-full h-full">
-                            {[...Array(12)].map((_, index) => (
-                              <div
-                                key={index}
-                                className="absolute w-full overflow-hidden transform translate-x-full animate-pieceSlideIn"
-                                style={{
-                                  top: `${index * (100 / 12)}%`,
-                                  height: `${100 / 12}%`,
-                                  animationDelay: `${0.1 + index * 0.05}s`,
-                                  animationFillMode: 'forwards',
-                                  zIndex: index
-                                }}
-                              >
-                                <img 
-                                  src={slide.right.image} 
-                                  alt={slide.right.text || "Slide Image"}
-                                  className="absolute w-full h-[1200%] object-cover transition-transform duration-700 group-hover:scale-105"
-                                  style={{
-                                    top: `${index * -100}%`,
-                                    transform: `scale(1.01)` // Reduced scale to minimize seams
-                                  }}
-                                  loading="lazy"
-                                />
-                              </div>
-                            ))}
-                            {/* Smooth transition overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5" />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                {/* Middle Section */}
+                <div className="flex-1 flex items-center justify-center bg-white overflow-hidden">
+                  <div className="text-center px-4 max-w-3xl mx-auto">
+                    {slide.meddle?.Header && (
+                      <h3 className="text-red-600 text-6xl font-bold mb-6 animate-fadeIn">
+                        {slide.meddle.Header}
+                      </h3>
+                    )}
+                    <h2 className="text-gray-900 text-5xl font-bold mb-8 animate-fadeIn delay-200">
+                      {slide.meddle?.title}
+                    </h2>
+                    {slide.meddle?.description && (
+                      <p className="text-gray-600 text-lg mb-10 animate-fadeIn delay-400">
+                        {slide.meddle.description}
+                      </p>
+                    )}
+                    <a
+                      href={slide.button_Link}
+                      className="bg-black text-white px-8 py-3 text-lg font-medium inline-block 
+                        hover:bg-gray-800 transition-all duration-300 rounded hover:scale-105 hover:shadow-lg animate-fadeIn delay-500"
+                    >
+                      {slide.button_text}
+                    </a>
+                  </div>
                 </div>
+
+                {/* Right Section */}
+                {slide.right && (
+                  <div className="flex h-full w-[25%] gap-[15px]">
+                    {[
+                      {
+                        opacity: "opacity-20",
+                        width: "w-[5%]",
+                        delay: "delay-500",
+                      },
+                      {
+                        opacity: "opacity-40",
+                        width: "w-[5%]",
+                        delay: "delay-400",
+                      },
+                      {
+                        opacity: "opacity-60",
+                        width: "w-[10%]",
+                        delay: "delay-300",
+                      },
+                      {
+                        opacity: "opacity-80",
+                        width: "w-[15%]",
+                        delay: "delay-200",
+                      },
+                      {
+                        opacity: "opacity-100",
+                        width: "w-[40%]",
+                        delay: "delay-100",
+                      },
+                    ].map((style, idx) => (
+                      <div
+                        key={idx}
+                        className={`${style.opacity} ${style.width} h-full animate-fadeInColumn ${style.delay}`}
+                        style={{
+                          backgroundColor: slide.right.background_color,
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
+
+      {/* Tailwind Animations */}
+      <style>
+        {`
+    @keyframes fadeInColumn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { transform: translateY(0); }
+    }
+
+    .animate-fadeInColumn {
+      animation: fadeInColumn 1s ease-in-out forwards;
+    }
+
+    /* Ensuring each column retains its original opacity */
+    .opacity-100 { opacity: 1; }
+    .opacity-80 { opacity: 0.8; }
+    .opacity-60 { opacity: 0.6; }
+    .opacity-40 { opacity: 0.4; }
+    .opacity-20 { opacity: 0.2; }
+
+    /* Animation Delay */
+    .delay-100 { animation-delay: 0.2s; }
+    .delay-200 { animation-delay: 0.3s; }
+    .delay-300 { animation-delay: 0.4s; }
+    .delay-400 { animation-delay: 0.5s; }
+    .delay-500 { animation-delay: 0.6s; }
+  `}
+      </style>
     </div>
   );
 };

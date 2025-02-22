@@ -39,15 +39,15 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
     try {
       const response = await fetchLoginData();
       const jsonResponse = await response.json();
-      console.log("Response:", jsonResponse);
+      // console.log("Response:", jsonResponse);
 
       if (jsonResponse.success) {
         const { token, name, phone, email } = jsonResponse.data[0];
         handleSuccessfulLogin(token, name, phone, email);
-        console.log('Login successful');
+        // console.log('Login successful');
       } else {
         setSignInErr(jsonResponse)
-        console.log('Login failed:', jsonResponse.message);
+        // console.log('Login failed:', jsonResponse.message);
       }
     } catch (error) {
       console.error('Error logging in:', error);
@@ -114,13 +114,13 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
     try {
       const response = await fetchRegistrationData();
       const { status, error } = await response.json();
-      console.log('API Response:', status, error);
+      // console.log('API Response:', status, error);
 
       if (status === 400) {
         handleRegistrationError(error);
       } else {
         handleSuccessfulRegistration();
-        console.log('Registration successful');
+        // console.log('Registration successful');
       }
     } catch (error) {
       console.error('Error registering:', error);
@@ -140,7 +140,7 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
       first_name: regData.first_name
     };
 
-    console.log('Payload:', payload);
+    // console.log('Payload:', payload);
 
     return fetch(Constants.BASE_URL + '/api/user-registration', {
       method: 'POST',
@@ -177,11 +177,11 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
   if (!showPopup) return null;
   const handleGoogleSuccess = (credentialResponse) => {
     const decode = jwtDecode(credentialResponse?.credential);
-    console.log(decode);
+    // console.log(decode);
 
   };
   const handleGoogleError = () => {
-    console.log('Google Login Failed');
+    // console.log('Google Login Failed');
     // Handle Google login error
   };
   const googleClientId = '91607278395-ivk7qjnbujmvkpc2mek1mliscv2vbeb4.apps.googleusercontent.com';

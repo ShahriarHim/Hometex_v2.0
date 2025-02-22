@@ -9,7 +9,7 @@ const CartPage = () => {
 
     const cartItems = cart?.cartItems;
 
-    console.log(cartItems)
+    // console.log(cartItems)
 
 
     const [showContentcuppon, setShowContentcuppon] = useState(false);

@@ -6,7 +6,7 @@ const DownloadAppPopup = ({ isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission, e.g., send SMS with app download link
-    console.log(`Sending app download link to ${mobileNumber}`);
+    // console.log(`Sending app download link to ${mobileNumber}`);
   };
 
   if (!isOpen) {

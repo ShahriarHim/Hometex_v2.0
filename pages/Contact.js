@@ -27,7 +27,7 @@ const Contact = () => {
     // Send the email
     emailjs.send('service_27al8ux', 'template_d11y0qg', formData, 'GXi-JhoKe7IM5tmqe')
       .then((result) => {
-          console.log(result.text);
+          // console.log(result.text);
           // Reset form fields after successful email submission
           setFormData({
             topic: "",
