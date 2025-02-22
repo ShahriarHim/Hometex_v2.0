@@ -1,71 +1,125 @@
 "use client";
-import Constant from "@/ults/Constant";
-import { getCookie } from "cookies-next";
 import { createContext, useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 
 const WishListContext = createContext();
+
 export const WishListProvider = ({ children }) => {
-    const [wlist, setWlist] = useState([]);   
-    
+    const [wishlist, setWishlist] = useState([]);
 
     useEffect(() => {
-        setWishListToState();
+        loadWishlistFromStorage();
     }, []);
 
-    const setWishListToState = () => {
-        const storedWishlist = localStorage.getItem("wishlist");
+    // Load wishlist from localStorage
+    const loadWishlistFromStorage = () => {
         try {
-            setWlist(storedWishlist ? JSON.parse(storedWishlist) : []);
+            const storedWishlist = localStorage.getItem("wishlist");
+            console.log("Loading wishlist from storage:", storedWishlist);
+            // Parse the stored wishlist directly as an array
+            const parsedWishlist = storedWishlist ? JSON.parse(storedWishlist) : [];
+            console.log("Parsed wishlist:", parsedWishlist);
+            setWishlist(parsedWishlist);
         } catch (error) {
-            console.error("Error parsing wishlist from localStorage", error);
-            setWlist([]);  // ✅ Fallback to an empty array if JSON parsing fails
+            console.error("Error loading wishlist from localStorage:", error);
+            setWishlist([]);
         }
     };
-    
 
-    const addItemToWishlist = async ({ product_id, name, category, categoryName, sub_category, sub_categoryName, child_sub_category, child_sub_categoryName, price, image, in_stock, supplier_id, quantity = 1, sku, total_price }) => {
-        const item = {
-          product_id, name, category, categoryName, sub_category, sub_categoryName, child_sub_category, child_sub_categoryName, price, image, in_stock, supplier_id, quantity, sku, total_price
-        };
-            const isItemExist = wlist?.wlistItems?.find(
-              (i) => i.product_id === item.product_id
-            );
-            let newWlistItems;
-            if (isItemExist) {
-                newWlistItems = wlist?.wlistItems?.map((i) =>
-                i.product_id === isItemExist.product_id ? item : i
-              );
-              Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: `Updated quantity for ${name}.`,
-                showConfirmButton: false,
-                timer: 1500
-              });
-            } else {
-                newWlistItems = [...(wlist?.wlistItems || []), item];
-              Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: `Added ${name} to your wishlist.`,
-                showConfirmButton: false,
-                timer: 1500
-              });
+    // Add item to wishlist
+    const addToWishlist = (product) => {
+        try {
+            console.log("Adding product to wishlist:", product);
+            
+            if (!product?.id) {
+                console.error("Invalid product data:", product);
+                return {
+                    success: false,
+                    message: "Invalid product data",
+                    error: "Missing product ID"
+                };
             }
-        
-            localStorage.setItem("wishlist", JSON.stringify(newWlistItems));
-            setWlist(newWlistItems);
-            setWishListToState();  
+
+            const newItem = {
+                product_id: product.id,
+                name: product.name,
+                price: product.sell_price?.price,
+                image: product.primary_photo,
+                quantity: 1,
+                stock: product.stock,
+                added_at: new Date().toISOString()
+            };
+
+            // Get current wishlist from state
+            const currentWishlist = [...wishlist];
+            console.log("Current wishlist:", currentWishlist);
+            console.log("New item to add:", newItem);
+
+            const isItemExist = currentWishlist.some(item => item.product_id === newItem.product_id);
+            console.log("Item exists?", isItemExist);
+
+            let newWishlist;
+            if (isItemExist) {
+                newWishlist = currentWishlist.filter(item => item.product_id !== newItem.product_id);
+                console.log("Removing item, new wishlist:", newWishlist);
+            } else {
+                newWishlist = [...currentWishlist, newItem];
+                console.log("Adding item, new wishlist:", newWishlist);
+            }
+
+            // Update state and localStorage
+            setWishlist(newWishlist);
+            localStorage.setItem("wishlist", JSON.stringify(newWishlist));
+
+            return {
+                success: true,
+                message: isItemExist 
+                    ? `${product.name} removed from wishlist`
+                    : `${product.name} added to wishlist`,
+                action: isItemExist ? 'removed' : 'added'
+            };
+        } catch (error) {
+            console.error("Error in addToWishlist:", error);
+            return {
+                success: false,
+                message: "Failed to update wishlist",
+                error: error.message
+            };
+        }
     };
-  //  remove item from cart 
-  const deleteItemFromWishlist = (id) => {
-    const newWlistItems = wlist?.wlistItems?.filter((i) => i.product_id !== id);
-    localStorage.setItem("wishlist", JSON.stringify({ wlistItems: newWlistItems }));
-    setWishListToState();
-  };
+
+    // Remove item from wishlist
+    const removeFromWishlist = (productId) => {
+        try {
+            const newWishlist = wishlist.filter(item => item.product_id !== productId);
+            setWishlist(newWishlist);
+            localStorage.setItem("wishlist", JSON.stringify(newWishlist));
+            return {
+                success: true,
+                message: "Item removed from wishlist"
+            };
+        } catch (error) {
+            console.error("Error removing from wishlist:", error);
+            return {
+                success: false,
+                message: "Failed to remove item",
+                error: error.message
+            };
+        }
+    };
+
+    // Check if item is in wishlist
+    const isInWishlist = (productId) => {
+        return wishlist.some(item => item.product_id === productId);
+    };
+
     return (
-        <WishListContext.Provider value={{ wlist, addItemToWishlist, deleteItemFromWishlist }}>
+        <WishListContext.Provider value={{
+            wishlist,
+            addToWishlist,
+            removeFromWishlist,
+            isInWishlist
+        }}>
             {children}
         </WishListContext.Provider>
     );
