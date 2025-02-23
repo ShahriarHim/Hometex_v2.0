@@ -29,7 +29,7 @@ const PaymentMethod = () => {
   }, [query]);
 
   useEffect(() => {
-    // console.log('Fetching token with auth_token:', auth_token);
+    console.log('Fetching token with auth_token:', auth_token);
     const requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -40,7 +40,7 @@ const PaymentMethod = () => {
     fetch(`${Constants.BASE_URL}/api/get-token`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        // console.log('Received accessToken:', result);
+        console.log('Received accessToken:', result);
         if (result.data && result.data.token) {
           const token = result.data.token;
           setAccessToken(token);
@@ -79,12 +79,16 @@ const PaymentMethod = () => {
 
         const PayAbleAmount = totalPrice < discountedTotal ? totalPrice : discountedTotal;
 
+        let min = 1;
+        let max = 999999;
+        let random = Math.floor(Math.random() * (max - min + 1)) + min;
+
         const dummyData = {
-          "client_id" : "15",
+          "client_id" : "3",
           "amount" : "1",
           "currency_of_transaction" : "BDT",
-          "order_id_of_merchant" : "test- 06",
-          "order_details" : "Payment Id: 123458",
+          "order_id_of_merchant" : "test-"+random,
+          "order_details" : "Payment Id: "+random,
           "buyer_name": "S.M.F.Karim",
           "buyer_email" : "smfkarim.24@gmail.com",
           "buyer_address" : "dhaka",
@@ -102,8 +106,7 @@ const PaymentMethod = () => {
           "custom_2" : "",
           "custom_3" : "",
           "custom_4":""
-      };
-  
+      };  
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
