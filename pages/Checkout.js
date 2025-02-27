@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import { useGeolocated } from "react-geolocated";
 
 const Checkout = () => {
   const auth_name = getCookie("home_text_name");
@@ -21,15 +22,23 @@ const Checkout = () => {
     postcode: ""
   });
 
-
   const router = useRouter();
+
+  const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
+    positionOptions: {
+      enableHighAccuracy: true,
+    },
+    userDecisionTimeout: 5000,
+  });
+
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
   useEffect(() => {
     fetchDivisions();
   }, []);
 
   useEffect(() => {
-    if (formData.Division) {
+    if (formData.Division && !isNaN(formData.Division)) {
       fetchDistricts(formData.Division);
     }
   }, [formData.Division]);
@@ -41,23 +50,53 @@ const Checkout = () => {
       .catch((error) => console.error("Error fetching divisions:", error));
   };
 
-  const fetchDistricts = (divisionId) => {
-    fetch(`https://htbapi.hometexbd.ltd/api/district/${divisionId}`)
-      .then((response) => response.json())
-      .then((data) => setDistricts(data))
-      .catch((error) => console.error("Error fetching districts:", error));
+  const fetchDistricts = async (divisionId) => {
+    try {
+      if (!divisionId || isNaN(divisionId)) {
+        console.log("Invalid division ID, skipping district fetch");
+        return;
+      }
+
+      const response = await fetch(`https://htbapi.hometexbd.ltd/api/district/${divisionId}`);
+      if (!response.ok) {
+        console.error(`Failed to fetch districts: ${response.status}`);
+        setDistricts([]);
+        return;
+      }
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        console.error("Received non-JSON response from server");
+        setDistricts([]);
+        return;
+      }
+
+      const data = await response.json();
+      setDistricts(data);
+    } catch (error) {
+      console.error("Error fetching districts:", error);
+      setDistricts([]); // Reset districts on error
+    }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (name === 'Division') {
-      const selectedDiv = cities.find(city => city.id === parseInt(value));
-      setSelectedDivision(selectedDiv ? selectedDiv.name : '');
-      fetchDistricts(value);
+      if (!isNaN(value)) {
+        const selectedDiv = cities.find(city => city.id === parseInt(value));
+        setSelectedDivision(selectedDiv ? selectedDiv.name : '');
+        fetchDistricts(value);
+      } else {
+        setSelectedDivision(value);
+      }
     } else if (name === 'District') {
-      const selectedDist = districts.find(district => district.id === parseInt(value));
-      setSelectedDistrict(selectedDist ? selectedDist.name : '');
+      if (!isNaN(value)) {
+        const selectedDist = districts.find(district => district.id === parseInt(value));
+        setSelectedDistrict(selectedDist ? selectedDist.name : '');
+      } else {
+        setSelectedDistrict(value);
+      }
     }
 
     setFormData((prevFormData) => ({
@@ -66,18 +105,88 @@ const Checkout = () => {
     }));
   };
 
-  const handleUseCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        // console.log("Latitude: ", latitude);
-        // console.log("Longitude: ", longitude);
-        setFormData(prevFormData => ({ ...prevFormData, postcode: "12345" }));
-      }, (error) => {
-        console.error("Error getting location: ", error);
+  const handleUseCurrentLocation = async () => {
+    setIsLoadingLocation(true);
+    try {
+      console.log("Geolocation availability:", {
+        isAvailable: isGeolocationAvailable,
+        isEnabled: isGeolocationEnabled,
+        coords: coords
       });
-    } else {
-      console.error("Geolocation is not supported by this browser.");
+
+      if (!isGeolocationAvailable) {
+        alert("Your browser does not support geolocation");
+        return;
+      }
+
+      if (!isGeolocationEnabled) {
+        alert("Please enable location services");
+        return;
+      }
+
+      if (coords) {
+        console.log("Coordinates obtained:", {
+          latitude: coords.latitude,
+          longitude: coords.longitude
+        });
+
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${coords.latitude}&lon=${coords.longitude}&format=json`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        
+        console.log("Location API response:", data);
+        console.log("Address details:", data.address);
+
+        // Clean up the division name by removing "Division" word
+        const stateName = data.address.state?.replace(" Division", "") || "";
+        
+        // Clean up the district name by removing "District" word
+        const districtName = data.address.state_district?.replace(" District", "") || "";
+        
+        // Find the matching division ID from cities array
+        const matchingDivision = cities.find(
+          city => city.name.toLowerCase() === stateName.toLowerCase()
+        );
+
+        if (matchingDivision) {
+          // First update division
+          setFormData(prevFormData => ({
+            ...prevFormData,
+            country: data.address.country_code?.toUpperCase() || "",
+            city: data.address.city || data.address.town || data.address.village || "",
+            postcode: data.address.postcode || "",
+            Division: matchingDivision.id,
+          }));
+          setSelectedDivision(stateName);
+
+          // Fetch districts and wait for the response
+          const response = await fetch(`https://htbapi.hometexbd.ltd/api/district/${matchingDivision.id}`);
+          const districtData = await response.json();
+          setDistricts(districtData);
+
+          // After districts are loaded, find and set the matching district
+          const matchingDistrict = districtData.find(
+            district => district.name.toLowerCase() === districtName.toLowerCase()
+          );
+
+          if (matchingDistrict) {
+            setFormData(prevFormData => ({
+              ...prevFormData,
+              District: matchingDistrict.id
+            }));
+            setSelectedDistrict(districtName);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Detailed error:", error);
+      alert("Error getting location. Please try again or enter manually.");
+    } finally {
+      setIsLoadingLocation(false);
     }
   };
 
@@ -167,9 +276,10 @@ const Checkout = () => {
               <button
                 type="button"
                 onClick={handleUseCurrentLocation}
+                disabled={isLoadingLocation}
                 className="w-full rounded-full bg-blue-500 text-white py-2 px-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                Use My Current Location
+                {isLoadingLocation ? "Getting Location..." : "Use My Current Location"}
               </button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -275,7 +385,7 @@ const Checkout = () => {
                   <option value="CD">Congo (DRC)</option>
                   <option value="CK">Cook Islands</option>
                   <option value="CR">Costa Rica</option>
-                  <option value="CI">Côte d’Ivoire</option>
+                  <option value="CI">Côte d'Ivoire</option>
                   <option value="HR">Croatia</option>
                   <option value="CU">Cuba</option>
                   <option value="CW">Curaçao</option>
