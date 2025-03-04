@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
-const Modal = ({ isOpen, closeModal, products }) => {
+const Modal = ({ isOpen, closeModal, products = [] }) => {
   const router = useRouter();
   const modalRef = useRef(); // Reference to the modal content
   const saleEndTime = useMemo(() => new Date(Date.now() + 2 * 60 * 60 * 1000), []); // 2 hours from now
@@ -93,7 +93,7 @@ const Modal = ({ isOpen, closeModal, products }) => {
           </button>
         </div>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-          {products.map((product, index) => (
+          {products?.map((product, index) => (
             <div key={index} className="border dark:border-gray-700 rounded-lg overflow-hidden">
               <img src={product.image} alt={product.name} className="w-full h-48 object-cover object-center" />
               <div className="p-4">

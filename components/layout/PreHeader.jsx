@@ -249,7 +249,7 @@ const PreHeader = () => {
                     {/* Right Section - Cart & Order Tracking */}
                     <div className="flex items-center justify-end gap-3 mr-2 w-1/4">
                         {/* Order Tracking */}
-                        <Link href="/orderDash" className="flex items-center hover:text-blue-500 whitespace-nowrap mr-8">
+                        <Link href="/account/orderDash" className="flex items-center hover:text-blue-500 whitespace-nowrap mr-8">
                             <HiOutlineTicket className="mr-1 text-pink-500" style={{ width: "16px", height: "16px" }} />
                             <span className="text-xs">Order Tracking</span>
                         </Link>

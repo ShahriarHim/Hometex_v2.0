@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaTimes, FaFacebook, FaApple } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
@@ -15,7 +15,6 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
   const [showWarning, setShowWarning] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [userProfilePicture, setUserProfilePicture] = useState('');
-
 
   const handleSignIn = (e) => {
     const { name, value } = e.target;
@@ -76,20 +75,32 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
 
   const handleSuccessfulLogin = (token, name, phone, email) => {
     setSignInErr({});
+    
+    // Set expiration to 2 days from now
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 2);
+    
+    // Set cookies with expiration
     setCookie('home_text_token', token, {
-      maxAge: 30 * 24 * 60 * 60,
+      expires: expirationDate,
       path: '/',
     });
     setCookie('home_text_name', name, {  
-      maxAge: 30 * 24 * 60 * 60,
+      expires: expirationDate,
       path: '/',
     });
     setCookie('home_text_phone', phone, {  
-      maxAge: 30 * 24 * 60 * 60,
+      expires: expirationDate,
       path: '/',
     });
     setCookie('home_text_email', email, {  
-      maxAge: 30 * 24 * 60 * 60,
+      expires: expirationDate,
+      path: '/',
+    });
+    
+    // Store login timestamp
+    setCookie('home_text_login_time', new Date().getTime(), {
+      expires: expirationDate,
       path: '/',
     });
 
@@ -100,13 +111,34 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
       icon: 'success',
       confirmButtonText: 'OK'
     }).then(() => {
-      // Close the login popup
       togglePopup();
-      
-      // Refresh the current page instead of redirecting to home
       window.location.reload();
     });
   };
+
+  const checkSessionExpiration = () => {
+    const loginTime = getCookie('home_text_login_time');
+    if (loginTime) {
+      const currentTime = new Date().getTime();
+      const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
+      
+      if (currentTime - parseInt(loginTime) > twoDaysInMs) {
+        // Session expired, clear all cookies
+        deleteCookie('home_text_token');
+        deleteCookie('home_text_name');
+        deleteCookie('home_text_phone');
+        deleteCookie('home_text_email');
+        deleteCookie('home_text_login_time');
+        
+        // Reload page to reflect logged out state
+        window.location.reload();
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkSessionExpiration();
+  }, []);
 
   const regSubmitHandler = async (e) => {
     e.preventDefault();
