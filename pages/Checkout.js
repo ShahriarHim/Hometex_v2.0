@@ -33,6 +33,14 @@ const Checkout = () => {
 
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
+  // Add new state for showing the editable location details
+  const [showLocationDetails, setShowLocationDetails] = useState(false);
+  const [locationDetails, setLocationDetails] = useState({
+    streetAddress: '',
+    landmark: '',
+    additionalInfo: ''
+  });
+
   useEffect(() => {
     fetchDivisions();
   }, []);
@@ -181,6 +189,16 @@ const Checkout = () => {
             setSelectedDistrict(districtName);
           }
         }
+
+        // After setting all the location data, show the editable section
+        setShowLocationDetails(true);
+        
+        // Update to include display_name in the streetAddress
+        setLocationDetails({
+          streetAddress: data.display_name || '',
+          landmark: data.address.suburb || '',
+          additionalInfo: ''
+        });
       }
     } catch (error) {
       console.error("Detailed error:", error);
@@ -188,6 +206,14 @@ const Checkout = () => {
     } finally {
       setIsLoadingLocation(false);
     }
+  };
+
+  const handleLocationDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setLocationDetails(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -282,6 +308,30 @@ const Checkout = () => {
                 {isLoadingLocation ? "Getting Location..." : "Use My Current Location"}
               </button>
             </div>
+
+            {/* Add the new editable location details section */}
+            {showLocationDetails && (
+              <div className="space-y-4 p-4 border rounded-md bg-gray-50">
+                <h5 className="font-medium text-gray-700">Location Details</h5>
+                
+                <div>
+   
+                  <input
+                    type="text"
+                    name="streetAddress"
+                    value={locationDetails.streetAddress}
+                    onChange={handleLocationDetailsChange}
+                    className="mt-5 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Enter street address"
+                  />
+                </div>
+
+               
+
+               
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label
