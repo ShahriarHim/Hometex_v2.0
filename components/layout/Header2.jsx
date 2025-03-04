@@ -28,54 +28,64 @@ const Header2 = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const products = [
-    // Example product data; you would fetch this from your backend or service
     {
+      id: 1,
       name: "Product 1",
-      image:
-        "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/rosario-thu-nov-2-2023-650-pm-87312.jpeg",
+      image: "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/rosario-thu-nov-2-2023-650-pm-87312.jpeg",
       price: "20.00",
       originalPrice: "40.00",
       discount: "50",
+      stock: 4
     },
     {
+      id: 2,
       name: "Product 2",
       image:
         "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/burbot-thu-nov-2-2023-744-pm-57895.jpeg",
       price: "20.00",
       originalPrice: "40.00",
       discount: "50",
+      stock: 4
     },
     {
+      id: 3,
       name: "Product 3",
       image:
         "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/beboon-thu-nov-2-2023-758-pm-30205.jpeg",
       price: "20.00",
       originalPrice: "40.00",
       discount: "50",
+      stock: 4
     },
     {
+      id: 4,
       name: "Product 4",
       image:
         "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/brownie-thu-nov-2-2023-808-pm-85665.jpeg",
       price: "20.00",
       originalPrice: "40.00",
       discount: "50",
+      stock: 4
     },
     {
+      id: 5,
       name: "Product 5",
       image:
         "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/unicorn-thu-nov-2-2023-821-pm-91981.jpeg",
       price: "20.00",
       originalPrice: "40.00",
       discount: "50",
+      stock: 4
     },
     {
+      id: 6,
       name: "Product 6",
       image:
         "https://htbapi.hometexbd.ltd/images/uploads/product_thumb/mogra-thu-nov-2-2023-835-pm-92146.jpeg",
       price: "20.00",
       originalPrice: "40.00",
       discount: "50",
+      stock: 4
     },
     // Add more product objects here
   ];
