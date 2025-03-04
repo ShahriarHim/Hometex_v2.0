@@ -1,87 +1,103 @@
-.cookiesPopup {
+/* 
+  Overlay: remains fixed at the bottom center.
+*/
+.overlay {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #ffffff;
-  border-top: 1px solid #e0e0e0;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  padding: 20px;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease forwards;
+  box-sizing: border-box;
+}
+
+/* Optional fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Popup Banner: 
+   - Full-width with a max-width.
+   - Curved side corners.
+   - Slide up from further down for a more pronounced effect.
+*/
+.popup {
+  background: #fff;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-top: 1px solid #ccc;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;  /* Curves all corners */
+  animation: slideUp 0.4s ease forwards;
 }
 
-.cookiesPopupContent {
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  max-width: 800px;
-  padding: 20px;
-  background-color: #f1f5fe;
-  border-radius: 10px;
+@keyframes slideUp {
+  from {
+    transform: translateY(150px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-.cookiesPopupHeader {
+/* Sections and content styling remain unchanged */
+
+.leftSection {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  gap: 0.75rem;
+  flex: 1;
 }
 
-.cookiesPopupLogo {
+.logo {
   width: 40px;
   height: 40px;
-  margin-right: 10px;
 }
 
-.cookiesPopupTitle {
-  font-weight: bold;
-  font-size: 1.2em;
-  color: #333;
+.description {
+  font-size: 0.9rem;
+  margin: 0;
 }
 
-.cookiesPopupBody {
-  margin-bottom: 10px;
+.learnMoreLink {
+  color: #0066cc;
+  text-decoration: underline;
 }
 
-.cookiesPopupDescription {
-  font-size: 0.9em;
-  color: #666;
-}
-
-.cookiesPopupPreferences {
+.middleSection {
+  flex: 1;
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping if necessary */
-  justify-content: space-between; /* Space out the preference groups */
-  gap: 20px; /* Adjust based on your needs */
-}
-.preferenceGroup {
-  display: flex;
-  align-items: center; /* Align items vertically */
-  gap: 10px; /* Adjust based on your needs */
+  justify-content: center;
 }
 
-
-.cookiesPopupLabel {
+.toggleGroup {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 0.9em;
-  color: #333;
-  padding: 10px 0;
-  border-bottom: 1px solid #e0e0e0;
+  gap: 1rem;
 }
 
-.cookiesPopupLabel:last-child {
-  border-bottom: none;
+.toggleLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #333;
 }
 
 .toggleSwitch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 24px;
+  width: 36px;
+  height: 18px;
+  margin-top: 0.25rem;
 }
 
 .toggleSwitch input {
@@ -93,68 +109,68 @@
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background-color: #ccc;
-  transition: .4s;
-  border-radius: 24px;
+  transition: 0.4s;
+  border-radius: 18px;
 }
-
 .slider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
+  height: 14px;
+  width: 14px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
   border-radius: 50%;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: .4s;
+}
+.toggleSwitch input:checked + .slider {
+  background-color: #4caf50;
+}
+.toggleSwitch input:checked + .slider:before {
+  transform: translateX(18px);
+}
+.disabled {
+  background-color: #bbb !important;
+  cursor: not-allowed;
 }
 
-input:checked + .slider {
-  background-color: #4CAF50;
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-.cookiesPopupFooter {
-  display: flex; /* Change to flex */
-  justify-content: flex-end; /* Keep this for right alignment */
-  gap: 10px; /* Keeps the spacing between buttons */
-  margin-top: 20px;
-}
-
-.cookiesPopupButton {
-  padding: 10px 20px;
-  font-size: 0.9em;
+.popupButton {
+  padding: 0.5rem 0.75rem;
   border: none;
-  border-radius: 5px;
+  font-size: 0.85rem;
+  border-radius: 4px;
   cursor: pointer;
-  flex-grow: 1; /* Allows buttons to take equal space */
-  text-align: center; /* Centers the text inside the button */
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-.cookiesPopupButton.acceptAll {
+.acceptAll {
+  background-color: #4caf50;
+  color: #fff;
+}
+.acceptAll:hover {
+  background-color: #43a047;
+}
+
+.allowSelection {
   background-color: #0066cc;
-  color: white;
+  color: #fff;
+}
+.allowSelection:hover {
+  background-color: #005bb5;
 }
 
-.cookiesPopupButton.allowSelection {
-  background-color: white;
-  color: #0066cc;
-  border: 1px solid #0066cc;
+.deny {
+  background-color: #f44336;
+  color: #fff;
 }
-
-.cookiesPopupButton.deny {
-  background-color: white;
-  color: #333;
-  border: 1px solid #e0e0e0;
-}
-
-.cookiesPopupButton:hover {
-  opacity: 0.9;
+.deny:hover {
+  background-color: #e53935;
 }

@@ -20,6 +20,8 @@ const CookiesPopup = ({ onClose }) => {
 
   const handleToggle = (type) => {
     setPreferences((prev) => {
+      // "Necessary" is always true, so skip toggling it
+      if (type === 'necessary') return prev;
       const newPreferences = { ...prev, [type]: !prev[type] };
       localStorage.setItem('cookiePreferences', JSON.stringify(newPreferences));
       return newPreferences;
@@ -45,7 +47,7 @@ const CookiesPopup = ({ onClose }) => {
 
   const handleDeny = () => {
     const allDenied = {
-      necessary: true,
+      necessary: true, // remains true
       preferences: false,
       statistics: false,
       marketing: false,
@@ -56,53 +58,102 @@ const CookiesPopup = ({ onClose }) => {
   };
 
   return (
-    <div className={styles.cookiesPopup}>
-      <div className={styles.cookiesPopupContent}>
-        <div className={styles.cookiesPopupHeader}>
-          <img src="/images/hometex-logo.png" alt="Cookie Logo" className={styles.cookiesPopupLogo} />
-          <p className={styles.cookiesPopupTitle}>This website uses cookies</p>
+    <div className={styles.overlay}>
+      <div className={styles.popup}>
+        {/* Left section: Logo & short text */}
+        <div className={styles.leftSection}>
+          <img
+            src="/images/hometex-logo.png"
+            alt="Cookie Logo"
+            className={styles.logo}
+          />
+          <p className={styles.description}>
+            We use cookies to enhance your shopping experience.{' '}
+            <a
+              href="/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.learnMoreLink}
+            >
+              Learn more
+            </a>
+          </p>
         </div>
-        <div className={styles.cookiesPopupBody}>
-          <div className={styles.textAndButtonsWrapper}>
-            <p className={styles.cookiesPopupDescription}>
-              We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media, advertising and analytics partners who may combine it with other information that you've provided to them or that they've collected from your use of their services.
-            </p>
-          </div>
-          <div className={styles.buttonsWrapper}>
-            <button className={`${styles.cookiesPopupButton} ${styles.acceptAll}`} onClick={handleAcceptAll}>Allow all</button>
-            <button className={`${styles.cookiesPopupButton} ${styles.allowSelection}`} onClick={handleAllowSelection}>Allow selection</button>
-            <button className={`${styles.cookiesPopupButton} ${styles.deny}`} onClick={handleDeny}>Deny</button>
-          </div>
-          <div className={styles.cookiesPopupPreferences}>
-            <label className={styles.cookiesPopupLabel}>
+
+        {/* Middle section: Toggles in a row */}
+        <div className={styles.middleSection}>
+          <div className={styles.toggleGroup}>
+            <label className={styles.toggleLabel}>
               Necessary
               <div className={styles.toggleSwitch}>
-                <input type="checkbox" checked={preferences.necessary} onChange={() => handleToggle('necessary')} disabled />
+                <input
+                  type="checkbox"
+                  checked={preferences.necessary}
+                  disabled
+                  readOnly
+                />
                 <span className={`${styles.slider} ${styles.disabled}`}></span>
               </div>
             </label>
-            <label className={styles.cookiesPopupLabel}>
+
+            <label className={styles.toggleLabel}>
               Preferences
               <div className={styles.toggleSwitch}>
-                <input type="checkbox" checked={preferences.preferences} onChange={() => handleToggle('preferences')} />
+                <input
+                  type="checkbox"
+                  checked={preferences.preferences}
+                  onChange={() => handleToggle('preferences')}
+                />
                 <span className={styles.slider}></span>
               </div>
             </label>
-            <label className={styles.cookiesPopupLabel}>
+
+            <label className={styles.toggleLabel}>
               Statistics
               <div className={styles.toggleSwitch}>
-                <input type="checkbox" checked={preferences.statistics} onChange={() => handleToggle('statistics')} />
+                <input
+                  type="checkbox"
+                  checked={preferences.statistics}
+                  onChange={() => handleToggle('statistics')}
+                />
                 <span className={styles.slider}></span>
               </div>
             </label>
-            <label className={styles.cookiesPopupLabel}>
+
+            <label className={styles.toggleLabel}>
               Marketing
               <div className={styles.toggleSwitch}>
-                <input type="checkbox" checked={preferences.marketing} onChange={() => handleToggle('marketing')} />
+                <input
+                  type="checkbox"
+                  checked={preferences.marketing}
+                  onChange={() => handleToggle('marketing')}
+                />
                 <span className={styles.slider}></span>
               </div>
             </label>
           </div>
+        </div>
+
+        {/* Right section: Buttons */}
+        <div className={styles.rightSection}>
+          <button
+            className={`${styles.popupButton} ${styles.acceptAll}`}
+            onClick={handleAcceptAll}
+          >
+            Allow all
+          </button>
+          <button
+            className={`${styles.popupButton} ${styles.allowSelection}`}
+            onClick={handleAllowSelection}
+          >
+            Allow selection
+          </button>
+          <button
+            className={`${styles.popupButton} ${styles.deny}`}
+            onClick={handleDeny}
+          >
+            Deny
+          </button>
         </div>
       </div>
     </div>
