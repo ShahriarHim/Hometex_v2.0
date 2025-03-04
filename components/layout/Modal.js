@@ -7,6 +7,55 @@ const Modal = ({ isOpen, closeModal, products }) => {
   const saleEndTime = useMemo(() => new Date(Date.now() + 2 * 60 * 60 * 1000), []); // 2 hours from now
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(saleEndTime));
 
+  // Add demo products as fallback
+  const demoProducts = [
+    {
+      name: "Luxury Bedding Set",
+      image: "https://images.unsplash.com/photo-1584100936595-c0654b55a74e?w=500&auto=format",
+      price: "89.99",
+      originalPrice: "179.99",
+      discount: "50"
+    },
+    {
+      name: "Premium Throw Pillow",
+      image: "https://images.unsplash.com/photo-1584100936771-f5d8d2c627ae?w=500&auto=format",
+      price: "24.99",
+      originalPrice: "49.99",
+      discount: "50"
+    },
+    {
+      name: "Cotton Bath Towel Set",
+      image: "https://images.unsplash.com/photo-1584100936775-68c4d4653fbd?w=500&auto=format",
+      price: "34.99",
+      originalPrice: "69.99",
+      discount: "50"
+    },
+    {
+      name: "Decorative Vase",
+      image: "https://images.unsplash.com/photo-1584100936778-62e31e7bd92d?w=500&auto=format",
+      price: "44.99",
+      originalPrice: "89.99",
+      discount: "50"
+    },
+    {
+      name: "Table Runner",
+      image: "https://images.unsplash.com/photo-1584100936780-91e5a6c02d3f?w=500&auto=format",
+      price: "19.99",
+      originalPrice: "39.99",
+      discount: "50"
+    },
+    {
+      name: "Wall Art Canvas",
+      image: "https://images.unsplash.com/photo-1584100936782-9e92b3d7dbc3?w=500&auto=format",
+      price: "59.99",
+      originalPrice: "119.99",
+      discount: "50"
+    }
+  ];
+
+  // Use passed products or fall back to demo products
+  const displayProducts = products?.length > 0 ? products : demoProducts;
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft(saleEndTime));
@@ -93,7 +142,7 @@ const Modal = ({ isOpen, closeModal, products }) => {
           </button>
         </div>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-          {products.map((product, index) => (
+          {displayProducts.map((product, index) => (
             <div key={index} className="border dark:border-gray-700 rounded-lg overflow-hidden">
               <img src={product.image} alt={product.name} className="w-full h-48 object-cover object-center" />
               <div className="p-4">
