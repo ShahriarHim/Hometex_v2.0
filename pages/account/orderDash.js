@@ -1,16 +1,101 @@
 // pages/dashboard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaClipboardList, FaShippingFast, FaUserCircle, FaQuestionCircle } from 'react-icons/fa';
 import Sidebar from './components/Sidebar';
 
 const OrderDash = () => {
   const [trackingNumber, setTrackingNumber] = useState('');
+  const [orderStatus, setOrderStatus] = useState(null);
+  const [balance, setBalance] = useState(0);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleTrackShipment = (e) => {
+  // Fetch current balance
+  const fetchBalance = async () => {
+    try {
+      const response = await fetch('https://portal.packzy.com/api/v1/get_balance', {
+        headers: {
+          'Api-Key': process.env.NEXT_PUBLIC_API_KEY,
+          'Secret-Key': process.env.NEXT_PUBLIC_SECRET_KEY
+        }
+      });
+      const data = await response.json();
+      if (data.status === 200) {
+        setBalance(data.current_balance);
+      }
+    } catch (error) {
+      console.error('Error fetching balance:', error);
+    }
+  };
+
+  // Track order status
+  const handleTrackShipment = async (e) => {
     e.preventDefault();
-    // Implement tracking logic here
-    // console.log('Tracking shipment:', trackingNumber);
+    setLoading(true);
+    setError('');
+    setOrderStatus(null);
+
+    try {
+      // Try tracking by tracking code first
+      const response = await fetch(`https://portal.packzy.com/api/v1/status_by_trackingcode/${trackingNumber}`, {
+        headers: {
+          'Api-Key': process.env.NEXT_PUBLIC_API_KEY,
+          'Secret-Key': process.env.NEXT_PUBLIC_SECRET_KEY
+        }
+      });
+
+      const data = await response.json();
+      if (data.status === 200) {
+        setOrderStatus(data.delivery_status);
+      } else {
+        setError('Order not found');
+      }
+    } catch (error) {
+      setError('Failed to track order');
+      console.error('Error tracking shipment:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load orders from localStorage and track their status
+  useEffect(() => {
+    const loadOrders = async () => {
+      const storedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+      setOrders(storedOrders);
+
+      // Track status for each order
+      const updatedOrders = await Promise.all(
+        storedOrders.map(async (order) => {
+          try {
+            const response = await fetch(`https://portal.packzy.com/api/v1/status_by_trackingcode/${order.trackingCode}`, {
+              headers: {
+                'Api-Key': process.env.NEXT_PUBLIC_API_KEY,
+                'Secret-Key': process.env.NEXT_PUBLIC_SECRET_KEY
+              }
+            });
+            const data = await response.json();
+            return { ...order, status: data.delivery_status };
+          } catch (error) {
+            return { ...order, status: 'unknown' };
+          }
+        })
+      );
+
+      setOrders(updatedOrders);
+    };
+
+    fetchBalance();
+    loadOrders();
+  }, []);
+
+  // Calculate order statistics
+  const stats = {
+    total: orders.length,
+    inTransit: orders.filter(order => ['pending', 'in_review', 'hold'].includes(order.status)).length,
+    delivered: orders.filter(order => ['delivered', 'partial_delivered'].includes(order.status)).length
   };
 
   return (
@@ -27,7 +112,7 @@ const OrderDash = () => {
                 <FaClipboardList className="text-blue-500 text-2xl mr-3" />
                 <div>
                   <h3 className="font-semibold">Total Orders</h3>
-                  <p className="text-lg">0</p>
+                  <p className="text-lg">{stats.total}</p>
                 </div>
               </div>
             </div>
@@ -36,7 +121,7 @@ const OrderDash = () => {
                 <FaShippingFast className="text-green-500 text-2xl mr-3" />
                 <div>
                   <h3 className="font-semibold">In Transit</h3>
-                  <p className="text-lg">0</p>
+                  <p className="text-lg">{stats.inTransit}</p>
                 </div>
               </div>
             </div>
@@ -45,7 +130,7 @@ const OrderDash = () => {
                 <FaUserCircle className="text-purple-500 text-2xl mr-3" />
                 <div>
                   <h3 className="font-semibold">Delivered</h3>
-                  <p className="text-lg">0</p>
+                  <p className="text-lg">{stats.delivered}</p>
                 </div>
               </div>
             </div>
@@ -66,10 +151,51 @@ const OrderDash = () => {
               <button 
                 type="submit"
                 className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-md transition-colors duration-200 w-full md:w-auto"
+                disabled={loading}
               >
-                Track Order
+                {loading ? 'Tracking...' : 'Track Order'}
               </button>
             </form>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
+            {orderStatus && (
+              <div className="mt-4 p-4 bg-gray-50 rounded-md">
+                <h4 className="font-semibold">Order Status:</h4>
+                <p className="capitalize">{orderStatus.replace(/_/g, ' ')}</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <h3 className="text-xl font-bold mb-4">Recent Orders</h3>
+          <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+            <table className="min-w-full">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2">Order ID</th>
+                  <th className="px-4 py-2">Tracking Code</th>
+                  <th className="px-4 py-2">Status</th>
+                  <th className="px-4 py-2">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order, index) => (
+                  <tr key={index} className="border-t">
+                    <td className="px-4 py-2">{order.orderId}</td>
+                    <td className="px-4 py-2">{order.trackingCode}</td>
+                    <td className="px-4 py-2 capitalize">{(order.status || 'pending').replace(/_/g, ' ')}</td>
+                    <td className="px-4 py-2">{order.finalTotal}৳</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <h3 className="text-xl font-bold mb-4">Current Balance</h3>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <p className="text-2xl font-bold">{balance}৳</p>
           </div>
         </div>
 

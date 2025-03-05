@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 const Invoice = () => {
+  console.log('API Key:', process.env.NEXT_PUBLIC_API_KEY); // Debug: Check if env vars are loaded
+  console.log('Secret Key:', process.env.NEXT_PUBLIC_SECRET_KEY); // Debug: Check if env vars are loaded
+
   const router = useRouter();
   const [orderId, setOrderId] = useState('');
   const [formData, setFormData] = useState({});
@@ -11,7 +14,7 @@ const Invoice = () => {
   const [vat, setVat] = useState(0);
   const [tax, setTax] = useState(0);
   const [finalTotal, setFinalTotal] = useState(0);
-  const storedToken = localStorage.getItem('accessToken');
+  const storedToken = localStorage.getItem('home_text_token');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -28,15 +31,51 @@ const Invoice = () => {
 
     if (storedData) {
       const parsedData = JSON.parse(storedData);
-      setFormData(parsedData.formData);
+      // Construct complete address from form data
+      const fullAddress = `${parsedData.formData.address || ''}, ${parsedData.formData.city || ''}, ${parsedData.formData.District || ''}, ${parsedData.formData.Division || ''}, ${parsedData.formData.postcode || ''}`.trim().replace(/^,\s*|,\s*$/g, '');
+      
+      setFormData({
+        ...parsedData.formData,
+        address: fullAddress // Add the constructed address to formData
+      });
       setCartItems(parsedData.cartItems);
       setTotalPrice(parsedData.totalPrice);
       setDiscountedTotal(parsedData.discountedTotal);
     } else {
-      alert('No order data found. Redirecting to home.');
-      router.push('/');
+      // If no stored data, try to get from URL query params
+      const queryParams = router.query;
+      if (Object.keys(queryParams).length > 0) {
+        // Construct address from URL parameters
+        const fullAddress = `${queryParams.city || ''}, ${queryParams.District || ''}, ${queryParams.Division || ''}, ${queryParams.postcode || ''}`.trim().replace(/^,\s*|,\s*$/g, '');
+        
+        setFormData({
+          firstName: queryParams.firstName || '',
+          lastName: queryParams.lastName || '',
+          email: queryParams.email || '',
+          phoneNumber: queryParams.phoneNumber || '',
+          address: fullAddress
+        });
+
+        // Parse cartItems if present in URL
+        if (queryParams.cartItems) {
+          try {
+            const decodedCartItems = JSON.parse(decodeURIComponent(queryParams.cartItems));
+            setCartItems(decodedCartItems);
+          } catch (error) {
+            console.error('Error parsing cartItems from URL:', error);
+          }
+        }
+
+        setTotalPrice(parseFloat(queryParams.totalPrice) || 0);
+        setDiscountedTotal(parseFloat(queryParams.discountedTotal) || 0);
+      } else {
+        alert('No order data found. Redirecting to home.');
+        router.push('/');
+      }
     }
-  }, [router.isReady, orderId]);
+
+    console.log('Constructed formData:', formData); // Debug: Check the constructed formData
+  }, [router.isReady, orderId, router.query]);
 
   useEffect(() => {
     if (cartItems.length > 0) {
@@ -67,28 +106,73 @@ const Invoice = () => {
     window.location.reload();
   };
 
-  const handleConfirm = () => {
-    const order = {
-      orderId,
-      formData,
-      cartItems,
-      totalPrice,
-      discountedTotal,
-      vat,
-      tax,
-      finalTotal,
-    };
+  const handleConfirm = async () => {
+    try {
+      const orderData = {
+        invoice: orderId,
+        recipient_name: `${formData.firstName} ${formData.lastName}`,
+        recipient_phone: formData.phoneNumber,
+        recipient_address: formData.address,
+        cod_amount: parseFloat(finalTotal.toFixed(2))
+      };
 
-    const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-    existingOrders.push(order);
-    localStorage.setItem('orders', JSON.stringify(existingOrders));
+      console.log('Sending order data:', orderData); // Debug: Log request data
 
-    localStorage.removeItem('invoiceData');
-    localStorage.removeItem('cartItems');
-    localStorage.removeItem('accessToken');
+      const response = await fetch('https://portal.packzy.com/api/v1/create_order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Api-Key': process.env.NEXT_PUBLIC_API_KEY,
+          'Secret-Key': process.env.NEXT_PUBLIC_SECRET_KEY
+        },
+        body: JSON.stringify(orderData)
+      });
 
-    alert('Order confirmed!');
-    router.push('/');
+      console.log('Response status:', response.status); // Debug: Log response status
+      console.log('Response headers:', Object.fromEntries(response.headers)); // Debug: Log headers
+
+      // Check if response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const textResponse = await response.text();
+        console.error('Non-JSON response:', textResponse); // Debug: Log non-JSON response
+        throw new Error(`Invalid response format: ${textResponse}`);
+      }
+
+      const data = await response.json();
+      console.log('Response data:', data); // Debug: Log parsed response
+
+      if (data.status === 200) {
+        const order = {
+          orderId,
+          formData,
+          cartItems,
+          totalPrice,
+          discountedTotal,
+          vat,
+          tax,
+          finalTotal,
+          trackingCode: data.consignment.tracking_code
+        };
+
+        const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+        existingOrders.push(order);
+        localStorage.setItem('orders', JSON.stringify(existingOrders));
+
+        localStorage.removeItem('invoiceData');
+        localStorage.removeItem('cartItems');
+        localStorage.removeItem('accessToken');
+
+        alert(`Order confirmed! Tracking code: ${data.consignment.tracking_code}`);
+        router.push('/');
+      } else {
+        throw new Error(data.message || 'Failed to create order');
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+      // More detailed error message
+      alert(`Failed to confirm order: ${error.message}. Please check the console for more details.`);
+    }
   };
 
 
