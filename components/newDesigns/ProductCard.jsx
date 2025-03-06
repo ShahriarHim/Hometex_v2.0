@@ -9,7 +9,10 @@ const ProductCard = ({ product }) => {
   const { addItemToCart } = useContext(CartContext);
   const { addToWishlist, isInWishlist } = useContext(WishListContext);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     const item = {
       product_id: product.id,
       name: product.name,
@@ -19,47 +22,83 @@ const ProductCard = ({ product }) => {
     };
 
     addItemToCart(item);
+    
+    // Remove any lingering overlay effects
+    const productContainer = e.target.closest(`.${styles['product-item-container']}`);
+    if (productContainer) {
+      const overlay = productContainer.querySelector(`.${styles.overlay}`);
+      if (overlay) {
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+          overlay.style.opacity = '1';
+        }, 100);
+      }
+    }
 
-    // Show custom popup
-    // const popup = document.createElement('div');
-    // popup.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-[9999] animate-slide-in-right';
-    // popup.innerHTML = `
-    //   <div class="flex items-center gap-2">
-    //     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    //       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-    //     </svg>
-    //     <span>Added to cart!</span>
-    //   </div>
-    // `;
+    // Show enhanced toast notification
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      showClass: {
+        popup: 'animate__animated animate__fadeInRight'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutRight'
+      },
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
 
-    // document.body.appendChild(popup);
-
-    // Remove popup after 2 seconds
-    //   setTimeout(() => {
-    //     popup.classList.add('animate-slide-out-right');
-    //     setTimeout(() => {
-    //       document.body.removeChild(popup);
-    //     }, 300);
-    //   }, 2000);
+    Toast.fire({
+      html: `
+        <div class="flex items-center gap-3 p-1">
+          <div class="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover"/>
+          </div>
+          <div class="flex-1">
+            <p class="font-medium text-white text-sm">${item.name}</p>
+            <p class="text-white/80 text-xs">Added to cart • ${item.price}</p>
+          </div>
+          <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+            <i class="fas fa-shopping-cart text-white text-sm"></i>
+          </div>
+        </div>
+      `,
+      customClass: {
+        popup: 'colored-toast',
+        title: 'text-sm font-medium'
+      }
+    });
   };
 
-  // const attToWishList = (productId) => {
-  //   let user_token = getCookie("home_text_token");
-  //   if (typeof user_token == "undefined") {
-  //     alert("Please Login");
-  //     return false;
-  //   } else {
-  //     addRemoveWishList({
-  //       product_id: productId,
-  //     });
-  //   }
-  // };
-  const handleAddToWishlist = () => {
+  const handleQuickView = (e) => {
+    e.preventDefault(); // Prevent navigation
+    e.stopPropagation(); // Stop event bubbling
+    
+    // Add your quick view logic here
+  };
+
+  const handleCompare = (e) => {
+    e.preventDefault(); // Prevent navigation
+    e.stopPropagation(); // Stop event bubbling
+    
+    // Add your compare logic here
+  };
+
+  const handleWishlistClick = (e) => {
+    e.preventDefault(); // Prevent navigation
+    e.stopPropagation(); // Stop event bubbling
+    
     const item = {
       product_id: product.id,
       name: product.name,
       price: product.sell_price?.price,
-      image: product.primary_photo,
+      image: product.img,
       quantity: 1,
       stock: product.stock || 0
     };
@@ -102,7 +141,8 @@ const ProductCard = ({ product }) => {
           <img
             src={product.img}
             alt={product.name}
-            className="img-fluid"
+            className="img-fluid w-full h-full object-cover"
+            loading="lazy"
           />
         </a>
 
@@ -116,14 +156,20 @@ const ProductCard = ({ product }) => {
             </button>
             <button
               title="Add to Wish List"
-              onClick={handleAddToWishlist}
+              onClick={handleWishlistClick}
             >
               <i className={`fas fa-heart ${isInWishlist(product.id) ? 'text-red-500' : ''}`} style={{ fontSize: '16px' }}></i>
             </button>
-            <button title="Compare">
+            <button 
+              title="Compare"
+              onClick={handleCompare}
+            >
               <i className="fas fa-retweet" style={{ fontSize: '16px' }}></i>
             </button>
-            <button title="Quick View">
+            <button 
+              title="Quick View"
+              onClick={handleQuickView}
+            >
               <i className="fas fa-eye" style={{ fontSize: '16px' }}></i>
             </button>
           </div>

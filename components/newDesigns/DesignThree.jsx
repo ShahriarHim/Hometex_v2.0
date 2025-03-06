@@ -10,14 +10,18 @@ import 'swiper/css/navigation'
 import 'swiper/css/autoplay'
 import Constants from '@/ults/Constant';
 import { setCookie, getCookie } from 'cookies-next';
+import Link from 'next/link';
+import Loader from '@/components/common/Loader';
 
 const HotDealsCarousel = () => {
   const [products, setProducts] = useState([]);
   const [swiperInstance, setSwiperInstance] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch(`${Constants.BASE_URL}/api/product-hot/trending`);
         const data = await response.json();
 
@@ -39,6 +43,8 @@ const HotDealsCarousel = () => {
         setProducts(transformedProducts);
       } catch (error) {
         console.error('Error fetching products:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -113,7 +119,7 @@ const HotDealsCarousel = () => {
   };
 
   const handleProductHover = (isHovering) => {
-    if (swiperInstance) {
+    if (swiperInstance && swiperInstance.autoplay) {
       if (isHovering) {
         swiperInstance.autoplay.stop();
       } else {
@@ -131,7 +137,7 @@ const HotDealsCarousel = () => {
               <span>Hot Deals!</span> Get Our Best Price
             </h2>
           </div>
-          <a href="#" className={styles['see-all-link']}>+ See All Products</a>
+          <Link href="/Shop" className={styles['see-all-link']}>+ See All Products</Link>
         </div>
 
         <div className="flex">
@@ -152,58 +158,69 @@ const HotDealsCarousel = () => {
             <div className="text-sm">SECONDS</div>
           </div>
 
-          <Swiper
-            onSwiper={setSwiperInstance}
-            slidesPerView={4}
-            spaceBetween={20}
-            navigation={false}
-            modules={[Navigation, Autoplay]}
-            className="mySwiper"
-            autoplay={{
-              delay: 2500,
-              disableOnInteraction: false,
-            }}
-            loop={true}
-            speed={1000}
-            breakpoints={{
-              320: {
-                slidesPerView: 1,
-              },
-              640: {
-                slidesPerView: 2,
-              },
-              768: {
-                slidesPerView: 3,
-              },
-              1024: {
-                slidesPerView: 4,
-              },
-            }}
-          >
-            {products.map((product, index) => (
-              <SwiperSlide 
-                key={index} 
-                className="owl2-item active" 
-                onClick={() => handleProductClick(product)}
-                onMouseEnter={() => handleProductHover(true)}
-                onMouseLeave={() => handleProductHover(false)}
-              >
-                <ProductCard product={product} />
-              </SwiperSlide>
-            ))}
+          {isLoading ? (
+            <div className="flex-1">
+              <Loader />
+            </div>
+          ) : (
+            <Swiper
+              onSwiper={setSwiperInstance}
+              slidesPerView={4}
+              spaceBetween={20}
+              navigation={false}
+              modules={[Navigation, Autoplay]}
+              className="mySwiper"
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+              loop={true}
+              speed={1000}
+              breakpoints={{
+                320: {
+                  slidesPerView: 1,
+                },
+                640: {
+                  slidesPerView: 2,
+                },
+                768: {
+                  slidesPerView: 3,
+                },
+                1024: {
+                  slidesPerView: 4,
+                },
+              }}
+            >
+              {products.map((product, index) => (
+                <SwiperSlide 
+                  key={index} 
+                  className="owl2-item active"
+                  onClick={() => handleProductClick(product)}
+                  onMouseEnter={() => handleProductHover(true)}
+                  onMouseLeave={() => handleProductHover(false)}
+                >
+                  <Link href={`/shop/product/${product.id}`}>
+                    <ProductCard product={product} />
+                  </Link>
+                </SwiperSlide>
+              ))}
 
-            {products.map((product, index) => (
-              <SwiperSlide 
-                key={`cloned-after-${index}`} 
-                className="owl2-item cloned"
-                onClick={() => handleProductClick(product)}
-                onMouseEnter={() => handleProductHover(true)}
-                onMouseLeave={() => handleProductHover(false)}
-              >
-                <ProductCard product={product} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+              {products.map((product, index) => (
+                <SwiperSlide 
+                  key={`cloned-after-${index}`} 
+                  className="owl2-item cloned"
+                  onClick={() => handleProductClick(product)}
+                  onMouseEnter={() => handleProductHover(true)}
+                  onMouseLeave={() => handleProductHover(false)}
+                >
+                  <Link href={`/shop/product/${product.id}`}>
+                    <ProductCard product={product} />
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
         </div>
       </div>
     </div>

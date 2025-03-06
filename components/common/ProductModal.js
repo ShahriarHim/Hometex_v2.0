@@ -91,14 +91,6 @@ const ProductModal = ({ product, onClose }) => {
 
   if (!product) return null;
 
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
   return (
     <div className={styles.overlay}>
       <div ref={modalRef} className={styles.modal}>
