@@ -41,7 +41,11 @@ const Sidebar = () => {
             <FaClipboardList /> <span>Order tracking</span>
           </div>
         </Link>
-
+        <Link href="/account/profile">
+          <div className="flex flex-row items-center gap-3 px-4 py-3 text-white hover:text-black text-md hover:scale-110 font-semibold rounded-lg hover:bg-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer">
+            <FaUser /> <span>My Profile</span>
+          </div>
+        </Link>
         <div onClick={signOutSubmitHandler} className="mt-32 flex flex-row items-center gap-3 px-4 py-3 text-white hover:text-black text-md hover:scale-110 font-semibold rounded-lg hover:bg-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer">
           <RiLogoutBoxRLine /> <span>Logout</span>
         </div>

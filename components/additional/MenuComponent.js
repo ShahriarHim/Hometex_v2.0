@@ -121,7 +121,7 @@ const MenuComponent = ({ toggleMenu, menuOpen }) => {
             <li>
               {auth_token ? (
                 <div className="md:hidden">
-                  <Link href="/account/MyAccount">
+                  <Link href="/account/profile">
                     <div className="px-2 flex flex-col items-center text-center cursor-pointer">
                       <FaUser className="h-6 w-6 text-blue-600" aria-hidden="true" />
                       <span className="text-sm mt-2 font-semibold text-gray-800">
