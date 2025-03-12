@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { MdFavorite } from "react-icons/md";
 
-import { RiShoppingBasketFill, RiExchangeFill } from "react-icons/ri";
+import { RiShoppingBasketFill, RiExchangeFill, RiAuctionFill } from "react-icons/ri";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -22,39 +22,159 @@ import Swal from "sweetalert2";
 
 const RequestStackModal = ({ product, onClose, onSubmit }) => {
   const [mobileNumber, setMobileNumber] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(mobileNumber);
+    setLoading(true);
+    await onSubmit(mobileNumber);
+    setLoading(false);
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="bg-black bg-opacity-50 absolute inset-0" onClick={onClose}></div>
-      <div className="bg-white p-4 rounded shadow-lg z-10">
-        <h2 className="text-xl font-semibold mb-4">Product Restock Request</h2>
+      <div className="bg-white p-6 rounded-lg shadow-lg z-10 max-w-md w-full mx-4">
+        <h2 className="text-xl font-semibold mb-4">Request Product Restock</h2>
         <div className="flex items-center mb-4">
-          <img src={product.primary_photo} alt={product.name} className="w-16 h-16 mr-4" />
-          <p>{product.name}</p>
+          <img src={product.primary_photo} alt={product.name} className="w-16 h-16 object-cover rounded mr-4" />
+          <p className="text-gray-700">{product.name}</p>
         </div>
         <form onSubmit={handleSubmit}>
-          <label className="block mb-2">
-            We will send you a text when it's available
+          <label className="block mb-4">
+            <span className="text-gray-700 block mb-2">We'll notify you when this product is back in stock</span>
             <input
               type="text"
               value={mobileNumber}
               onChange={(e) => setMobileNumber(e.target.value)}
-              placeholder="ex: 01700000000"
-              className="mt-1 p-2 border rounded w-full"
+              placeholder="Enter your mobile number"
+              className="mt-1 p-2 border rounded w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required
               pattern="\d{11}"
             />
           </label>
-          <button type="submit" className="bg-blue-500 text-white py-1 px-4 rounded">
-            Send Request
-          </button>
+          <div className="flex justify-end gap-3">
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className="px-4 py-2 text-gray-600 hover:text-gray-800"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:opacity-50"
+              disabled={loading}
+            >
+              {loading ? 'Sending...' : 'Submit Request'}
+            </button>
+          </div>
         </form>
-        <button onClick={onClose} className="mt-2 text-gray-600">Close</button>
+      </div>
+    </div>
+  );
+};
+
+const MakeOfferModal = ({ product, onClose, onSubmit }) => {
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await onSubmit(amount);
+    setLoading(false);
+  };
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div className="bg-black bg-opacity-50 absolute inset-0 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="bg-white p-8 rounded-2xl shadow-2xl z-10 max-w-md w-full mx-4 transform transition-all">
+        {/* Header */}
+        <div className="relative mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">Make an Offer</h2>
+          <p className="text-gray-500 mt-1">Negotiate your best price</p>
+          <button 
+            onClick={onClose}
+            className="absolute top-0 right-0 text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Product Info */}
+        <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl mb-6">
+          <img 
+            src={product.primary_photo} 
+            alt={product.name} 
+            className="w-24 h-24 object-cover rounded-lg shadow-md" 
+          />
+          <div className="flex-1">
+            <h3 className="font-medium text-gray-900 mb-1">{product.name}</h3>
+            <div className="flex items-center space-x-2">
+              <span className="text-lg font-bold text-blue-600">
+                {product.sell_price?.symbol} {product.sell_price?.price.toLocaleString()}
+              </span>
+              <span className="text-sm text-gray-500">Current Price</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Your Offer Amount
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">
+                {product.sell_price?.symbol}
+              </span>
+              <input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="Enter your offer"
+                className="pl-8 pr-4 py-3 w-full border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                required
+                min="1"
+              />
+            </div>
+            <p className="mt-2 text-sm text-gray-500">
+              Enter an amount you'd like to offer for this product
+            </p>
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center space-x-3">
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className="flex-1 px-4 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              className="flex-1 px-4 py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center space-x-2">
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span>Processing...</span>
+                </span>
+              ) : (
+                'Submit Offer'
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
@@ -74,6 +194,11 @@ const ProductsTabs = ({ products }) => {
 
   const [swiper, setSwiper] = useState(null);
   const [isSliderHovered, setIsSliderHovered] = useState(false);
+  
+  const isAuthenticated = getCookie("home_text_name");
+
+  const [offerProduct, setOfferProduct] = useState(null);
+  const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
 
   useEffect(() => {
     setFilteredProducts({
@@ -101,12 +226,81 @@ const ProductsTabs = ({ products }) => {
     setIsModalOpen(true);
   };
 
+  let token = getCookie("home_text_token");
+
   // Function to handle restock request form submission
-  const handleRestockRequestSubmit = (mobileNumber) => {
-    // Implement your request stack logic here
-    alert(`Request for ${requestProduct.name} with mobile number ${mobileNumber} has been sent!`);
+  const handleRestockRequestSubmit = async (mobileNumber) => {
+    try {
+      const response = await fetch('https://htbapi.hometexbd.ltd/api/product/restock/request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          product_id: requestProduct.id,
+          quantity: 1
+        })
+      });
+
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Request Submitted!',
+          text: 'We will notify you via email when the product is back in stock.',
+          confirmButtonColor: '#3B82F6'
+        });
+      } else {
+        throw new Error('Failed to submit request');
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong! Please try again later.',
+        confirmButtonColor: '#3B82F6'
+      });
+    }
     setIsModalOpen(false);
     setRequestProduct(null);
+  };
+
+  const handleMakeOffer = async (amount) => {
+    try {
+      const response = await fetch('https://htbapi.hometexbd.ltd/api/product/make-an-offer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          product_id: offerProduct.id,
+          amount: parseFloat(amount)
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Offer Submitted!',
+          text: data.message || 'We will notify you about the deal soon.',
+          confirmButtonColor: '#3B82F6'
+        });
+      } else {
+        throw new Error(data.error || 'Failed to submit offer');
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.message || 'Something went wrong! Please try again later.',
+        confirmButtonColor: '#3B82F6'
+      });
+    }
+    setIsOfferModalOpen(false);
+    setOfferProduct(null);
   };
 
   const params = {
@@ -194,6 +388,8 @@ const ProductsTabs = ({ products }) => {
                             product={product}
                             openModal={openModal}
                             handleRequestStack={handleRequestStack}
+                            setOfferProduct={setOfferProduct}
+                            setIsOfferModalOpen={setIsOfferModalOpen}
                           />
                         </SwiperSlide>
                       ))
@@ -216,16 +412,31 @@ const ProductsTabs = ({ products }) => {
           onSubmit={handleRestockRequestSubmit}
         />
       )}
+      {isOfferModalOpen && (
+        <MakeOfferModal
+          product={offerProduct}
+          onClose={() => setIsOfferModalOpen(false)}
+          onSubmit={handleMakeOffer}
+        />
+      )}
       <ProductModal product={selectedProduct} onClose={closeModal} />
     </>
   );
 };
 
-const ProductCard = ({ product, openModal, handleRequestStack }) => {
+const ProductCard = ({ 
+  product, 
+  openModal, 
+  handleRequestStack,
+  setOfferProduct,
+  setIsOfferModalOpen
+}) => {
   const { addItemToCart } = useContext(CartContext);
   const { addToWishlist, isInWishlist } = useContext(WishListContext);
   const [isHovered, setIsHovered] = useState(false);
   
+  const isAuthenticated = getCookie("home_text_name");
+
   const originalPrice = parseFloat(product.original_price);
   const sellPrice = parseFloat(product.sell_price?.price);
   const discount = originalPrice && sellPrice ? 
@@ -332,6 +543,12 @@ const ProductCard = ({ product, openModal, handleRequestStack }) => {
     });
   };
 
+  const handleOfferClick = (e) => {
+    e.stopPropagation();
+    setOfferProduct(product);
+    setIsOfferModalOpen(true);
+  };
+
   return (
     <div 
       className="relative w-full max-w-sm bg-white rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-gray-100 group"
@@ -404,6 +621,14 @@ const ProductCard = ({ product, openModal, handleRequestStack }) => {
               <RiShoppingBasketFill size={16} className="text-gray-600 hover:text-blue-500 transition-colors" />
             </button>
           )}
+          {isAuthenticated && (
+            <button 
+              onClick={handleOfferClick}
+              className="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all duration-200 hover:scale-110 hover:shadow-md"
+            >
+              <RiAuctionFill size={16} className="text-gray-600 hover:text-green-500 transition-colors" />
+            </button>
+          )}
         </div>
       </div>
 
@@ -456,11 +681,24 @@ const ProductCard = ({ product, openModal, handleRequestStack }) => {
             className={`py-1.5 px-3 rounded-full text-xs font-medium transition-all duration-200 transform hover:scale-105 ${
               product.stock > 0
                 ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/25'
-                : 'bg-orange-500 text-white hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/25'
+                : isAuthenticated 
+                  ? 'bg-orange-500 text-white hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/25'
+                  : 'bg-gray-500 text-white cursor-not-allowed'
             }`}
-            onClick={() => product.stock > 0 ? handleAddToCart() : handleRequestStack(product)}
+            onClick={() => product.stock > 0 
+              ? handleAddToCart() 
+              : isAuthenticated 
+                ? handleRequestStack(product)
+                : null
+            }
+            disabled={!product.stock && !isAuthenticated}
           >
-            {product.stock > 0 ? 'Add to Cart' : 'Request Stock'}
+            {product.stock > 0 
+              ? 'Add to Cart' 
+              : isAuthenticated 
+                ? 'Request Stock' 
+                : 'Out of Stock'
+            }
         </button>
         </div>
       </div>
