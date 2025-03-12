@@ -9,7 +9,7 @@ import TimeReminderBox from '../layout/TimeReminderBox'; // Import TimeReminderB
 import { CiStar } from "react-icons/ci";
 import { FaDownload, FaStar } from "react-icons/fa";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-
+import Constants from '@/ults/Constant';
 
 const ProductDetails = ({ product, router }) => {
   const [product_qty, setProductQty] = useState(1);
@@ -23,6 +23,10 @@ const ProductDetails = ({ product, router }) => {
   const [selectedSize, setSelectedSize] = useState('all');
   const handleSizeSelection = (size) => setSelectedSize(size);
   const points = 109;
+  const [productFaqs, setProductFaqs] = useState([]);
+  const [isLoadingFaqs, setIsLoadingFaqs] = useState(false);
+  const [activeModal, setActiveModal] = useState(null);
+  const [hasFaqs, setHasFaqs] = useState(false);
 
   const getPrice = () => {
     if (selectedAttribute) {
@@ -58,10 +62,47 @@ const ProductDetails = ({ product, router }) => {
   const CollapsibleSection = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const toggleOpen = () => {
-      setIsOpen(!isOpen);
-    };
-  }
+    return (
+      <div className="mb-4 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+        <button
+          className="w-full flex justify-between items-center p-4 hover:bg-gray-50 transition-colors"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span className="font-medium text-gray-900">{title}</span>
+          <span 
+            className={`transform transition-transform duration-200 text-purple-600 ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+          >
+            <svg 
+              className="w-5 h-5" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth="2" 
+                d="M19 9l-7 7-7-7" 
+              />
+            </svg>
+          </span>
+        </button>
+        <div
+          className={`transition-all duration-200 ease-in-out ${
+            isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="p-4 bg-gray-50 border-t border-gray-200">
+            <p className="text-gray-600 text-sm leading-relaxed">
+              {children}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
   const handleIncrement = () => {
     setProductQty((prevQty) => Math.min(prevQty + 1, 100));
   };
@@ -149,13 +190,37 @@ const ProductDetails = ({ product, router }) => {
   };
 
 
-  const handleAttributeChange = (selectedValue) => {
-    const selectedAttribute = product.product_attributes.find(
-      (attribute) => attribute.attribute_value.name === selectedValue
-    );
+ 
 
-    setSelectedAttribute(selectedAttribute);
+  const fetchProductFaqs = async () => {
+    try {
+      const response = await fetch(`${Constants.BASE_URL}/api/product-wise/faq?type=product&product_id=${product.id}`);
+      const data = await response.json();
+      console.log('data', data);
+      
+      if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+        setProductFaqs(data.data);
+        setHasFaqs(true);
+      } else {
+        console.log('No FAQs found');
+        setProductFaqs([]);
+        setHasFaqs(false);
+      }
+    } catch (error) {
+      console.error('Error fetching FAQs:', error);
+      setProductFaqs([]);
+      setHasFaqs(false);
+    }
   };
+
+  useEffect(() => {
+    if (product?.id) {
+      setIsLoadingFaqs(true);
+      fetchProductFaqs().finally(() => {
+        setIsLoadingFaqs(false);
+      });
+    }
+  }, [product?.id]);
 
   return (
     <div className="col-span-4 mx-2">
@@ -271,7 +336,7 @@ const ProductDetails = ({ product, router }) => {
       </div> */}
       <div className="flex flex-auto text-sm">
         <div className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium">
-          Buy and earn <strong>{points}</strong> loyalty points. That’s <strong>{points} BDT</strong>
+          Buy and earn <strong>{points}</strong> loyalty points. That's <strong>{points} BDT</strong>
         </div>
       </div>
       {/* <div className="flex flex-auto mt-2 text-sm">
@@ -445,7 +510,7 @@ const ProductDetails = ({ product, router }) => {
 
 
 
-      <div className="my-2 py-2 flex items-center border-b border-t">
+      <div className="my-2 py-2 flex items-center border-b">
         <button
           className="text-xl font-bold"
           onClick={() => setIsModalOpen(true)}
@@ -528,197 +593,113 @@ const ProductDetails = ({ product, router }) => {
       <div className="my-2 pb-2 flex items-center border-b">
         <button
           className="text-xl font-bold"
-          onClick={() => setIsDelivaryModalOpen(true)}
+          onClick={() => setActiveModal('delivery')}
         >
           Delivery & returns
         </button>
-        {isDelivaryModalOpen && (
-          <div
-            className="fixed inset-0 z-50 overflow-hidden"
-            onClick={() => setIsDelivaryModalOpen(false)}
+      </div>
+
+      {hasFaqs && (
+        <div className="my-2 pb-2 flex items-center border-b">
+          <button
+            className="text-xl font-bold"
+            onClick={() => setActiveModal('faq')}
           >
-            <div
-              className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"
-            ></div>
-            <div
-              className="fixed inset-y-0 right-0 pl-10 max-w-full flex"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div
-                className="relative w-screen max-w-md"
-              >
-                <div
-                  className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-scroll"
-                >
-                  <div className="px-4 sm:px-6">
-                    <div className="flex items-start justify-between">
-                      <h2 className="text-lg font-medium text-gray-900" id="slide-over-title">
-                        Delivery & Return
-                      </h2>
-                      <div className="ml-3 h-7 flex items-center">
-                        <button
-                          className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500"
-                          onClick={() => setIsDelivaryModalOpen(false)}
-                        >
-                          <span className="sr-only">Close panel</span>
-                          {/* Place your close icon here */}
-                        </button>
-                      </div>
-                    </div>
+            FAQ about this Product
+          </button>
+        </div>
+      )}
+
+      {/* Single Modal Component */}
+      {activeModal && (
+        <div
+          className="fixed inset-0 z-[9999] overflow-hidden"
+          onClick={() => setActiveModal(null)}
+        >
+          <div
+            className="absolute inset-0 bg-black/60 transition-opacity"
+          ></div>
+          <div
+            className="fixed inset-y-0 right-0 pl-4 max-w-full flex"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-screen max-w-md">
+              <div className="h-full flex flex-col bg-white shadow-2xl rounded-l-2xl overflow-hidden">
+                {/* Header */}
+                <div className="px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-500">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-base font-semibold text-white">
+                      {activeModal === 'delivery' ? 'Delivery & Returns' : `FAQ - ${product.name}`}
+                    </h2>
+                    <button
+                      onClick={() => setActiveModal(null)}
+                      className="p-1.5 text-white hover:bg-white/10 rounded-full transition-colors"
+                    >
+                      <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
-                  <div className="mt-6 relative flex-1 px-4 sm:px-6">
-                    {/* Replace this section with your modal content */}
-                    <div className="absolute inset-0 px-4 sm:px-6">
-                      <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true">
-                        <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
-                          <svg
-                            className="h-6 w-6 text-blue-600"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="mt-2 px-7 py-3 text-justify">
-                          <div className="flex flex-col gap-2">
-                            <p className="font-bold">Delivery & Return</p>
-                            <p className="text-gray-500">SKU : {product?.sku}</p>
-                            <p className="text-gray-500">
-                              Catagories: {product?.category?.name} top selling
-                              product in all over the Bangladesh. Can be your best
-                              choice
-                            </p>
-                            <p className="text-gray-500">
-                              Tag: {product?.child_sub_category?.name}
-                            </p>
-                            <p className="text-gray-500">
-                              Brand: {product?.brand?.name}
-                            </p>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 overflow-y-auto">
+                  <div className="px-4 py-4">
+                    {activeModal === 'delivery' ? (
+                      // Delivery & Returns Content
+                      <div className="flex flex-col gap-2">
+                        <p className="font-bold">Delivery & Return</p>
+                        <p className="text-gray-500">SKU : {product?.sku}</p>
+                        <p className="text-gray-500">
+                          Categories: {product?.category?.name} top selling
+                          product in all over the Bangladesh. Can be your best
+                          choice
+                        </p>
+                        <p className="text-gray-500">
+                          Tag: {product?.child_sub_category?.name}
+                        </p>
+                        <p className="text-gray-500">
+                          Brand: {product?.brand?.name}
+                        </p>
+                      </div>
+                    ) : (
+                      // FAQ Content
+                      <>
+                        {isLoadingFaqs ? (
+                          <div className="flex justify-center items-center py-4">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
                           </div>
-                        </div>
-                        <div className="items-center px-4 py-3">
-                          <button
-                            id="ok-btn"
-                            className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
-                            onClick={() => setIsDelivaryModalOpen(false)}
-                          >
-                            Close
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                        ) : (
+                          productFaqs.map((faq) => (
+                            <CollapsibleSection key={faq.id} title={faq.question}>
+                              <p>{faq.answer}</p>
+                            </CollapsibleSection>
+                          ))
+                        )}
+                      </>
+                    )}
                   </div>
+                </div>
+
+                {/* Footer */}
+                <div className="px-4 py-3 bg-gray-50 border-t">
+                  <button
+                    onClick={() => setActiveModal(null)}
+                    className="w-full px-3 py-1.5 bg-gradient-to-r from-purple-600 to-blue-500 text-white text-sm font-medium rounded-lg hover:from-purple-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors"
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-      </div>
       <DownloadAppPopup
         isOpen={showDownloadAppPopup}
         onClose={toggleDownloadAppPopup}
       />
-      <div className="my-2 pb-2 flex items-center border-b">
-        <button
-          className="text-xl font-bold"
-          onClick={() => setIsDelivaryModalOpen(true)}
-        >
-          Frequently Asked Question
-        </button>
-        {isDelivaryModalOpen && (
-          <div
-            className="fixed inset-0 z-50 overflow-hidden"
-            onClick={() => setIsDelivaryModalOpen(false)}
-          >
-            <div
-              className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"
-            ></div>
-            <div
-              className="fixed inset-y-0 right-0 pl-10 max-w-full flex"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div
-                className="relative w-screen max-w-md"
-              >
-                <div
-                  className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-scroll"
-                >
-                  <div className="px-4 sm:px-6">
-                    <div className="flex items-start justify-between">
-                      <h2 className="text-lg font-medium text-gray-900" id="slide-over-title">
-                        FAQ about this Product
-                      </h2>
-                      <div className="ml-3 h-7 flex items-center">
-                        <button
-                          className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500"
-                          onClick={() => setIsDelivaryModalOpen(false)}
-                        >
-                          <span className="sr-only">Close panel</span>
-                          {/* Place your close icon here */}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-6 relative flex-1 px-4 sm:px-6">
-                    {/* Replace this section with your modal content */}
-                    <div className="absolute inset-0 px-4 sm:px-6">
-                      <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true">
-                        <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
-                          <svg
-                            className="h-6 w-6 text-blue-600"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="mt-2 px-7 py-3 text-justify">
-                          <CollapsibleSection title="How do I wash my bedding?">
-                            <p>For softer bedsheets, for the first wash, add 1 cup of baking soda to your wash cycle and 1/2 cup of white vinegar to the rinse cycle. We have tested this multiple times and it has a huge impact towards the softness of your sheets.</p>
-                          </CollapsibleSection>
-                          <CollapsibleSection title="What is your bedding and bed sheets made of?">
-                            <p>Our sheets are made from 400 thread count, 37mm extra-long staple cotton in order to guarantee long-lasting, soft and comfortable bed sheets.</p>
-                          </CollapsibleSection>
-                          <CollapsibleSection title="What is the thread count of your sheets?">
-                            <p>In the market, you will see thread counts ranging from 50 to 1500. After thorough research and endless testing, we found that thread count matters – up to a certain level. Anything more than 500 thread count is highly suspicious and is seemed to be purely marketing.</p>
-                          </CollapsibleSection>
-                          <CollapsibleSection title="What are the dimensions of your bedding?">
-                            <p>Fitted Super King – 202cm x 202cm x 35cm<br />Fitted King – 183cm x 193cm x 40cm</p>
-                          </CollapsibleSection>
-                        </div>
-                        <div className="items-center px-4 py-3">
-                          <button
-                            id="ok-btn"
-                            className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
-                            onClick={() => setIsDelivaryModalOpen(false)}
-                          >
-                            Close
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-      </div>
-
       <div className="my-2 pb-2 flex items-center border-b"><button className="text-xl font-bold">Size Guides</button></div>
 
       <div className="my-2 pb-2 flex items-center ">
