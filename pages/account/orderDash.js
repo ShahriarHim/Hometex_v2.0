@@ -13,22 +13,22 @@ const OrderDash = () => {
   const [error, setError] = useState('');
 
   // Fetch current balance
-  const fetchBalance = async () => {
-    try {
-      const response = await fetch('https://portal.packzy.com/api/v1/get_balance', {
-        headers: {
-          'Api-Key': process.env.NEXT_PUBLIC_API_KEY,
-          'Secret-Key': process.env.NEXT_PUBLIC_SECRET_KEY
-        }
-      });
-      const data = await response.json();
-      if (data.status === 200) {
-        setBalance(data.current_balance);
-      }
-    } catch (error) {
-      console.error('Error fetching balance:', error);
-    }
-  };
+  // const fetchBalance = async () => {
+  //   try {
+  //     const response = await fetch('https://portal.packzy.com/api/v1/get_balance', {
+  //       headers: {
+  //         'Api-Key': process.env.NEXT_PUBLIC_API_KEY,
+  //         'Secret-Key': process.env.NEXT_PUBLIC_SECRET_KEY
+  //       }
+  //     });
+  //     const data = await response.json();
+  //     if (data.status === 200) {
+  //       setBalance(data.current_balance);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching balance:', error);
+  //   }
+  // };
 
   // Track order status
   const handleTrackShipment = async (e) => {
@@ -87,7 +87,7 @@ const OrderDash = () => {
       setOrders(updatedOrders);
     };
 
-    fetchBalance();
+    // fetchBalance();
     loadOrders();
   }, []);
 
@@ -192,12 +192,12 @@ const OrderDash = () => {
           </div>
         </div>
 
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <h3 className="text-xl font-bold mb-4">Current Balance</h3>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <p className="text-2xl font-bold">{balance}৳</p>
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-8">
           <h3 className="text-xl font-bold mb-4">Need Help?</h3>

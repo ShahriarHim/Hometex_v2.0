@@ -41,16 +41,13 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
       // console.log("Response:", jsonResponse);
 
       if (jsonResponse.success) {
-        const { token, name, phone, email } = jsonResponse.data[0];
-        handleSuccessfulLogin(token, name, phone, email);
-        // console.log('Login successful');
+        const { token, phone, email } = jsonResponse.data[0];
+        handleSuccessfulLogin(token, null, phone, email, jsonResponse);
       } else {
         setSignInErr(jsonResponse)
-        // console.log('Login failed:', jsonResponse.message);
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      // Handle network or other errors
     } finally {
       setIsSubmit(false);
     }
@@ -73,19 +70,23 @@ const LoginPopUp = ({ showPopup, togglePopup }) => {
     });
   };
 
-  const handleSuccessfulLogin = (token, name, phone, email) => {
+  const handleSuccessfulLogin = (token, name, phone, email, jsonResponse) => {
     setSignInErr({});
     
     // Set expiration to 2 days from now
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 2);
     
+    // Format the full name by combining first_name and last_name
+    const fullName = jsonResponse.data[0].first_name + 
+                    (jsonResponse.data[0].last_name ? ' ' + jsonResponse.data[0].last_name : '');
+    
     // Set cookies with expiration
     setCookie('home_text_token', token, {
       expires: expirationDate,
       path: '/',
     });
-    setCookie('home_text_name', name, {  
+    setCookie('home_text_name', fullName, {
       expires: expirationDate,
       path: '/',
     });

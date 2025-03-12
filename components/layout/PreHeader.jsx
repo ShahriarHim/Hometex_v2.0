@@ -151,7 +151,7 @@ const PreHeader = () => {
                                         <li className="group">
                                             {isLoggedIn ? (
                                                 <>
-                                                    <Link href="/account/MyAccount" 
+                                                    <Link href="/account/profile" 
                                                         className="block px-4 py-1.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50">
                                                         <div className="font-medium text-sm">{userName}</div>
                                                         <div className="text-xs text-gray-500">View account</div>
