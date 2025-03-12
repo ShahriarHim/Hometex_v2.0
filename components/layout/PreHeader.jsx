@@ -249,10 +249,19 @@ const PreHeader = () => {
                     {/* Right Section - Cart & Order Tracking */}
                     <div className="flex items-center justify-end gap-3 mr-2 w-1/4">
                         {/* Order Tracking */}
-                        <Link href="/account/orderDash" className="flex items-center hover:text-blue-500 whitespace-nowrap mr-8">
+                        <div 
+                            className="flex items-center hover:text-blue-500 whitespace-nowrap mr-8 cursor-pointer"
+                            onClick={!isLoggedIn ? toggleLoginPopup : undefined}
+                        >
                             <HiOutlineTicket className="mr-1 text-pink-500" style={{ width: "16px", height: "16px" }} />
-                            <span className="text-xs">Order Tracking</span>
-                        </Link>
+                            <span className="text-xs">
+                                {isLoggedIn ? (
+                                    <Link href="/account/orderDash">Order Tracking</Link>
+                                ) : (
+                                    "Order Tracking"
+                                )}
+                            </span>
+                        </div>
 
                         {/* Cart Button and Popup */}
                         <div ref={cartContainerRef}>
