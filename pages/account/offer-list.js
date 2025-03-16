@@ -75,27 +75,30 @@ const OfferList = () => {
                     <table className="w-full">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product ID</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Offered Amount</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {offers.map((offer) => (
                           <tr key={offer.id} className="hover:bg-gray-50 transition-colors duration-200">
-                            <td className="px-6 py-4 whitespace-nowrap font-medium">#{offer.product_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex flex-col">
+                                <span className="font-medium text-gray-900">
+                                  {offer.product ? offer.product.name : 'Product Unavailable'}
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                  SKU: {offer.product ? offer.product.sku : 'N/A'}
+                                </span>
+                              </div>
+                            </td>
                             <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                               {offer.quentity || 'N/A'}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                               ৳{offer.amount}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                {offer.type}
-                              </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                               {new Date(offer.created_at).toLocaleDateString()}
