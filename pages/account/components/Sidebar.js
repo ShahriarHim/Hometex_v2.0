@@ -6,6 +6,7 @@ import {
   FaShoppingCart,
   FaUser,
   FaClipboardList,
+  FaBell,
 } from "react-icons/fa";
 import { AiFillSetting } from "react-icons/ai";
 import { RiLogoutBoxRLine } from "react-icons/ri";
@@ -49,6 +50,16 @@ const Sidebar = () => {
         <Link href="/account/myorderList">
           <div className="flex flex-row items-center gap-3 px-4 py-3 text-white hover:text-black text-md hover:scale-110 font-semibold rounded-lg hover:bg-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer">
             <FaShoppingBag /> <span>My Orders</span>
+          </div>
+        </Link>
+        <Link href="/account/offer-list">
+          <div className="flex flex-row items-center gap-3 px-4 py-3 text-white hover:text-black text-md hover:scale-110 font-semibold rounded-lg hover:bg-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer">
+            <FaClipboardList /> <span>Requested Offers List</span>
+          </div>
+        </Link>
+        <Link href="/account/price-drop-list">
+          <div className="flex flex-row items-center gap-3 px-4 py-3 text-white hover:text-black text-md hover:scale-110 font-semibold rounded-lg hover:bg-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer">
+            <FaBell /> <span>Price Drop Alerts</span>
           </div>
         </Link>
         <div onClick={signOutSubmitHandler} className="mt-auto flex flex-row items-center gap-3 px-4 py-3 text-white hover:text-black text-md hover:scale-110 font-semibold rounded-lg hover:bg-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer">
