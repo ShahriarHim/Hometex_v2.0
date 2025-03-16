@@ -77,9 +77,8 @@ const RequestStockList = () => {
                     <table className="w-full">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product ID</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Request Date</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
                         </tr>
@@ -87,14 +86,18 @@ const RequestStockList = () => {
                       <tbody className="bg-white divide-y divide-gray-200">
                         {requests.map((request) => (
                           <tr key={request.id} className="hover:bg-gray-50 transition-colors duration-200">
-                            <td className="px-6 py-4 whitespace-nowrap font-medium">#{request.product_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex flex-col">
+                                <span className="font-medium text-gray-900">
+                                  {request.product ? request.product.name : 'Product Unavailable'}
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                  SKU: {request.product ? request.product.sku : 'N/A'}
+                                </span>
+                              </div>
+                            </td>
                             <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                               {request.quentity || 'N/A'}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
-                                {request.type}
-                              </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                               {new Date(request.created_at).toLocaleDateString()}

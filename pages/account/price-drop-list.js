@@ -77,7 +77,7 @@ const PriceDropList = () => {
                     <table className="w-full">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product ID</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notification Status</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created Date</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
@@ -86,7 +86,16 @@ const PriceDropList = () => {
                       <tbody className="bg-white divide-y divide-gray-200">
                         {priceDrops.map((item) => (
                           <tr key={item.id} className="hover:bg-gray-50 transition-colors duration-200">
-                            <td className="px-6 py-4 whitespace-nowrap font-medium">#{item.product_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex flex-col">
+                                <span className="font-medium text-gray-900">
+                                  {item.product ? item.product.name : 'Product Unavailable'}
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                  SKU: {item.product ? item.product.sku : 'N/A'}
+                                </span>
+                              </div>
+                            </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                 item.is_notification ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
