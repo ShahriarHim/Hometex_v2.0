@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import styles from './PriceDropNotificationButton.module.css'; // Import CSS module
+import styles from './PriceDropNotificationButton.module.css'; 
+import { getCookie } from 'cookies-next';
+import Constants from '@/ults/Constant';
 
 const PriceDropNotificationButton = ({ product }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [notificationStatus, setNotificationStatus] = useState(null);
 
   useEffect(() => {
     let timer;
@@ -14,13 +18,59 @@ const PriceDropNotificationButton = ({ product }) => {
     return () => clearTimeout(timer);
   }, [isVisible]);
 
+  const handleNotification = async () => {
+    try {
+      const token = getCookie('home_text_token');
+      
+      if (!token) {
+        alert('Please login to set price drop notifications');
+        return;
+      }
+
+      setIsSubmitting(true);
+
+      const response = await fetch(`${Constants.BASE_URL}/api/product/price-drop`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          product_id: product.id
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setNotificationStatus('success');
+        alert('Price drop notification set successfully!');
+      } else {
+        setNotificationStatus('error');
+        alert(data.message || 'Failed to set notification');
+      }
+    } catch (error) {
+      setNotificationStatus('error');
+      alert('Failed to set price drop notification');
+    } finally {
+      setIsSubmitting(false);
+      setIsVisible(false);
+    }
+  };
+
   const handleClick = () => {
-    setIsVisible(prevIsVisible => !prevIsVisible);
+    if (!isSubmitting) {
+      if (notificationStatus !== 'success') {
+        handleNotification();
+      } else {
+        setIsVisible(prevIsVisible => !prevIsVisible);
+      }
+    }
   };
 
   return (
     <>
-      <div className={styles.bellIcon} onClick={handleClick}>
+      <div className={styles.bellIcon} onClick={() => setIsVisible(prevIsVisible => !prevIsVisible)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -38,11 +88,17 @@ const PriceDropNotificationButton = ({ product }) => {
       </div>
       <div className={`${styles.container} ${isVisible ? styles.open : styles.closed}`}>
         <button
-          className={styles.button}
+          className={`${styles.button} ${isSubmitting ? styles.loading : ''} ${
+            notificationStatus === 'success' ? styles.success : 
+            notificationStatus === 'error' ? styles.error : ''
+          }`}
           aria-expanded={isVisible}
           onClick={handleClick}
+          disabled={isSubmitting}
         >
-          Get a notification when price drops below ৳ {product.price}
+          {isSubmitting ? 'Setting notification...' : 
+           notificationStatus === 'success' ? 'Notification set!' :
+           `Get a notification when price drops below ৳ ${product.price}`}
         </button>
       </div>
     </>
