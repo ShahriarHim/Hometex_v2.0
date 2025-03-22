@@ -1,92 +1,157 @@
-import React from 'react';
+import { useState, useEffect } from "react";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
+import Constants from "@/ults/Constant";
+import { FaSearch } from "react-icons/fa";
 
-const FilterProducts = ({ filters, toggleFilter, handlePriceChange, clearFilters, categories, colors, sizes }) => {
-    return (
-        <div className="filter-card bg-gray-100 p-4 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-4">Filters</h3>
+const FilterSection = () => {
+  const [filters, setFilters] = useState([]); // Store filter sections
+  const [selectedFilters, setSelectedFilters] = useState({}); // Store selected filters
+  const [openSections, setOpenSections] = useState({}); // Track opened sections
 
-            {/* Subcategory Filter */}
-            <div className="mb-4">
-                <h4 className="font-medium">Subcategory</h4>
-                <ul className="space-y-2">
-                    {categories.map((category) => (
-                        <li key={category.id}>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={filters.subcategory.includes(category.name)}
-                                    onChange={() => toggleFilter('subcategory', category.name)}
-                                />
-                                {category.name}
-                            </label>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+  // Fetch filter list on component mount
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const response = await fetch(
+          `${Constants.BASE_URL}/api/products/filter-list`
+        );
+        const data = await response.json();
+        setFilters(data); // Assume API returns an array of filter sections
 
-            {/* Color Filter */}
-            <div className="mb-4">
-                <h4 className="font-medium">Color</h4>
-                <ul className="space-y-2">
-                    {colors.map((color) => (
-                        <li key={color}>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={filters.color.includes(color)}
-                                    onChange={() => toggleFilter('color', color)}
-                                />
-                                {color}
-                            </label>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+        // Initialize openSections state
+        const initialOpenState = {};
+        data.forEach((filter) => {
+          initialOpenState[filter.name] = true; // Open by default
+        });
+        setOpenSections(initialOpenState);
+        initialOpenState["search"] = true;
+      } catch (error) {
+        console.error("Error fetching filters:", error);
+      }
+    };
 
-            {/* Price Filter */}
-            <div className="mb-4">
-                <h4 className="font-medium">Price Range</h4>
-                <input
-                    type="range"
-                    min="0"
-                    max="1000"
-                    value={filters.priceRange[1]}
-                    onChange={(e) => handlePriceChange([filters.priceRange[0], e.target.value])}
-                    className="w-full"
-                />
-                <div className="flex justify-between">
-                    <span>${filters.priceRange[0]}</span>
-                    <span>${filters.priceRange[1]}</span>
-                </div>
-            </div>
+    fetchFilters();
+  }, []);
 
-            {/* Size Filter */}
-            <div className="mb-4">
-                <h4 className="font-medium">Size</h4>
-                <ul className="space-y-2">
-                    {sizes.map((size) => (
-                        <li key={size}>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={filters.size.includes(size)}
-                                    onChange={() => toggleFilter('size', size)}
-                                />
-                                {size}
-                            </label>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+  // Toggle filter selection
+  const toggleFilter = (section, option) => {
+    setSelectedFilters((prev) => {
+      const sectionFilters = prev[section] || [];
+      const updatedFilters = sectionFilters.some(
+        (item) => item.id === option.id
+      )
+        ? sectionFilters.filter((item) => item.id !== option.id)
+        : [...sectionFilters, option];
 
-            <button
-                onClick={clearFilters}
-                className="w-full bg-gray-500 text-white py-2 rounded-md"
-            >
-                Clear Filters
-            </button>
+      return { ...prev, [section]: updatedFilters };
+    });
+  };
+
+  // Toggle section open/close
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
+  return (
+    <div className="w-64 p-4 bg-white rounded-3xl border border-gray-200">
+      {/* Search Bar */}
+      <div className="mb-4">
+        {/* Collapsible Toggle Button for Search */}
+        <div
+          className="flex justify-between items-center cursor-pointer"
+          onClick={() => toggleSection("search")}
+        >
+          <h3 className="font-semibold">Search</h3>
+          {openSections["search"] ? (
+            <ChevronUp size={18} />
+          ) : (
+            <ChevronDown size={18} />
+          )}
         </div>
-    );
+
+        {/* Collapsible Section for Search Input */}
+        <div
+          className={`overflow-hidden transition-all duration-1000 ease-in-out transform ${
+            openSections["search"] ? "max-h-[100px]" : "max-h-0"
+          }`}
+        >
+          <div className="relative mt-5">
+            <input
+              type="text"
+              className="w-full p-2 pr-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+              aria-label="Search"
+            />
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+              <FaSearch size={18} className="text-gray-600" />
+            </div>
+          </div>
+        </div>
+
+        {/* Horizontal Line */}
+        <hr className="my-2 border-gray-300 mt-6" />
+      </div>
+
+      {/* Dynamically Render Filter Sections */}
+      {filters.map((filter) => (
+        <div key={filter.id} className="mb-4">
+          {/* Section Header */}
+          <div
+            className="flex justify-between items-center cursor-pointer"
+            onClick={() => toggleSection(filter.name)}
+          >
+            <h3 className="font-semibold">{filter.name}</h3>
+            {openSections[filter.name] ? (
+              <ChevronUp size={18} />
+            ) : (
+              <ChevronDown size={18} />
+            )}
+          </div>
+
+          {/* Section Options with Transition */}
+          <div
+            className={`overflow-hidden transition-all duration-1000 ease-in-out transform ${
+              openSections[filter.name] ? "max-h-[600px]" : "max-h-0"
+            }`}
+          >
+            {openSections[filter.name] && (
+              <div className="mt-2 space-y-2">
+                {filter.value.map((option) => (
+                  <label
+                    key={option.id}
+                    className="flex items-center gap-2 text-gray-600"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedFilters[filter.name]?.some(
+                        (item) => item.id === option.id
+                      )}
+                      onChange={() => toggleFilter(filter.name, option)}
+                    />
+                    {option.name}
+                    {selectedFilters[filter.name]?.some(
+                      (item) => item.id === option.id
+                    ) && (
+                      <X
+                        size={16}
+                        className="text-red-500 cursor-pointer"
+                        onClick={() => toggleFilter(filter.name, option)}
+                      />
+                    )}
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Horizontal Line */}
+          <hr className="my-2 border-gray-300 mt-6" />
+        </div>
+      ))}
+    </div>
+  );
 };
 
-export default FilterProducts;
+export default FilterSection;

@@ -333,24 +333,26 @@
 /* Submenu Container - Shown on Right */
 .subMenuContainer {
     position: absolute;
-    top: 0;
-    left: 100%; /* Show submenu on the right */
-    width: auto; /* Auto width */
-    max-width: 900px; /* Maximum width */
-    min-width: 500px; /* Minimum width */
-    max-height: 500px; /* Maximum height */
+    top: 0; /* Align it with the main dropdown */
+    left: 100%; /* Display submenu to the right */
+    width: auto;
+    max-width: 900px;
+    min-width: 500px;
+    max-height: 500px;
     background: #fff;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     display: none;
     z-index: 36;
-    overflow: auto; /* Allow scrolling if content is too long */
-    padding: 15px; /* Add some padding */
+    overflow: auto; /* Allow scrolling */
+    padding: 10px;
 }
 
 .menuItem:hover > .subMenuContainer {
     display: block; /* Show submenu on hover */
+    top: -10px !important; /* Adjust this value to align with the main dropdown */
 }
+
 
 /* Submenu Items */
 .subMenu {
