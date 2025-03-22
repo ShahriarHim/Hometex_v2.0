@@ -69,22 +69,22 @@ const ProductDetails = ({ product, router }) => {
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="font-medium text-gray-900">{title}</span>
-          <span 
+          <span
             className={`transform transition-transform duration-200 text-purple-600 ${
               isOpen ? 'rotate-180' : ''
-            }`}
+              }`}
           >
-            <svg 
-              className="w-5 h-5" 
-              fill="none" 
-              viewBox="0 0 24 24" 
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth="2" 
-                d="M19 9l-7 7-7-7" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
               />
             </svg>
           </span>
@@ -92,7 +92,7 @@ const ProductDetails = ({ product, router }) => {
         <div
           className={`transition-all duration-200 ease-in-out ${
             isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-          }`}
+            }`}
         >
           <div className="p-4 bg-gray-50 border-t border-gray-200">
             <p className="text-gray-600 text-sm leading-relaxed">
@@ -190,14 +190,14 @@ const ProductDetails = ({ product, router }) => {
   };
 
 
- 
+
 
   const fetchProductFaqs = async () => {
     try {
       const response = await fetch(`${Constants.BASE_URL}/api/product-wise/faq?type=product&product_id=${product.id}`);
       const data = await response.json();
       console.log('data', data);
-      
+
       if (data.success && Array.isArray(data.data) && data.data.length > 0) {
         setProductFaqs(data.data);
         setHasFaqs(true);
@@ -755,14 +755,16 @@ const ProductDetails = ({ product, router }) => {
         >
           Previous
         </button>
-
+        <i className="fas fa-th text-gray-600 text-3xl mt-2"></i>
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="relative inline-flex items-center justify-center p-0.5 text-lg font-medium text-gray-900 rounded-md group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
           onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}
-        // disabled={parseInt(router.query.id) === 65} // Disable the "Next" button for the last product
         >
-          Next
+          <span className="relative px-4 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+            Next
+          </span>
         </button>
+
       </div>
 
     </div>
