@@ -9,7 +9,7 @@ import FilterSection from "./FilterProducts";
 // Loading Spinner Component
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
-    <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-purple-500"></div>
+        <img class="w-20 h-20 animate-spin" src="https://www.svgrepo.com/show/70469/loading.svg" alt="Loading icon"></img>
   </div>
 );
 
@@ -220,6 +220,7 @@ const ProductPage = () => {
           {/* DataTables Style Pagination */}
           <div className="flex justify-center mt-8 space-x-2">
             {/* Previous Button */}
+            
             <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}

@@ -16,6 +16,12 @@ const FrequentlyBoughtTogether = ({ product }) => {
           className="w-24 h-24 md:w-full md:h-auto object-contain rounded-lg"
         />
       </div>
+      {/* Plus Icon */}
+      <div className="flex items-center justify-center h-48 md:mx-4">
+  <span className="text-3xl font-bold text-gray-600">+</span>
+</div>
+
+
       <div className="w-full md:w-1/4 mb-2 md:mb-0 md:mr-2 flex justify-center">
         {/* Second Product Image */}
         <img

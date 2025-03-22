@@ -8,8 +8,9 @@ import PriceDropNotificationButton from "./PriceDropNoti";
 import ProductDetails from "@/components/additional/ProductDetails";
 import FrequentlyBoughtTogether from "@/components/additional/Frequentlybought";
 import DesignFifteen from "@/components/newDesigns/DesignFifteen";
+import RelatedProducts from "@/components/newDesigns/RelatedProducts";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
-
+import ReviewSection from "@/components/ReviewSection";
 function decodeProductId(encodedId) {
   try {
     const decoded = Buffer.from(decodeURIComponent(encodedId), 'base64').toString();
@@ -143,7 +144,7 @@ const ProductPage = ({ product, categoryInfo }) => {
               onClick={handlePrevious}
               disabled={product.photos?.length <= 3}
             >
-              <FaCaretUp  />
+              <FaCaretUp />
             </button>
             <div className="space-y-2 overflow-hidden">
               {renderedPhotos.map((photo, index) => (
@@ -178,8 +179,8 @@ const ProductPage = ({ product, categoryInfo }) => {
                 margin: "0",
               }}
             />
-                        {/* Social Sharing Section */}
-                        <div className="flex items-center justify-center shadow-md gap-3 mt-40 p-5">
+            {/* Social Sharing Section */}
+            <div className="flex items-center justify-center gap-3 mt-40 p-5">
               {/* Share Icon (Centered) */}
               <span className="text-gray-600 text-lg flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
@@ -204,6 +205,9 @@ const ProductPage = ({ product, categoryInfo }) => {
                 <img src="https://cdn-icons-png.flaticon.com/512/124/124061.png" alt="Pinterest" className="w-10 h-10 hover:opacity-80" />
               </a>
             </div>
+            <div className="flex items-center justify-center mt-20">
+              <CustomerSatisfactionBar />
+            </div>
           </div>
 
           {/* Product Details Section */}
@@ -213,17 +217,22 @@ const ProductPage = ({ product, categoryInfo }) => {
         </div>
 
         {/* Additional Sections */}
-        <div className="container mx-auto py-4">
-          <FrequentlyBoughtTogether product={product} />
-        </div>
-        <div className="container mx-auto py-6">
-          <CustomerSatisfactionBar />
-        </div>
-        <div className="container mx-auto py-12">
-          <DesignFifteen />
-        </div>
-        <div className="container mx-auto py-4">
-          <PriceDropNotificationButton product={product} />
+        <div className="grid grid-cols-12 gap-6">
+          {/* Left Section (70%) */}
+          <div className="col-span-8">
+            <div className="container mx-auto py-4">
+              <FrequentlyBoughtTogether product={product} />
+            </div>
+            <div className="container mx-auto py-12">
+            <RelatedProducts />
+            </div>
+            <div className="container mx-auto py-4">
+              <PriceDropNotificationButton product={product} />
+            </div>
+          </div>
+          <div className="col-span-4 mt-4">
+            <ReviewSection/>
+          </div>
         </div>
       </div>
     </div>
