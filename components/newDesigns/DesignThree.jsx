@@ -12,20 +12,25 @@ import Constants from '@/ults/Constant';
 import { setCookie, getCookie } from 'cookies-next';
 import Link from 'next/link';
 import Loader from '@/components/common/Loader';
+import ProductModal from '../common/ProductModal';
+
+function encodeProductId(id) {
+  return encodeURIComponent(Buffer.from(`prod-${id}-salt`).toString("base64"));
+}
 
 const HotDealsCarousel = () => {
   const [products, setProducts] = useState([]);
   const [swiperInstance, setSwiperInstance] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`${Constants.BASE_URL}/api/product-hot/trending`);
+        const response = await fetch(`${Constants.BASE_URL}/api/products-web`);
         const data = await response.json();
 
-        
         const transformedProducts = data.data.map(product => ({
           id: product.id,
           img: product.primary_photo,
@@ -38,6 +43,10 @@ const HotDealsCarousel = () => {
           originalPrice: product.original_price + product.sell_price.symbol,
           stock: product.stock || 0,
           star: product.star || 0,
+          category_slug: product.category?.name?.toLowerCase() || "",
+          subcategory_slug: product.sub_category?.name?.toLowerCase() || "",
+          product_slug: product.child_sub_category?.name?.toLowerCase() || "",
+          encoded_id: encodeProductId(product.id)
         }));
 
         setProducts(transformedProducts);
@@ -50,8 +59,6 @@ const HotDealsCarousel = () => {
 
     fetchProducts();
   }, []);
- 
-
 
   const [timeLeft, setTimeLeft] = useState({
     days: 2,
@@ -100,7 +107,7 @@ const HotDealsCarousel = () => {
     const productInfo = {
       id: product.id,
       name: product.name,
-      image: product.img // Note: using img instead of primary_photo based on your data structure
+      image: product.img
     };
 
     // Remove if product already exists (to move it to front)
@@ -116,6 +123,8 @@ const HotDealsCarousel = () => {
     setCookie('recentlyViewed', JSON.stringify(recentlyViewed), {
       maxAge: 30 * 24 * 60 * 60 // 30 days
     });
+
+    setSelectedProduct(product);
   };
 
   const handleProductHover = (isHovering) => {
@@ -126,6 +135,10 @@ const HotDealsCarousel = () => {
         swiperInstance.autoplay.start();
       }
     }
+  };
+
+  const closeModal = () => {
+    setSelectedProduct(null);
   };
 
   return (
@@ -200,8 +213,8 @@ const HotDealsCarousel = () => {
                   onMouseEnter={() => handleProductHover(true)}
                   onMouseLeave={() => handleProductHover(false)}
                 >
-                  <Link href={`/shop/product/${product.id}`}>
-                    <ProductCard product={product} />
+                  <Link href={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`}>
+                    <ProductCard product={product} openModal={handleProductClick} />
                   </Link>
                 </SwiperSlide>
               ))}
@@ -214,8 +227,8 @@ const HotDealsCarousel = () => {
                   onMouseEnter={() => handleProductHover(true)}
                   onMouseLeave={() => handleProductHover(false)}
                 >
-                  <Link href={`/shop/product/${product.id}`}>
-                    <ProductCard product={product} />
+                  <Link href={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`}>
+                    <ProductCard product={product} openModal={handleProductClick} />
                   </Link>
                 </SwiperSlide>
               ))}
@@ -223,6 +236,7 @@ const HotDealsCarousel = () => {
           )}
         </div>
       </div>
+      <ProductModal product={selectedProduct} onClose={closeModal} />
     </div>
   )
 }

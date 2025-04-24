@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import { useGeolocated } from 'react-geolocated';
+import { useRouter } from 'next/router';
 import styles from '../../styles/Header_exp.module.css';  // Import CSS Module
 import AdPromotionSection from "../../components/layout/AdPromotionSection";
 import PreHeader from './PreHeader';
@@ -14,8 +15,10 @@ import { HiOutlineGift } from 'react-icons/hi';
 import FloatingBar from '../FloatingBar';
 import SearchPopup from './SearchPopup'; // Import the new popup component
 import Modal from './Modal';  // Add this import at the top
+import ChatPopup from "@/components/ChatPopup";
 
 const HeaderExp = () => {
+    const router = useRouter();
     const [categories, setCategories] = useState([]);
     const [location, setLocation] = useState('Location');
     const [selectedId, setSelectedId] = useState(null);
@@ -25,8 +28,7 @@ const HeaderExp = () => {
     const [dropdownTimeout, setDropdownTimeout] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-
+    const [isChatVisible, setIsChatVisible] = useState(false);
 
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
         positionOptions: {
@@ -179,17 +181,32 @@ const HeaderExp = () => {
         setIsModalOpen(false);
     };
 
+    const handleChatToggle = () => {
+        setIsChatVisible(prevState => !prevState);
+    };
+
+    // Check if current page is product slug page
+    const isProductSlugPage = router.pathname.startsWith('/shop/product/');
+
     return (
         <>
             {showPopup && <SearchPopup onClose={closePopup} />}
             <Modal 
                 isOpen={isModalOpen} 
                 closeModal={closeModal} 
-                // products={sampleProducts}
             />
             <PreHeader />
             <FloatingBar />
-            <header className={`${styles.headerExp} bg-white`} style={{ margin: 0, padding: 0 }}>
+            <header 
+                className={`${styles.headerExp} bg-white`} 
+                style={{ 
+                    margin: 0, 
+                    padding: 0,
+                    position: isProductSlugPage ? 'relative' : 'sticky',
+                    top: isProductSlugPage ? 'auto' : '0',
+                    zIndex: 50
+                }}
+            >
                 <div className={`container mx-auto ${styles.middleRow}`} style={{
                     zIndex: "150",
                     marginBottom: 0,
@@ -197,7 +214,7 @@ const HeaderExp = () => {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    padding: '0'  // Remove the padding here
+                    padding: '0'
                 }}>
                     {/* Left section: Categories and Search */}
                     <div className={styles.leftSection} style={{
@@ -281,13 +298,14 @@ const HeaderExp = () => {
                             <FaBriefcase className="h-5 w-5 text-yellow-600" />
                             <span>Daily Deals</span>
                         </Link>
-                        <Link href="/messages" className={styles.iconLink}>
+                        <button className={styles.iconLink} onClick={handleChatToggle}>
                             <FaCommentDots className="h-5 w-5 text-yellow-600" />
                             <span>Message</span>
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </header>
+            {isChatVisible && <ChatPopup onClose={handleChatToggle} />}
         </>
     );
 };

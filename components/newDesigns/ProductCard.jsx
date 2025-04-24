@@ -1,111 +1,75 @@
-import React, { useContext } from 'react';
-import styles from "../../styles/DesignThree.module.css";
-import CartContext from "@/context/CartContext";
+import React, { useState } from 'react';
+import { MdFavorite } from 'react-icons/md';
+import { RiShoppingBasketFill, RiExchangeFill } from 'react-icons/ri';
+import ReactStars from 'react-rating-stars-component';
+import Link from 'next/link';
+import { setCookie, getCookie } from 'cookies-next';
+import CartContext from '@/context/CartContext';
 import WishListContext from '@/context/WishListContext';
- 
+import { useContext } from 'react';
 import Swal from 'sweetalert2';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, openModal }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const { addItemToCart } = useContext(CartContext);
   const { addToWishlist, isInWishlist } = useContext(WishListContext);
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   const handleAddToCart = (e) => {
-    e.preventDefault();
     e.stopPropagation();
-    
-    const item = {
-      product_id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.img,
-      quantity: 1
-    };
-
-    addItemToCart(item);
-    
-    // Remove any lingering overlay effects
-    const productContainer = e.target.closest(`.${styles['product-item-container']}`);
-    if (productContainer) {
-      const overlay = productContainer.querySelector(`.${styles.overlay}`);
-      if (overlay) {
-        overlay.style.opacity = '0';
-        setTimeout(() => {
-          overlay.style.opacity = '1';
-        }, 100);
-      }
-    }
-
-    // Show enhanced toast notification
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-right',
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      showClass: {
-        popup: 'animate__animated animate__fadeInRight'
-      },
-      hideClass: {
-        popup: 'animate__animated animate__fadeOutRight'
-      },
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer);
-        toast.addEventListener('mouseleave', Swal.resumeTimer);
-      }
-    });
-
-    Toast.fire({
-      html: `
-        <div class="flex items-center gap-3 p-1">
-          <div class="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover"/>
-          </div>
-          <div class="flex-1">
-            <p class="font-medium text-white text-sm">${item.name}</p>
-            <p class="text-white/80 text-xs">Added to cart • ${item.price}</p>
-          </div>
-          <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-            <i class="fas fa-shopping-cart text-white text-sm"></i>
-          </div>
-        </div>
-      `,
-      customClass: {
-        popup: 'colored-toast',
-        title: 'text-sm font-medium'
-      }
-    });
-  };
-
-  const handleQuickView = (e) => {
-    e.preventDefault(); // Prevent navigation
-    e.stopPropagation(); // Stop event bubbling
-    
-    // Add your quick view logic here
-  };
-
-  const handleCompare = (e) => {
-    e.preventDefault(); // Prevent navigation
-    e.stopPropagation(); // Stop event bubbling
-    
-    // Add your compare logic here
-  };
-
-  const handleWishlistClick = (e) => {
-    e.preventDefault(); // Prevent navigation
-    e.stopPropagation(); // Stop event bubbling
-    
     const item = {
       product_id: product.id,
       name: product.name,
       price: product.sell_price?.price,
-      image: product.img,
+      image: product.primary_photo,
+      quantity: 1
+    };
+    
+    addItemToCart(item);
+    
+    // Show custom popup
+    const popup = document.createElement('div');
+    popup.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-[9999] animate-slide-in-right';
+    popup.innerHTML = `
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span>Added to cart!</span>
+      </div>
+    `;
+    
+    document.body.appendChild(popup);
+
+    // Remove popup after 2 seconds
+    setTimeout(() => {
+      popup.classList.add('animate-slide-out-right');
+      setTimeout(() => {
+        document.body.removeChild(popup);
+      }, 300);
+    }, 2000);
+  };
+
+  const handleWishlistClick = (e) => {
+    e.stopPropagation();
+    const item = {
+      product_id: product.id,
+      name: product.name,
+      price: product.sell_price?.price,
+      image: product.primary_photo,
       quantity: 1,
       stock: product.stock || 0
     };
-
+    
     const result = addToWishlist(item);
-
-    // Show toast notification
+    
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-end',
@@ -128,68 +92,112 @@ const ProductCard = ({ product }) => {
     });
   };
 
+  const handleImageClick = (e) => {
+    e.preventDefault();
+    openModal(product);
+  };
+
   return (
-    <div className={styles['product-item-container']}>
-      <div className={styles['product-image-container']}>
-        {product.discount && (
-          <div className={styles['discount-badge']}>
-            {product.discount}
-          </div>
-        )}
-
-        <a href="#" title={product.name}>
-          <img
-            src={product.img}
-            alt={product.name}
-            className="img-fluid w-full h-full object-cover"
-            loading="lazy"
-          />
-        </a>
-
-        <div className={styles.overlay}>
-          <div className={styles['button-group']}>
-            <button
-              title="Add to Cart"
+    <div
+      className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 overflow-hidden"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="relative aspect-square overflow-hidden rounded-t-lg cursor-pointer" onClick={handleImageClick}>
+        <img
+          src={product.primary_photo}
+          alt={product.name}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        
+        {/* Hover Overlay */}
+        <div 
+          className="absolute inset-0 bg-black/20 translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"
+          style={{
+            background: 'linear-gradient(to left, rgba(0,0,0,0.3), rgba(0,0,0,0.1), rgba(0,0,0,0))'
+          }}
+        />
+        
+        {/* Quick Action Buttons */}
+        <div className={`absolute right-2 top-2 flex flex-col gap-1 transition-all duration-300 ${
+          isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+        }`}>
+          <button 
+            onClick={handleWishlistClick}
+            className="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all duration-200 hover:scale-110 hover:shadow-md"
+          >
+            <MdFavorite 
+              size={16} 
+              className={`transition-colors ${
+                isInWishlist(product.id) 
+                  ? 'text-red-500' 
+                  : 'text-gray-600 hover:text-red-500'
+              }`} 
+            />
+          </button>
+          {product.stock > 0 && (
+            <button 
               onClick={handleAddToCart}
+              className="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all duration-200 hover:scale-110 hover:shadow-md"
             >
-              <i className="fas fa-shopping-basket" style={{ fontSize: '16px' }}></i>
+              <RiShoppingBasketFill size={16} className="text-gray-600 hover:text-blue-500 transition-colors" />
             </button>
-            <button
-              title="Add to Wish List"
-              onClick={handleWishlistClick}
-            >
-              <i className={`fas fa-heart ${isInWishlist(product.id) ? 'text-red-500' : ''}`} style={{ fontSize: '16px' }}></i>
-            </button>
-            <button 
-              title="Compare"
-              onClick={handleCompare}
-            >
-              <i className="fas fa-retweet" style={{ fontSize: '16px' }}></i>
-            </button>
-            <button 
-              title="Quick View"
-              onClick={handleQuickView}
-            >
-              <i className="fas fa-eye" style={{ fontSize: '16px' }}></i>
-            </button>
-          </div>
+          )}
         </div>
       </div>
 
-      <div className="right-block">
-        <div className="caption">
-          <h4 style={{ textAlign: 'center' }}><a href="#">{product.name}</a></h4>
-          <div className={styles.rating}>
-            {[1, 2, 3, 4, 5].map((star, index) => (
-              <span key={index} className={styles.star}>
-                <i className={`fas fa-star ${index < (product.star || 3) ? '' : styles['star-empty']}`}></i>
+      <div className="p-3">
+        <div className="flex items-start justify-between gap-2 mb-1.5">
+          <Link href={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`} className="flex-1">
+            <h5 className="text-sm font-medium text-gray-900 hover:text-gray-700 line-clamp-2 leading-tight">
+              {product.name}
+            </h5>
+          </Link>
+          <span className={`text-xs px-1.5 py-0.5 rounded-full whitespace-nowrap ${
+            product.stock > 0
+              ? 'bg-green-50 text-green-600'
+              : 'bg-red-50 text-red-600'
+          }`}>
+            {product.stock > 0 ? `${product.stock} left` : 'Out of Stock'}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-1 mb-2">
+          <ReactStars
+            count={5}
+            size={16}
+            value={Number(product.star) || 0}
+            isHalf={true}
+            edit={false}
+            activeColor="#FBBF24"
+            color="#E5E7EB"
+          />
+          <span className="text-xs text-gray-500">({product.star || 0})</span>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <span className="text-base font-semibold text-gray-900">
+              {product.sell_price?.symbol} {product.sell_price?.price.toLocaleString()}
+            </span>
+            {product.discount > 0 && (
+              <span className="text-xs text-gray-500 line-through">
+                {product.sell_price?.symbol} {product.originalPrice.toLocaleString()}
               </span>
-            ))}
+            )}
           </div>
-          <div className={styles['price-container']}>
-            <span className={styles['price-new']}>{product.price}</span>
-            <span className={styles['price-old']}>{product.originalPrice}</span>
-          </div>
+          
+          <button
+            className={`py-1.5 px-3 rounded-full text-xs font-medium transition-all duration-200 transform hover:scale-105 ${
+              product.stock > 0
+                ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/25'
+                : 'bg-gray-500 text-white cursor-not-allowed'
+            }`}
+            onClick={product.stock > 0 ? handleAddToCart : null}
+            disabled={!product.stock}
+          >
+            {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+          </button>
         </div>
       </div>
     </div>

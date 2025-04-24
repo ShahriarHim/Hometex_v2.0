@@ -747,24 +747,24 @@ const ProductDetails = ({ product, router }) => {
             </div> */}
         </div>
       </div>
-      <div className="col-span-12 flex justify-between mb-5">
+      <div className="col-span-12 flex justify-between items-center mb-5">
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="relative inline-flex items-center justify-center p-0.5 text-lg font-medium text-gray-900 rounded-md group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800 ml-6"
           onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) - 1}`)}
-        // disabled={parseInt(router.query.id) === 64} // Disable the "Previous" button for the first product
         >
-          Previous
+          <span className="relative px-4 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+            Previous
+          </span>
         </button>
-        <i className="fas fa-th text-gray-600 text-3xl mt-2"></i>
+        <i className="fas fa-th text-gray-600 text-3xl -mx-2"></i>
         <button
-          className="relative inline-flex items-center justify-center p-0.5 text-lg font-medium text-gray-900 rounded-md group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
+          className="relative inline-flex items-center justify-center p-0.5 text-lg font-medium text-gray-900 rounded-md group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800 mr-6"
           onClick={() => router.push(`/Shop/product/${parseInt(router.query.id) + 1}`)}
         >
           <span className="relative px-4 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
             Next
           </span>
         </button>
-
       </div>
 
     </div>

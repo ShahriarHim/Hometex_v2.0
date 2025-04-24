@@ -94,20 +94,34 @@ const ProductModal = ({ product, onClose }) => {
   return (
     <div className={styles.overlay}>
       <div ref={modalRef} className={styles.modal}>
-        <button className={styles.closeButton} onClick={onClose}>
-          <RiCloseLine size="24" />
-        </button>
-        <button className={styles.printButton} onClick={() => window.print()}>Print</button>
-        <div className={styles.checkboxContainer}>
-          <input
-            type="checkbox"
-            id="shippingInfo"
-            checked={showShippingInfo}
-            onChange={handleShippingInfoChange}
-          />
-          <label htmlFor="shippingInfo" className={styles.checkboxLabel}>Include delivery and shipping info</label>
-        </div>
-        <Link href='#' onClick={toggleInvoice}>Generate Invoice ⬇</Link>
+      <div className={styles.modalHeader}>
+  <div className={styles.headerLeft}>
+  <button className={styles.closeButton} onClick={onClose}>
+      <RiCloseLine size="24" />
+    </button>
+    <button className={styles.invoiceButton} onClick={toggleInvoice}>
+      Generate Invoice ⬇
+    </button>
+  </div>
+  <div className={styles.headerRight}>
+
+    <button className={styles.printButton} onClick={() => window.print()}>
+      Print
+    </button>
+    <div className={styles.checkboxContainer}>
+      <input
+        type="checkbox"
+        id="shippingInfo"
+        checked={showShippingInfo}
+        onChange={handleShippingInfoChange}
+      />
+      <label htmlFor="shippingInfo" className={styles.checkboxLabel}>
+        Include delivery and shipping info
+      </label>
+    </div>
+  </div>
+</div>
+
         {showInvoice && (
           <div className={styles.invoice}>
             <Invoice
