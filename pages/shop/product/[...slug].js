@@ -11,6 +11,8 @@ import DesignFifteen from "@/components/newDesigns/DesignFifteen";
 import RelatedProducts from "@/components/newDesigns/RelatedProducts";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 import ReviewSection from "@/components/ReviewSection";
+import EasyAddToCart from "@/components/EasyAddToCart";
+
 function decodeProductId(encodedId) {
   try {
     const decoded = Buffer.from(decodeURIComponent(encodedId), 'base64').toString();
@@ -135,6 +137,7 @@ const ProductPage = ({ product, categoryInfo }) => {
 
   return (
     <div className="min-h-screen">
+      <EasyAddToCart product={product} />
       <div className="container mx-auto py-10">
         <div className="grid grid-cols-12 gap-1 lg:grid-rows-1 bg-gray-100 rounded-lg shadow-md">
           {/* Thumbnail Section */}

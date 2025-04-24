@@ -21,10 +21,10 @@ const FilterSection = () => {
         // Initialize openSections state
         const initialOpenState = {};
         data.forEach((filter) => {
-          initialOpenState[filter.name] = true; // Open by default
+          initialOpenState[filter.name] = false; // Closed by default
         });
         setOpenSections(initialOpenState);
-        initialOpenState["search"] = true;
+        initialOpenState["search"] = false; // Search section also closed by default
       } catch (error) {
         console.error("Error fetching filters:", error);
       }

@@ -636,7 +636,7 @@ const ProductCard = ({
       <div className="p-3">
         {/* Product Name and Stock Status */}
         <div className="flex items-start justify-between gap-2 mb-1.5">
-          <Link href={`/Shop/product/${product.id}`} className="flex-1">
+          <Link href={`/shop/product/${product.category?.name?.toLowerCase()}/${product.sub_category?.name?.toLowerCase()}/${product.child_sub_category?.name?.toLowerCase()}/${encodeURIComponent(Buffer.from(`prod-${product.id}-salt`).toString("base64"))}`} className="flex-1">
             <h5 className="text-sm font-medium text-gray-900 hover:text-gray-700 line-clamp-2 leading-tight">
               {product.name}
             </h5>

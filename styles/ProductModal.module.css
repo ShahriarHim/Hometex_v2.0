@@ -9,445 +9,557 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  padding: 0 20px; /* Add padding to avoid edge issues on mobile */
+  padding: 20px;
 }
 
 .modal {
-  background:  #e98f11;
+  background: rgba(212, 237, 48, 0.3);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
-  max-width: 1000px;
-  width: 60%;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-width: 900px;
+  width: 80%;
+  height: 85vh;
   position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   padding: 20px;
 }
 
-.closeButton {
+.card {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #d4ed30, #a8c423);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  position: relative;
+}
+
+.modalHeader {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  background: transparent;
+  top: 20px;
+  left: 40px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 10;
+  width: calc(100% - 60px); /* accounting for left (40px) and right (20px) */
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+
+.closeButton {
+  background: rgba(255, 255, 255, 0.9);
   border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .printButton {
-  position: absolute;
-  top: 15px;
-  background: #000000;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.9);
+  margin-right: 30px;
+  color: #333;
   border: none;
-  padding: 5px 10px;
+  top: 5px;
+  padding: 2px 12px;
   border-radius: 20px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  gap: 6px;
+  width:200px;
+  justify-content: center;
 }
+
 .invoiceButton {
   position: absolute;
-  top: 12px;
-  background: #ffffff;
-  color: #fff;
+  top: 5px;
+  left: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
   border: none;
-  padding: 3px 0px;
-  border-radius: 5px;
+  padding: 2px 12px;
+  border-radius: 25px;
   cursor: pointer;
-  font-size: 16px;
-}
-
-.printButton {
-  right: 60px;
-}
-
-.invoiceButton {
-  right: 120px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  justify-content: center;
+  z-index: 10;
 }
 
 .checkboxContainer {
+  position: absolute;
+  top: 30px;
+  right: 20px;
   display: flex;
   align-items: center;
-  margin-bottom: 30px;
+  gap: 10px;
+  z-index: 10;
+  background: none;
+  box-shadow: none;
+  padding: 0;
 }
 
 .checkboxLabel {
-  margin-left: 5px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
+  gap: 30px;
+  height: calc(100% - 40px);
   overflow: hidden;
-}
-
-.card {
-  background-color: #eed1a9;
-  border-radius: 20px;
-  display: flex;
-  width: 100%;
-  align-items: center;
-  padding-left: 5px;
-  padding-right: 15px;
-  padding-bottom: 10px;
+  margin-top: 60px;
 }
 
 .description {
   flex: 1;
-  padding-right: 20px;
-}
-
-.title {
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 10px;
-
+  padding: 30px;
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  overflow-y: auto;
+  max-height: 100%;
+  background: linear-gradient(to right, #d4ed30, #a8c423);
+  border-radius: 15px 0 0 0;
 }
 
 .productTitle {
-  font-size: 30px;
-  margin-bottom: 10px;
-  color: rgb(24, 24, 93);
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .descriptionText {
-  max-width: 300px;
+  color: #666;
+  line-height: 1.6;
   margin-bottom: 20px;
-
 }
 
 .text {
-  font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .shortText {
-  display: -webkit-box;
-  max-height: 100px;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
+  max-height: 120px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  position: relative;
 }
 
-.fullText {
-  max-height: none;
+.shortText::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(to bottom, transparent, #a8c423);
 }
 
 .showMore {
-  color: #0b1b92;
+  color: #007bff;
   cursor: pointer;
   font-size: 14px;
-  text-decoration: underline;
+  font-weight: 500;
   display: inline-block;
-  margin-top: 5px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.showMore:hover {
+  color: #0056b3;
+  text-decoration: underline;
 }
 
 .center {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding: 30px;
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  overflow-y: auto;
+  max-height: 100%;
+  background: linear-gradient(to right, #d4ed30, #a8c423);
+}
+
+.title {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .shoe {
+  width: 100%;
   max-width: 300px;
-  max-height: 300px;
+  height: auto;
   object-fit: contain;
-  margin: 0 auto;
-  border-radius: 50%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .price {
-  font-size: 30px;
-  display: flex;
-  align-items: flex-end;
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
   margin-top: 10px;
 }
 
 .details {
   flex: 1;
-  padding-left: 20px;
+  padding: 30px;
+  overflow-y: auto;
+  max-height: 100%;
+  background: linear-gradient(to right, #d4ed30, #a8c423);
+  border-radius: 0 15px 0 0;
 }
 
 .info {
   display: flex;
   flex-direction: column;
-}
-
-.subTitle {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.colorContainer, .sizeContainer, .quantityContainer {
-  margin-bottom: 10px;
-
-}
-
-.colors, .sizes{
-  display: flex;
   gap: 10px;
 }
 
+.subTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
 
-.color{
-  width: 30px;
-  height: 30px;
+.colors, .sizes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.color {
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
-  background: #fff2e0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
-}
-.size {
-  width: 40px;
-  height: 30px;
-  border-radius: 20%;
-  background: #fff2e0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
-.color.active{
-  border: 4px solid #ffffff;
+.color.active {
+  border: 2px solid #333;
+  transform: scale(1.1);
 }
+
+.size {
+  padding: 4px 8px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 12px;
+  font-weight: 500;
+}
+
 .size.active {
-  border: 2px solid #e98f11;
+  background: #333;
+  color: #fff;
 }
 
 .quantity {
   display: flex;
-  gap: 5px;
+  align-items: center;
+  gap: 6px;
 }
 
 .quantityButton {
-  background: #ccc;
-  color: #000000;
+  width: 25px;
+  height: 25px;
+  background: #f5f5f5;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.quantityButton:hover {
+  background: #e0e0e0;
 }
 
 .quantityInput {
-  width: 40px;
+  width: 35px;
+  height: 25px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   text-align: center;
-  background: transparent;
+  font-size: 13px;
 }
 
 .addToCart {
-  background: #000000;
+  background: #333;
   color: #fff;
   border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
-  max-width: 200px; /* Add this line to limit the width */
-  margin: 0 auto;
-   /* Center the button */
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 12px;
 }
 
-
-.leftArrow, .rightArrow {
-  position: fixed;
-  top: 25%;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transform: translateY(-50%);
-  z-index: 1001;
+.addToCart:hover {
+  background: #000;
+  transform: translateY(-2px);
 }
 
-.leftArrow {
-  left: 990px;
+@media (max-width: 1024px) {
+  .modal {
+    width: 90%;
+    height: 90vh;
+    padding: 15px;
+  }
+  
+  .container {
+    padding: 15px;
+    gap: 20px;
+    height: calc(100% - 30px);
+    margin-top: 50px;
+  }
+  
+  .modalHeader {
+    top: 15px;
+    right: 15px;
+  }
+  
+  .invoiceButton {
+    left: 30px;
+  }
+  
+  .checkboxContainer {
+    right: 30px;
+  }
+  
+  .closeButton {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .printButton {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  
+  .card {
+    flex-direction: column;
+  }
+  
+  .description, .center, .details {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    max-height: 33.33%;
+    border-radius: 0;
+  }
+  
+  .description {
+    border-radius: 15px 15px 0 0;
+  }
+  
+  .details {
+    border-radius: 0 0 15px 15px;
+  }
+  
+  .shoe {
+    max-width: 250px;
+  }
+  
+  .details {
+    padding: 12px;
+  }
+  
+  .info {
+    gap: 8px;
+  }
 }
-
-.rightArrow {
-  right: 325px;
-}
-
 
 @media (max-width: 768px) {
   .modal {
-    width: 50%;
-    padding: 10px;
+    width: 95%;
+    height: 95vh;
+    padding: 12px;
   }
-
-  .card {
-    flex-direction: column;
-    padding: 5px;
+  
+  .container {
+    padding: 12px;
+    height: calc(100% - 24px);
+    margin-top: 45px;
   }
-
-  .description, .details {
-    padding: 1px 0;
+  
+  .modalHeader {
+    top: 12px;
+    right: 12px;
   }
-
-  .shoe {
-    max-width: 100%;
-    max-height: 100px;
-    border-radius: 10px;
+  
+  .invoiceButton {
+    left: 25px;
   }
-
-  .descriptionText {
-    max-width: 100%;
+  
+  .checkboxContainer {
+    right: 25px;
   }
-
+  
+  .closeButton {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .printButton {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+  
+  .description, .center, .details {
+    max-height: 33.33%;
+  }
+  
   .productTitle {
-    font-size: 10px;
-    margin-bottom: 5px;
-  }
-
-  .title {
-    font-size: 18px;
-  }
-
-  .price {
     font-size: 20px;
   }
-
+  
+  .price {
+    font-size: 24px;
+  }
+  
   .subTitle {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-
-  .quantityInput {
-    width: 30px;
-  }
-
-  .addToCart {
     font-size: 14px;
-    padding: 8px 16px;
-    margin-top: 10px;
+    margin-bottom: 6px;
   }
-
-  .leftArrow, .rightArrow {
-    display: none;
+  
+  .color {
+    width: 22px;
+    height: 22px;
   }
-
-  .colors, .sizes {
-    gap: 5px;
-  }
-
-  .color, .size {
-    width: 25px;
-    height: 25px;
-  }
-
+  
   .size {
-    width: 50px;
-    height: 30px;
+    padding: 3px 6px;
+    font-size: 11px;
   }
-
-  .quantityButton {
-    padding: 5px;
-  }
-
-  .checkboxContainer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .checkboxLabel {
-    margin-left: 5px;
-  }
-
-  .invoice {
-    width: 100%;
+  
+  .details {
     padding: 10px;
-  }
-
-  .printButton {
-    font-size: 12px;
-    padding: 5px 10px;
-  }
-
-  .invoiceButton {
-    font-size: 12px;
-    padding: 5px 10px;
   }
 }
 
 @media (max-width: 480px) {
   .modal {
-    width: 95%;
-    padding: 5px;
+    width: 98%;
+    height: 98vh;
+    padding: 10px;
   }
-
-  .description, .details {
-    padding: 5px 0;
+  
+  .container {
+    padding: 10px;
+    height: calc(100% - 20px);
+    margin-top: 40px;
   }
-
+  
+  .modalHeader {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .invoiceButton {
+    left: 20px;
+  }
+  
+  .checkboxContainer {
+    right: 20px;
+  }
+  
+  .closeButton {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .printButton {
+    padding: 4px 6px;
+    font-size: 11px;
+  }
+  
+  .description, .center, .details {
+    max-height: 33.33%;
+  }
+  
   .productTitle {
     font-size: 18px;
   }
-
-  .title {
-    font-size: 16px;
-  }
-
+  
   .price {
-    font-size: 18px;
+    font-size: 20px;
   }
-
-  .subTitle {
+  
+  .addToCart {
+    padding: 10px 20px;
     font-size: 14px;
   }
-
-  .quantityInput {
-    width: 25px;
+  
+  .details {
+    padding: 8px;
   }
-
-  .addToCart {
-    font-size: 12px;
-    padding: 6px 12px;
+  
+  .info {
+    gap: 6px;
   }
-
-  .colors, .sizes {
-    gap: 5px;
-  }
-
-  .color, .size {
-    width: 20px;
-    height: 20px;
-  }
-
-  .size {
-    width: 40px;
-    height: 25px;
-  }
-
+  
   .quantityButton {
-    padding: 5px;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
   }
-
-  .checkboxContainer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .checkboxLabel {
-    margin-left: 5px;
-  }
-
-  .invoice {
-    width: 100%;
-    padding: 10px;
-  }
-
-  .printButton {
-    font-size: 10px;
-    padding: 4px 8px;
-  }
-
-  .invoiceButton {
-    font-size: 10px;
-    padding: 4px 8px;
+  
+  .quantityInput {
+    width: 30px;
+    height: 22px;
+    font-size: 12px;
   }
 }

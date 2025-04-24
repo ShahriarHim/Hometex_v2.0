@@ -161,7 +161,10 @@ const FloatingBar = () => {
                 <div className="cart-container">
                     <button className="floating-btn-cart green-btn" onClick={handleCartClick}>
                         <FaShoppingCart style={{ fontSize: '20px' }} />
-                        {/* <span className="cart-text">Buy Now</span> */}
+                        <span className="cart-text">৳{totalPrice}</span>
+                        {cartItems && cartItems.length > 0 && (
+                            <span className="cart-badge">{cartItems.length}</span>
+                        )}
                     </button>
                 </div>
 
@@ -179,7 +182,10 @@ const FloatingBar = () => {
 
                 {/* WhatsApp Button - Moved below grouped buttons */}
                 <div className="whatsapp-container">
-                    <button className="floating-btn whatsapp-btn" onClick={handleChatToggle}>
+                    <button 
+                        className="floating-btn whatsapp-btn" 
+                        onClick={() => window.open('https://wa.me/8801795256087', '_blank')}
+                    >
                         <FaWhatsapp style={{ fontSize: '20px' }} />
                         <span className="tooltip">Chat with us</span>
                     </button>
@@ -353,7 +359,7 @@ const FloatingBar = () => {
                                                 </p>
                                                 {product.price && (
                                                     <p className="text-sm font-semibold text-green-600">
-                                                        ₹{product.price}
+                                                        ৳{product.price}
                                                     </p>
                                                 )}
                                             </div>
@@ -430,18 +436,37 @@ const FloatingBar = () => {
                     border: none;
                     border-radius: 10%;
                     display: flex;
-                    flex-direction: column; /* Stack the icon and text vertically */
+                    flex-direction: column;
                     align-items: center;
                     justify-content: center;
                     cursor: pointer;
                     position: relative;
-                    text-align: center; /* Ensure text is centered */
-                    padding: 5px; /* Padding for spacing between icon and text */
+                    text-align: center;
+                    padding: 5px;
                 }
-                .floating-btn-cart .cart-text {
-                    margin-top: 5px; /* Space between icon and text */
-                    font-size: 12px; /* Optional: Adjust text size if needed */
+
+                .cart-text {
+                    margin-top: 2px;
+                    font-size: 10px;
                     color: white;
+                    font-weight: 500;
+                }
+
+                .cart-badge {
+                    position: absolute;
+                    top: -5px;
+                    right: -5px;
+                    background-color: #ff4444;
+                    color: white;
+                    border-radius: 50%;
+                    width: 18px;
+                    height: 18px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 10px;
+                    font-weight: bold;
+                    border: 2px solid rgba(51, 51, 51, 0.8);
                 }
 
                 .floating-btn {
