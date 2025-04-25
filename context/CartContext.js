@@ -51,6 +51,57 @@ export const CartProvider = ({ children }) => {
     setCartToState();
   };
 
+  // Add multiple items to cart
+  const addMultipleItemsToCart = async (items) => {
+    let newCartItems = [...(cart?.cartItems || [])];
+    let addedCount = 0;
+
+    items.forEach(item => {
+      const isItemExist = newCartItems.find(i => i.product_id === item.product_id);
+      if (!isItemExist) {
+        newCartItems.push({
+          product_id: item.product_id,
+          name: item.name,
+          category: item.category,
+          categoryName: item.categoryName,
+          sub_category: item.sub_category,
+          sub_categoryName: item.sub_categoryName,
+          child_sub_category: item.child_sub_category,
+          child_sub_categoryName: item.child_sub_categoryName,
+          price: item.price,
+          image: item.image,
+          in_stock: item.in_stock,
+          supplier_id: item.supplier_id,
+          quantity: 1,
+          sku: item.sku,
+          total_price: item.price
+        });
+        addedCount++;
+      }
+    });
+
+    localStorage.setItem("cart", JSON.stringify({ cartItems: newCartItems }));
+    setCartToState();
+
+    if (addedCount > 0) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: `${addedCount} products added to cart successfully!`,
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } else {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'info',
+        title: 'All items are already in your cart!',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  };
+
   //  remove item from cart 
   const deleteItemFromCart = (id) => {
     const newCartItems = cart?.cartItems?.filter((i) => i.product_id !== id);
@@ -58,8 +109,21 @@ export const CartProvider = ({ children }) => {
     setCartToState();
   };
 
+  // Remove all items from cart
+  const clearCart = () => {
+    localStorage.setItem("cart", JSON.stringify({ cartItems: [] }));
+    setCartToState();
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Cart cleared successfully!',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addItemToCart, deleteItemFromCart, }}>
+    <CartContext.Provider value={{ cart, addItemToCart, addMultipleItemsToCart, deleteItemFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

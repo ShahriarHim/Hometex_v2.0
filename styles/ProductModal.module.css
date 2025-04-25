@@ -18,12 +18,13 @@
   border-radius: 20px;
   max-width: 900px;
   width: 80%;
-  height: 85vh;
+  max-height: 90vh;
   position: relative;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   padding: 20px;
+  margin: auto;
 }
 
 .card {
@@ -143,19 +144,17 @@
   display: flex;
   padding: 10px;
   gap: 30px;
-  height: calc(100% - 40px);
-  overflow: hidden;
   margin-top: 60px;
+  flex: 1;
+  min-height: 0;
 }
 
-.description {
+.description, .center, .details {
   flex: 1;
-  padding: 30px;
-  border-right: 1px solid rgba(255, 255, 255, 0.3);
-  overflow-y: auto;
-  max-height: 100%;
-  background: linear-gradient(to right, #d4ed30, #a8c423);
-  border-radius: 15px 0 0 0;
+  padding: 20px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .productTitle {
@@ -207,18 +206,6 @@
   text-decoration: underline;
 }
 
-.center {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-  border-right: 1px solid rgba(255, 255, 255, 0.3);
-  overflow-y: auto;
-  max-height: 100%;
-  background: linear-gradient(to right, #d4ed30, #a8c423);
-}
-
 .title {
   font-size: 20px;
   color: #333;
@@ -226,30 +213,33 @@
   text-align: center;
 }
 
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 0;
+  justify-content: space-between;
+}
+
 .shoe {
   width: 100%;
   max-width: 300px;
   height: auto;
   object-fit: contain;
-  margin-bottom: 20px;
+  margin: 20px 0;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .price {
+  width: 100%;
+  text-align: center;
   font-size: 28px;
   font-weight: 600;
   color: #333;
   margin-top: 10px;
-}
-
-.details {
-  flex: 1;
-  padding: 30px;
-  overflow-y: auto;
-  max-height: 100%;
-  background: linear-gradient(to right, #d4ed30, #a8c423);
-  border-radius: 0 15px 0 0;
 }
 
 .info {
@@ -355,14 +345,13 @@
 @media (max-width: 1024px) {
   .modal {
     width: 90%;
-    height: 90vh;
+    max-height: 95vh;
     padding: 15px;
   }
   
   .container {
     padding: 15px;
     gap: 20px;
-    height: calc(100% - 30px);
     margin-top: 50px;
   }
   
@@ -411,6 +400,7 @@
   
   .shoe {
     max-width: 250px;
+    margin: 15px 0;
   }
   
   .details {
@@ -419,6 +409,14 @@
   
   .info {
     gap: 8px;
+  }
+  
+  .center {
+    padding: 15px;
+  }
+  
+  .price {
+    margin-top: 15px;
   }
 }
 

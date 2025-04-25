@@ -145,7 +145,7 @@ const PreHeader = () => {
                             </div>
                             
                             {isAccountDropdownOpen && (
-                                <div className="absolute top-full left-0 bg-white text-black rounded-lg shadow-2xl z-50 w-48 mt-1">
+                                <div className="absolute top-full left-0 bg-white text-black rounded-lg shadow-2xl z-[200] w-48 mt-1">
                                     <div className="absolute -top-2 left-4 w-4 h-4 bg-white transform rotate-45 border-l border-t border-gray-100"></div>
                                     <ul className="py-1 relative bg-white rounded-lg text-sm">
                                         <li className="group">
@@ -187,7 +187,7 @@ const PreHeader = () => {
                                                 <span className="font-medium">{selectedCurrency}</span>
                                                 {isCurrencyDropdownOpen && (
                                                     <div className="absolute left-full top-0 bg-white shadow-xl rounded-lg w-28 -mr-1 
-                                                        transform translate-x-2 border border-gray-100">
+                                                        transform translate-x-2 border border-gray-100 z-[200]">
                                                         <div className="absolute -left-2 top-3 w-4 h-4 bg-white transform rotate-45 border-l border-t border-gray-100"></div>
                                                         <ul className="py-1 relative bg-white rounded-lg">
                                                             {['USD', 'GBP', 'BDT'].map((currency) => (

@@ -3,7 +3,7 @@ import { MdFavorite } from 'react-icons/md';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
-import { FaHeart } from 'react-icons/fa';
+import { FaHeart, FaEye, FaTrashAlt } from 'react-icons/fa';
 import WishListContext from '@/context/WishListContext';
 
 const WishComponent = ({
@@ -11,7 +11,7 @@ const WishComponent = ({
   handleWishClick,
   isOpen,
 }) => {
-  const { wishlist, removeFromWishlist } = useContext(WishListContext);
+  const { wishlist, removeFromWishlist, clearWishlist } = useContext(WishListContext);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -31,6 +31,11 @@ const WishComponent = ({
     handleWishClick();
   };
 
+  const handleRemoveAll = () => {
+    clearWishlist();
+    handleWishClick(); // Close the wishlist after clearing
+  };
+
   return (
     <div className="relative z-[9999]">
       {isOpen && (
@@ -40,7 +45,7 @@ const WishComponent = ({
             onClick={handleWishClick}
           />
 
-          <div className="fixed inset-y-0 right-0 w-96 z-[9999] shadow-2xl bg-gradient-to-b from-gray-700 to-gray-900 text-white overflow-hidden animate-slide-in transform transition-all duration-300 ease-out">
+          <div className="fixed inset-y-0 right-0 w-96 z-[9999] shadow-2xl bg-[rgba(51,51,51,0.6)] backdrop-blur-sm text-white overflow-hidden animate-slide-in transform transition-all duration-300 ease-out">
             <div className="flex justify-between items-center p-4 border-b border-gray-600">
               <h2 className="text-xl font-semibold">Your Wishlist</h2>
               <button
@@ -72,10 +77,10 @@ const WishComponent = ({
                         <td className="px-2 py-4">BDT {item.price}</td>
                         <td className="px-2 py-4">
                           <button 
-                            className="text-red-400 hover:text-red-600"
+                            className="text-red-400 hover:text-red-600 transition-colors duration-200"
                             onClick={() => removeFromWishlist(item.product_id)}
                           >
-                            <AiTwotoneDelete size={24} />
+                            <FaTrashAlt size={20} />
                           </button>
                         </td>
                       </tr>
@@ -88,12 +93,27 @@ const WishComponent = ({
                 </tbody>
               </table>
             </div>
-            <div className="absolute bottom-0 left-0 right-0 flex justify-end space-x-4 p-4 bg-gray-800">
-              <Link href="/account/Wishlist">
-                <button onClick={handleViewWishlistClick} className="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors duration-200">
-                  View Wishlist
-                </button>
-              </Link>
+            <div className="absolute bottom-0 left-0 right-0">
+              <div className="p-3 border-t border-gray-600">
+                <div className="flex justify-between items-center gap-4">
+                  <button
+                    onClick={handleRemoveAll}
+                    className="inline-flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white py-1.5 px-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 text-sm"
+                  >
+                    <FaTrashAlt className="text-white" />
+                    Remove All
+                  </button>
+                  <Link href="/account/Wishlist">
+                    <button 
+                      onClick={handleViewWishlistClick} 
+                      className="inline-flex items-center gap-1 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white py-1.5 px-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 text-sm"
+                    >
+                      <FaEye className="text-white" />
+                      View Wishlist
+                    </button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </>
