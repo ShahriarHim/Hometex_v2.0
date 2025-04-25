@@ -73,21 +73,23 @@
 .leftSection .search {
   display: flex;
   align-items: center;
-  gap: 5px; /* Space between icon and text */
+  gap: 5px;
   text-decoration: none;
   color: #000;
-  font-size: 1.2rem; /* Increase icon size */
-  transition: all 0.3s ease;
+  font-size: 1.2rem;
 }
 
-.leftSection .search:hover {
-  /* color: #5a5ae0; Change icon and text color on hover */
-  transform: scale(0.9); /* Slight enlargement */
+.leftSection .search:hover,
+.leftSection .search:hover * {
+  transform: none;
 }
-.leftSection .search:hover {
-  background: rgba(90, 90, 224, 0.1); /* Add subtle background highlight */
-  border-radius: 10px; /* Round the hover effect */
-  padding: 8px; /* Add padding for hover effect */
+
+.leftSection .search:hover i {
+  color: #000;
+}
+
+.leftSection .search:hover span {
+  color: #ff007a;
 }
 
 .rightSection a {
@@ -98,37 +100,41 @@
   align-items: center;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-size: 1.2rem; /* Increase icon size */
+  font-size: 1.2rem;
   text-align: center;
-  transition: all 0.4s ease; /* Smooth transition for hover effects */
-  gap: 0.1rem; /* Adjusted gap between icon and text */
+  gap: 0.1rem;
 }
 
 .rightSection a span {
-  margin-top: 5px; /* Space between icon and text */
-  font-size: 0.8rem; /* Adjust font size of the label */
+  margin-top: 2px;
+  font-size: 0.8rem;
 }
 
-.rightSection a:hover {
-  /* color: #5a5ae0; Change text and icon color on hover */
-  transform: scale(0.9); /* Slightly enlarge the icon */
+.rightSection a:hover,
+.rightSection a:hover * {
+  transform: none;
 }
-
-/* .rightSection a:hover span {
-  font-weight: bold; /* Make text bold on hover 
-} */
 
 .rightSection a:hover i {
-  color: #5a5ae0; /* Ensure icon color matches text */
+  color: #000;
 }
 
-/* Optional: Add a background effect */
-.rightSection a:hover {
-  background: rgba(90, 90, 224, 0.1); /* Add subtle background highlight */
-  border-radius: 10px; /* Round the hover effect */
-  padding: 8px; /* Add padding for hover effect */
+.rightSection a:hover span {
+  color: #ff007a;
 }
 
+.iconLink:hover,
+.iconLink:hover * {
+  transform: none;
+}
+
+.iconLink:hover i {
+  color: #000;
+}
+
+.iconLink:hover span {
+  color: #ff007a;
+}
 
   
   .leftUnderline {
@@ -232,11 +238,27 @@
 
 .iconLink {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.1rem;
     text-decoration: none;
     color: inherit;
     white-space: nowrap;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.iconLink span {
+    margin-top: 2px;
+    font-size: 0.8rem;
+}
+
+.iconLink:hover,
+.iconLink:hover * {
+    color: #000;
+    transform: none;
 }
 
 .categories-text {

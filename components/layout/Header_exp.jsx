@@ -254,7 +254,7 @@ const HeaderExp = () => {
                             )}
                         </div>
 
-                        <Link href="#" className={styles.search} onClick={handleSearchClick}>
+                        <Link href="#" className={`${styles.iconLink} hover:text-black`} onClick={handleSearchClick}>
                             <FaSearch className="h-5 w-5 text-yellow-600" />
                             <span>Search</span>
                         </Link>
@@ -285,20 +285,19 @@ const HeaderExp = () => {
                         gap: '1.5rem',
                         paddingRight: '0'  // Remove right padding to allow items to move more right
                     }}>
-                        <Link href="/Stores" className={styles.iconLink}>
+                        <Link href="/Stores" className={`${styles.iconLink} hover:text-black`}>
                             <FaMapMarkerAlt className="h-5 w-5 text-yellow-600" />
                             <span>Find a Store</span>
                         </Link>
-                        <Link href="/Giftsomeone" className={styles.iconLink}>
-                            {/* <HiOutlineGift className="h-6 w-6 text-yellow-600 font-bold" /> */}
+                        <Link href="/Giftsomeone" className={`${styles.iconLink} hover:text-black`}>
                             <FaGift icon="fa-solid fa-gift" className="h-5 w-5 text-yellow-600 font-bold"/>
                             <span>Gift Someone</span>
                         </Link>
-                        <Link href="/daily-deals" className={styles.iconLink} onClick={handleDailyDealsClick}>
+                        <Link href="/daily-deals" className={`${styles.iconLink} hover:text-black`} onClick={handleDailyDealsClick}>
                             <FaBriefcase className="h-5 w-5 text-yellow-600" />
                             <span>Daily Deals</span>
                         </Link>
-                        <button className={styles.iconLink} onClick={handleChatToggle}>
+                        <button className={`${styles.iconLink} hover:text-black`} onClick={handleChatToggle}>
                             <FaCommentDots className="h-5 w-5 text-yellow-600" />
                             <span>Message</span>
                         </button>

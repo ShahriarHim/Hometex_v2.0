@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import Constants from '@/ults/Constant';
+import CartContext from '@/context/CartContext';
 
 const EasyAddToCart = ({ product }) => {
     const [quantity, setQuantity] = useState(1);
     const [isVisible, setIsVisible] = useState(false);
+    const { addItemToCart } = useContext(CartContext);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -17,13 +19,41 @@ const EasyAddToCart = ({ product }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-
     const handleQuantityChange = (type) => {
         if (type === 'increase') {
             setQuantity(prev => prev + 1);
         } else if (type === 'decrease' && quantity > 1) {
             setQuantity(prev => prev - 1);
         }
+    };
+
+    const addToCartHandler = () => {
+        const cleanPrice = (priceInput) => {
+            const priceString = priceInput !== null && priceInput !== undefined ? String(priceInput) : '0';
+            const numericValue = Number(priceString.replace(/[^\d.]/g, ''));
+            return numericValue;
+        };
+
+        const cleanedPrice = cleanPrice(product.price);
+        const cleanedTotalPrice = cleanPrice(product.price * quantity);
+
+        addItemToCart({
+            product_id: product.id,
+            name: product.name,
+            category: product.category.id,
+            categoryName: product.category.name,
+            sub_category: product.sub_category.id,
+            sub_categoryName: product.sub_category.name,
+            child_sub_category: product.child_sub_category.id,
+            child_sub_categoryName: product.child_sub_category.name,
+            price: cleanedPrice,
+            image: product.primary_photo,
+            in_stock: product.stock,
+            supplier_id: product.supplier_id,
+            quantity: quantity,
+            sku: product.sku,
+            total_price: cleanedTotalPrice,
+        });
     };
 
     if (!isVisible) return null;
@@ -46,7 +76,7 @@ const EasyAddToCart = ({ product }) => {
                     </div>
                 </div>
 
-                {/* Right Section - Quantity and Buy Now */}
+                {/* Right Section - Quantity and Add to Cart */}
                 <div className="flex items-center space-x-4">
                     <div className="flex items-center border rounded-lg">
                         <button 
@@ -63,8 +93,11 @@ const EasyAddToCart = ({ product }) => {
                             <FaPlus size={12} />
                         </button>
                     </div>
-                    <button className="bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700">
-                        Buy Now
+                    <button 
+                        onClick={addToCartHandler}
+                        className="bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700"
+                    >
+                        Add to Cart
                     </button>
                 </div>
             </div>

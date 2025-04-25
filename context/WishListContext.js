@@ -108,6 +108,32 @@ export const WishListProvider = ({ children }) => {
         }
     };
 
+    // Clear all items from wishlist
+    const clearWishlist = () => {
+        try {
+            setWishlist([]);
+            localStorage.setItem("wishlist", JSON.stringify([]));
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Wishlist cleared successfully!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            return {
+                success: true,
+                message: "Wishlist cleared successfully"
+            };
+        } catch (error) {
+            console.error("Error clearing wishlist:", error);
+            return {
+                success: false,
+                message: "Failed to clear wishlist",
+                error: error.message
+            };
+        }
+    };
+
     // Check if item is in wishlist
     const isInWishlist = (productId) => {
         return wishlist.some(item => item.product_id === productId);
@@ -118,7 +144,8 @@ export const WishListProvider = ({ children }) => {
             wishlist,
             addToWishlist,
             removeFromWishlist,
-            isInWishlist
+            isInWishlist,
+            clearWishlist
         }}>
             {children}
         </WishListContext.Provider>
