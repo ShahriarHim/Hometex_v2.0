@@ -121,6 +121,12 @@ const HeaderExp = () => {
 
               {hasSub && (
                 <div className={styles.subMenuContainer}>
+                  <div className={styles["banner-top"]}>
+                    <div className={styles["banner-content"]}>
+                      🎉 Special Offer: Get 20% off on all products! Use code:
+                      SPECIAL20 🎉
+                    </div>
+                  </div>
                   <ul className={styles.subMenu}>
                     {category.sub?.map((sub) => (
                       <li key={sub.id} className={styles.subMenuItem}>
@@ -132,7 +138,6 @@ const HeaderExp = () => {
                           </div>
                         </Link>
 
-                        {/* Display child categories under their respective parent */}
                         {sub.child && sub.child.length > 0 && (
                           <ul className={styles.childMenu}>
                             {sub.child.map((child) => (
@@ -149,6 +154,12 @@ const HeaderExp = () => {
                       </li>
                     ))}
                   </ul>
+                  <div className={styles["banner-bottom"]}>
+                    <div className={styles["banner-content"]}>
+                      🚚 Free Shipping on orders above $50! Limited time offer
+                      🚚
+                    </div>
+                  </div>
                 </div>
               )}
             </li>

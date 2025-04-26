@@ -1,9 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
-import styles from '../../styles/SearchPopup.module.css'; // Create a CSS module for styling
+import styles from "../../styles/SearchPopup.module.css"; // Create a CSS module for styling
 // Or "../../styles/SearchPopup.module.css"
-import Constants from '@/ults/Constant';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Constants from "@/ults/Constant";
+import Link from "next/link";
+import { useRouter } from "next/router";
+
+// Add encodeProductId function
+function encodeProductId(id) {
+  return encodeURIComponent(Buffer.from(`prod-${id}-salt`).toString("base64"));
+}
 
 const SearchPopup = ({ onClose }) => {
   const [categories, setCategories] = useState([]); // New state for categories
@@ -11,7 +16,7 @@ const SearchPopup = ({ onClose }) => {
   const [visibleProducts, setVisibleProducts] = useState(8); // Number of products to show initially
   const [isLoading, setIsLoading] = useState(true); // Add loading state
   const [isLoadingMore, setIsLoadingMore] = useState(false); // New state for bottom loading
-  const [searchTerm, setSearchTerm] = useState(''); // Add search term state
+  const [searchTerm, setSearchTerm] = useState(""); // Add search term state
   const productsRef = useRef(null); // Reference for scroll container
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12; // Show 12 categories per page
@@ -32,11 +37,22 @@ const SearchPopup = ({ onClose }) => {
   const handleCategoryClick = async (categoryName) => {
     const popupElement = document.querySelector(`.${styles.popup}`);
     popupElement.classList.add(styles.slideUp);
-    
+
     // Wait for animation to complete before navigation
     setTimeout(() => {
       onClose(); // Close the popup first
       router.push(`/products/${categoryName.toLowerCase()}`);
+    }, 300);
+  };
+
+  // Add handleProductClick function
+  const handleProductClick = (e) => {
+    const popupElement = document.querySelector(`.${styles.popup}`);
+    popupElement.classList.add(styles.slideUp);
+
+    // Wait for animation to complete before navigation
+    setTimeout(() => {
+      onClose(); // Close the popup first
     }, 300);
   };
 
@@ -52,7 +68,7 @@ const SearchPopup = ({ onClose }) => {
       const response = await fetch(
         `${Constants.BASE_URL}/api/product-menu/horizontal`,
         {
-          method: 'GET',
+          method: "GET",
           mode: "cors",
           cache: "no-cache",
           headers: {
@@ -105,17 +121,16 @@ const SearchPopup = ({ onClose }) => {
 
     const productsSection = productsRef.current;
     if (productsSection) {
-      productsSection.addEventListener('scroll', handleScroll);
+      productsSection.addEventListener("scroll", handleScroll);
     }
 
     return () => {
       if (productsSection) {
-        productsSection.removeEventListener('scroll', handleScroll);
+        productsSection.removeEventListener("scroll", handleScroll);
       }
     };
   }, [isLoadingMore, products.length, visibleProducts]);
 
-  
   // Function to handle clicks on the overlay
   const handleOverlayClick = (e) => {
     // Check if the click is outside the popup content
@@ -127,24 +142,22 @@ const SearchPopup = ({ onClose }) => {
   const fetchProducts = async () => {
     try {
       setIsLoading(true); // Start loading
-      const response = await fetch(  
-        Constants.BASE_URL+'/api/products-web',{
-          method: 'GET',
-          mode: "cors", // no-cors, *cors, same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-       
-          headers: {            
-            "Content-Type": "application/json",
-            },  
-        }
-      );
+      const response = await fetch(Constants.BASE_URL + "/api/products-web", {
+        method: "GET",
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const result = await response.json();
-     
-      setProducts(result.data); 
+
+      setProducts(result.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
@@ -154,11 +167,11 @@ const SearchPopup = ({ onClose }) => {
 
   const loadMoreProducts = async () => {
     if (visibleProducts >= products.length) return;
-    
+
     setIsLoadingMore(true);
     // Simulate loading delay
-    await new Promise(resolve => setTimeout(resolve, 800));
-    setVisibleProducts(prev => prev + 8);
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    setVisibleProducts((prev) => prev + 8);
     setIsLoadingMore(false);
   };
 
@@ -166,16 +179,17 @@ const SearchPopup = ({ onClose }) => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        Constants.BASE_URL+'/api/products-web-find', {
-          method: 'POST',
+        Constants.BASE_URL + "/api/products-web-find",
+        {
+          method: "POST",
           mode: "cors",
           cache: "no-cache",
-          headers: {            
+          headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            search: query
-          })
+            search: query,
+          }),
         }
       );
 
@@ -213,7 +227,7 @@ const SearchPopup = ({ onClose }) => {
           <div className={styles.searchRow}>
             <select className={styles.categorySelect}>
               <option>All categories</option>
-              {categories.map(cat => (
+              {categories.map((cat) => (
                 <option key={cat.id}>{cat.name}</option>
               ))}
             </select>
@@ -224,7 +238,7 @@ const SearchPopup = ({ onClose }) => {
               value={searchTerm}
               onChange={handleSearch}
             />
-            <button 
+            <button
               className={styles.searchButton}
               onClick={() => searchProducts(searchTerm)}
             >
@@ -259,14 +273,14 @@ const SearchPopup = ({ onClose }) => {
                 <>
                   <div className={styles.categoryGrid}>
                     {currentCategories.map((category) => (
-                      <div 
+                      <div
                         key={category.id}
                         className={styles.categoryCard}
                         onClick={() => handleCategoryClick(category.name)}
                       >
                         <div className={styles.imageWrapper}>
-                          <img 
-                            src={category.image} 
+                          <img
+                            src={category.image}
                             alt={category.name}
                             className={styles.categoryImage}
                           />
@@ -279,17 +293,19 @@ const SearchPopup = ({ onClose }) => {
                   {/* Pagination */}
                   {totalPages > 1 && (
                     <div className={styles.pagination}>
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                        <button
-                          key={page}
-                          onClick={() => handlePageChange(page)}
-                          className={`${styles.pageButton} ${
-                            currentPage === page ? styles.activePage : ''
-                          }`}
-                        >
-                          {page}
-                        </button>
-                      ))}
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                        (page) => (
+                          <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`${styles.pageButton} ${
+                              currentPage === page ? styles.activePage : ""
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        )
+                      )}
                     </div>
                   )}
                 </>
@@ -308,15 +324,24 @@ const SearchPopup = ({ onClose }) => {
                 <>
                   <div className={styles.categoryGrid}>
                     {products.slice(0, visibleProducts).map((product) => (
-                      <div key={product.id} className={styles.categoryCard}>
-                        <img 
-                          src={product.primary_photo} 
+                      <Link
+                        key={product.id}
+                        href={`/shop/product/${
+                          product.category?.name?.toLowerCase() || ""
+                        }/${product.sub_category?.name?.toLowerCase() || ""}/${
+                          product.child_sub_category?.name?.toLowerCase() || ""
+                        }/${encodeProductId(product.id)}`}
+                        className={styles.categoryCard}
+                        onClick={handleProductClick}
+                      >
+                        <img
+                          src={product.primary_photo}
                           alt={product.name}
                           className={styles.productImage}
                         />
                         <p className={styles.productName}>{product.name}</p>
                         <p className={styles.productPrice}>{product.price}</p>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                   {isLoadingMore && visibleProducts < products.length && (
