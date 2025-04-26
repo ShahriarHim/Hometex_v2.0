@@ -183,7 +183,7 @@ const ProductPage = ({ product, categoryInfo }) => {
               }}
             />
             {/* Social Sharing Section */}
-            <div className="flex items-center justify-center gap-3 mt-40 p-5">
+            <div className="flex items-center justify-center gap-3 mt-35 p-5">
               {/* Share Icon (Centered) */}
               <span className="text-gray-600 text-lg flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
@@ -208,7 +208,7 @@ const ProductPage = ({ product, categoryInfo }) => {
                 <img src="https://cdn-icons-png.flaticon.com/512/124/124061.png" alt="Pinterest" className="w-10 h-10 hover:opacity-80" />
               </a>
             </div>
-            <div className="flex items-center justify-center mt-20">
+            <div className="flex items-center justify-center mt-10">
               <CustomerSatisfactionBar />
             </div>
           </div>

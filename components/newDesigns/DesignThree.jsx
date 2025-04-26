@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect } from "react";
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Autoplay } from 'swiper'
-import ProductCard from './ProductCard'
-import styles from "../../styles/DesignThree.module.css"
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/autoplay'
-import Constants from '@/ults/Constant';
-import { setCookie, getCookie } from 'cookies-next';
-import Link from 'next/link';
-import Loader from '@/components/common/Loader';
-import ProductModal from '../common/ProductModal';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper";
+import ProductCard from "./ProductCard";
+import styles from "../../styles/DesignThree.module.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/autoplay";
+import Constants from "@/ults/Constant";
+import { setCookie, getCookie } from "cookies-next";
+import Link from "next/link";
+import Loader from "@/components/common/Loader";
+import ProductModal from "../common/ProductModal";
 
 function encodeProductId(id) {
   return encodeURIComponent(Buffer.from(`prod-${id}-salt`).toString("base64"));
@@ -31,11 +31,13 @@ const HotDealsCarousel = () => {
         const response = await fetch(`${Constants.BASE_URL}/api/products-web`);
         const data = await response.json();
 
-        const transformedProducts = data.data.map(product => ({
+        const transformedProducts = data.data.map((product) => ({
           id: product.id,
           img: product.primary_photo,
           primary_photo: product.primary_photo,
-          discount: product.sell_price.discount ? product.sell_price.discount : null,
+          discount: product.sell_price.discount
+            ? product.sell_price.discount
+            : null,
           name: product.name,
           price: product.sell_price.price,
           sell_price: product.sell_price,
@@ -46,12 +48,12 @@ const HotDealsCarousel = () => {
           category_slug: product.category?.name?.toLowerCase() || "",
           subcategory_slug: product.sub_category?.name?.toLowerCase() || "",
           product_slug: product.child_sub_category?.name?.toLowerCase() || "",
-          encoded_id: encodeProductId(product.id)
+          encoded_id: encodeProductId(product.id),
         }));
 
         setProducts(transformedProducts);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       } finally {
         setIsLoading(false);
       }
@@ -64,12 +66,12 @@ const HotDealsCarousel = () => {
     days: 2,
     hours: 7,
     minutes: 11,
-    seconds: 51
+    seconds: 51,
   });
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(prevTime => {
+      setTimeLeft((prevTime) => {
         let { days, hours, minutes, seconds } = prevTime;
 
         if (seconds > 0) {
@@ -100,28 +102,28 @@ const HotDealsCarousel = () => {
 
   const handleProductClick = (product) => {
     // Get existing recently viewed products
-    let recentlyViewed = getCookie('recentlyViewed');
+    let recentlyViewed = getCookie("recentlyViewed");
     recentlyViewed = recentlyViewed ? JSON.parse(recentlyViewed) : [];
 
     // Add current product if not already in list
     const productInfo = {
       id: product.id,
       name: product.name,
-      image: product.img
+      image: product.img,
     };
 
     // Remove if product already exists (to move it to front)
-    recentlyViewed = recentlyViewed.filter(item => item.id !== product.id);
-    
+    recentlyViewed = recentlyViewed.filter((item) => item.id !== product.id);
+
     // Add to front of array
     recentlyViewed.unshift(productInfo);
-    
+
     // Keep only last 10 items
     recentlyViewed = recentlyViewed.slice(0, 10);
 
     // Save back to cookie
-    setCookie('recentlyViewed', JSON.stringify(recentlyViewed), {
-      maxAge: 30 * 24 * 60 * 60 // 30 days
+    setCookie("recentlyViewed", JSON.stringify(recentlyViewed), {
+      maxAge: 30 * 24 * 60 * 60, // 30 days
     });
 
     setSelectedProduct(product);
@@ -142,15 +144,17 @@ const HotDealsCarousel = () => {
   };
 
   return (
-    <div className={styles['hot-deals-container']}>
-      <div className={styles['hot-deals-box']}>
-        <div className={styles['hot-deals-header']}>
-          <div className={styles['hot-deals-title']}>
+    <div className={styles["hot-deals-container"]}>
+      <div className={styles["hot-deals-box"]}>
+        <div className={styles["hot-deals-header"]}>
+          <div className={styles["hot-deals-title"]}>
             <h2>
               <span>Hot Deals!</span> Get Our Best Price
             </h2>
           </div>
-          <Link href="/Shop" className={styles['see-all-link']}>+ See All Products</Link>
+          <Link href="/Shop" className={styles["see-all-link"]}>
+            + See All Products
+          </Link>
         </div>
 
         <div className="flex">
@@ -160,14 +164,20 @@ const HotDealsCarousel = () => {
                 <i className="fas fa-clock text-2xl"></i>
               </div>
             </div>
-            
+
             <div className="text-4xl font-bold">{timeLeft.days}</div>
             <div className="text-sm">DAYS</div>
-            <div className="text-4xl font-bold mt-2">{timeLeft.hours.toString().padStart(2, '0')}</div>
+            <div className="text-4xl font-bold mt-2">
+              {timeLeft.hours.toString().padStart(2, "0")}
+            </div>
             <div className="text-sm">HOURS</div>
-            <div className="text-4xl font-bold mt-2">{timeLeft.minutes.toString().padStart(2, '0')}</div>
+            <div className="text-4xl font-bold mt-2">
+              {timeLeft.minutes.toString().padStart(2, "0")}
+            </div>
             <div className="text-sm">MINUTES</div>
-            <div className="text-4xl font-bold mt-2">{timeLeft.seconds.toString().padStart(2, '0')}</div>
+            <div className="text-4xl font-bold mt-2">
+              {timeLeft.seconds.toString().padStart(2, "0")}
+            </div>
             <div className="text-sm">SECONDS</div>
           </div>
 
@@ -206,30 +216,32 @@ const HotDealsCarousel = () => {
               }}
             >
               {products.map((product, index) => (
-                <SwiperSlide 
-                  key={index} 
+                <SwiperSlide
+                  key={index}
                   className="owl2-item active"
                   onClick={() => handleProductClick(product)}
                   onMouseEnter={() => handleProductHover(true)}
                   onMouseLeave={() => handleProductHover(false)}
                 >
-                  <Link href={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`}>
-                    <ProductCard product={product} openModal={handleProductClick} />
-                  </Link>
+                  <ProductCard
+                    product={product}
+                    openModal={handleProductClick}
+                  />
                 </SwiperSlide>
               ))}
 
               {products.map((product, index) => (
-                <SwiperSlide 
-                  key={`cloned-after-${index}`} 
+                <SwiperSlide
+                  key={`cloned-after-${index}`}
                   className="owl2-item cloned"
                   onClick={() => handleProductClick(product)}
                   onMouseEnter={() => handleProductHover(true)}
                   onMouseLeave={() => handleProductHover(false)}
                 >
-                  <Link href={`/shop/product/${product.category_slug}/${product.subcategory_slug}/${product.product_slug}/${product.encoded_id}`}>
-                    <ProductCard product={product} openModal={handleProductClick} />
-                  </Link>
+                  <ProductCard
+                    product={product}
+                    openModal={handleProductClick}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -238,8 +250,7 @@ const HotDealsCarousel = () => {
       </div>
       <ProductModal product={selectedProduct} onClose={closeModal} />
     </div>
-  )
-}
+  );
+};
 
-export default HotDealsCarousel
- 
+export default HotDealsCarousel;
