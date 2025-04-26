@@ -485,7 +485,11 @@ const ProductCard = ({
     const productInfo = {
       id: product.id,
       name: product.name,
-      image: product.primary_photo
+      image: product.primary_photo,
+      category: product.category?.name || '',
+      sub_category: product.sub_category?.name || '',
+      child_sub_category: product.child_sub_category?.name || '',
+      price: product.sell_price?.price
     };
 
     // Remove if product already exists (to move it to front)
