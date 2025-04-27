@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import Constants from "@/ults/Constant";
-import { FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
-
+import { FaCreditCard, FaMoneyBillWave, FaGift } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 import { getCookie } from "cookies-next";
 
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [isGift, setIsGift] = useState(false);
+  const [showGiftPopup, setShowGiftPopup] = useState(false);
+  const [giftDetails, setGiftDetails] = useState({
+    wrapping: "with_wrapping",
+    senderName: "",
+    recipientName: "",
+    message: ""
+  });
   const router = useRouter();
 
   const { query } = router;
@@ -53,9 +61,16 @@ const PaymentMethod = () => {
       .catch((error) => console.error(error));
   }, [auth_token]);
 
-// console.log(accessToken);
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
+  };
+
+  const handleGiftDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setGiftDetails(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -67,7 +82,9 @@ const PaymentMethod = () => {
         formData,
         cartItems,
         totalPrice,
-        discountedTotal
+        discountedTotal,
+        isGift,
+        giftDetails: isGift ? giftDetails : null
       };
 
       localStorage.setItem('invoiceData', JSON.stringify(invoiceData));
@@ -146,119 +163,228 @@ const PaymentMethod = () => {
     }
   };
 
-  return (
-    <div className='px-4 py-8 bg-gradient-to-br from-white to-gray-50 min-h-[60vh] rounded-lg shadow-xl mt-4'>
-      <div className="container mx-auto max-w-4xl">
-        <div className="bg-white p-8 rounded-2xl shadow-lg">
-          <h4 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-            <span className="bg-green-500 w-2 h-8 rounded mr-3"></span>
-            Select Payment Method
-          </h4>
+  const renderGiftPopup = () => {
+    if (!showGiftPopup) return null;
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid gap-4">
-              {/* Online Payment Option */}
-              <label 
-                className={`relative flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 
-                  ${paymentMethod === "Online Payment" 
-                    ? 'border-green-500 bg-green-50' 
-                    : 'border-gray-200 hover:border-green-200'}`}
-              >
-                <input
-                  type="radio"
-                  id="onlinePayment"
-                  name="paymentMethod"
-                  value="Online Payment"
-                  checked={paymentMethod === "Online Payment"}
-                  onChange={handleChange}
-                  className="hidden"
-                />
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center 
-                    ${paymentMethod === "Online Payment" ? 'bg-green-500' : 'bg-gray-100'}`}>
-                    <FaCreditCard className={`w-6 h-6 ${paymentMethod === "Online Payment" ? 'text-white' : 'text-gray-600'}`} />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">Online Payment</p>
-                    <p className="text-sm text-gray-500">Pay securely with your credit/debit card</p>
-                  </div>
-                </div>
-                <div className={`absolute right-4 w-5 h-5 border-2 rounded-full 
-                  ${paymentMethod === "Online Payment" 
-                    ? 'border-green-500 bg-green-500' 
-                    : 'border-gray-300'}`}>
-                  {paymentMethod === "Online Payment" && (
-                    <div className="w-2 h-2 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-                  )}
-                </div>
-              </label>
-
-              {/* Cash on Delivery Option */}
-              <label 
-                className={`relative flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300
-                  ${paymentMethod === "Cash on Delivery" 
-                    ? 'border-green-500 bg-green-50' 
-                    : 'border-gray-200 hover:border-green-200'}`}
-              >
-                <input
-                  type="radio"
-                  id="cashOnDelivery"
-                  name="paymentMethod"
-                  value="Cash on Delivery"
-                  checked={paymentMethod === "Cash on Delivery"}
-                  onChange={handleChange}
-                  className="hidden"
-                />
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center 
-                    ${paymentMethod === "Cash on Delivery" ? 'bg-green-500' : 'bg-gray-100'}`}>
-                    <FaMoneyBillWave className={`w-6 h-6 ${paymentMethod === "Cash on Delivery" ? 'text-white' : 'text-gray-600'}`} />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">Cash on Delivery</p>
-                    <p className="text-sm text-gray-500">Pay when you receive your order</p>
-                  </div>
-                </div>
-                <div className={`absolute right-4 w-5 h-5 border-2 rounded-full 
-                  ${paymentMethod === "Cash on Delivery" 
-                    ? 'border-green-500 bg-green-500' 
-                    : 'border-gray-300'}`}>
-                  {paymentMethod === "Cash on Delivery" && (
-                    <div className="w-2 h-2 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-                  )}
-                </div>
-              </label>
+    return (
+      <div className="fixed inset-0 flex justify-center items-center bg-gray-800/50 backdrop-blur-sm z-50">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2 }}
+          className="bg-white/90 backdrop-blur-xl rounded-2xl p-6 shadow-xl max-w-md w-full mx-4"
+        >
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-gray-800">Gift Details</h2>
+            <button
+              onClick={() => setShowGiftPopup(false)}
+              className="text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <FaGift />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-gray-700 font-medium">Wrapping Option</label>
+              <div className="flex gap-4">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="wrapping"
+                    value="with_wrapping"
+                    checked={giftDetails.wrapping === "with_wrapping"}
+                    onChange={handleGiftDetailsChange}
+                    className="form-radio text-gray-600"
+                  />
+                  <span>With Wrapping (+$5)</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="wrapping"
+                    value="without_wrapping"
+                    checked={giftDetails.wrapping === "without_wrapping"}
+                    onChange={handleGiftDetailsChange}
+                    className="form-radio text-gray-600"
+                  />
+                  <span>Without Wrapping</span>
+                </label>
+              </div>
             </div>
 
-            <div className="mt-8 flex justify-center">
+            <div className="space-y-2">
+              <label className="text-gray-700 font-medium">Sender's Name</label>
+              <input
+                type="text"
+                name="senderName"
+                value={giftDetails.senderName}
+                onChange={handleGiftDetailsChange}
+                className="w-full py-2 px-3 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300"
+                placeholder="Your name"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-gray-700 font-medium">Recipient's Name</label>
+              <input
+                type="text"
+                name="recipientName"
+                value={giftDetails.recipientName}
+                onChange={handleGiftDetailsChange}
+                className="w-full py-2 px-3 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300"
+                placeholder="Recipient's name"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-gray-700 font-medium">Gift Message</label>
+              <textarea
+                name="message"
+                value={giftDetails.message}
+                onChange={handleGiftDetailsChange}
+                rows="3"
+                className="w-full py-2 px-3 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300 resize-none"
+                placeholder="Write your message here..."
+              />
+            </div>
+
+            <div className="flex justify-end gap-3">
               <button
-                type="submit"
-                className="group relative inline-flex items-center justify-center py-3 px-8 w-full md:w-64 
-                  border border-transparent text-base font-medium rounded-full text-white bg-green-500 
-                  hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 
-                  transition-all duration-300 shadow-lg hover:shadow-xl"
+                onClick={() => setShowGiftPopup(false)}
+                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-300 text-gray-700 font-medium"
               >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <svg 
-                    className="h-5 w-5 text-green-300 group-hover:text-green-400" 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    viewBox="0 0 20 20" 
-                    fill="currentColor" 
-                    aria-hidden="true"
-                  >
-                    <path 
-                      fillRule="evenodd" 
-                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" 
-                      clipRule="evenodd" 
-                    />
-                  </svg>
-                </span>
-                Proceed to Payment
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowGiftPopup(false);
+                  setIsGift(true);
+                }}
+                className="px-4 py-2 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-gray-950 text-white rounded-xl transition-all duration-300 font-medium"
+              >
+                Save
               </button>
             </div>
-          </form>
-        </div>
+          </div>
+        </motion.div>
       </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12">
+      <div className="max-w-screen-xl mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex justify-center"
+        >
+          <div className="w-full max-w-4xl">
+            <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-8 shadow-lg">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-3xl font-bold text-gray-800">Payment Method</h2>
+                  <p className="text-gray-500 mt-1">Choose how you'd like to pay</p>
+                </div>
+                <div className="bg-gradient-to-r from-primary/10 to-primary/20 p-3 rounded-full">
+                  <FaCreditCard className="text-primary text-2xl" />
+                </div>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid gap-4">
+                  {/* Online Payment Option */}
+                  <label 
+                    className={`relative flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 
+                      ${paymentMethod === "Online Payment" 
+                        ? 'border-gray-800 bg-gray-50' 
+                        : 'border-gray-200 hover:border-gray-300'}`}
+                  >
+                    <input
+                      type="radio"
+                      id="onlinePayment"
+                      name="paymentMethod"
+                      value="Online Payment"
+                      checked={paymentMethod === "Online Payment"}
+                      onChange={handleChange}
+                      className="hidden"
+                    />
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center 
+                        ${paymentMethod === "Online Payment" ? 'bg-gray-800' : 'bg-gray-100'}`}>
+                        <FaCreditCard className={`w-6 h-6 ${paymentMethod === "Online Payment" ? 'text-white' : 'text-gray-600'}`} />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-800">Online Payment</p>
+                        <p className="text-sm text-gray-500">Pay securely with your credit/debit card</p>
+                      </div>
+                    </div>
+                  </label>
+
+                  {/* Cash on Delivery Option */}
+                  <label 
+                    className={`relative flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300
+                      ${paymentMethod === "Cash on Delivery" 
+                        ? 'border-gray-800 bg-gray-50' 
+                        : 'border-gray-200 hover:border-gray-300'}`}
+                  >
+                    <input
+                      type="radio"
+                      id="cashOnDelivery"
+                      name="paymentMethod"
+                      value="Cash on Delivery"
+                      checked={paymentMethod === "Cash on Delivery"}
+                      onChange={handleChange}
+                      className="hidden"
+                    />
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center 
+                        ${paymentMethod === "Cash on Delivery" ? 'bg-gray-800' : 'bg-gray-100'}`}>
+                        <FaMoneyBillWave className={`w-6 h-6 ${paymentMethod === "Cash on Delivery" ? 'text-white' : 'text-gray-600'}`} />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-800">Cash on Delivery</p>
+                        <p className="text-sm text-gray-500">Pay when you receive your order</p>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+
+                {/* Gift Option */}
+                <div className="flex items-center space-x-3 p-4 bg-gray-50/80 backdrop-blur-sm rounded-xl">
+                  <input
+                    type="checkbox"
+                    id="isGift"
+                    checked={isGift}
+                    onChange={(e) => {
+                      setIsGift(e.target.checked);
+                      if (e.target.checked) {
+                        setShowGiftPopup(true);
+                      }
+                    }}
+                    className="w-5 h-5 text-gray-800 rounded focus:ring-gray-800"
+                  />
+                  <label htmlFor="isGift" className="flex items-center space-x-2 cursor-pointer">
+                    <FaGift className="text-gray-600" />
+                    <span className="text-gray-700 font-medium">Send as Gift</span>
+                  </label>
+                </div>
+
+                <div className="flex justify-center mt-8">
+                  <button
+                    type="submit"
+                    className="w-full md:w-auto px-8 py-3.5 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-medium flex items-center justify-center space-x-2"
+                  >
+                    <span>Proceed to Payment</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+      {renderGiftPopup()}
     </div>
   );
 };

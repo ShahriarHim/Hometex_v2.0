@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
+import { FaPrint, FaShoppingBag, FaCheckCircle } from 'react-icons/fa';
 
 const Invoice = () => {
   console.log('API Key:', process.env.NEXT_PUBLIC_API_KEY); // Debug: Check if env vars are loaded
@@ -175,106 +177,153 @@ const Invoice = () => {
     }
   };
 
-
   return (
-    <div className="container mx-auto py-8">
-      <div id="invoice-section" className="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="px-6 py-4 border-b">
-          <h3 className="text-2xl font-semibold text-gray-800">Order Summary of {orderId}</h3>
-        </div>
-        <div className="px-6 py-4">
-          <dl>
-            <div className="flex justify-between py-2 border-b">
-              <dt className="text-sm font-medium text-gray-600">Name</dt>
-              <dd className="text-sm text-gray-900">{formData.firstName} {formData.lastName}</dd>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12">
+      <div className="max-w-screen-xl mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex justify-center"
+        >
+          <div id="invoice-section" className="w-full max-w-4xl bg-white/50 backdrop-blur-xl rounded-3xl shadow-lg overflow-hidden">
+            <div className="p-8 border-b border-gray-100">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-3xl font-bold text-gray-800">Order Summary</h2>
+                  <p className="text-gray-500 mt-1">Order ID: {orderId}</p>
+                </div>
+                <div className="bg-gradient-to-r from-gray-800/10 to-gray-900/10 p-3 rounded-full">
+                  <FaShoppingBag className="text-gray-800 text-2xl" />
+                </div>
+              </div>
             </div>
-            <div className="flex justify-between py-2 border-b">
-              <dt className="text-sm font-medium text-gray-600">Email</dt>
-              <dd className="text-sm text-gray-900">{formData.email}</dd>
+
+            <div className="p-8 space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-gray-800">Customer Information</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Name</span>
+                      <span className="text-gray-800">{formData.firstName} {formData.lastName}</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Email</span>
+                      <span className="text-gray-800">{formData.email}</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Phone</span>
+                      <span className="text-gray-800">{formData.phoneNumber}</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Address</span>
+                      <span className="text-gray-800 text-right">{formData.address}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-gray-800">Order Details</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Total Price</span>
+                      <span className="text-gray-800">{totalPrice}৳</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Discounted Total</span>
+                      <span className="text-gray-800">{discountedTotal}৳</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">VAT (10%)</span>
+                      <span className="text-gray-800">{vat.toFixed(2)}৳</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Tax (10%)</span>
+                      <span className="text-gray-800">{tax.toFixed(2)}৳</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Delivery Fee</span>
+                      <span className="text-gray-800">90৳</span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-xl font-bold text-gray-800">Final Total</span>
+                      <span className="text-xl font-bold text-gray-800">{finalTotal.toFixed(2)}৳</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4 bg-white/90 p-6 rounded-xl shadow-sm">
+                <h3 className="text-xl font-semibold text-gray-800">Items</h3>
+                <div className="overflow-hidden rounded-lg border border-gray-100">
+                  <div className="overflow-y-auto max-h-[400px]">
+                    <table className="min-w-full divide-y divide-gray-100">
+                      <thead className="bg-gray-50 sticky top-0 z-10">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-100">
+                        {cartItems.map((item, index) => (
+                          <tr key={index} className="hover:bg-gray-50/50 transition-colors">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <img src={item.image} alt={item.name} className="h-12 w-12 rounded-lg object-cover" />
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-800">{item.name}</div>
+                                  <div className="text-sm text-gray-500">{item.sub_categoryName}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800">
+                              {typeof item.price === 'string' ? parseFloat(item.price.replace(/[,৳]/g, '')) : item.price}৳
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800">{item.quantity}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800">
+                              {typeof item.price === 'string' ? parseFloat(item.price.replace(/[,৳]/g, '')) * item.quantity : item.price * item.quantity}৳
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex justify-between py-2 border-b">
-              <dt className="text-sm font-medium text-gray-600">Phone</dt>
-              <dd className="text-sm text-gray-900">{formData.phoneNumber}</dd>
+
+            <div className="p-8 border-t border-gray-100">
+              <div className="flex flex-col md:flex-row justify-between gap-4">
+                <button
+                  onClick={() => router.push('/')}
+                  className="px-6 py-3 bg-gray-800 text-white rounded-xl hover:bg-gray-900 transition-all duration-300 flex items-center justify-center space-x-2"
+                >
+                  <FaShoppingBag />
+                  <span>Continue Shopping</span>
+                </button>
+                {!storedToken && (
+                  <button
+                    onClick={handleConfirm}
+                    className="px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-900 hover:to-gray-950 transition-all duration-300 flex items-center justify-center space-x-2"
+                  >
+                    <FaCheckCircle />
+                    <span>Confirm Order</span>
+                  </button>
+                )}
+                <button
+                  onClick={handlePrint}
+                  className="px-6 py-3 bg-gray-800 text-white rounded-xl hover:bg-gray-900 transition-all duration-300 flex items-center justify-center space-x-2"
+                >
+                  <FaPrint />
+                  <span>Print</span>
+                </button>
+              </div>
             </div>
-            <div className="flex justify-between py-2 border-b">
-              <dt className="text-sm font-medium text-gray-600">Address</dt>
-              <dd className="text-sm text-gray-900">{formData.address}</dd>
-            </div>
-            <div className="py-4">
-              <dt className="text-sm font-medium text-gray-600">Items</dt>
-              <dd className="text-sm text-gray-900">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
-                      <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                      <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
-                      <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {cartItems.map((item, index) => (
-                      <tr key={index}>
-                        <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900">{item.name}</td>
-                        <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-900">
-                          {typeof item.price === 'string' ? parseFloat(item.price.replace(/[,৳]/g, '')) : item.price}৳
-                        </td>
-                        <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-900">{item.quantity}</td>
-                        <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-900">
-                          {typeof item.price === 'string' ? parseFloat(item.price.replace(/[,৳]/g, '')) * item.quantity : item.price * item.quantity}৳
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <div className="px-6 py-4 border-t">
-          <div className="flex justify-between py-2">
-            <dt className="text-sm font-medium text-gray-600">Total Price</dt>
-            <dd className="text-sm text-gray-900">{totalPrice}৳</dd>
           </div>
-          <div className="flex justify-between py-2">
-            <dt className="text-sm font-medium text-gray-600">Discounted Total</dt>
-            <dd className="text-sm text-gray-900">{discountedTotal}৳</dd>
-          </div>
-          <div className="flex justify-between py-2">
-            <dt className="text-sm font-medium text-gray-600">VAT (10%)</dt>
-            <dd className="text-sm text-gray-900">{vat.toFixed(2)}৳</dd>
-          </div>
-          <div className="flex justify-between py-2">
-            <dt className="text-sm font-medium text-gray-600">Tax (10%)</dt>
-            <dd className="text-sm text-gray-900">{tax.toFixed(2)}৳</dd>
-          </div>
-          <div className="flex justify-between py-2">
-            <dt className="text-sm font-medium text-gray-600">Delivery Fee</dt>
-            <dd className="text-sm text-gray-900">90৳</dd>
-          </div>
-          <hr className="mb-1 border-t-2 border-gray-300" />
-          <div className="flex justify-between py-2">
-            <dt className="text-sm font-medium text-gray-600">Final Total</dt>
-            <dd className="text-sm text-gray-900">{finalTotal.toFixed(2)}৳</dd>
-          </div>
-        </div>
-      </div>
-      <div className='flex flex-row justify-between px-0 mt-3 gap-10'>
-        <div>
-          <button onClick={() => router.push('/')} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2'>
-            <span className='text-xl'>Continue Shopping</span>
-          </button>
-        </div>
-        {!storedToken && (
-        <button onClick={handleConfirm} className="bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2">
-          <span className="text-xl">Confirm Order</span>
-        </button>
-      )}
-        <div>
-          <button onClick={handlePrint} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2'>
-            <span className='text-xl'>Print</span>
-          </button>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
