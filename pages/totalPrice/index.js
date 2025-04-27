@@ -1,12 +1,13 @@
 import CartContext from '@/context/CartContext';
 import Constants from '@/ults/Constant';
-import { AiFillPlusCircle, AiOutlineMinusCircle, AiOutlineLeft , AiOutlineRight} from 'react-icons/ai';
+import { AiFillPlusCircle, AiOutlineMinusCircle, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { BsXLg } from "react-icons/bs";
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import LoginPopUp from '@/components/layout/LoginPopup';
+import { motion } from 'framer-motion';
 
 const Checkout = () => {
     const { cart, addItemToCart, deleteItemFromCart } = useContext(CartContext);
@@ -78,19 +79,49 @@ const Checkout = () => {
         if (!showGiftCardModal) return null;
 
         return (
-            <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
-                <div className="bg-white p-6 rounded-lg shadow-lg">
-                    <h2 className="text-xl font-semibold mb-4">Gift Card / Coupon</h2>
-                    <input
-                        type="text"
-                        value={giftCardCode}
-                        onChange={(e) => setGiftCardCode(e.target.value)}
-                        placeholder="Enter gift card or coupon code"
-                        className="border border-gray-300 rounded-md px-4 py-2 mb-4 w-full"
-                    />
-                    <button onClick={handleApplyGiftCard} className="mt-4 bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md text-white">Apply</button>
-                    <button onClick={toggleGiftCardModal} className="mt-4 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-md ml-2">Cancel</button>
-                </div>
+            <div className="fixed inset-0 flex justify-center items-center rounded-2xl bg-gray-800/50 backdrop-blur-sm z-50">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="bg-white/90 backdrop-blur-xl rounded-2xl p-6 shadow-xl max-w-md w-full mx-4"
+                >
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-xl font-semibold text-gray-800">Gift Card / Coupon</h2>
+                        <button
+                            onClick={toggleGiftCardModal}
+                            className="text-gray-500 hover:text-gray-700 transition-colors"
+                        >
+                            <BsXLg />
+                        </button>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="relative">
+                            <input
+                                type="text"
+                                value={giftCardCode}
+                                onChange={(e) => setGiftCardCode(e.target.value)}
+                                placeholder="Enter gift card or coupon code"
+                                className="w-full py-3 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300"
+                            />
+                            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-100/50 to-gray-200/50 -z-10 blur-sm"></div>
+                        </div>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={toggleGiftCardModal}
+                                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-300 text-gray-700 font-medium"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleApplyGiftCard}
+                                className="px-4 py-2 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-gray-950 text-white rounded-xl transition-all duration-300 font-medium"
+                            >
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+                </motion.div>
             </div>
         );
     };
@@ -149,94 +180,114 @@ const Checkout = () => {
 
     return (
         <>
-            <div className="container mx-auto py-20 px-36">
-                <div className='grid grid-cols-12 gap-5'>
-                    <div className='col-span-12'>
-                        <h1 className="font-bold pb-3 relative inline-block mb-3 text-xl">
-                            SHOPPING BAG
-                            <span className="absolute bottom-0 left-0 w-2/5 h-1 bg-yellow-500"></span>
-                        </h1>
-                        <div className="flex flex-col gap-4 py-4" >
-                            {cart?.cartItems?.map((cartItem) => (
-                                <div className="flex flex-row justify-between shadow-md p-4 gap-4 bg-white rounded-lg transition duration-300 ease-in-out hover:shadow-xl" key={cartItem.product_id}>
-                                    <img
-                                        src={cartItem.image}
-                                        alt={cartItem.name}
-                                        title={cartItem.name}
-                                        className="w-auto h-[200px] object-cover rounded-lg"
-                                    />
-                                    <div className="flex-grow">
-                                        <p className="text-xl font-semibold text-gray-800">{cartItem.name}</p>
-                                        <p className="text-sm text-gray-500 pt-3">Type: {cartItem.sub_categoryName}</p>
-                                        <p className="text-sm text-gray-500 pt-3">Size: {cartItem.child_sub_categoryName}</p>
-                                        <p className="text-lg font-bold text-green-600 pt-3">TK {cartItem.price}</p>
-                                        <div className="flex items-center py-2 mt-2">
-                                            <button
-                                                onClick={() => decreaseQty(cartItem)}
-                                                className="text-gray-600 hover:text-red-500 focus:outline-none"
-                                                aria-label="Decrease quantity"
-                                            >
-                                                <AiOutlineMinusCircle size={24} />
-                                            </button>
-                                            <input
-                                                type="text"
-                                                name={`quantity[${cartItem.product_id}]`}
-                                                value={cartItem.quantity}
-                                                size="3"
-                                                className="mx-2 text-center form-input rounded-md border border-gray-300 w-12"
-                                                readOnly
-                                            />
-                                            <button
-                                                onClick={() => increaseQty(cartItem)}
-                                                className="text-gray-600 hover:text-green-500 focus:outline-none"
-                                                aria-label="Increase quantity"
-                                            >
-                                                <AiFillPlusCircle size={24} />
-                                            </button>
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12">
+                <div className="max-w-screen-xl mx-auto px-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-8 shadow-lg max-w-3xl mx-auto">
+                            <h1 className="text-3xl font-bold text-gray-800 mb-8">
+                                Shopping Bag
+                                <span className="block w-20 h-1 bg-gray-800 mt-2 rounded-full"></span>
+                            </h1>
+
+                            <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-4">
+                                {cart?.cartItems?.map((cartItem) => (
+                                    <motion.div
+                                        key={cartItem.product_id}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="flex flex-col md:flex-row items-center gap-4 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
+                                    >
+                                        <img
+                                            src={cartItem.image}
+                                            alt={cartItem.name}
+                                            title={cartItem.name}
+                                            className="w-24 h-24 object-cover rounded-xl"
+                                        />
+                                        <div className="flex-grow space-y-3">
+                                            <h3 className="text-xl font-semibold text-gray-800">{cartItem.name}</h3>
+                                            <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                                                <p>Type: {cartItem.sub_categoryName}</p>
+                                                <p>Size: {cartItem.child_sub_categoryName}</p>
+                                            </div>
+                                            <p className="text-lg font-bold text-gray-900">TK {cartItem.price}</p>
+                                            <div className="flex items-center space-x-4">
+                                                <div className="flex items-center space-x-2 bg-gray-50/80 p-2 rounded-xl">
+                                                    <button
+                                                        onClick={() => decreaseQty(cartItem)}
+                                                        className="p-1 rounded-lg hover:bg-gray-100 transition-all"
+                                                    >
+                                                        <AiOutlineMinusCircle className="text-gray-600" />
+                                                    </button>
+                                                    <span className="px-3 py-1 font-medium">{cartItem.quantity}</span>
+                                                    <button
+                                                        onClick={() => increaseQty(cartItem)}
+                                                        className="p-1 rounded-lg hover:bg-gray-100 transition-all"
+                                                    >
+                                                        <AiFillPlusCircle className="text-gray-600" />
+                                                    </button>
+                                                </div>
+                                                <button
+                                                    onClick={() => deleteItemFromCart(cartItem?.product_id)}
+                                                    className="p-2 rounded-lg bg-gray-50/80 hover:bg-gray-100 transition-all"
+                                                >
+                                                    <BsXLg className="text-gray-600" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+
+                            <div className="mt-8 space-y-4">
+                                <div className="bg-gradient-to-br from-gray-50/80 to-gray-100/80 backdrop-blur-sm rounded-2xl p-4 shadow-sm">
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center">
+                                            <p className="text-gray-700 font-medium">Subtotal</p>
+                                            <p className="text-gray-900 font-semibold">TK {totalPrice}</p>
+                                        </div>
+                                        <div className="flex justify-between items-center border-t border-gray-100 pt-4">
+                                            <p className="text-gray-700 font-medium">Delivery</p>
+                                            <p className="text-green-600 font-semibold">Free</p>
+                                        </div>
+                                        <button
+                                            onClick={toggleGiftCardModal}
+                                            className="w-full py-3 px-4 bg-gradient-to-r from-gray-100/80 to-gray-200/80 hover:from-gray-200/80 hover:to-gray-300/80 rounded-xl transition-all duration-300 text-gray-700 font-medium"
+                                        >
+                                            Apply Gift Card / Coupon
+                                        </button>
+                                        {renderGiftCardModal()}
+                                        <div className="flex justify-between items-center border-t border-gray-100 pt-4">
+                                            <p className="text-xl font-bold text-gray-800">Total</p>
+                                            <p className="text-xl font-bold text-gray-900">
+                                                TK {discountedTotal ? discountedTotal : totalPrice}
+                                            </p>
                                         </div>
                                     </div>
-                                    <div>
-                                        <a
-                                            onClick={() => deleteItemFromCart(cartItem?.product_id)}
-                                            className="text-gray-600 hover:text-red-500 cursor-pointer"
-                                            aria-label="Delete item"
-                                        >
-                                            <BsXLg size={24} />
-                                        </a>
-                                    </div>
                                 </div>
-                            ))}
-                        </div>
 
-                        <div>
-                            <div className='px-4 py-2 shadow-lg rounded-lg bg-white'>
-                                <div className='flex gap-28 justify-between items-center p-3'>
-                                    <p className='text-gray-800 font-medium'>Subtotal</p>
-                                    <p className='text-gray-900 font-semibold'>TK {totalPrice}</p>
-                                </div>
-                                <div className='flex justify-between items-center p-3 border-t border-gray-200'>
-                                    <p className='text-gray-800 font-medium'>Delivery</p>
-                                    <p className='text-green-600 font-semibold'>Free</p>
-                                </div>
-                                <button onClick={toggleGiftCardModal} className="mt-4 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md">Apply Gift Card / Coupon</button>
-                                {renderGiftCardModal()}
-                                <div className='flex justify-between items-center p-3 border-t border-gray-200 mt-2'>
-                                    <p className='text-lg text-gray-800 font-bold'>Total</p>
-                                    <p className='text-lg text-green-700 font-bold'>TK {discountedTotal ? discountedTotal : totalPrice}</p>
+                                <div className="flex flex-col md:flex-row justify-between gap-4 mt-6">
+                                    <Link href="/">
+                                        <button className="w-full md:w-auto px-6 py-3 bg-gray-800 text-white rounded-xl hover:bg-gray-900 transition-all duration-300 flex items-center justify-center space-x-2">
+                                            <AiOutlineLeft />
+                                            <span>Continue Shopping</span>
+                                        </button>
+                                    </Link>
+                                    <button
+                                        onClick={handleNext}
+                                        className="w-full md:w-auto px-6 py-3 bg-gray-800 text-white rounded-xl hover:bg-gray-900 transition-all duration-300 flex items-center justify-center space-x-2"
+                                    >
+                                        <span>Next</span>
+                                        <AiOutlineRight />
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div className='flex flex-row justify-between px-3 mt-3 gap-10'>
-                            <div>
-                                <Link href="/">
-                                    <button className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2 '><AiOutlineLeft /> <span className='text-xl'>Continue Shopping</span></button>
-                                </Link>
-                            </div>
-                            <div>
-                                <button onClick={handleNext} className='bg-green-500 mt-15 flex gap-2 items-center justify-between border rounded-full px-3 py-2 '>  <span className='text-xl'>Next</span><AiOutlineRight/></button>
-                            </div>
-                        </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
             {renderConfirmationModal()}
