@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { useGeolocated } from "react-geolocated";
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaGlobe, FaBuilding, FaLocationArrow, FaShoppingBag } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaShoppingBag, FaPhone, FaMapMarkerAlt, FaGlobe, FaBuilding, FaLocationArrow } from 'react-icons/fa';
 import { BsBuilding, BsGeoAlt, BsArrowRight } from 'react-icons/bs';
 import { motion } from 'framer-motion';
 
@@ -185,7 +185,7 @@ const Checkout = ({ initialDivisions }) => {
           additionalInfo: ''
         });
       }
-    } catch (error) {
+    } catch (error) {FaShoppingBag
       console.error("Detailed error:", error);
       alert("Error getting location. Please try again or enter manually.");
     } finally {
@@ -225,13 +225,13 @@ const Checkout = ({ initialDivisions }) => {
           className="flex justify-center"
         >
           <div className="w-full max-w-4xl">
-            <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-8 shadow-lg">
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/20">
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h2 className="text-3xl font-bold text-gray-800">Checkout Information</h2>
+                  <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">Checkout Information</h2>
                   <p className="text-gray-500 mt-1">Please fill in your details to complete the order</p>
                 </div>
-                <div className="bg-gradient-to-r from-primary/10 to-primary/20 p-3 rounded-full">
+                <div className="bg-gradient-to-r from-primary/20 to-primary/30 p-4 rounded-2xl shadow-inner">
                   <FaShoppingBag className="text-primary text-2xl" />
                 </div>
               </div>
@@ -239,10 +239,11 @@ const Checkout = ({ initialDivisions }) => {
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="flex flex-col">
-                    <label htmlFor="firstName" className="text-gray-700 font-medium mb-2">
+                    <label htmlFor="firstName" className="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                      <FaUser className="text-gray-400 text-sm" />
                       First Name *
                     </label>
-                    <div className="relative">
+                    <div className="relative group">
                       <input
                         type="text"
                         id="firstName"
@@ -250,17 +251,17 @@ const Checkout = ({ initialDivisions }) => {
                         value={formData.firstName}
                         onChange={handleChange}
                         required
-                        className="w-full py-3.5 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300"
+                        className="w-full py-3.5 px-4 bg-white border border-gray-200 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.06)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] focus:shadow-[0_0_0_3px_rgba(66,153,225,0.15)] focus:ring-0 focus:border-primary outline-none transition-all duration-300"
                       />
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-100/50 to-gray-200/50 -z-10 blur-sm"></div>
                     </div>
                   </div>
 
                   <div className="flex flex-col">
-                    <label htmlFor="lastName" className="text-gray-700 font-medium mb-2">
+                    <label htmlFor="lastName" className="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                      <FaUser className="text-gray-400 text-sm" />
                       Last Name *
                     </label>
-                    <div className="relative">
+                    <div className="relative group">
                       <input
                         type="text"
                         id="lastName"
@@ -268,18 +269,18 @@ const Checkout = ({ initialDivisions }) => {
                         value={formData.lastName}
                         onChange={handleChange}
                         required
-                        className="w-full py-3.5 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300"
+                        className="w-full py-3.5 px-4 bg-white border border-gray-200 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.06)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] focus:shadow-[0_0_0_3px_rgba(66,153,225,0.15)] focus:ring-0 focus:border-primary outline-none transition-all duration-300"
                       />
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-100/50 to-gray-200/50 -z-10 blur-sm"></div>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex flex-col">
-                  <label htmlFor="email" className="text-gray-700 font-medium mb-2">
+                  <label htmlFor="email" className="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                    <FaEnvelope className="text-gray-400 text-sm" />
                     Email Address *
                   </label>
-                  <div className="relative">
+                  <div className="relative group">
                     <input
                       type="email"
                       id="email"
@@ -287,17 +288,17 @@ const Checkout = ({ initialDivisions }) => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full py-3.5 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300"
+                      className="w-full py-3.5 px-4 bg-white border border-gray-200 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.06)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] focus:shadow-[0_0_0_3px_rgba(66,153,225,0.15)] focus:ring-0 focus:border-primary outline-none transition-all duration-300"
                     />
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-100/50 to-gray-200/50 -z-10 blur-sm"></div>
                   </div>
                 </div>
 
                 <div className="flex flex-col">
-                  <label htmlFor="phoneNumber" className="text-gray-700 font-medium mb-2">
+                  <label htmlFor="phoneNumber" className="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                    <FaPhone className="text-gray-400 text-sm" />
                     Phone Number *
                   </label>
-                  <div className="relative">
+                  <div className="relative group">
                     <input
                       type="tel"
                       id="phoneNumber"
@@ -305,9 +306,8 @@ const Checkout = ({ initialDivisions }) => {
                       value={formData.phoneNumber}
                       onChange={handleChange}
                       required
-                      className="w-full py-3.5 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300"
+                      className="w-full py-3.5 px-4 bg-white border border-gray-200 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.06)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] focus:shadow-[0_0_0_3px_rgba(66,153,225,0.15)] focus:ring-0 focus:border-primary outline-none transition-all duration-300"
                     />
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-100/50 to-gray-200/50 -z-10 blur-sm"></div>
                   </div>
                 </div>
 
@@ -316,45 +316,51 @@ const Checkout = ({ initialDivisions }) => {
                     type="button"
                     onClick={handleUseCurrentLocation}
                     disabled={isLoadingLocation}
-                    className="w-full py-3.5 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm hover:bg-gray-100/80 transition-all duration-300 flex items-center justify-center space-x-2"
+                    className="w-full py-3.5 px-4 bg-gray-50 border border-gray-200 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] active:shadow-inner transition-all duration-300 flex items-center justify-center space-x-2"
                   >
-                    <FaLocationArrow className="text-gray-600" />
+                    <FaLocationArrow className={`${isLoadingLocation ? 'animate-pulse text-primary' : 'text-gray-500'}`} />
                     <span className="font-medium">{isLoadingLocation ? "Getting Location..." : "Use My Current Location"}</span>
                   </button>
                 </div>
 
                 {showLocationDetails && (
-                  <div className="flex flex-col">
-                    <label className="text-gray-700 font-medium mb-2">
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    transition={{ duration: 0.3 }}
+                    className="flex flex-col"
+                  >
+                    <label className="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                      <FaMapMarkerAlt className="text-gray-400 text-sm" />
                       Location Details
                     </label>
-                    <div className="relative">
+                    <div className="relative group">
                       <input
                         type="text"
                         name="streetAddress"
                         value={locationDetails.streetAddress}
                         onChange={handleLocationDetailsChange}
-                        className="w-full py-3.5 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300"
+                        className="w-full py-3.5 px-4 bg-white border border-gray-200 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.06)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] focus:shadow-[0_0_0_3px_rgba(66,153,225,0.15)] focus:ring-0 focus:border-primary outline-none transition-all duration-300"
                         placeholder="Enter street address"
                       />
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-100/50 to-gray-200/50 -z-10 blur-sm"></div>
                     </div>
-                  </div>
+                  </motion.div>
                 )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="flex flex-col">
-                    <label htmlFor="country" className="text-gray-700 font-medium mb-2">
+                    <label htmlFor="country" className="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                      <FaGlobe className="text-gray-400 text-sm" />
                       Select Country *
                     </label>
-                    <div className="relative">
+                    <div className="relative group">
                       <select
                         id="country"
                         name="country"
                         value={formData.country}
                         onChange={handleChange}
                         required
-                        className="w-full py-3.5 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300 appearance-none"
+                        className="w-full py-3.5 px-4 bg-white border border-gray-200 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.06)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] focus:shadow-[0_0_0_3px_rgba(66,153,225,0.15)] focus:ring-0 focus:border-primary outline-none transition-all duration-300 appearance-none"
                       >
                         <option value="">Select Country</option>
                         <option value="AF">Afghanistan</option>
@@ -466,15 +472,20 @@ const Checkout = ({ initialDivisions }) => {
                         <option value="IT">Italy</option>
                         <option value="JM">Jamaica</option>
                       </select>
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-100/50 to-gray-200/50 -z-10 blur-sm"></div>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
 
                   <div className="flex flex-col">
-                    <label htmlFor="postcode" className="text-gray-700 font-medium mb-2">
+                    <label htmlFor="postcode" className="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                      <FaBuilding className="text-gray-400 text-sm" />
                       Post Code *
                     </label>
-                    <div className="relative">
+                    <div className="relative group">
                       <input
                         type="text"
                         id="postcode"
@@ -482,25 +493,25 @@ const Checkout = ({ initialDivisions }) => {
                         value={formData.postcode}
                         onChange={handleChange}
                         required
-                        className="w-full py-3.5 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300"
+                        className="w-full py-3.5 px-4 bg-white border border-gray-200 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.06)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] focus:shadow-[0_0_0_3px_rgba(66,153,225,0.15)] focus:ring-0 focus:border-primary outline-none transition-all duration-300"
                       />
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-100/50 to-gray-200/50 -z-10 blur-sm"></div>
                     </div>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="flex flex-col">
-                    <label htmlFor="Division" className="text-gray-700 font-medium mb-2">
+                    <label htmlFor="Division" className="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                      <BsBuilding className="text-gray-400 text-sm" />
                       Select Division *
                     </label>
-                    <div className="relative">
+                    <div className="relative group">
                       <select
                         name="Division"
                         value={formData.Division}
                         onChange={handleChange}
                         required
-                        className="w-full py-3.5 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300 appearance-none"
+                        className="w-full py-3.5 px-4 bg-white border border-gray-200 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.06)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] focus:shadow-[0_0_0_3px_rgba(66,153,225,0.15)] focus:ring-0 focus:border-primary outline-none transition-all duration-300 appearance-none"
                       >
                         <option value="">Select Division</option>
                         {cities.map((city) => (
@@ -509,21 +520,26 @@ const Checkout = ({ initialDivisions }) => {
                           </option>
                         ))}
                       </select>
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-100/50 to-gray-200/50 -z-10 blur-sm"></div>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
 
                   <div className="flex flex-col">
-                    <label htmlFor="District" className="text-gray-700 font-medium mb-2">
+                    <label htmlFor="District" className="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                      <BsGeoAlt className="text-gray-400 text-sm" />
                       Select District *
                     </label>
-                    <div className="relative">
+                    <div className="relative group">
                       <select
                         name="District"
                         value={formData.District}
                         onChange={handleChange}
                         required
-                        className="w-full py-3.5 px-4 bg-gray-50/80 backdrop-blur-sm border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-300 focus:border-gray-300 outline-none transition-all duration-300 appearance-none"
+                        className="w-full py-3.5 px-4 bg-white border border-gray-200 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.06)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] focus:shadow-[0_0_0_3px_rgba(66,153,225,0.15)] focus:ring-0 focus:border-primary outline-none transition-all duration-300 appearance-none"
                       >
                         <option value="">Select District</option>
                         {districts.map((district) => (
@@ -532,24 +548,31 @@ const Checkout = ({ initialDivisions }) => {
                           </option>
                         ))}
                       </select>
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-100/50 to-gray-200/50 -z-10 blur-sm"></div>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="text-sm text-gray-500 flex items-center justify-center">
+                <div className="text-sm text-gray-500 flex items-center justify-center mt-4 bg-gray-50 py-2 px-4 rounded-xl">
                   <span className="text-red-500 mr-1">*</span>
                   All fields are mandatory
                 </div>
 
                 <div className="flex justify-center mt-8">
-                  <button
+                  <motion.button
                     type="submit"
-                    className="w-full md:w-auto px-8 py-3.5 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-medium flex items-center justify-center space-x-2"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full md:w-auto px-10 py-4 bg-gradient-to-r from-gray-800 to-gray-700 text-white rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.2)] transition-all duration-300 font-medium flex items-center justify-center space-x-2 overflow-hidden relative"
                   >
-                    <span>Proceed to Payment</span>
-                    <BsArrowRight className="text-xl" />
-                  </button>
+                    <span className="relative z-10">Proceed to Payment</span>
+                    <BsArrowRight className="text-xl relative z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                  </motion.button>
                 </div>
               </form>
             </div>
