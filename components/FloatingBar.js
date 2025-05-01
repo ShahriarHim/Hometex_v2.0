@@ -19,6 +19,7 @@ import Link from 'next/link';
 import Constants from '@/ults/Constant';
 import WishListContext from "@/context/WishListContext";
 import { getCookie, setCookie } from 'cookies-next';
+import { useGeolocated } from "react-geolocated";
 
 const FloatingBar = () => {
     const { location, isGeolocationAvailable, isGeolocationEnabled } = useGeolocation();
@@ -33,6 +34,11 @@ const FloatingBar = () => {
     const [hoveredCategory, setHoveredCategory] = useState(null);
     const [showRecentlyViewed, setShowRecentlyViewed] = useState(false);
     const [recentlyViewedProducts, setRecentlyViewedProducts] = useState([]);
+    const [showLocationPanel, setShowLocationPanel] = useState(false);
+    const [locationData, setLocationData] = useState(null);
+    const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+    const [isEditingLocation, setIsEditingLocation] = useState(false);
+    const [editedLocationData, setEditedLocationData] = useState(null);
 
     const cartRef = useRef(null);
     const wishRef = useRef(null);
@@ -41,6 +47,13 @@ const FloatingBar = () => {
 
     const cartItems = cart?.cartItems;
     const [totalPrice, setTotalPrice] = useState(0);
+
+    const { coords, isGeolocationAvailable: geolocatedIsGeolocationAvailable, isGeolocationEnabled: geolocatedIsGeolocationEnabled } = useGeolocated({
+        positionOptions: {
+            enableHighAccuracy: true,
+        },
+        userDecisionTimeout: 5000,
+    });
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -84,6 +97,23 @@ const FloatingBar = () => {
             setRecentlyViewedProducts(recentlyViewed ? JSON.parse(recentlyViewed) : []);
         }
     }, [showRecentlyViewed]);
+
+    useEffect(() => {
+        const savedLocation = getCookie('user_location');
+        if (savedLocation) {
+            try {
+                setLocationData(JSON.parse(savedLocation));
+            } catch (error) {
+                console.error("Error parsing location cookie:", error);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (locationData) {
+            setEditedLocationData({...locationData});
+        }
+    }, [locationData]);
 
     const handleCartClick = () => {
         setIsCartOpen(prevState => !prevState);
@@ -134,6 +164,97 @@ const FloatingBar = () => {
         });
     };
 
+    const handleGetCurrentLocation = async () => {
+        setIsLoadingLocation(true);
+        setShowLocationPanel(true);
+        
+        try {
+            if (!geolocatedIsGeolocationAvailable) {
+                alert("Your browser does not support geolocation");
+                return;
+            }
+
+            if (!geolocatedIsGeolocationEnabled) {
+                alert("Please enable location services");
+                return;
+            }
+
+            if (coords) {
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?lat=${coords.latitude}&lon=${coords.longitude}&format=json`
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Creating a simplified location object
+                const locationInfo = {
+                    displayName: data.display_name,
+                    city: data.address.city || data.address.town || data.address.village || "",
+                    state: data.address.state?.replace(" Division", "") || "",
+                    district: data.address.state_district?.replace(" District", "") || "",
+                    country: data.address.country || "",
+                    countryCode: data.address.country_code?.toUpperCase() || "",
+                    postcode: data.address.postcode || "",
+                    latitude: coords.latitude,
+                    longitude: coords.longitude
+                };
+                
+                setLocationData(locationInfo);
+                
+                // Store in cookies
+                setCookie('user_location', JSON.stringify(locationInfo), {
+                    maxAge: 30 * 24 * 60 * 60, // 30 days
+                    path: '/'
+                });
+            }
+        } catch (error) {
+            console.error("Error getting location:", error);
+            alert("Error getting location. Please try again.");
+        } finally {
+            setIsLoadingLocation(false);
+        }
+    };
+    
+    const closeLocationPanel = () => {
+        setShowLocationPanel(false);
+    };
+
+    const handleEditLocation = () => {
+        setIsEditingLocation(true);
+        setEditedLocationData({...locationData});
+    };
+    
+    const handleSaveLocationEdits = () => {
+        // Update the location data with edited values
+        setLocationData(editedLocationData);
+        
+        // Save to cookies
+        setCookie('user_location', JSON.stringify(editedLocationData), {
+            maxAge: 30 * 24 * 60 * 60, // 30 days
+            path: '/'
+        });
+        
+        setIsEditingLocation(false);
+    };
+    
+    const handleCancelEdit = () => {
+        setIsEditingLocation(false);
+        // Reset edited data to original
+        setEditedLocationData({...locationData});
+    };
+    
+    const handleEditChange = (e) => {
+        const { name, value } = e.target;
+        setEditedLocationData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
     const buttonData = [
         {
             icon: <FaListUl />,
@@ -149,12 +270,8 @@ const FloatingBar = () => {
         },
         {
             icon: <FaMapMarkerAlt />,
-            tooltip: (
-                <div className="popup-content">
-                    <span>{isGeolocationAvailable && isGeolocationEnabled ? location : 'Location'}</span>
-                </div>
-            ),
-            onClick: null,
+            tooltip: 'Current Location',
+            onClick: handleGetCurrentLocation,
             className: 'floating-btn-middle',
         },
         {
@@ -429,6 +546,213 @@ const FloatingBar = () => {
                                     >
                                         Browse Products
                                     </Link>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Location Panel - Centered on screen with click-outside functionality */}
+            {showLocationPanel && (
+                <div className="location-modal-overlay" onClick={closeLocationPanel}>
+                    <div
+                        className={`location-modal-card${isEditingLocation ? " editing" : ""}`}
+                        onClick={e => e.stopPropagation()}
+                        tabIndex={-1}
+                        role="dialog"
+                        aria-modal="true"
+                    >
+                        <div className="location-modal-header">
+                            <span className="location-modal-icon">
+                                <FaMapMarkerAlt />
+                            </span>
+                            <span className="location-modal-title">
+                                {isEditingLocation ? "Edit Location" : "Your Location"}
+                            </span>
+                            {locationData && !isEditingLocation && (
+                                <div className="location-modal-actions">
+                                    <button
+                                        onClick={handleEditLocation}
+                                        className="location-modal-action-btn"
+                                        title="Edit"
+                                        aria-label="Edit location"
+                                    >
+                                        <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    </button>
+                                    <button
+                                        onClick={handleGetCurrentLocation}
+                                        className="location-modal-action-btn"
+                                        title="Refresh"
+                                        aria-label="Refresh location"
+                                    >
+                                        <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                                    </button>
+                                </div>
+                            )}
+                            <button
+                                onClick={closeLocationPanel}
+                                className="location-modal-close"
+                                aria-label="Close"
+                            >
+                                <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </button>
+                        </div>
+                        <div className="location-modal-content">
+                            {isLoadingLocation ? (
+                                <div className="location-modal-loading">
+                                    <div className="location-modal-spinner"></div>
+                                    <span>Finding your location...</span>
+                                </div>
+                            ) : locationData && !isEditingLocation ? (
+                                <div>
+                                    <div className="location-modal-pill">
+                                        <FaMapMarkerAlt />
+                                        <span>
+                                            {locationData.city || ""}
+                                            {locationData.district ? `, ${locationData.district}` : ""}
+                                        </span>
+                                    </div>
+                                    <div className="location-modal-details">
+                                        {locationData.displayName && (
+                                            <div className="location-modal-address">{locationData.displayName}</div>
+                                        )}
+                                        <div className="location-modal-grid">
+                                            {locationData.city && (
+                                                <div>
+                                                    <div className="location-modal-label">City</div>
+                                                    <div className="location-modal-value">{locationData.city}</div>
+                                                </div>
+                                            )}
+                                            {locationData.district && (
+                                                <div>
+                                                    <div className="location-modal-label">District</div>
+                                                    <div className="location-modal-value">{locationData.district}</div>
+                                                </div>
+                                            )}
+                                            {locationData.state && (
+                                                <div>
+                                                    <div className="location-modal-label">Division</div>
+                                                    <div className="location-modal-value">{locationData.state}</div>
+                                                </div>
+                                            )}
+                                            {locationData.postcode && (
+                                                <div>
+                                                    <div className="location-modal-label">Postcode</div>
+                                                    <div className="location-modal-value">{locationData.postcode}</div>
+                                                </div>
+                                            )}
+                                            {locationData.country && (
+                                                <div>
+                                                    <div className="location-modal-label">Country</div>
+                                                    <div className="location-modal-value">{locationData.country}</div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : locationData && isEditingLocation ? (
+                                <form
+                                    className="location-modal-editform"
+                                    onSubmit={e => {
+                                        e.preventDefault();
+                                        handleSaveLocationEdits();
+                                    }}
+                                >
+                                    <div className="location-modal-grid">
+                                        <div>
+                                            <label className="location-modal-label">City</label>
+                                            <input
+                                                type="text"
+                                                name="city"
+                                                value={editedLocationData.city || ""}
+                                                onChange={handleEditChange}
+                                                className="location-modal-input"
+                                                placeholder="City"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="location-modal-label">District</label>
+                                            <input
+                                                type="text"
+                                                name="district"
+                                                value={editedLocationData.district || ""}
+                                                onChange={handleEditChange}
+                                                className="location-modal-input"
+                                                placeholder="District"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="location-modal-label">Division</label>
+                                            <input
+                                                type="text"
+                                                name="state"
+                                                value={editedLocationData.state || ""}
+                                                onChange={handleEditChange}
+                                                className="location-modal-input"
+                                                placeholder="Division"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="location-modal-label">Postcode</label>
+                                            <input
+                                                type="text"
+                                                name="postcode"
+                                                value={editedLocationData.postcode || ""}
+                                                onChange={handleEditChange}
+                                                className="location-modal-input"
+                                                placeholder="Postcode"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="location-modal-label">Country</label>
+                                            <input
+                                                type="text"
+                                                name="country"
+                                                value={editedLocationData.country || ""}
+                                                onChange={handleEditChange}
+                                                className="location-modal-input"
+                                                placeholder="Country"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="location-modal-label">Full Address</label>
+                                        <textarea
+                                            name="displayName"
+                                            value={editedLocationData.displayName || ""}
+                                            onChange={handleEditChange}
+                                            className="location-modal-textarea"
+                                            placeholder="Full address"
+                                            rows={2}
+                                        />
+                                    </div>
+                                    <div className="location-modal-editactions">
+                                        <button
+                                            type="button"
+                                            onClick={handleCancelEdit}
+                                            className="location-modal-cancel"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button type="submit" className="location-modal-save">
+                                            Save
+                                        </button>
+                                    </div>
+                                </form>
+                            ) : (
+                                <div className="location-modal-empty">
+                                    <div>
+                                        <svg width="40" height="40" viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    </div>
+                                    <p>We couldn't determine your location</p>
+                                    <button
+                                        onClick={handleGetCurrentLocation}
+                                        className="location-modal-tryagain"
+                                    >
+                                        <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                        <span>Try Again</span>
+                                    </button>
                                 </div>
                             )}
                         </div>
@@ -980,6 +1304,301 @@ const FloatingBar = () => {
                 /* Close button hover effect */
                 .recently-viewed-popup .group:hover .text-gray-500 {
                     color: #ef4444;
+                }
+
+                .location-modal-overlay {
+                    position: fixed;
+                    inset: 0;
+                    z-index: 1050;
+                    background: rgba(0,0,0,0.32);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    animation: locationModalFadeIn 0.25s cubic-bezier(.4,2,.6,1);
+                    backdrop-filter: blur(2px);
+                }
+                @keyframes locationModalFadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                .location-modal-card {
+                    background: #fff;
+                    border-radius: 18px;
+                    width: 95vw;
+                    max-width: 370px;
+                    max-height: 92vh;
+                    box-shadow: 0 8px 40px rgba(40,167,69,0.13), 0 1.5px 8px rgba(0,0,0,0.04);
+                    border: 1.5px solid #e5e7eb;
+                    display: flex;
+                    flex-direction: column;
+                    animation: locationModalPopIn 0.33s cubic-bezier(.4,2,.6,1);
+                    position: relative;
+                    overflow: hidden;
+                }
+                @keyframes locationModalPopIn {
+                    from { opacity: 0; transform: scale(0.92) translateY(40px);}
+                    60% { opacity: 1; transform: scale(1.04) translateY(-6px);}
+                    to { opacity: 1; transform: scale(1) translateY(0);}
+                }
+                .location-modal-header {
+                    display: flex;
+                    align-items: center;
+                    padding: 1rem 1.25rem 0.75rem 1.25rem;
+                    border-bottom: 1px solid #f3f4f6;
+                    background: linear-gradient(90deg, #f8f9fa 60%, #fff 100%);
+                    position: relative;
+                    min-height: 56px;
+                }
+                .location-modal-icon {
+                    width: 34px;
+                    height: 34px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, #d4ed30 60%, #a8c423 100%);
+                    color: #fff;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.1rem;
+                    margin-right: 12px;
+                    box-shadow: 0 2px 8px rgba(168,196,35,0.13);
+                    flex-shrink: 0;
+                }
+                .location-modal-title {
+                    font-size: 1.08rem;
+                    font-weight: 600;
+                    color: #222;
+                    flex: 1;
+                    letter-spacing: 0.01em;
+                }
+                .location-modal-actions {
+                    display: flex;
+                    gap: 6px;
+                    margin-right: 8px;
+                }
+                .location-modal-action-btn {
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    background: #f3f4f6;
+                    color: #7c7c7c;
+                    border: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: background 0.18s, color 0.18s, transform 0.18s;
+                    cursor: pointer;
+                    font-size: 1rem;
+                }
+                .location-modal-action-btn:hover {
+                    background: #e6f7c6;
+                    color: #a8c423;
+                    transform: scale(1.08);
+                }
+                .location-modal-close {
+                    position: absolute;
+                    top: 12px;
+                    right: 12px;
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    background: #f3f4f6;
+                    color: #7c7c7c;
+                    border: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: background 0.18s, color 0.18s, transform 0.18s;
+                    cursor: pointer;
+                    z-index: 2;
+                }
+                .location-modal-close:hover {
+                    background: #fbe9e9;
+                    color: #e53e3e;
+                    transform: rotate(90deg) scale(1.08);
+                }
+                .location-modal-content {
+                    padding: 1.1rem 1.25rem 1.25rem 1.25rem;
+                    overflow-y: auto;
+                    flex: 1;
+                    min-height: 120px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+                .location-modal-loading {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    min-height: 120px;
+                    gap: 1.2rem;
+                }
+                .location-modal-spinner {
+                    width: 32px;
+                    height: 32px;
+                    border: 3px solid #e6f7c6;
+                    border-top: 3px solid #a8c423;
+                    border-radius: 50%;
+                    animation: locationModalSpin 1s linear infinite;
+                    margin-bottom: 0.5rem;
+                }
+                @keyframes locationModalSpin {
+                    to { transform: rotate(360deg);}
+                }
+                .location-modal-pill {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 7px;
+                    background: #f6fbe9;
+                    color: #7c7c7c;
+                    border-radius: 16px;
+                    font-size: 0.98rem;
+                    font-weight: 500;
+                    padding: 5px 14px 5px 10px;
+                    margin-bottom: 1rem;
+                    border: 1px solid #e6f7c6;
+                }
+                .location-modal-details {
+                    margin-bottom: 0.5rem;
+                }
+                .location-modal-address {
+                    font-size: 0.97rem;
+                    color: #444;
+                    background: #f8f9fa;
+                    border-radius: 7px;
+                    padding: 0.5rem 0.7rem;
+                    margin-bottom: 0.7rem;
+                    border: 1px solid #f3f4f6;
+                    word-break: break-word;
+                }
+                .location-modal-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 0.6rem 0.7rem;
+                    margin-bottom: 0.7rem;
+                }
+                .location-modal-label {
+                    font-size: 0.93rem;
+                    color: #7c7c7c;
+                    font-weight: 600;
+                    margin-bottom: 2px;
+                    letter-spacing: 0.01em;
+                }
+                .location-modal-value {
+                    font-size: 1.01rem;
+                    color: #222;
+                    background: #f8f9fa;
+                    border-radius: 6px;
+                    padding: 4px 8px;
+                    border: 1px solid #f3f4f6;
+                    word-break: break-word;
+                }
+                .location-modal-editform {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.7rem;
+                    margin-top: 0.2rem;
+                }
+                .location-modal-input, .location-modal-textarea {
+                    width: 100%;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 7px;
+                    padding: 7px 10px;
+                    font-size: 1rem;
+                    background: #f8f9fa;
+                    transition: border 0.18s, background 0.18s;
+                    color: #222;
+                    margin-top: 2px;
+                }
+                .location-modal-input:focus, .location-modal-textarea:focus {
+                    border-color: #a8c423;
+                    background: #fff;
+                    outline: none;
+                    box-shadow: 0 0 0 2px #e6f7c6;
+                }
+                .location-modal-editactions {
+                    display: flex;
+                    gap: 10px;
+                    margin-top: 0.5rem;
+                }
+                .location-modal-cancel, .location-modal-save {
+                    flex: 1;
+                    height: 38px;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    border: none;
+                    cursor: pointer;
+                    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+                }
+                .location-modal-cancel {
+                    background: #f3f4f6;
+                    color: #7c7c7c;
+                }
+                .location-modal-cancel:hover {
+                    background: #fbe9e9;
+                    color: #e53e3e;
+                }
+                .location-modal-save {
+                    background: linear-gradient(90deg, #d4ed30 60%, #a8c423 100%);
+                    color: #222;
+                    box-shadow: 0 2px 8px rgba(168,196,35,0.13);
+                }
+                .location-modal-save:hover {
+                    background: linear-gradient(90deg, #c8e01c 60%, #9db61e 100%);
+                    color: #222;
+                    box-shadow: 0 4px 16px rgba(168,196,35,0.18);
+                }
+                .location-modal-empty {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    min-height: 120px;
+                    gap: 1.2rem;
+                    text-align: center;
+                }
+                .location-modal-empty svg {
+                    color: #e5e7eb;
+                    margin-bottom: 0.5rem;
+                }
+                .location-modal-empty p {
+                    color: #7c7c7c;
+                    font-size: 1.05rem;
+                    margin-bottom: 0.5rem;
+                }
+                .location-modal-tryagain {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 7px;
+                    background: linear-gradient(90deg, #d4ed30 60%, #a8c423 100%);
+                    color: #222;
+                    border: none;
+                    border-radius: 8px;
+                    padding: 8px 18px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    box-shadow: 0 2px 8px rgba(168,196,35,0.13);
+                    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+                }
+                .location-modal-tryagain:hover {
+                    background: linear-gradient(90deg, #c8e01c 60%, #9db61e 100%);
+                    color: #222;
+                    box-shadow: 0 4px 16px rgba(168,196,35,0.18);
+                }
+                @media (max-width: 500px) {
+                    .location-modal-card {
+                        max-width: 98vw;
+                        min-width: 0;
+                        width: 99vw;
+                        padding: 0;
+                    }
+                    .location-modal-header,
+                    .location-modal-content {
+                        padding-left: 0.7rem;
+                        padding-right: 0.7rem;
+                    }
                 }
             `}</style>
         </>

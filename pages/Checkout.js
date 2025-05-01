@@ -50,6 +50,71 @@ const Checkout = ({ initialDivisions }) => {
     }
   }, [formData.Division]);
 
+  useEffect(() => {
+    // Load user location from cookies if it exists
+    const savedLocation = getCookie('user_location');
+    if (savedLocation) {
+      try {
+        const locationData = JSON.parse(savedLocation);
+        
+        // Pre-fill form data with saved location information
+        setFormData(prev => ({
+          ...prev,
+          country: locationData.countryCode || '',
+          city: locationData.city || '',
+          postcode: locationData.postcode || '',
+        }));
+        
+        // Find matching division from the stored state/division name
+        if (locationData.state && initialDivisions && initialDivisions.length) {
+          const matchingDivision = initialDivisions.find(
+            div => div.name.toLowerCase() === locationData.state.toLowerCase()
+          );
+          
+          if (matchingDivision) {
+            setSelectedDivision(locationData.state);
+            fetchDistricts(matchingDivision.id);
+            
+            setFormData(prev => ({
+              ...prev,
+              Division: matchingDivision.id
+            }));
+            
+            // After districts are loaded, find the matching district
+            setTimeout(() => {
+              if (locationData.district) {
+                // Find matching district after they're loaded
+                const matchingDistrict = districts.find(
+                  dist => dist.name.toLowerCase() === locationData.district.toLowerCase()
+                );
+                
+                if (matchingDistrict) {
+                  setSelectedDistrict(locationData.district);
+                  setFormData(prev => ({
+                    ...prev,
+                    District: matchingDistrict.id
+                  }));
+                }
+              }
+            }, 1000); // Give time for districts to load
+          }
+        }
+        
+        // Set location details if stored
+        if (locationData.displayName) {
+          setLocationDetails({
+            streetAddress: locationData.displayName || '',
+            landmark: '',
+            additionalInfo: ''
+          });
+          setShowLocationDetails(true);
+        }
+      } catch (error) {
+        console.error("Error parsing location cookie:", error);
+      }
+    }
+  }, [initialDivisions]);
+
   const fetchDistricts = async (divisionId) => {
     try {
       if (!divisionId || isNaN(divisionId)) {
@@ -185,7 +250,7 @@ const Checkout = ({ initialDivisions }) => {
           additionalInfo: ''
         });
       }
-    } catch (error) {FaShoppingBag
+    } catch (error) {
       console.error("Detailed error:", error);
       alert("Error getting location. Please try again or enter manually.");
     } finally {
