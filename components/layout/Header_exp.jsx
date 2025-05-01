@@ -74,13 +74,7 @@ const HeaderExp = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
-
-  // Click handler for "All Categories"
-  const handleCategoryClick = (id) => {
-    // console.log("Clicked Category ID:", id);
-    setSelectedId(id); // Store the clicked category ID
-  };
-
+ 
   const renderCategories = (categories) => {
     return (
       <ul className={styles.dropdownMenu}>
