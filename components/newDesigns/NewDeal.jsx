@@ -4,16 +4,16 @@ const HoverImageOverlay = () => {
   const items = [
     {
       id: 1,
-      title: "Awesome Speaker",
+      title: "Awesome quality",
       subtitle: "High Quality Sound",
       imageUrl: "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       bgColor: "bg-gradient-to-r from-purple-600 to-blue-500",
     },
     {
       id: 2,
-      title: "Smart Watch",
+      title: "Smart Bedsheet",
       subtitle: "Track Your Fitness",
-      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQPkG8YniwduPdxt-1rlccXUQ4BDDvbYi7nDlWCCP_5h0BvKo1C_VTEPHE3Q-7xX5Jxhc&usqp=CAU",
+      imageUrl: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGNsaW50bGx4aTV6aWVodWk0M3F6aG0wMGNiZnpyc25hM2N2eGw5dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7T2FQR2xVYMgc6IqH1/giphy.gif",
       bgColor: "bg-gradient-to-r from-pink-500 to-rose-500",
     },
     {

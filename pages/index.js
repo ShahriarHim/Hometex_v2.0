@@ -170,8 +170,8 @@ const Home = () => {
         {/* <DesignFive /> */}
         <DesignSeven />
         <DesignEleven />
-        <DesignFour />
-        <DesignNine />
+        {/* <DesignFour /> */}
+        {/* <DesignNine /> */}
         <HoverImageOverlay/>
        
         {/* <CostomerCount /> */}
