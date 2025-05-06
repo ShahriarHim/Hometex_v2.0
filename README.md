@@ -8,3 +8,6 @@
 Shop Address: Shop# 04, Level# 04, Green Saranika Shopping Mall, 369 Elephant Road, Dhaka-1205.
 +880 1324-742555, +880 1324-742556, +880 1600-351149
 info@hometexltd.com, hometexltd.bd@gmail.com
+
+
+cc 
